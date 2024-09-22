@@ -1,11 +1,6 @@
 const Medicine = require('../models/Medicine')
 const asyncHandler  = require( 'express-async-handler')
 
-
-
-
-
-
 exports.medicineById = async (req, res, next, id) => {
 
     await Medicine.findById(id).exec((err, medicine) => {

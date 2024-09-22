@@ -8,13 +8,13 @@ import { listEnumsPrescriptions, createPrescription, listPaidEnums  } from '../a
 import { PRESCRIPTION__CREATE_RESET } from '../constants/prescriptionConstants'
 import {TEST_CREATE_RESET} from "../constants/testConstants";
 import { listMedicines } from '../actions/medicineActions';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { listPatients } from '../actions/patientActions'
-
+import { detailsVacApp } from '../actions/vaccineAppointmentActions';
 
 
 const AddPrescription = () => {
-
+     const {id} = useParams()
     const [user, setUser] = useState('')
     const [treatment, setTreatment] = useState('')
     const [medicine, setMedicine] = useState('')
@@ -27,6 +27,10 @@ const AddPrescription = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const vaccineAppList = useSelector((state) => state.vaccineAppDetails)
+    const { appointment } = vaccineAppList
+
 
     const patientList = useSelector((state) => state.patientList)
     const { patients } = patientList
@@ -58,8 +62,9 @@ const AddPrescription = () => {
     const { pays } = presPaidList
 
     useEffect(() => {
-
+            
         if (userInfo ) {
+            dispatch(detailsVacApp(id))
             dispatch(listPatients())
             dispatch(listUsers())
             dispatch(listMedicines())
@@ -67,7 +72,7 @@ const AddPrescription = () => {
             dispatch(listEnumsPrescriptions())
             dispatch(listTreatments())
             dispatch(listPaidEnums())
-
+            setUser(appointment.patient._id)
             if(success) {
                 dispatch({ type: PRESCRIPTION__CREATE_RESET })
                 navigate('/list-prescriptions')
@@ -97,7 +102,7 @@ const AddPrescription = () => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(createPrescription({ doctor : userInfo._id ,patient : user, treatment, medicine, time, days, take, test, paid, history}))
+        dispatch(createPrescription({ appId : appointment._id ,doctor : userInfo._id ,patient : user, treatment, medicine, time, days, take, test, paid, history}))
 
     }
 
@@ -106,17 +111,9 @@ const AddPrescription = () => {
         <div className="form-group col-md-12">
             <form onSubmit={submitHandler}>
                 <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label className="text-muted">Patient</label>
-                            <select onChange={(e) => setUser(e.target.value)} className="form-control">
-                                <option>Select Patient</option>
-                                {patients &&
-                                patients.map((c, i) => (
-                                    <option key={i} value={c._id}>
-                                        {c.firstName + "-" + c.patientNumber}
-                                    </option>
-                                ))}
-                            </select>
+                <div className="form-group col-md-3">
+                        <label htmlFor="inputAddress">patient</label>
+                        <input type="text" className="form-control"  placeholder="Medicine" value={appointment.patient.firstName + "-" + appointment.patient.patientNumber}/>
                     </div>
                     <div className="form-group col-md-6">
                         <label className="text-muted">Treatment for</label>

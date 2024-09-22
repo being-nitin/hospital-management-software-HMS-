@@ -75,7 +75,7 @@ export const listPaidEnums = () => async (dispatch, getState) => {
 
 
 
-export const createPrescription = (prescrp) => async (dispatch, getState) => {
+export const createPrescription = ({appId , ...prescrp}) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRESCRIPTION_CREATE_REQUEST,
@@ -91,7 +91,7 @@ export const createPrescription = (prescrp) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.post(`${API}/pres-create/${userInfo._id}`, prescrp, config)
+        const { data } = await axios.post(`${API}/pres-create/${userInfo._id}?appId=${appId}`, prescrp, config)
 
         dispatch({
             type: PRESCRIPTION_CREATE_SUCCESS,

@@ -114,7 +114,7 @@ const Routes = () => {
           <Route path="/list-specialize" element={<ListSpecialize />} />
           <Route path="/list-vaccine-cat" element={<ListVaccineCat />} />
           <Route path="/create/cat-test" element={<CreateTestCat />} />
-          <Route path="/add-prescription" element={<AddPrescription />} />
+          <Route path="/add-prescription/:id" element={<AddPrescription />} />
           <Route path="/create/cat-treatment" element={<CreateTreatment />} />
           <Route path="/create-test" element={<CreateTest />} />
           <Route path="/add-patient-details" element={<AddPatientDetails />} />

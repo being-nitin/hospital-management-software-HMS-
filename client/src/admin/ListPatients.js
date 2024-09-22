@@ -112,7 +112,7 @@ const ListPatients = () => {
                                             <td>{patient.gender}</td>
 
                                             <td><Link to={`/update-patient/${patient._id}`}><i className="bi bi-pencil-square"></i></Link></td>
-                                            <td><i className="bi bi-trash" onClick={() => deleteHandler(patient._id)}></i></td>
+                                            <td><i className="bi bi-trash" style ={{ cursor : 'pointer'}} onClick={() => deleteHandler(patient._id)}></i></td>
                                         </Fragment>
                                     </tr>
                                 ))

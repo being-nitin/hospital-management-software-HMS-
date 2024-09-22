@@ -12,9 +12,6 @@ const { createPrescription, presById, getPrescriptionDetail, update, remove, lis
 
 const { protect, admin } = require('../middleware/authMiddleware.js')
 
-
-
-
 router.get('/pres-detail/:presId/:userId', protect,  getPrescriptionDetail);
 
 router.get('/pres-detail-user/:id/:userId', protect,  getPrescriptionDetailUser);

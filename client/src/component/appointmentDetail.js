@@ -3,7 +3,7 @@ import { Dropdown, Menu, Button } from 'antd';
 import Layout from '../core/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { listVacApp, deleteVacApp , detailsVacApp} from '../actions/vaccineAppointmentActions'
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 // Sample Data (replace with dynamic data as needed)
 const patient = {
   name: 'Riti Rai',
@@ -38,19 +38,19 @@ const patient = {
 };
 
 // Dropdown menu for adding records
-const menu = (
-  <Menu>
-    <Menu.Item key="1">
-      <a href="#">Test</a>
-    </Menu.Item>
-    <Menu.Item key="2">
-      <a href="#">Treatment</a>
-    </Menu.Item>
-    <Menu.Item key="3">
-      <a href="#">Prescription</a>
-    </Menu.Item>
-  </Menu>
-);
+// const menu = (
+//   <Menu>
+//     <Menu.Item key="1">
+//       <Link href="#">Test</Link>
+//     </Menu.Item>
+//     <Menu.Item key="2">
+//       <Link href="#">Treatment</Link>
+//     </Menu.Item>
+//     <Menu.Item key="3">
+//       <Link href={`/add-prescription/${app._id}`}>Prescription</Link>
+//     </Menu.Item>
+//   </Menu>
+// );
 
 const AppointmentDetail = () => {
   // Refs for each appointment section
@@ -108,7 +108,21 @@ const AppointmentDetail = () => {
               <h5>Treatment and Prescription History</h5>
 
               {/* Add Record Button with AntD Dropdown */}
-              <Dropdown overlay={menu} placement="bottomRight" arrow>
+              <Dropdown overlay={
+                   (
+                    <Menu>
+                      <Menu.Item key="1">
+                        <Link href="#">Test</Link>
+                      </Menu.Item>
+                      <Menu.Item key="2">
+                        <Link href="#">Treatment</Link>
+                      </Menu.Item>
+                      <Menu.Item key="3">
+                        <Link to={`/add-prescription/${appointment._id}`}>Prescription</Link>
+                      </Menu.Item>
+                    </Menu>
+                  )               
+              } placement="bottomRight" arrow>
                 <Button type="default">Add Record</Button>
               </Dropdown>
             </div>
