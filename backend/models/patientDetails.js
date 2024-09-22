@@ -5,18 +5,20 @@ const { ObjectId } = mongoose.Schema;
 
 const patientDetails = mongoose.Schema(
     {
-        user: {
-            type: ObjectId,
-            required: true,
-            ref: 'User',
+        doctor : {
+            type : mongoose.ObjectId,
+            required : true,
+            ref :'User' 
+        },
+        firstName : {
+            type : String
         },
         lastName: {
             type: String
         },
-        idNumber: {
+        patientNumber: {
             type: Number,
             required: true,
-
         },
         regDate: {
             type: String,
@@ -26,18 +28,15 @@ const patientDetails = mongoose.Schema(
             type: String,
             required: true
         },
-        cell: {
+        phoneNo: {
             type: String
         },
         birthDate: {
             type: String
         },
-        residence: {
-            type: String
-        },
-        email: {
-            type: String
-        },
+        // email: {
+        //     type: String
+        // },
         guardian: {
             type: String
         },
@@ -50,21 +49,26 @@ const patientDetails = mongoose.Schema(
             enum: ["Male", "Female"], // enum means string objects
             required: true,
         },
-        statusPatient: {
-            type: String,
-            default: "Cured",
-            enum: ["Cured", "Under Treatment"],
-            required: true,
+        symptoms : {
+            type : String
         },
-        patientType: {
-            type: String,
-            default: "In Patient",
-            enum: ["In Patient", "Out Patient"],
-            required: true,
+        vital : {
+            type : Array
         },
+        // statusPatient: {
+        //     type: String,
+        //     default: "Cured",
+        //     enum: ["Cured", "Under Treatment"],
+        //     required: true,
+        // },
+        // patientType: {
+        //     type: String,
+        //     default: "In Patient",
+        //     enum: ["In Patient", "Out Patient"],
+        //     required: true,
+        // },
         image: {
             type: String,
-            required: true,
         },
         
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { createDesignate } from '../actions/designateActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -13,7 +13,7 @@ const AddDesignation = ({ history }) => {
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-
+    const navigate = useNavigate()
 
 
     const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const AddDesignation = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-            history.push('/list-designate')
+            navigate('/list-designate')
         }
     }, [success, dispatch])
 

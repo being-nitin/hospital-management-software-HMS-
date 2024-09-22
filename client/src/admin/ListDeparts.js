@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listDeparts, deleteDeparts } from '../actions/departmentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListDeparts = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const departsList = useSelector((state) => state.departsList)
     const { loading, error, departments } = departsList
 
@@ -23,10 +23,10 @@ const ListDeparts = ({ history }) => {
     const { success: successDelete } = departsDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listDeparts())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

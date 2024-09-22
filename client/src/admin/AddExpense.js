@@ -38,7 +38,7 @@ const AddExpense = ({ history: history1 }) => {
 
     useEffect(() => {
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listDeparts())
             dispatch(listPaidEnums())
 

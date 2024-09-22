@@ -4,14 +4,14 @@ import { listPrescriptions, deletePrescription } from '../actions/prescriptionAc
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import ReactToPrint from 'react-to-print';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListPrescriptions = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const prescList = useSelector((state) => state.prescList)
     const { loading, error, prescriptions } = prescList
 
@@ -24,11 +24,11 @@ const ListPrescriptions = ({ history }) => {
     const { success: successDelete } = prescDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listPrescriptions())
             //console.log(tests)
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 
@@ -78,7 +78,7 @@ const ListPrescriptions = ({ history }) => {
 
     return (
         <Layout title="List Prescriptions" className="container-fluid">
-            <h4><Link to="add-prescription"><button>Add Prescription</button></Link></h4>
+            <h4><Link to="/add-prescription"><button>Add Prescription</button></Link></h4>
             <ReactToPrint trigger={linkToPrint} content={() => componentRef.current} />
             <h2 className="font-weight-bold">Total Paid:Ksh {totalCollected()}</h2>
             <h2 className="mb-4">List Prescriptions</h2>
@@ -94,7 +94,7 @@ const ListPrescriptions = ({ history }) => {
                             <thead>
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">User</th>
+                                <th scope="col">Patient</th>
                                 <th scope="col">Treatment</th>
                                 <th scope="col">Medicine</th>
                                 <th scope="col">Time</th>
@@ -114,7 +114,7 @@ const ListPrescriptions = ({ history }) => {
                                     <tr key={i}>
                                         <Fragment>
                                             <th scope="row">{pres._id.substring(0, 6)}</th>
-                                            <td>{pres.user.name}</td>
+                                            <td>{pres.patient.firstName + "-" + pres.patient.patientNumber}</td>
                                             <td>{pres.treatment.name}</td>
                                             <td>{pres.medicine}</td>
                                             <td>{pres.time}</td>

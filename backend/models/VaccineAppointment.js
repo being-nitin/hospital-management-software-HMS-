@@ -1,57 +1,40 @@
 const mongoose =  require('mongoose')
 const { ObjectId } = mongoose.Schema;
 
-
-
 const VaccineAppointment = mongoose.Schema(
     {
         patient: {
             type: String,
             required: true,
-            ref: 'User',
+            ref: 'patientDetails',
         },
-        nurse: {
+        doctor: {
             type: ObjectId,
             required: true,
             ref: 'User',
-        },
-        vaccine: {
-            type: ObjectId,
-            required: true,
-            ref: 'Vaccine',
         },
         date: {
             type: String,
             required: true
         },
-        time_in: {
-            type: String
-        },
-        taken: {
+        time: {
             type: String,
-            default: "Yes",
-            enum: ["Yes", "No"] // enum means string objects
+            required : true
         },
-        day: {
+        status: {
             type: String,
-            default: "Morning",
-            enum: ["Evening", "Morning"]
-        },
-        room: {
-            type: String,
-            required: true,
-
+            default: "pending",
+            enum: ["Scheduled", "pending", "closed"] // enum means string objects
         },
         remarks: {
             type: String,
             required: true,
+        },
+        prescription :[{
+            type : mongoose.ObjectId,
 
-        }
+        }]
     }
 )
-
-
-
-
 
 module.exports = mongoose.model('VaccineAppointment', VaccineAppointment);

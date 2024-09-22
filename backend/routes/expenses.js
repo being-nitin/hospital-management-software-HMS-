@@ -12,19 +12,19 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/expenses-detail/:id/:userId', protect, admin, getExpenseDetail);
+router.get('/expenses-detail/:id/:userId', protect,  getExpenseDetail);
 
 
-router.put('/expenses-update/:id/:userId', protect, admin, update);
+router.put('/expenses-update/:id/:userId', protect,  update);
 
-router.delete('/expenses-remove/:id/:userId', protect, admin,  remove);
+router.delete('/expenses-remove/:id/:userId', protect,   remove);
 
-router.get('/expenses-list/:userId', protect, admin, list);
+router.get('/expenses-list/:userId', protect,  list);
 
 
-router.post("/expenses-create/:userId", protect, admin, creatExpense)
+router.post("/expenses-create/:userId", protect,  creatExpense)
 
-router.get("/expenses/paid-values/:userId", protect, admin, getPaidValues);
+router.get("/expenses/paid-values/:userId", protect,  getPaidValues);
 
 
 

@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listVendors, deleteVendors } from '../actions/vendorsActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListVendors = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const vendorsList = useSelector((state) => state.vendorsList)
     const { loading, error, vendors } = vendorsList
 
@@ -30,10 +30,10 @@ const ListVendors = ({ history }) => {
     const { success: successDelete } = vendorsDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listVendors())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

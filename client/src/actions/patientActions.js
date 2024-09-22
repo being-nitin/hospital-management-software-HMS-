@@ -291,7 +291,7 @@ export const updatePatients = (pat) => async (dispatch, getState) => {
 
         console.log(pat)
         const { data } = await axios.put(
-            `${API}/patient-update/${pat._id}/${userInfo._id}`,
+            `${API}/patient-update/${pat._id}`,
             pat,
             config
         )
@@ -333,7 +333,7 @@ export const patientsDetails = (id) => async (dispatch, getState) => {
         }
 
 
-        const { data } = await axios.get(`${API}/patient-detail/${id}/${userInfo._id}`, config)
+        const { data } = await axios.get(`${API}/patient-detail/${id}`, config)
 
         dispatch({
             type: PATIENT_DETAILS_SUCCESS,
@@ -369,7 +369,8 @@ export const patientsDetailsUser = (id) => async (dispatch, getState) => {
         }
 
 
-        const { data } = await axios.get(`${API}/patient-detail-user/${id}/${userInfo._id}`, config)
+        const { data } = await axios.get(`${API}/patient-detail-user/${id}`, config)
+        console.log(data)
 
         dispatch({
             type: PATIENT_DETAILS_USER_SUCCESS,

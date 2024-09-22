@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listTreatments, deleteTreatmentCat } from '../actions/treatmentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListTreatment = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const treatLists = useSelector((state) => state.treatLists)
     const { loading, error, treatments } = treatLists
 
@@ -23,11 +23,11 @@ const ListTreatment = ({ history }) => {
     const { success: successDelete } = treatDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listTreatments())
             //console.log(tests)
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

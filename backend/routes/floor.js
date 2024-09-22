@@ -12,17 +12,17 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/floor-detail/:id/:userId', protect, admin, getFloor);
+router.get('/floor-detail/:id/:userId', protect,  getFloor);
 
 
-router.put('/floor-update/:id/:userId', protect, admin, update);
+router.put('/floor-update/:id/:userId', protect,  update);
 
-router.delete('/floor-remove/:id/:userId', protect, admin,  remove);
+router.delete('/floor-remove/:id/:userId', protect,   remove);
 
-router.get('/floor-list/:userId', protect, admin, list);
+router.get('/floor-list/:userId', protect,  list);
 
 
-router.post("/floor-create/:userId", protect, admin, createFloor)
+router.post("/floor-create/:userId", protect,  createFloor)
 
 
 

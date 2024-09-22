@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listFloors, deleteFloors } from '../actions/floorActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListFloors = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const floorList = useSelector((state) => state.floorList)
     const { loading, error, floors } = floorList
 
@@ -23,10 +23,10 @@ const ListFloors = ({ history }) => {
     const { success: successDelete } = floorDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listFloors())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

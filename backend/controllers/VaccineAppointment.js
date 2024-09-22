@@ -1,10 +1,6 @@
 const VaccineAppointment = require('../models/VaccineAppointment')
 const asyncHandler  = require( 'express-async-handler')
-
-
-
-
-
+const User = require ('../models/user.js')
 
 exports.vaccineAppointById = async (req, res, next, id) => {
 
@@ -21,7 +17,7 @@ exports.vaccineAppointById = async (req, res, next, id) => {
 
 
 exports.getVaccineApp = asyncHandler(async (req, res) => {
-    const appointment = await VaccineAppointment.findById(req.params.id).populate("user vaccine")
+    const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor")
 
     if (appointment) {
         res.json(appointment)
@@ -34,7 +30,6 @@ exports.getVaccineApp = asyncHandler(async (req, res) => {
 
 
 exports.createVaccineApp = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const appointment = new VaccineAppointment(req.body);
     await appointment.save((err, data) => {
         if (err) {
@@ -93,7 +88,19 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    await VaccineAppointment.find({}).populate("patient nurse vaccine").exec((err, data) => {
+    let field = {}
+
+    if(req.params)
+    {
+        const findUser = await User.findById({_id : req.params.userId})
+
+        if(findUser.role === 1){
+        field['doctor'] = req.params.userId
+        }
+        
+    }
+
+    await VaccineAppointment.find(field).populate("patient doctor prescription").exec((err, data) => {
         if (err) {
             return res.status(400).json({
                 error: err
@@ -106,7 +113,7 @@ exports.list = asyncHandler(async (req, res) => {
 
 
 exports.getTakenValues = (req, res) => {
-    res.json(VaccineAppointment.schema.path('taken').enumValues);
+    res.json(VaccineAppointment.schema.path('status').enumValues);
 };
 
 

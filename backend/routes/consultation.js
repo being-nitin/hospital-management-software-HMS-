@@ -12,24 +12,24 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/cons-detail/:consId/:userId', protect, admin, getConsDetail);
+router.get('/cons-detail/:consId/:userId', protect,  getConsDetail);
 
 
-router.get('/cons-detail-user/:id/:userId', protect, admin, getConsDetailUser);
+router.get('/cons-detail-user/:id/:userId', protect,  getConsDetailUser);
 
 
-router.put('/cons-update/:consId', protect, admin, update);
+router.put('/cons-update/:consId', protect,  update);
 
-router.delete('/cons-remove/:cons', protect, admin,  remove);
+router.delete('/cons-remove/:cons', protect,   remove);
 
-router.get('/cons-list/:userId', protect, admin, list);
+router.get('/cons-list/:userId', protect,  list);
 
 
-router.post("/cons-create/:userId", protect, admin, createConsul)
+router.post("/cons-create/:userId", protect,  createConsul)
 
 router.post("/cons-user-create/:userId", protect, createUserConsul)
 
-router.get("/cons/paid-values/:userId", protect, admin, getPaidValues);
+router.get("/cons/paid-values/:userId", protect,  getPaidValues);
 
 router.param('consId', consById);
 

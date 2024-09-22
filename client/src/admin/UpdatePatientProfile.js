@@ -8,40 +8,31 @@ import { listGenderEnums, listStatusEnums, listTypeEnums, patientsDetails, updat
 import axios from "axios";
 import {UPDATE_PATIENT_RESET} from "../constants/patientDetailsConstants";
 import moment from "moment";
+import { useParams , useNavigate} from 'react-router-dom';
 
+const  UpdatePatientProfile = () => {
 
-
-
-
-
-
-
-
-
-
-const  UpdatePatientProfile = ({ history: history1, match}) => {
-
-    const id = match.params.id
-
-    const [user, setUser] = useState('')
+    const {id} = useParams()
+    const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [idNumber, setIdNumber] = useState(0)
-    const [regDate, setRegDate] = useState(new Date())
-    const [address, setAddress] = useState('')
-    const [cell, setCell] = useState(0)
-    const [birthDate, setBirthDate] = useState(new Date())
-    const [residence, setResidence] = useState('')
-    const [email, setEmail] = useState('')
-    const [guardian, setGuardian] = useState('')
-    const [relation, setRelation] = useState('')
-    const [gender, setGender] = useState('')
-    const [statusPatient, setStatusPatient] = useState('')
-    const [patientType, setPatientType] = useState('')
+    const [patientNumber, setPatientNumber] = useState(2222556)
+    const [regDate, setRegDate] = useState(new Date());
+    const [address, setAddress] = useState('Nairobi')
+    const [phoneNo, setPhoneNo] = useState(null)
+    const [birthDate, setBirthDate] = useState(new Date())  
+    const [residence, setResidence] = useState('Kilimani')
+    // const [email, setEmail] = useState('steph@gmail.com')
+    const [guardian, setGuardian] = useState('smart')
+    const [relation, setRelation] = useState('cousin')
+    const [gender, setGender] = useState('Male')
+    const [symptoms , setSymptoms] = useState('')
+    const [doctor , setDoctor] = useState('')
 
-    const [image, setImage] = useState('')
-    const [uploading, setUploading] = useState(false)
+    const navigate = useNavigate()
+    // const [image, setImage] = useState('')
+    // const [uploading, setUploading] = useState(false)
 
-    console.log(image)
+    // console.log(image)
 
     const dispatch = useDispatch()
 
@@ -62,11 +53,11 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
     const patientGender = useSelector((state) => state.patientGender)
     const { genders } = patientGender
 
-    const patientStatus = useSelector((state) => state.patientStatus)
-    const { status } = patientStatus
+    // const patientStatus = useSelector((state) => state.patientStatus)
+    // const { status } = patientStatus
 
-    const patientTypes = useSelector((state) => state.patientTypes)
-    const { types } = patientTypes
+    // const patientTypes = useSelector((state) => state.patientTypes)
+    // const { types } = patientTypes
 
 
 
@@ -75,38 +66,40 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
 
         if (successUpdate) {
             dispatch({ type: UPDATE_PATIENT_RESET })
-            history1.push('/list-patients')
+            navigate('/list-patients')
 
         } else {
 
-            if (patient._id !== id) {
+            if (patient?._id !== id) {
                 dispatch(listUsers())
-                dispatch(listTypeEnums())
-                dispatch(listStatusEnums())
+                // dispatch(listTypeEnums())
+                // dispatch(listStatusEnums())
                 dispatch(listGenderEnums())
                 dispatch(patientsDetails(id))
 
             } else {
-                setUser(patient.user)
+                setDoctor(patient.doctor)
+                setFirstName(patient.firstName)
                 setLastName(patient.lastName)
-                setIdNumber(patient.idNumber)
+                setPatientNumber(patient.patientNumber)
                 setRegDate(moment(patient.regDate).format("YYYY-MM-DD"))
                 setAddress(patient.address)
-                setCell(patient.cell)
+                setPhoneNo(patient.phoneNo)
                 setBirthDate(moment(patient.birthDate).format("YYYY-MM-DD"))
-                setResidence(patient.residence)
-                setEmail(patient.email)
+                // setResidence(patient.residence)
+                // setEmail(patient.email)
                 setGuardian(patient.guardian)
                 setRelation(patient.relation)
                 setGender(patient.gender)
-                setStatusPatient(patient.statusPatient)
-                setPatientType(patient.patientType)
-                setImage(patient.image)
+                setSymptoms(patient.symptoms)
+                // setStatusPatient(patient.statusPatient)
+                // setPatientType(patient.patientType)
+                // setImage(patient.image)
                 console.log(moment(patient.birthDate).format("YYYY-MM-DD"))
             }
 
         }
-    }, [ dispatch, history1, id, patient, successUpdate])
+    }, [dispatch, id, successUpdate, patient])
 
 
 
@@ -138,35 +131,35 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
     const submitHandler = (e) => {
         e.preventDefault()
 
-        dispatch(updatePatients({ _id: id, user, lastName, idNumber, regDate,
-            address, cell, birthDate, residence, email, guardian, relation, gender, statusPatient, patientType, image }))
+        dispatch(updatePatients({ _id: id, doctor,firstName, lastName, patientNumber, regDate,
+            address, phoneNo, birthDate, guardian, relation, gender , symptoms}))
         //history1.push('/list-patients')
     }
 
-    const uploadFileHandler = async (e) => {
-        const file = e.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        console.log(formData)
-        setUploading(true)
+    // const uploadFileHandler = async (e) => {
+    //     const file = e.target.files[0]
+    //     const formData = new FormData()
+    //     formData.append('image', file)
+    //     console.log(formData)
+    //     setUploading(true)
 
-        try {
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
+    //     try {
+    //         const config = {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //         }
 
-            const { data } = await axios.post(` http://localhost:8000/upload`, formData, config)
+    //         const { data } = await axios.post(` http://localhost:8000/upload`, formData, config)
 
-            setImage(data)
-            console.log(data)
-            setUploading(false)
-        } catch (error) {
-            console.error(error)
-            setUploading(false)
-        }
-    }
+    //         setImage(data)
+    //         console.log(data)
+    //         setUploading(false)
+    //     } catch (error) {
+    //         console.error(error)
+    //         setUploading(false)
+    //     }
+    // }
 
 
 
@@ -178,11 +171,11 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
             <form onSubmit={submitHandler}>
                 <div className="form-row">
                     <div className="form-group col-md-3">
-                        <label className="text-muted font-weight-bold">User</label>
-                        <select onChange={(e) => setUser(e.target.value)} className="form-control">
-                            <option>Select Patient</option>
+                        <label className="text-muted font-weight-bold">doctor</label>
+                        <select onChange={(e) => setDoctor(e.target.value)} className="form-control">
+                            <option>Select Doctor</option>
                             {users &&
-                            users.filter(filtered => filtered.role === 2).map((c, i) => (
+                            users.filter(filtered => filtered.role === 1).map((c, i) => (
                                 <option key={i} value={c._id}>
                                     {c.name}
                                 </option>
@@ -190,14 +183,19 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                         </select>
                     </div>
                     <div className="form-group col-md-3">
+                        <label className="font-weight-bold" htmlFor="inputAddress">First Name</label>
+                        <input type="text" className="form-control"  placeholder="First Number" value={firstName}
+                               onChange={(e) => setFirstName(e.target.value)}/>
+                    </div>
+                    <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Last Name</label>
                         <input type="text" className="form-control"  placeholder="Last Number" value={lastName}
                                onChange={(e) => setLastName(e.target.value)}/>
                     </div>
                     <div className="form-group col-md-3">
-                        <label className="font-weight-bold" htmlFor="inputAddress">Id Number</label>
-                        <input type="text" className="form-control"  placeholder="Id Number" value={idNumber}
-                               onChange={(e) => setIdNumber(e.target.value)}/>
+                        <label className="font-weight-bold" htmlFor="inputAddress">Patient Number</label>
+                        <input type="text" className="form-control"  placeholder="patientNo" value={patientNumber}
+                               onChange={(e) => setPatientNumber(e.target.value)}/>
                     </div>
                     <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Registration date</label>
@@ -214,9 +212,9 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                     </div>
 
                     <div className="form-group col-md-3">
-                        <label className="font-weight-bold" htmlFor="inputAddress">Cell No</label>
-                        <input type="text" className="form-control"  placeholder="cell no" value={cell}
-                               onChange={(e) => setCell(e.target.value)}/>
+                        <label className="font-weight-bold" htmlFor="inputAddress">Phone No</label>
+                        <input type="text" className="form-control"  placeholder="phone no" value={phoneNo}
+                               onChange={(e) => setPhoneNo(e.target.value)}/>
                     </div>
 
                     <div className="form-group col-md-3">
@@ -225,21 +223,21 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                         <DatePicker  value={birthDate} onChange={date => setBirthDate(moment(date).format("YYYY-MM-DD"))} className="form-control" />
                     </div>
 
-                    <div className="form-group col-md-3">
+                    {/* <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Residence</label>
                         <input type="text" className="form-control"  placeholder="residence" value={residence}
                                onChange={(e) => setResidence(e.target.value)}/>
-                    </div>
+                    </div> */}
 
                 </div>
 
 
                 <div className="form-row">
-                    <div className="form-group col-md-3">
+                    {/* <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Email</label>
                         <input type="email" className="form-control"  placeholder="email" value={email}
                                onChange={(e) => setEmail(e.target.value)}/>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Gurdian</label>
@@ -269,7 +267,7 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-4">
+                    {/* <div className="form-group col-md-4">
                         <label className="font-weight-bold" htmlFor="exampleFormControlSelect1">Patient Status</label>
                         <select onChange={(e) => setStatusPatient(e.target.value)} className="form-control" id="exampleFormControlSelect1">
                             <option>Please Select status</option>
@@ -293,10 +291,10 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-4">
-                        <label className="font-weight-bold" htmlFor="exampleFormControlFile1">Upload Photo</label>
+                        {/* <label className="font-weight-bold" htmlFor="exampleFormControlFile1">Upload Photo</label>
                         <input type="file"
                                onChange={uploadFileHandler} className="form-control-file" id="exampleFormControlFile1"/>
                         {uploading && (
@@ -305,7 +303,12 @@ const  UpdatePatientProfile = ({ history: history1, match}) => {
                                     <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
-                        )}
+                        )} */}
+                         <div>
+                        <label htmlFor="exampleFormControlTextarea1">symptoms</label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" value={symptoms}
+                                  onChange={(e) => setSymptoms(e.target.value)} placeholder="write description" rows="3"/>
+                    </div>
                         <button className="invisible" >Submit</button>
                     </div>
 

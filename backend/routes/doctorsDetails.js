@@ -15,27 +15,21 @@ const { createDoctorsDetails, getDoctorDetail, update, remove, list, getDaysValu
 
 const { protect, admin } = require('../middleware/authMiddleware.js')
 
+router.get('/doctor-detail/:id/:userId', protect,  getDoctorDetail);
 
+router.put('/doctor-update/:id/:userId', protect,  update);
 
+router.delete('/doctor-remove/:id', protect,   remove);
 
-router.get('/doctor-detail/:id/:userId', protect, admin, getDoctorDetail);
+router.get('/doctor-list/:userId', protect,  list);
 
+router.post("/doctor-create/:userId", protect,  createDoctorsDetails)
 
-router.put('/doctor-update/:id/:userId', protect, admin, update);
+router.get("/doctor/days-values/:userId", protect,  getDaysValues);
 
-router.delete('/doctor-remove/:id', protect, admin,  remove);
+router.get("/doctor/gender-values/:userId", protect,  getGenderValues);
 
-router.get('/doctor-list/:userId', protect, admin, list);
-
-
-
-router.post("/doctor-create/:userId", protect, admin, createDoctorsDetails)
-
-router.get("/doctor/days-values/:userId", protect, admin, getDaysValues);
-
-router.get("/doctor/gender-values/:userId", protect, admin, getGenderValues);
-
-router.get("/doctor/duty-values/:userId", protect, admin, getDutyValues);
+router.get("/doctor/duty-values/:userId", protect,  getDutyValues);
 
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import Layout from "../core/Layout";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -9,7 +9,7 @@ const FileUpload = ({ history }) => {
 
 
     const [uploading, setUploading] = useState(false)
-    
+    const navigate = useNavigate()
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0]
         const formData = new FormData()
@@ -27,7 +27,7 @@ const FileUpload = ({ history }) => {
 
 
             setUploading(false)
-            history.push("/list-vendors")
+            navigate("/list-vendors")
            
         } catch (error) {
             console.error(error)

@@ -4,7 +4,7 @@ import Layout from "../core/Layout";
 import { detailsSpecialize, updateSpecialize } from '../actions/specializeActions'
 import { SPECIALIZE_UPDATE_RESET } from '../constants/specializationConstants'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 const UpdateSpecialize = ({ history, match }) => {
@@ -12,7 +12,7 @@ const UpdateSpecialize = ({ history, match }) => {
     const id = match.params.id
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
 
@@ -34,7 +34,7 @@ const UpdateSpecialize = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: SPECIALIZE_UPDATE_RESET })
-            history.push('/list-specialize')
+            navigate('/list-specialize')
         } else {
             if (specialize._id !== id) {
                 dispatch(detailsSpecialize(id))

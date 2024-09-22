@@ -3,7 +3,7 @@ import Layout from '../core/Layout';
 import {  usersRegister } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { USERS_REGISTER_RESET, USER_LIST_SUCCESS , USERS_REGISTER_FAIL } from '../constants/userConstants'
-
+import { useNavigate } from 'react-router-dom';
 
 
 const AddUsers = ({ history }) => {
@@ -18,6 +18,7 @@ const AddUsers = ({ history }) => {
 
     const dispatch = useDispatch()
 
+    const navigate = useNavigate()
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
@@ -27,10 +28,10 @@ const AddUsers = ({ history }) => {
 
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             if (success){
                 dispatch({ type: USERS_REGISTER_RESET })
-                history.push('/list/users')
+                navigate('/list/users')
             }
         }
     }, [dispatch, success, userInfo])

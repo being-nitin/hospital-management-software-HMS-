@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listDesignate, deleteDesignate } from '../actions/designateActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListDesignate = ({ history }) => {
 
-    const dispatch = useDispatch()
-
+    const dispatch = useDispatch() 
+    const navigate = useNavigate()
     const designateList = useSelector((state) => state.designateList)
     const { loading, error, designations } = designateList
 
@@ -23,10 +23,10 @@ const ListDesignate = ({ history }) => {
     const { success: successDelete } = designateDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listDesignate())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

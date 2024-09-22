@@ -5,7 +5,7 @@ import { updateDeparts, departDetails } from '../actions/departmentActions'
 import {listFloors} from '../actions/floorActions'
 import { DEPARTMENT_UPDATE_RESET } from '../constants/departmentConstants'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -23,7 +23,7 @@ const UpdateDepartment = ({ match, history }) => {
 
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
 
     const departsDetails = useSelector((state) => state.departsDetails)
     const { loading, error, depart } = departsDetails
@@ -43,7 +43,7 @@ const UpdateDepartment = ({ match, history }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: DEPARTMENT_UPDATE_RESET })
-            history.push('/list-departs')
+            navigate('/list-departs')
         } else {
             if (depart._id !== id) {
                 dispatch(listFloors())

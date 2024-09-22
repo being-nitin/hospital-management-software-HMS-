@@ -12,16 +12,16 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/test-category-detail/:categoryTestId/:userId', protect, admin, getCatTestDetail);
+router.get('/test-category-detail/:categoryTestId/:userId', protect,  getCatTestDetail);
 
-router.put('/test-category-update/:id', protect, admin, update);
+router.put('/test-category-update/:id', protect,  update);
 
-router.delete('/test-category/:category', protect, admin,  remove);
+router.delete('/test-category/:category', protect,   remove);
 
 router.get('/test-categories/:userId', list);
 
 
-router.post("/test-category/create/:userId", protect, admin, createTestCategory)
+router.post("/test-category/create/:userId", protect,  createTestCategory)
 
 
 router.param('categoryTestId', testcategoryById);

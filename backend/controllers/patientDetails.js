@@ -1,15 +1,6 @@
 const patientDetails = require('../models/patientDetails')
 const asyncHandler  = require( 'express-async-handler')
 
-
-
-
-
-
-
-
-
-
 exports.patientsById = asyncHandler (async (req, res, next, id) => {
 
     await patientDetails.findById(id).populate("user").exec((err, patient) => {
@@ -41,7 +32,7 @@ exports.creatPatientDetails = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
+        console.log(req.params)
         const patient = await patientDetails.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
@@ -64,26 +55,22 @@ exports.update = asyncHandler(async (req, res) => {
 
 exports.getPatientDetail = asyncHandler(async (req, res) => {
 
-    const patient = await patientDetails.findById(req.params.id).populate("user")
+    const patient = await patientDetails.findById(req.params.id).populate("doctor")
 
     if (patient) {
         res.json({
             _id: patient._id,
-            user: patient.user._id,
+            firstName : patient.firstName,
             lastName: patient.lastName,
-            idNumber: patient.idNumber,
+            patientNumber: patient.patientNumber,
             regDate: patient.regDate,
             address: patient.address,
-            cell: patient.cell,
+            phoneNo: patient.phoneNo,
             birthDate: patient.birthDate,
-            residence: patient.residence,
-            email: patient.email,
             guardian: patient.guardian,
             relation: patient.relation,
             gender: patient.gender,
-            statusPatient: patient.statusPatient,
-            patientType: patient.patientType,
-            image: patient.image
+            symptoms : patient.symptoms
         })
     } else {
         res.status(404)
@@ -96,7 +83,7 @@ exports.getPatientDetail = asyncHandler(async (req, res) => {
 
 exports.getPatientDetailUser = asyncHandler(async (req, res) => {
 
-    const patient = await patientDetails.find({ user: req.params.id }).populate("user")
+    const patient = await patientDetails.find({ user: req.params.id }).populate("doctor")
 
     if (patient) {
         res.json(patient)

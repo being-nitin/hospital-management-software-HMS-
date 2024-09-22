@@ -5,9 +5,16 @@ const { ObjectId } = mongoose.Schema;
 
 const Prescription = mongoose.Schema(
     {
+        doctor : {
+            type: ObjectId,
+            ref: 'User',
+        },
+        patient: {
+            type: ObjectId,
+            ref: 'patientDetails',
+        },
         user: {
             type: ObjectId,
-            required: true,
             ref: 'User',
         },
         treatment: {
@@ -31,7 +38,7 @@ const Prescription = mongoose.Schema(
         take: {
             type: String,
             default: "Morning",
-            enum: ["Morning", "Midday", "Evening"] // enum means string objects
+            enum: ["1-1-1", "0-0-1" , "0-1-0" , "1-0-0" , "1-1-0" , "0-1-1" , "1-0-1"] // enum means string objects
         },
         test: {
             type: ObjectId,

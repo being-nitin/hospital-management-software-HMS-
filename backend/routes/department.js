@@ -11,17 +11,17 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/depart-detail/:id/:userId', protect, admin, getDepart);
+router.get('/depart-detail/:id/:userId', protect,  getDepart);
 
 
-router.put('/depart-update/:id/:userId', protect, admin, update);
+router.put('/depart-update/:id/:userId', protect,  update);
 
-router.delete('/depart-remove/:id/:userId', protect, admin,  remove);
+router.delete('/depart-remove/:id/:userId', protect,   remove);
 
-router.get('/depart-list/:userId', protect, admin, list);
+router.get('/depart-list/:userId', protect,  list);
 
 
-router.post("/depart-create/:userId", protect, admin, createDepart)
+router.post("/depart-create/:userId", protect,  createDepart)
 
 
 

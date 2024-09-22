@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../actions/userActions'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,10 +20,10 @@ const Signup = ({ history }) => {
     const userRegister = useSelector((state) => state.userRegister)
     const { loading, error, userInfo } = userRegister
 
-
+    const navigate = useNavigate()
     useEffect(() => {
         if (userInfo) {
-            history.push('/')
+            navigate('/')
         }
     }, [history, userInfo])
 

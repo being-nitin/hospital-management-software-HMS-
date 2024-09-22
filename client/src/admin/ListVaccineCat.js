@@ -3,7 +3,7 @@ import Layout from '../core/Layout';
 import { listVacCat, deleteVacCat } from '../actions/vaccineCatActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -16,7 +16,7 @@ const ListVaccineCat = ({ history }) => {
     const { loading, error, vaccines } = vaccineCatList
 
     console.log(vaccines)
-
+    const navigate = useNavigate()
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
@@ -24,10 +24,10 @@ const ListVaccineCat = ({ history }) => {
     const { success: successDelete } = vaccineCatDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listVacCat())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

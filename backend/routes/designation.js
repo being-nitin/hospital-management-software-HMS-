@@ -12,17 +12,17 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/designate-detail/:id/:userId', protect, admin, getDesignate);
+router.get('/designate-detail/:id/:userId', protect,  getDesignate);
 
 
-router.put('/designate-update/:id/:userId', protect, admin, update);
+router.put('/designate-update/:id/:userId', protect,  update);
 
-router.delete('/designate-remove/:id/:userId', protect, admin,  remove);
+router.delete('/designate-remove/:id/:userId', protect,   remove);
 
-router.get('/designate-list/:userId', protect, admin, list);
+router.get('/designate-list/:userId', protect,  list);
 
 
-router.post("/designate-create/:userId", protect, admin, createDesignate)
+router.post("/designate-create/:userId", protect,  createDesignate)
 
 
 

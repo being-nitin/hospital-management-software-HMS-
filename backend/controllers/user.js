@@ -3,9 +3,6 @@ const { generateToken }= require ('../utils/generateToken.js')
 const User = require ('../models/user.js')
 
 
-
-
-
 // @desc    Auth user & get token
 // @route   POST /api/users/signin
 // @access  Public

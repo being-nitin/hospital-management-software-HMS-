@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { createBuilding } from '../actions/buildingsActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -13,7 +13,8 @@ const AddBuilding = ({ history }) => {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
     const [description, setDescription] = useState('')
-
+    
+    const navigate = useNavigate()
 
     const dispatch = useDispatch()
 
@@ -23,7 +24,7 @@ const AddBuilding = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-            history.push('/list-buildings')
+            navigate('/list-buildings')
         }
     }, [success, dispatch])
 

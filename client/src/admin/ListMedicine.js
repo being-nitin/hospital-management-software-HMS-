@@ -4,14 +4,14 @@ import { listMedicines, deleteMedicine } from '../actions/medicineActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import moment from "moment";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListMedicine = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const medicineList = useSelector((state) => state.medicineList)
     const { loading, error, medicines } = medicineList
 
@@ -24,10 +24,10 @@ const ListMedicine = ({ history }) => {
     const { success: successDelete } = medicineDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listMedicines())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

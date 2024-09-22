@@ -4,14 +4,14 @@ import { listTestsResults, deleteTests } from '../actions/testActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListTestResult = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const listTestResult = useSelector((state) => state.listTestResult)
     const { loading, error, tests } = listTestResult
 
@@ -23,11 +23,11 @@ const ListTestResult = ({ history }) => {
     const { success: successDelete } = testsdelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listTestsResults())
             //console.log(tests[0])
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [history, dispatch, successDelete, userInfo])
 

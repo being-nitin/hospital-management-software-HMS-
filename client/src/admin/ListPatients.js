@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import ReactToPrint from 'react-to-print';
 import moment from "moment";
+import { useNavigate } from 'react-router-dom';
 
 
 
 
-
-const ListPatients = ({ history }) => {
+const ListPatients = () => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const patientList = useSelector((state) => state.patientList)
     const { loading, error, patients } = patientList
 
@@ -28,13 +28,13 @@ const ListPatients = ({ history }) => {
     const { success: successDelete } = patientDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listPatients())
             //console.log(tests)
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
-    }, [dispatch, history, successDelete, userInfo])
+    }, [dispatch,successDelete, userInfo])
 
 
     const deleteHandler = (id) => {
@@ -84,12 +84,12 @@ const ListPatients = ({ history }) => {
                         <table className="table">
                             <thead>
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">profile</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Patient Status</th>
-                                <th scope="col">Inpatient/Outpatient</th>
-                                <th scope="col">cell</th>
+                                <th scope="col">patientNumber</th>
+                                {/* <th scope="col">profile</th> */}
+                                <th scope="col">Doctor</th>
+                                {/* <th scope="col">Patient Status</th> */}
+                                {/* <th scope="col">Inpatient/Outpatient</th> */}
+                                <th scope="col">phoneNo</th>
                                 <th scope="col">Reg Date</th>
                                 <th scope="col">Gender</th>
                                 <th scope="col">Edit</th>
@@ -101,12 +101,12 @@ const ListPatients = ({ history }) => {
                                 patients && patients.map((patient, i) => (
                                     <tr key={i}>
                                         <Fragment>
-                                            <th scope="row">{patient._id.substring(0, 6)}</th>
-                                            <td><img src={`http://localhost:8000${patient.image}`} className="img-fluid rounded-circle"/></td>
-                                            <td>{patient.user.name}</td>
-                                            <td>{patient.statusPatient}</td>
-                                            <td>{patient.patientType}</td>
-                                            <td>{patient.cell}</td>
+                                            <th scope="row">{patient.patientNumber}</th>
+                                            {/* <td><img src={`http://localhost:8000${patient.image}`} className="img-fluid rounded-circle"/></td> */}
+                                            <td>{patient.firstName + " " + patient.lastName}</td>
+                                            {/* <td>{patient.statusPatient}</td> */}
+                                            {/* <td>{patient.patientType}</td> */}
+                                            <td>{patient.phoneNo}</td>
                                             <td>{moment(patient.regDate).format("YYYY-MM-DD HH:mm Z")}</td>
                                          
                                             <td>{patient.gender}</td>

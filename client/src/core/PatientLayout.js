@@ -1,69 +1,52 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import "../styles.css";
-
 import Menu from "./Menu";
-import {Link, withRouter} from "react-router-dom";
-import {useSelector} from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-
-
-
-// history must match with path which is /signup e.g
-const isActive = (history, path) => {
-    if (history.location.pathname === path) {
+// Check if the current path is active
+const isActive = (location, path) => {
+    if (location.pathname === path) {
         return { color: "#ff9900" };
     } else {
         return { color: "#ffffff" };
     }
 };
 
-
-const PatientLayout = ({
-                    children,
-                    history
-
-                }) => {
-
-    const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
-
+const PatientLayout = ({ children }) => {
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    const location = useLocation(); // Get the current location from React Router v6
 
     const patLinks = () => {
         return (
             <Fragment>
                 <div className="sb-sidenav-menu-heading">Core</div>
-                <Link className="nav-link" style={isActive(history, '/')} to="/">
-                    <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"/></div>
+                <Link className="nav-link" style={isActive(location, '/')} to="/">
+                    <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt" /></div>
                     Dashboard
                 </Link>
 
-
-                <Link className="nav-link" style={isActive(history, `/profile/${userInfo._id}`)} to={`/profile/${userInfo._id}`}>
-                    <div className="sb-nav-link-icon"><i className="bi bi-person-badge-fill"/></div>
+                <Link className="nav-link" style={isActive(location, `/profile/${userInfo._id}`)} to={`/profile/${userInfo._id}`}>
+                    <div className="sb-nav-link-icon"><i className="bi bi-person-badge-fill" /></div>
                     Update Profile
                 </Link>
 
-                <Link className="nav-link" style={isActive(history, '/list/users')} to="/list/users">
-                    <div className="sb-nav-link-icon"><i className="bi bi-people"/></div>
+                <Link className="nav-link" style={isActive(location, '/list/users')} to="/list/users">
+                    <div className="sb-nav-link-icon"><i className="bi bi-people" /></div>
                     List Users
                 </Link>
-
-
             </Fragment>
-
         );
     };
 
-
     const loggedIn = () => (
         <div className="small">Logged in as:</div>
+    );
 
-    )
     return (
-
         <nav className="sb-nav-fixed">
-
-            <Menu/>
+            <Menu />
             <div id="layoutSidenav">
                 <div id="layoutSidenav_nav">
                     <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -74,7 +57,7 @@ const PatientLayout = ({
                         </div>
                         <div className="sb-sidenav-footer">
                             {loggedIn()}
-                            {userInfo.name}
+                            {userInfo && userInfo.name}
                         </div>
                     </nav>
                 </div>
@@ -91,7 +74,7 @@ const PatientLayout = ({
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
-export default withRouter(PatientLayout);
+export default PatientLayout;

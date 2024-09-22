@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import ReactToPrint from 'react-to-print';
 import moment from "moment";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -14,7 +14,7 @@ import moment from "moment";
 const ListDoctors = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const doctorList = useSelector((state) => state.doctorList)
     const { loading, error, doctors } = doctorList
 
@@ -29,10 +29,10 @@ const ListDoctors = ({ history }) => {
     const { success: successDelete } = doctorDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listDoctors())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

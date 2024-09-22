@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { createDepart } from '../actions/departmentActions'
 import { listFloors } from '../actions/floorActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -19,7 +19,7 @@ const AddDepartment = ({ history }) => {
 
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
 
     const floorList = useSelector((state) => state.floorList)
     const { floors } = floorList
@@ -32,10 +32,10 @@ const AddDepartment = ({ history }) => {
 
     useEffect(() => {
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listFloors())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
 
 
@@ -44,7 +44,7 @@ const AddDepartment = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(createDepart({  name, head, address, floor, phone}))
-        history.push('/list-departs')
+        navigate('/list-departs')
     }
 
     const showError = () => (

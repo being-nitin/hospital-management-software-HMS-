@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { treatCatCreate } from '../actions/treatmentActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -14,14 +14,14 @@ const CreateTreatment = ({ history }) => {
     //const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
 
     const treatCreate = useSelector((state) => state.treatCreate)
     const { success, error, loading } = treatCreate
 
     useEffect(() => {
         if (success) {
-            history.push('/list-treat-cat')
+            navigate('/list-treat-cat')
             //setMessage('category test was created')
         }
     }, [success, dispatch])

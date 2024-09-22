@@ -21,21 +21,21 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 router.get('/user/:userId', protect, getUserProfile);
 
-router.get('/users/other/:id/:userId', protect, admin, getUserById);
+router.get('/users/other/:id/:userId', protect,  getUserById);
 
 router.put('/user/update/:userId', protect, updateUserProfile);
 
-router.get('/users/get', protect, admin, getUsers);
+router.get('/users/get', protect, getUsers);
 
 router.put('/user/:userId', protect, updateUserProfile);
 
-router.put('/users/update/:id/:userId', protect, admin, updateUser);
+router.put('/users/update/:id/:userId', protect,  updateUser);
 
-router.delete('/users/delete/:user', protect, admin, deleteUser);
+router.delete('/users/delete/:user', protect,  deleteUser);
 
 router.post('/signup', registerUser)
 
-router.post('/register-users/:userId', protect, admin, registerUsers)
+router.post('/register-users/:userId', protect,  registerUsers)
 
 
 router.post('/signin', authUser)

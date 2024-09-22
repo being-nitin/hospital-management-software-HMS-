@@ -3,14 +3,14 @@ import Layout from '../core/Layout';
 import { listSpecialize, deleteSpecialize } from '../actions/specializeActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListSpecialize = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const specializeList = useSelector((state) => state.specializeList)
     const { loading, error, specializations } = specializeList
 
@@ -23,10 +23,10 @@ const ListSpecialize = ({ history }) => {
     const { success: successDelete } = specializeDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listSpecialize())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

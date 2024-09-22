@@ -58,7 +58,7 @@ const  AddMedicine = ({ history: history1}) => {
 
     useEffect(() => {
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listTypesEnums())
             dispatch(listVendors())
 

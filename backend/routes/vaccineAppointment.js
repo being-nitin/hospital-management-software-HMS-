@@ -12,21 +12,21 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/vaccine-app-detail/:id/:userId', protect, admin, getVaccineApp);
+router.get('/vaccine-app-detail/:id', protect, getVaccineApp);
 
 
-router.put('/vaccine-app-update/:id/:userId', protect, admin, update);
+router.put('/vaccine-app-update/:id', protect, update);
 
-router.delete('/vaccine-app-remove/:id/:userId', protect, admin,  remove);
+router.delete('/vaccine-app-remove/:id/:userId', protect,  remove);
 
-router.get('/vaccine-app-list/:userId', protect, admin, list);
+router.get('/vaccine-app-list/:userId', protect, list);
 
 
-router.post("/vaccine-app-create/:userId", protect, admin, createVaccineApp)
+router.post("/vaccine-app-create/:userId", protect, createVaccineApp)
 
-router.get("/vaccine/vaccine-day-values/:userId", protect, admin, getDayValues);
+router.get("/vaccine/vaccine-day-values/:userId", protect, getDayValues);
 
-router.get("/vaccine/vaccine-taken-values/:userId", protect, admin, getTakenValues);
+router.get("/vaccine/vaccine-taken-values/:userId", protect, getTakenValues);
 
 
 router.param('userId', userById);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { createCatTest } from '../actions/testActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,7 +15,7 @@ const CreateTestCat = ({ history }) => {
     const [cost, setCost] = useState(0)
     const [description, setDescription] = useState('')
     //const [message, setMessage] = useState(null)
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
 
@@ -24,7 +24,7 @@ const CreateTestCat = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-            history.push('/')
+            navigate('/')
             //setMessage('category test was created')
         }
         }, [success, dispatch])

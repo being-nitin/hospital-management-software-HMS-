@@ -5,12 +5,6 @@ import { listMedicines } from '../actions/medicineActions'
 import { listVacTypesEnums, updateVacCat, detailsVacCat } from '../actions/vaccineCatActions'
 import {UPDATE_VACCINE_RESET} from "../constants/vaccineCat";
 
-
-
-
-
-
-
 const  UpdateVaccineCat = ({ history: history1, match}) => {
 
     const id = match.params.id

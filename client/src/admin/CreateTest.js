@@ -5,7 +5,7 @@ import { createTest, listCatTests, listPaidEnums } from '../actions/testActions'
 import { listUsers  } from '../actions/userActions'
 import { TEST_CREATE_RESET } from '../constants/testConstants'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -19,7 +19,7 @@ const CreateTest = ({ history }) => {
 
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const userList = useSelector((state) => state.userList)
     const { users } = userList
 
@@ -37,17 +37,17 @@ const CreateTest = ({ history }) => {
 
     useEffect(() => {
         
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listUsers())
             dispatch(listCatTests())
             dispatch(listPaidEnums())
 
             if(success) {
                 dispatch({ type: TEST_CREATE_RESET })
-                history.push('/test-result')
+                navigate('/test-result')
             }
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
 
         

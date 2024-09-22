@@ -1,33 +1,13 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { useSelector, } from 'react-redux'
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet } from "react-router-dom";
 
+const PrivateRoute = () => {
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
-
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
-
-    const userLogin = useSelector((state) => state.userLogin)
-    console.log(userLogin)
-    const { userInfo } = userLogin
-
-
-    console.log(userInfo)
-    return <Route
-        {...rest}
-        render={props =>
-            userInfo ? (
-                <Component {...props} />
-            ) : (
-                <Redirect
-                    to={{
-                        pathname: "/signin",
-                        state: {from: props.location}
-                    }}
-                />
-            )
-        }
-    />
-}
+    // If the user is not logged in, navigate to the sign-in page
+    return userInfo ? <Outlet /> : <Navigate to="/signin" />;
+};
 
 export default PrivateRoute;

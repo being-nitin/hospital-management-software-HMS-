@@ -1,18 +1,24 @@
 const Prescription = require('../models/prescription')
 const asyncHandler  = require( 'express-async-handler')
-
-
-
-
-
+const Appointment = require('../models/VaccineAppointment')
 
 exports.createPrescription = asyncHandler(async (req, res) => {
+    const { appId } = req.query
     const prescription = new Prescription(req.body);
-    await prescription.save((err, data) => {
+
+    await prescription.save(async(err, data) => {
         if (err) {
             return res.status(400).json({
                 error: err
             });
+        }
+
+        if(appId) {
+        const findappointment = await Appointment.findById(appId)
+
+        findappointment.prescription.push(prescription._id)
+    
+        await findappointment.save()
         }
         res.json({ data });
     });
@@ -34,7 +40,7 @@ exports.presById = asyncHandler (async (req, res, next, id) => {
 
 
 exports.getPrescriptionDetail = asyncHandler(async (req, res) => {
-    const prescription = await Prescription.findById(req.prescription._id).populate("user treatment test")
+    const prescription = await Prescription.findById(req.params._id).populate("patient treatment test")
 
     if (prescription) {
         res.json({
@@ -112,7 +118,7 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    await Prescription.find({}).populate("user test treatment").exec((err, data) => {
+    await Prescription.find({}).populate("patient test treatment").exec((err, data) => {
         if (err) {
             return res.status(400).json({
                 error: err

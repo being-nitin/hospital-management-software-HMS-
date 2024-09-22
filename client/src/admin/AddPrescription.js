@@ -8,12 +8,12 @@ import { listEnumsPrescriptions, createPrescription, listPaidEnums  } from '../a
 import { PRESCRIPTION__CREATE_RESET } from '../constants/prescriptionConstants'
 import {TEST_CREATE_RESET} from "../constants/testConstants";
 import { listMedicines } from '../actions/medicineActions';
+import { useNavigate } from 'react-router-dom';
+import { listPatients } from '../actions/patientActions'
 
 
 
-
-
-const AddPrescription = ({ history: history1 }) => {
+const AddPrescription = () => {
 
     const [user, setUser] = useState('')
     const [treatment, setTreatment] = useState('')
@@ -26,6 +26,10 @@ const AddPrescription = ({ history: history1 }) => {
     const [history, setHistory] = useState('')
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const patientList = useSelector((state) => state.patientList)
+    const { patients } = patientList
 
     const medicineList = useSelector((state) => state.medicineList)
     const { medicines } = medicineList
@@ -55,7 +59,8 @@ const AddPrescription = ({ history: history1 }) => {
 
     useEffect(() => {
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
+            dispatch(listPatients())
             dispatch(listUsers())
             dispatch(listMedicines())
             dispatch(listCatTests())
@@ -65,10 +70,10 @@ const AddPrescription = ({ history: history1 }) => {
 
             if(success) {
                 dispatch({ type: PRESCRIPTION__CREATE_RESET })
-                history1.push('/list-prescriptions')
+                navigate('/list-prescriptions')
             }
         } else {
-            history1.push('/signin')
+            navigate('/signin')
         }
 
 
@@ -92,7 +97,7 @@ const AddPrescription = ({ history: history1 }) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(createPrescription({ user, treatment, medicine, time, days, take, test, paid, history}))
+        dispatch(createPrescription({ doctor : userInfo._id ,patient : user, treatment, medicine, time, days, take, test, paid, history}))
 
     }
 
@@ -105,10 +110,10 @@ const AddPrescription = ({ history: history1 }) => {
                         <label className="text-muted">Patient</label>
                             <select onChange={(e) => setUser(e.target.value)} className="form-control">
                                 <option>Select Patient</option>
-                                {users &&
-                                users.filter(filtered => filtered.role === 2).map((c, i) => (
+                                {patients &&
+                                patients.map((c, i) => (
                                     <option key={i} value={c._id}>
-                                        {c.name}
+                                        {c.firstName + "-" + c.patientNumber}
                                     </option>
                                 ))}
                             </select>

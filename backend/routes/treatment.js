@@ -17,16 +17,16 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/treatment-cat-detail/:id/:userId', protect, admin, getCatTreatmentDetail);
+router.get('/treatment-cat-detail/:id/:userId', protect,  getCatTreatmentDetail);
 
-router.put('/treatment-cat-update/:id', protect, admin, update);
+router.put('/treatment-cat-update/:id', protect,  update);
 
-router.delete('/treatment-cat/:category', protect, admin,  remove);
+router.delete('/treatment-cat/:category', protect,   remove);
 
-router.get('/treatment-cat-list/:userId', protect, admin, list);
+router.get('/treatment-cat-list/:userId', protect,  list);
 
 
-router.post("/treatment-cat/create/:userId", protect, admin, createTreatmentCategory)
+router.post("/treatment-cat/create/:userId", protect,  createTreatmentCategory)
 
 
 router.param('treatmentId', treatmentCatById);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { createSpecialize } from '../actions/specializeActions'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -17,7 +17,7 @@ const AddSpecialization = ({ history }) => {
 
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
 
 
     const specializeCreate = useSelector((state) => state.specializeCreate)
@@ -25,9 +25,9 @@ const AddSpecialization = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-            history.push('/list-specialize')
+            navigate('/list-specialize')
         } else {
-            history.push("/add-specialize")
+            navigate("/add-specialize")
         }
     }, [success, dispatch])
 

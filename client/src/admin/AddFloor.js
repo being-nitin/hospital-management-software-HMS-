@@ -4,7 +4,7 @@ import Layout from "../core/Layout";
 import { createFloor } from '../actions/floorActions'
 import { listBuildings } from '../actions/buildingsActions'
 import { FLOOR_CREATE_RESET } from '../constants/floorConstants'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -18,12 +18,12 @@ const AddFloor = ({ history }) => {
 
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     
     const buildingList = useSelector((state) => state.buildingList)
     const { buildings } = buildingList
 
-
+     
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
@@ -36,12 +36,12 @@ const AddFloor = ({ history }) => {
 
     useEffect(() => {
         
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listBuildings())
 
             if(success) {
                 dispatch({ type: FLOOR_CREATE_RESET })
-                history.push('/list-floors')
+                navigate('/list-floors')
             }
         }
         

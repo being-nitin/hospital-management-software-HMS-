@@ -12,22 +12,21 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/test-detail/:testId/:userId', protect, admin, getTestDetail);
+router.get('/test-detail/:testId/:userId', protect,  getTestDetail);
 
 
-router.get('/test-detail-user/:id/:userId', protect, admin, getTestDetailUser);
+router.get('/test-detail-user/:id/:userId', protect,  getTestDetailUser);
+
+router.put('/test-update/:testId', protect,  update);
+
+router.delete('/test-remove/:test', protect,   remove);
+
+router.get('/test-list/:userId', protect,  list);
 
 
-router.put('/test-update/:testId', protect, admin, update);
+router.post("/test-create/:userId", protect,  createTest)
 
-router.delete('/test-remove/:test', protect, admin,  remove);
-
-router.get('/test-list/:userId', protect, admin, list);
-
-
-router.post("/test-create/:userId", protect, admin, createTest)
-
-router.get("/test/paid-values/:userId", protect, admin, getPaidValues);
+router.get("/test/paid-values/:userId", protect,  getPaidValues);
 
 router.param('testId', testById);
 

@@ -12,19 +12,19 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/medicine-detail/:id/:userId', protect, admin, getMedicine);
+router.get('/medicine-detail/:id/:userId', protect,  getMedicine);
 
 
-router.put('/medicine-update/:id/:userId', protect, admin, update);
+router.put('/medicine-update/:id/:userId', protect,  update);
 
-router.delete('/medicine-remove/:id/:userId', protect, admin,  remove);
+router.delete('/medicine-remove/:id/:userId', protect,   remove);
 
-router.get('/medicine-list/:userId', protect, admin, list);
+router.get('/medicine-list/:userId', protect,  list);
 
 
-router.post("/medicine-create/:userId", protect, admin, createMedicine)
+router.post("/medicine-create/:userId", protect,  createMedicine)
 
-router.get("/medicine/medicine-type-values/:userId", protect, admin, getTypeValues);
+router.get("/medicine/medicine-type-values/:userId", protect,  getTypeValues);
 
 
 router.param('userId', userById);

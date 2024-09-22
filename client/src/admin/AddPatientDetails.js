@@ -7,37 +7,29 @@ import { listUsers  } from '../actions/userActions'
 import { listGenderEnums, listStatusEnums, createPatient, listTypeEnums } from '../actions/patientActions'
 import axios from "axios";
 import {PATIENT_CREATE_RESET} from "../constants/patientDetailsConstants";
-
-
-
-
-
-
-
-
+import { useNavigate } from 'react-router-dom';
 
 const  AddPatientDetails = ({ history: history1}) => {
-    
-    
-    const [user, setUser] = useState('')
-    const [lastName, setLastName] = useState('curry')
-    const [idNumber, setIdNumber] = useState(2222556)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [patientNumber, setPatientNumber] = useState(2222556)
     const [regDate, setRegDate] = useState(new Date());
     const [address, setAddress] = useState('Nairobi')
-    const [cell, setCell] = useState(56755575)
+    const [phoneNo, setPhoneNo] = useState(null)
     const [birthDate, setBirthDate] = useState(new Date())
     const [residence, setResidence] = useState('Kilimani')
-    const [email, setEmail] = useState('steph@gmail.com')
+    // const [email, setEmail] = useState('steph@gmail.com')
     const [guardian, setGuardian] = useState('smart')
     const [relation, setRelation] = useState('cousin')
     const [gender, setGender] = useState('Male')
-    const [statusPatient, setStatusPatient] = useState('Cured')
-    const [patientType, setPatientType] = useState('In Patient')
-
+    const [symptoms , setSymptoms] = useState('')
+    const [doctor , setDoctor] = useState('')
+    // const [statusPatient, setStatusPatient] = useState('Cured')
+    // const [patientType, setPatientType] = useState('In Patient')
+    
+    const navigate = useNavigate()
     const [image, setImage] = useState('')
     const [uploading, setUploading] = useState(false)
-
-    console.log(image)
 
     const dispatch = useDispatch()
 
@@ -63,7 +55,7 @@ const  AddPatientDetails = ({ history: history1}) => {
     useEffect(() => {
 
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listUsers())
             dispatch(listTypeEnums())
             dispatch(listStatusEnums())
@@ -71,11 +63,11 @@ const  AddPatientDetails = ({ history: history1}) => {
 
             if(success) {
                 dispatch({ type: PATIENT_CREATE_RESET })
-                history1.push('/list-patients')
+                navigate('/list-patients')
             }
             
         } else {
-            history1.push('/signin')
+            navigate('/signin')
         }
 
 
@@ -100,9 +92,8 @@ const  AddPatientDetails = ({ history: history1}) => {
     const submitHandler = (e) => {
         e.preventDefault()
 
-     dispatch(createPatient({ user, lastName, idNumber, regDate,
-          address, cell, birthDate, residence, email, guardian, relation, gender, statusPatient, patientType, image }))
-
+     dispatch(createPatient({ doctor, firstName, lastName, patientNumber, regDate,
+          address, phoneNo, birthDate, residence, guardian, relation, gender , symptoms}))
     }
 
     const uploadFileHandler = async (e) => {
@@ -130,22 +121,17 @@ const  AddPatientDetails = ({ history: history1}) => {
         }
     }
     
-
-
-
-
-
     const patientDetailsForm = () => (
 
         <div className="form-group col-md-12">
             <form onSubmit={submitHandler}>
                 <div className="form-row">
                     <div className="form-group col-md-3">
-                        <label className="text-muted font-weight-bold">User</label>
-                        <select onChange={(e) => setUser(e.target.value)} className="form-control">
-                            <option>Select Patient</option>
+                        <label className="text-muted font-weight-bold">Doctor</label>
+                        <select onChange={(e) => setDoctor(e.target.value)} className="form-control">
+                            <option>Select Doctor</option>
                             {users &&
-                            users.filter(filtered => filtered.role === 2).map((c, i) => (
+                            users.filter(filtered => filtered.role === 1).map((c, i) => (
                                 <option key={i} value={c._id}>
                                     {c.name}
                                 </option>
@@ -153,14 +139,19 @@ const  AddPatientDetails = ({ history: history1}) => {
                         </select>
                     </div>
                     <div className="form-group col-md-3">
+                        <label className="font-weight-bold" htmlFor="inputAddress">First Name</label>
+                        <input type="text" className="form-control"  placeholder="First Number" value={firstName}
+                               onChange={(e) => setFirstName(e.target.value)}/>
+                    </div>
+                    <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Last Name</label>
                         <input type="text" className="form-control"  placeholder="Last Number" value={lastName}
                                onChange={(e) => setLastName(e.target.value)}/>
                     </div>
                     <div className="form-group col-md-3">
-                        <label className="font-weight-bold" htmlFor="inputAddress">Id Number</label>
-                        <input type="text" className="form-control"  placeholder="Id Number" value={idNumber}
-                               onChange={(e) => setIdNumber(e.target.value)}/>
+                        <label className="font-weight-bold" htmlFor="inputAddress">Patient Number</label>
+                        <input type="text" className="form-control"  placeholder="Id Number" value={patientNumber}
+                               onChange={(e) => setPatientNumber(e.target.value)}/>
                     </div>
                     <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Registration date</label>
@@ -177,9 +168,9 @@ const  AddPatientDetails = ({ history: history1}) => {
                     </div>
 
                     <div className="form-group col-md-3">
-                        <label className="font-weight-bold" htmlFor="inputAddress">Cell No</label>
-                        <input type="text" className="form-control"  placeholder="cell no" value={cell}
-                               onChange={(e) => setCell(e.target.value)}/>
+                        <label className="font-weight-bold" htmlFor="inputAddress">phoneNo</label>
+                        <input type="text" className="form-control"  placeholder="phone no" value={phoneNo}
+                               onChange={(e) => setPhoneNo(e.target.value)}/>
                     </div>
 
                     <div className="form-group col-md-3">
@@ -198,11 +189,11 @@ const  AddPatientDetails = ({ history: history1}) => {
 
 
                 <div className="form-row">
-                    <div className="form-group col-md-3">
+                    {/* <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Email</label>
                         <input type="email" className="form-control"  placeholder="email" value={email}
                                onChange={(e) => setEmail(e.target.value)}/>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-3">
                         <label className="font-weight-bold" htmlFor="inputAddress">Gurdian</label>
@@ -231,7 +222,7 @@ const  AddPatientDetails = ({ history: history1}) => {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group col-md-4">
+                    {/* <div className="form-group col-md-4">
                         <label className="font-weight-bold" htmlFor="exampleFormControlSelect1">Patient Status</label>
                         <select onChange={(e) => setStatusPatient(e.target.value)} className="form-control" id="exampleFormControlSelect1">
                             <option>Please Select</option>
@@ -255,10 +246,10 @@ const  AddPatientDetails = ({ history: history1}) => {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     <div className="form-group col-md-4">
-                        <label className="font-weight-bold" htmlFor="exampleFormControlFile1">Upload Photo</label>
+                        {/* <label className="font-weight-bold" htmlFor="exampleFormControlFile1">Upload Photo</label>
                         <input type="file"
                                 onChange={uploadFileHandler} className="form-control-file" id="exampleFormControlFile1"/>
                         {uploading && (
@@ -267,7 +258,12 @@ const  AddPatientDetails = ({ history: history1}) => {
                                     <span className="sr-only">Loading...</span>
                                 </div>
                             </div>
-                        )}
+                        )} */}
+                         <div>
+                        <label htmlFor="exampleFormControlTextarea1">symptoms</label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" value={symptoms}
+                                  onChange={(e) => setSymptoms(e.target.value)} placeholder="write description" rows="3"/>
+                    </div>
                         <button className="invisible" >Submit</button>
                     </div>
 

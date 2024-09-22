@@ -11,34 +11,24 @@ import { listVacCat  } from '../actions/vaccineCatActions'
 import TimePicker from 'react-time-picker';
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+const  UpdateVaccApp = () => {
 
-
-
-
-
-
-
-
-
-
-const  UpdateVaccApp = ({ history: history1, match}) => {
-
-    const id = match.params.id
+    const {id} = useParams()
 
     const [patient, setPatient] = useState('')
-    const [nurse, setNurse] = useState('')
-    const [vaccine, setVaccine] = useState('')
+    const [doctor, setDoctor] = useState('')
     const [date, setDate] = useState(new Date());
-    const [time_in, setTimeIn] = useState('')
-    const [taken, setTaken] = useState('')
-    const [day, setDay] = useState('')
-    const [room, setRoom] = useState('105')
+    const [time, setTime] = useState('')
+    const [status, setStatus] = useState('')
     const [remarks, setRemarks] = useState('')
 
 
     const dispatch = useDispatch()
 
+    const navigate = useNavigate()
     const vaccineCatList = useSelector((state) => state.vaccineCatList)
     const { vaccines } = vaccineCatList
 
@@ -70,20 +60,14 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
     const vaccineAppDetails = useSelector((state) => state.vaccineAppDetails)
     const { loading, error, appointment } = vaccineAppDetails
 
-    console.log(appointment)
-
-
-
-
     useEffect(() => {
 
         if (successUpdate) {
             dispatch({ type: UPDATE_APPOINTMENT_VACCINE_RESET })
-            history1.push('/list-app-vaccine')
+            navigate('/list-app-vaccine')
 
         } else {
-
-            if (appointment._id !== id) {
+            if (appointment?._id !== id) {
                 dispatch(listUsers())
                 dispatch(listVacTakenEnums())
                 dispatch(listVacDaysEnums())
@@ -93,19 +77,16 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
 
             } else {
                 setPatient(appointment.patient)
-                setNurse(appointment.nurse)
-                setVaccine(appointment.vaccine)
+                setDoctor(appointment.doctor)
                 setDate(moment(appointment.date).format("YYYY-MM-DD"))
-                setTimeIn(appointment.time_in)
-                setTaken(appointment.taken)
-                setDay(appointment.day)
-                setRoom(appointment.room)
+                setTime(appointment.time)
+                setStatus(appointment.status)
                 setRemarks(appointment.remarks)
 
             }
 
         }
-    }, [ dispatch, history1, id, appointment, successUpdate])
+    }, [ dispatch, id, appointment, successUpdate])
 
 
 
@@ -136,7 +117,7 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(updateVacApp({ _id: id, patient, nurse, vaccine, date, time_in, taken, day, room, remarks }))
+        dispatch(updateVacApp({ _id: id, date, time, status, remarks }))
     }
 
 
@@ -144,7 +125,7 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
 
         <div className="form-group col-md-12">
             <form onSubmit={submitHandler}>
-                <div className="form-row">
+                {/* <div className="form-row">
                     <div className="form-group col-md-4">
                         <label className="text-muted">User</label>
                         <select onChange={(e) => setPatient(e.target.value)} className="form-control">
@@ -159,38 +140,26 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
                     </div>
                     <div className="form-group col-md-4">
                         <label className="text-muted">User</label>
-                        <select onChange={(e) => setNurse(e.target.value)} className="form-control">
-                            <option>Select Nurse</option>
+                        <select onChange={(e) => setDoctor(e.target.value)} className="form-control">
+                            <option>Select Doctor</option>
                             {users &&
-                            users.filter(filtered => filtered.role === 4).map((c, i) => (
+                            users.filter(filtered => filtered.role === 1).map((c, i) => (
                                 <option key={i} value={c._id}>
                                     {c.name}
                                 </option>
                             ))}
                         </select>
                     </div>
-                    <div className="form-group col-md-4">
-                        <label className="text-muted">Vaccine</label>
-                        <select onChange={(e) => setVaccine(e.target.value)} className="form-control">
-                            <option>Select Vaccine</option>
-                            {vaccines &&
-                            vaccines.map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+                </div> */}
 
 
 
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <label htmlFor="inputAddress">Time In</label>
+                        <label htmlFor="inputAddress">Time</label>
                         <TimePicker
-                            onChange={setTimeIn}
-                            value={time_in}
+                            onChange={setTime}
+                            value={time}
                             className="class1 class2"
                         />
                     </div>
@@ -206,9 +175,9 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
 
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <label htmlFor="exampleFormControlSelect1">Taken</label>
-                        <select onChange={(e) => setTaken(e.target.value)} className="form-control" id="exampleFormControlSelect1">
-                            <option>Select Takes</option>
+                        <label htmlFor="exampleFormControlSelect1">Status</label>
+                        <select onChange={(e) => setStatus(e.target.value)} className="form-control" id="exampleFormControlSelect1">
+                            <option>Select Status</option>
                             {takes && takes.map((c, i) => (
                                 <option key={i} value={c}>
                                     {c}
@@ -216,31 +185,10 @@ const  UpdateVaccApp = ({ history: history1, match}) => {
                             ))}
                         </select>
                     </div>
-
-
-                    <div className="form-group col-md-6">
-                        <label htmlFor="exampleFormControlSelect1">Day</label>
-                        <select onChange={(e) => setDay(e.target.value)} className="form-control" id="exampleFormControlSelect1">
-                            <option>Select Day</option>
-                            {days && days.map((c, i) => (
-                                <option key={i} value={c}>
-                                    {c}
-                                </option>
-                            ))}
-                        </select>
                     </div>
-
-                </div>
 
 
                 <div className="form-row">
-
-                    <div className="form-group col-md-6">
-                        <label htmlFor="inputAddress">Room</label>
-                        <input type="text" className="form-control"  placeholder="e.g 105" value={room}
-                               onChange={(e) => setRoom(e.target.value)}/>
-                    </div>
-
 
                     <div className="form-group col-md-6">
                         <label htmlFor="exampleFormControlTextarea1">Remarks</label>

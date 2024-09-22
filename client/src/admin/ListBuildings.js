@@ -4,13 +4,13 @@ import { listBuildings, deleteBuilding } from '../actions/buildingsActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 const ListBuildings = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const buildingList = useSelector((state) => state.buildingList)
     const { loading, error, buildings } = buildingList
 
@@ -23,11 +23,11 @@ const ListBuildings = ({ history }) => {
     const { success: successDelete } = buildingDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listBuildings())
             //console.log(tests)
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

@@ -4,15 +4,14 @@ import { listUsers, deleteUser  } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import Pagination from "react-js-pagination";
-
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListUsers = ({ history }) => {
     
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const userList = useSelector((state) => state.userList)
     const { loading, error, users } = userList
 
@@ -36,11 +35,11 @@ const ListUsers = ({ history }) => {
     // };
     
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listUsers())
             //setData(users)  
         } else {
-            history.push('/login')
+            navigate('/login')
         }
     }, [dispatch , history , successDelete, userInfo])
 

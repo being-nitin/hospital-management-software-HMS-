@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { updateTreatmentCat, treatmentDetails } from '../actions/treatmentActions'
 import { TREAT_UPDATE_CAT_RESET } from '../constants/treatmentConstants'
-
+import { useNavigate } from 'react-router-dom';
 
 
 const TreatmentUpdate = ({ history, match }) => {
@@ -11,7 +11,7 @@ const TreatmentUpdate = ({ history, match }) => {
     const treatmentId = match.params.treatmentId
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const [name, setName] = useState('')
     const [cost, setCost] = useState(0)
     
@@ -33,7 +33,7 @@ const TreatmentUpdate = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: TREAT_UPDATE_CAT_RESET })
-            history.push('/list-treat-cat')
+            navigate('/list-treat-cat')
         } else {
             if (treatment._id !== treatmentId) {
 

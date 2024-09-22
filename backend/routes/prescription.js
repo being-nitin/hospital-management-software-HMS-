@@ -15,23 +15,23 @@ const { protect, admin } = require('../middleware/authMiddleware.js')
 
 
 
-router.get('/pres-detail/:presId/:userId', protect, admin, getPrescriptionDetail);
+router.get('/pres-detail/:presId/:userId', protect,  getPrescriptionDetail);
 
-router.get('/pres-detail-user/:id/:userId', protect, admin, getPrescriptionDetailUser);
-
-
-router.put('/pres-update/:id/:userId', protect, admin, update);
-
-router.delete('/pres-remove/:prescription', protect, admin,  remove);
-
-router.get('/pres-list/:userId', protect, admin, list);
+router.get('/pres-detail-user/:id/:userId', protect,  getPrescriptionDetailUser);
 
 
-router.post("/pres-create/:userId", protect, admin, createPrescription)
+router.put('/pres-update/:id/:userId', protect,  update);
 
-router.get("/pres/take-values/:userId", protect, admin, getTakeValues );
+router.delete('/pres-remove/:prescription', protect,   remove);
 
-router.get("/pres/paid-values/:userId", protect, admin, getPaidValues);
+router.get('/pres-list/:userId', protect,  list);
+
+
+router.post("/pres-create/:userId", protect,  createPrescription)
+
+router.get("/pres/take-values/:userId", protect,  getTakeValues );
+
+router.get("/pres/paid-values/:userId", protect,  getPaidValues);
 
 
 router.param('presId', presById);

@@ -1,17 +1,18 @@
 import React, {Fragment, useEffect} from 'react'
+import { Button } from 'antd';
 import Layout from '../core/Layout';
 import { listVacApp, deleteVacApp } from '../actions/vaccineAppointmentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import moment from "moment";
+import { useNavigate } from 'react-router-dom';
 
 
 
-
-const ListAppVaccine = ({ history }) => {
+const ListAppVaccine = () => {
 
     const dispatch = useDispatch()
-
+    const naviagte = useNavigate()
     const vaccineAppList = useSelector((state) => state.vaccineAppList)
     const { loading, error, appointments } = vaccineAppList
 
@@ -24,12 +25,12 @@ const ListAppVaccine = ({ history }) => {
     const { success: successDelete } = vaccineAppDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo) {
             dispatch(listVacApp())
         } else {
-            history.push('/signin')
+            naviagte('/signin')
         }
-    }, [dispatch, history, successDelete, userInfo])
+    }, [dispatch, successDelete, userInfo])
 
 
     const deleteHandler = (id) => {
@@ -55,97 +56,84 @@ const ListAppVaccine = ({ history }) => {
             </div>
         );
 
-
-    return (
-        <Layout title="Profile" description="list treatment categories" className="container-fluid">
-
-            <h4><Link to="/add-vacc-app"><button>Add Appointment</button></Link></h4>
-
-            <h2 className="mb-4">List Appointments</h2>
-
-            {loading ? (
-                showLoading()
-            ) : error ? (
-                showError()
-            ) : appointments.length === 0 ? (
-                <div className="row">
-                    <div className="col-sm-8">
-                        <table className="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Patient</th>
-                                <th scope="col">Nurse</th>
-                                <th scope="col">Vaccine</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time In</th>
-                                <th scope="col">Taken</th>
-                                <th scope="col">Day</th>
-                                <th scope="col">room</th>
-                                <th scope="col">remarks</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td className="text-center">No Data</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        return (
+            <Layout title="Appointments" className="container-fluid">
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2 className="mb-0">List of Appointments</h2>
+                <Link to="/add-vacc-app">
+                  <Button type="primary" size="large">Add Appointment</Button>
+                </Link>
+              </div>
+        
+              {loading ? (
+                <div className="text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
-            ): (
-                <div className="row">
-                    <div className="col-sm-8">
-                        <table className="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Patient</th>
-                                <th scope="col">Nurse</th>
-                                <th scope="col">Vaccine</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time In</th>
-                                <th scope="col">Taken</th>
-                                <th scope="col">Day</th>
-                                <th scope="col">room</th>
-                                <th scope="col">remarks</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                appointments && appointments.map((app, i) => (
-                                    <tr key={i}>
-                                        <Fragment>
-                                            <th scope="row">{app._id.substring(0, 7)}</th>
-                                            <td>{app.patient.name}</td>
-                                            <td>{app.nurse.name}</td>
-                                            <td>{app.vaccine.name}</td>
-                                            <td>{moment(app.date).format("YYYY-MM-DD")}</td>
-                                            <td>{app.time_in}</td>
-                                            <td>{app.taken === "Yes" ? (<button type="button" className="btn btn-success btn-sm">{app.taken}</button>) :
-                                                (<button type="button" className="btn btn-danger btn-sm">{app.taken}</button>) }</td>
-                                            <td>{app.room}</td>
-                                            <td>{app.day}</td>
-                                            <td>{app.remarks}</td>
-
-                                            <td><Link to={`/update-vacc-app/${app._id}`}><i className="bi bi-pencil-square"/></Link></td>
-                                            <td><i className="bi bi-trash" onClick={() => deleteHandler(app._id)}/></td>
-                                        </Fragment>
-                                    </tr>
-                                ))
-
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+              ) : error ? (
+                <div className="alert alert-danger">{error}</div>
+              ) : appointments.length === 0 ? (
+                <div className="alert alert-info">No Appointments Found</div>
+              ) : (
+                <div className="table-responsive">
+                  <table className="table table-striped table-hover">
+                    <thead className="thead-dark">
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Doctor</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {appointments.map((app, i) => (
+                        <tr key={i}>
+                          <Fragment>
+                            <td>{app._id.substring(0, 7)}</td>
+                            <td>{app.doctor.name}</td>
+                            <td>{app.patient.firstName + "-" +app.patient.patientNumber}</td>
+                            <td>{moment(app.date).format('YYYY-MM-DD')}</td>
+                            <td>{app.time}</td>
+                            <td>
+                              {app.taken === 'scheduled' ? (
+                                <span className="badge badge-success">{app.status}</span>
+                              ) : (
+                                <span className="badge badge-danger">{app.status}</span>
+                              )}
+                            </td>
+                            <td>{app.remarks}</td>
+                            <td>
+                              <div className="btn-group" role="group">
+                                <Link to={`/update-vacc-app/${app._id}`}>
+                                  <Button type="primary" size="small" className="mr-2">Edit</Button>
+                                </Link>
+                                <Button
+                                  type="danger"
+                                  size="small"
+                                  className="mr-2"
+                                  onClick={() => deleteHandler(app._id)}
+                                >
+                                  Delete
+                                </Button>
+                                <Link to={`/list-app-vaccine/${app._id}`}>
+                                  <Button type="default" size="small">Details</Button>
+                                </Link>
+                              </div>
+                            </td>
+                          </Fragment>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-            )}
-        </Layout>
-    )
+              )}
+            </Layout>
+          );        
 
 }
 

@@ -4,14 +4,14 @@ import { listExpenses, deleteExpenses } from '../actions/expensesActions'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from "react-router-dom";
 import moment from "moment";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ListExpenses = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const expenseList = useSelector((state) => state.expenseList)
     const { loading, error, expenses } = expenseList
 
@@ -24,10 +24,10 @@ const ListExpenses = ({ history }) => {
     const { success: successDelete } = expensesDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listExpenses())
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 

@@ -129,9 +129,9 @@ const AdminDashboard = () => {
         let vaccineCount = []
 
         appointments && appointments.forEach((data) => {
-            if (data.vaccine.name === 'CoronaVirus') {
+            if (data.vaccine?.name === 'CoronaVirus') {
                 coronaVirus++
-            } else if (data.vaccine.name === 'Malaria') {
+            } else if (data.vaccine?.name === 'Malaria') {
                 malaria++
             }
         })
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
         let vaccinated = 0
         let notVaccinated = 0
 
-        appointments && appointments.filter((filtered) => filtered.vaccine.name === 'CoronaVirus')
+        appointments && appointments.filter((filtered) => filtered.vaccine?.name === 'CoronaVirus')
             .forEach((data) => {
                 if (data.taken === 'Yes') {
                     vaccinated++
@@ -220,9 +220,9 @@ const AdminDashboard = () => {
             }
         }
 
-        console.log(admin, doc, patient, staff)
+        console.log(admin , doc, patient, staff)
 
-        return { admin, doc, patient, staff, nurse}
+        return { admin , doc, patient, staff, nurse}
 
     }
 
@@ -236,7 +236,7 @@ const AdminDashboard = () => {
 
         let usersList = []
 
-        // usersList.push(data.admin, data.doc, data.patient, data.staff, data.nurse)
+        // usersList.push(data. data.doc, data.patient, data.staff, data.nurse)
 
 
 

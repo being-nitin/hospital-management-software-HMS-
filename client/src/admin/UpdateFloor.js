@@ -5,14 +5,14 @@ import { floorsDetails, updateFloor } from '../actions/floorActions'
 import { FLOOR_UPDATE_RESET } from '../constants/floorConstants'
 import { listBuildings } from '../actions/buildingsActions'
 
-
+import { useNavigate } from 'react-router-dom';
 
 const UpdateFloor = ({ history, match }) => {
 
     const id = match.params.id
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const [name, setName] = useState('')
     const [floorcode, setFloorCode] = useState('')
     const [building, setBuilding] = useState('')
@@ -37,7 +37,7 @@ const UpdateFloor = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: FLOOR_UPDATE_RESET })
-            history.push('/list-floors')
+            navigate('/list-floors')
         } else {
             if (floor._id !== id) {
                 dispatch(listBuildings())

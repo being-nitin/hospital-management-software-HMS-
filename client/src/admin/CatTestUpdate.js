@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { cateTestDetails, updateTestCat } from '../actions/testActions'
 import { TEST_UPDATE_CAT_RESET } from '../constants/testConstants'
-
-
+import { useNavigate } from 'react-router-dom';
 
 const CatTestUpdate = ({ history, match }) => {
 
@@ -17,7 +16,7 @@ const CatTestUpdate = ({ history, match }) => {
     const [maxValue, setMaxValue] = useState(0)
     const [cost, setCost] = useState(0)
     const [description, setDescription] = useState('')
-
+    const navigate = useNavigate()
     const catTestDetails = useSelector((state) => state.catTestDetails)
     const { loading, error, cat } = catTestDetails
 
@@ -35,7 +34,7 @@ const CatTestUpdate = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: TEST_UPDATE_CAT_RESET })
-            history.push('/list-cat-test')
+            navigate('/list-cat-test')
         } else {
             if (cat._id !== catTestId) {
 

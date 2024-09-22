@@ -3,7 +3,7 @@ import Layout from '../core/Layout';
 import { getUsersDetails, updateUsersProfile } from '../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { USERS_UPDATE_PROFILE_RESET } from '../constants/userConstants'
-
+import { useNavigate } from 'react-router-dom';
 
 const UpdateUsers = ({ match, history }) => {
 
@@ -17,7 +17,7 @@ const UpdateUsers = ({ match, history }) => {
     const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const usersDetails = useSelector((state) => state.usersDetails)
     const { loading, error, users} = usersDetails
 
@@ -35,7 +35,7 @@ const UpdateUsers = ({ match, history }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: USERS_UPDATE_PROFILE_RESET })
-            history.push('/list/users')
+            navigate('/list/users')
         } else {
             if ( users._id !== id) {
                 dispatch(getUsersDetails(id))

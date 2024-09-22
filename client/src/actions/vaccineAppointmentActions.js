@@ -148,7 +148,7 @@ export const deleteVacApp = (id) => async (dispatch, getState) => {
 }
 
 
-export const updateVacApp = (appVacc) => async (dispatch, getState) => {
+export const updateVacApp = ({_id ,...appVacc}) => async (dispatch, getState) => {
     try {
         dispatch({
             type: UPDATE_APPOINTMENT_VACCINE_REQUEST,
@@ -167,7 +167,7 @@ export const updateVacApp = (appVacc) => async (dispatch, getState) => {
 
         console.log(appVacc)
         const { data } = await axios.put(
-            `${API}/vaccine-app-update/${appVacc._id}/${userInfo._id}`,
+            `${API}/vaccine-app-update/${_id}/`,
             appVacc,
             config
         )
@@ -210,7 +210,7 @@ export const detailsVacApp = (id) => async (dispatch, getState) => {
         }
 
 
-        const { data } = await axios.get(`${API}/vaccine-app-detail/${id}/${userInfo._id}`, config)
+        const { data } = await axios.get(`${API}/vaccine-app-detail/${id}`, config)
 
         dispatch({
             type: DETAILS_APPOINTMENT_VACCINE_SUCCESS,

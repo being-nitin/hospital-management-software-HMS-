@@ -5,7 +5,7 @@ import { testsDetails, updateTest, listCatTests, listPaidEnums} from '../actions
 import { TEST_UPDATE_RESET } from '../constants/testConstants'
 import { listUsers  } from '../actions/userActions'
 
-
+import { useNavigate } from 'react-router-dom';
 
 const TestUpdate = ({ history, match }) => {
 
@@ -19,7 +19,7 @@ const TestUpdate = ({ history, match }) => {
     const [description, setDescription] = useState('')
     const [paid, setPaid] = useState("")
     //const [message, setMessage] = useState(null)
-    
+    const navigate = useNavigate()
 
     const userList = useSelector((state) => state.userList)
     const { users } = userList
@@ -48,7 +48,7 @@ const TestUpdate = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: TEST_UPDATE_RESET })
-            history.push('/test-result')
+            navigate('/test-result')
         } else {
             if (test._id !== testId) {
                 dispatch(listUsers())

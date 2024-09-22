@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter , Switch, Route } from 'react-router-dom';
+import { BrowserRouter , Routes as Switch, Route } from 'react-router-dom';
 import AdminDashboard from './user/AdminDashboard';
 import Signup from './user/Signup';
 import Signin from './user/Signin';
@@ -61,7 +61,9 @@ import AddAppVaccine from './admin/AddAppVaccine'
 import UpdateVaccApp from './admin/UpdateVaccApp'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from './actions/userActions'
-
+import Schedule from "./component/calendar";
+import PatientHistory from './component/patientHstory'
+import AppointmentDetail from './component/appointmentDetail'
 
 
 const Routes = () => {
@@ -70,62 +72,70 @@ const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route path="/signup" exact component={Signup} />
-                <Route path="/signin" exact component={Signin} />
-                <AdminRoute path="/" exact component={AdminDashboard} />
-                <AdminRoute path="/profile/:userId" exact component={Profile} />
-                <AdminRoute path="/update/users/:id" exact component={UpdateUsers} />
-                <AdminRoute path="/test-result" exact component={ListTestResult} />
-                <AdminRoute path="/list-prescriptions" exact component={ListPrescriptions} />
-                <AdminRoute path="/update-cat-test/:catTestId" exact component={CatTestUpdate} />
-                <AdminRoute path="/update-test/:testId" exact component={TestUpdate} />
-                <AdminRoute path="/update-prescription/:id" exact component={UpdatePrescriptions} />
-                <AdminRoute path="/update-building/:id" exact component={UpdateBuilding} />
-                <AdminRoute path="/update-designation/:id" exact component={UpdateDesignation} />
-                <AdminRoute path="/update-floor/:id" exact component={UpdateFloor} />
-                <AdminRoute path="/update-expenses/:id" exact component={UpdateExpenses} />
-                <AdminRoute path="/update-doctor/:id" exact component={UpdateDoctorProfile} />
-                <AdminRoute path="/update-depart/:id" exact component={UpdateDepartment} />
-                <AdminRoute path="/update-patient/:id" exact component={UpdatePatientProfile} />
-                <AdminRoute path="/update-specialize/:id" exact component={UpdateSpecialize} />
-                <AdminRoute path="/update-medicine/:id" exact component={UpdateMedicine} />
-                <AdminRoute path="/update-vaccine-cat/:id" exact component={UpdateVaccineCat} />
-                <AdminRoute path="/update-vacc-app/:id" exact component={UpdateVaccApp} />
-                <AdminRoute path="/update-treatment/:treatmentId" exact component={TreatmentUpdate} />
-                <AdminRoute path="/list/users" exact component={ListUsers} />
-                <AdminRoute path="/list/medicine" exact component={ListMedicine} />
-                <AdminRoute path="/list-cat-test" exact component={ListCatTest} />
-                <AdminRoute path="/list-patients" exact component={ListPatients} />
-                <AdminRoute path="/list-treat-cat" exact component={ListTreatment} />
-                <AdminRoute path="/list-buildings" exact component={ListBuildings} />
-                <AdminRoute path="/list-floors" exact component={ListFloors} />
-                <AdminRoute path="/list-departs" exact component={ListDeparts} />
-                <AdminRoute path="/list-vendors" exact component={ListVendors} />
-                <AdminRoute path="/list-doctors" exact component={ListDoctors} />
-                <AdminRoute path="/list-app-vaccine" exact component={ListAppVaccine} />
-                <AdminRoute path="/list-designate" exact component={ListDesignate} />
-                <AdminRoute path="/list-expenses" exact component={ListExpenses} />
-                <AdminRoute path="/list-specialize" exact component={ListSpecialize} />
-                <AdminRoute path="/list-vaccine-cat" exact component={ListVaccineCat} />
-                <AdminRoute path="/create/cat-test" exact component={CreateTestCat} />
-                <AdminRoute path="/add-prescription" exact component={AddPrescription} />
-                <AdminRoute path="/create/cat-treatment" exact component={CreateTreatment} />
-                <AdminRoute path="/create-test" exact component={CreateTest} />
-                <AdminRoute path="/add-patient-details" exact component={AddPatientDetails} />
-                <AdminRoute path="/pat-details/:id" exact component={PatDetails} />
-                <AdminRoute path="/add-building" exact component={AddBuilding} />
-                <AdminRoute path="/add-floor" exact component={AddFloor} />
-                <AdminRoute path="/add-users" exact component={AddUsers} />
-                <AdminRoute path="/add-vacc-app" exact component={AddAppVaccine} />
-                <AdminRoute path="/add-medicine" exact component={AddMedicine} />
-                <AdminRoute path="/add-expenses" exact component={AddExpense} />
-                <AdminRoute path="/add-vac-cat" exact component={AddVaccineCat} />
-                <AdminRoute path="/add-depart" exact component={AddDepartment} />
-                <AdminRoute path="/add-designate" exact component={AddDesignation} />
-                <AdminRoute path="/add-doctor" exact component={AddDoctorDetails} />
-                <AdminRoute path="/add-specialize" exact component={AddSpecialization} />
-                <AdminRoute path="/file-upload" exact component={FileUpload} />
-                <PrivateRoute path="/profile" exact component={Profile} />
+                <Route path="/signup" exact element={<Signup/>} />
+                <Route path="/signin" exact element={<Signin />} />
+          <Route element={<AdminRoute />}>
+          <Route path="/" element={<AdminDashboard />} />
+          <Route path="/calendar" element={<Schedule/>} />
+          <Route path="/profile/:userId" element={<Profile />} />
+          <Route path="/update/users/:id" element={<UpdateUsers />} />
+          <Route path="/test-result" element={<ListTestResult />} />
+          <Route path="/list-prescriptions" element={<ListPrescriptions />} />
+          <Route path="/update-cat-test/:catTestId" element={<CatTestUpdate />} />
+          <Route path="/update-test/:testId" element={<TestUpdate />} />
+          <Route path="/update-prescription/:id" element={<UpdatePrescriptions />} />
+          <Route path="/patient-history" element={<PatientHistory/>}/>
+          <Route path="/update-building/:id" element={<UpdateBuilding />} />
+          <Route path="/update-designation/:id" element={<UpdateDesignation />} />
+          <Route path="/update-floor/:id" element={<UpdateFloor />} />
+          <Route path="/update-expenses/:id" element={<UpdateExpenses />} />
+          <Route path="/update-doctor/:id" element={<UpdateDoctorProfile />} />
+          <Route path="/update-depart/:id" element={<UpdateDepartment />} />
+          <Route path="/update-patient/:id" element={<UpdatePatientProfile />} />
+          <Route path="/update-specialize/:id" element={<UpdateSpecialize />} />
+          <Route path="/update-medicine/:id" element={<UpdateMedicine />} />
+          <Route path="/update-vaccine-cat/:id" element={<UpdateVaccineCat />} />
+          <Route path="/update-vacc-app/:id" element={<UpdateVaccApp />} />
+          <Route path="/update-treatment/:treatmentId" element={<TreatmentUpdate />} />
+          <Route path="/list/users" element={<ListUsers />} />
+          <Route path="/list/medicine" element={<ListMedicine />} />
+          <Route path="/list-cat-test" element={<ListCatTest />} />
+          <Route path="/list-patients" element={<ListPatients />} />
+          <Route path="/list-treat-cat" element={<ListTreatment />} />
+          <Route path="/list-buildings" element={<ListBuildings />} />
+          <Route path="/list-floors" element={<ListFloors />} />
+          <Route path="/list-departs" element={<ListDeparts />} />
+          <Route path="/list-vendors" element={<ListVendors />} />
+          <Route path="/list-doctors" element={<ListDoctors />} />
+          <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
+          <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
+          <Route path="/list-designate" element={<ListDesignate />} />
+          <Route path="/list-expenses" element={<ListExpenses />} />
+          <Route path="/list-specialize" element={<ListSpecialize />} />
+          <Route path="/list-vaccine-cat" element={<ListVaccineCat />} />
+          <Route path="/create/cat-test" element={<CreateTestCat />} />
+          <Route path="/add-prescription" element={<AddPrescription />} />
+          <Route path="/create/cat-treatment" element={<CreateTreatment />} />
+          <Route path="/create-test" element={<CreateTest />} />
+          <Route path="/add-patient-details" element={<AddPatientDetails />} />
+          <Route path="/pat-details/:id" element={<PatDetails />} />
+          <Route path="/add-building" element={<AddBuilding />} />
+          <Route path="/add-floor" element={<AddFloor />} />
+          <Route path="/add-users" element={<AddUsers />} />
+          <Route path="/add-vacc-app" element={<AddAppVaccine />} />
+          <Route path="/add-medicine" element={<AddMedicine />} />
+          <Route path="/add-expenses" element={<AddExpense />} />
+          <Route path="/add-vac-cat" element={<AddVaccineCat />} />
+          <Route path="/add-depart" element={<AddDepartment />} />
+          <Route path="/add-designate" element={<AddDesignation />} />
+          <Route path="/add-doctor" element={<AddDoctorDetails />} />
+          <Route path="/add-specialize" element={<AddSpecialization />} />
+          <Route path="/file-upload" element={<FileUpload />} />
+        </Route>
+      
+        <Route element={<PrivateRoute />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
             </Switch>
         </BrowserRouter>
     )

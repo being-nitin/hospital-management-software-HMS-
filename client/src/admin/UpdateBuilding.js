@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Layout from "../core/Layout";
 import { buildingsDetails, updateBuilding } from '../actions/buildingsActions'
 import { BUILDING_UPDATE_RESET } from '../constants/building-floor'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -12,7 +12,7 @@ const UpdateBuilding = ({ history, match }) => {
     const id = match.params.id
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
     const [description, setDescription] = useState('')
@@ -35,7 +35,7 @@ const UpdateBuilding = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: BUILDING_UPDATE_RESET })
-            history.push('/list-buildings')
+            navigate('/list-buildings')
         } else {
             if (building._id !== id) {
                 dispatch(buildingsDetails(id))

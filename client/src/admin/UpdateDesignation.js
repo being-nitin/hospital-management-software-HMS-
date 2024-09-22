@@ -4,7 +4,7 @@ import Layout from "../core/Layout";
 import { detailsDesignate, updateDesignate } from '../actions/designateActions'
 import { DESIGNATE_UPDATE_RESET } from '../constants/designationConstants'
 
-
+import { useNavigate } from 'react-router-dom';
 
 
 const UpdateDesignation = ({ history, match }) => {
@@ -15,7 +15,7 @@ const UpdateDesignation = ({ history, match }) => {
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-
+    const navigate = useNavigate()
 
 
     const designateDetails = useSelector((state) => state.designateDetails)
@@ -34,7 +34,7 @@ const UpdateDesignation = ({ history, match }) => {
     useEffect(() => {
         if (successUpdate) {
             dispatch({ type: DESIGNATE_UPDATE_RESET })
-            history.push('/list-designate')
+            navigate('/list-designate')
         } else {
             if (designate._id !== id) {
                 dispatch(detailsDesignate(id))

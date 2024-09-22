@@ -50,7 +50,7 @@ const  AddVaccineCat = ({ history: history1}) => {
 
     useEffect(() => {
 
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listVacTypesEnums())
             dispatch(listMedicines())
 

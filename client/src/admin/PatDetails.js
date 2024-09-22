@@ -5,19 +5,12 @@ import "../styles.css";
 import { patientsDetailsUser } from '../actions/patientActions'
 import { testsDetailsUser } from '../actions/testActions'
 import { prescriptionUsersDetails } from '../actions/prescriptionActions'
+import { useParams , useNavigate} from 'react-router-dom';
 
+const PatDetails = () => {
 
-
-
-
-
-
-
-
-const PatDetails = ({ history, match }) => {
-
-    const id = match.params.id
-    
+    const {id} = useParams()
+    const navigate = useNavigate()
 
     const dispatch = useDispatch()
 
@@ -28,14 +21,14 @@ const PatDetails = ({ history, match }) => {
 
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(patientsDetailsUser(id))
             dispatch(testsDetailsUser(id))
             dispatch(prescriptionUsersDetails(id))
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
-    }, [dispatch, history, userInfo])
+    }, [dispatch, userInfo])
 
 
     const patientDetailsUser = useSelector((state) => state.patientDetailsUser)

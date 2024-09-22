@@ -3,7 +3,7 @@ import Layout from '../core/Layout';
 import { listCatTests, deleteTestCat } from '../actions/testActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 const ListCatTest = ({ history }) => {
 
     const dispatch = useDispatch()
-
+    const navigate = useNavigate()
     const catTestList = useSelector((state) => state.catTestList)
     const { loading, error, tests } = catTestList
 
@@ -23,11 +23,11 @@ const ListCatTest = ({ history }) => {
     const { success: successDelete } = catTestDelete
 
     useEffect(() => {
-        if (userInfo && userInfo.role === 0) {
+        if (userInfo ) {
             dispatch(listCatTests())
             //console.log(tests)
         } else {
-            history.push('/signin')
+            navigate('/signin')
         }
     }, [dispatch, history, successDelete, userInfo])
 
