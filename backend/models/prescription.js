@@ -1,8 +1,6 @@
 const mongoose =  require('mongoose')
 const { ObjectId } = mongoose.Schema;
 
-
-
 const Prescription = mongoose.Schema(
     {
         doctor : {
@@ -25,7 +23,6 @@ const Prescription = mongoose.Schema(
         medicine: {
             type: String,
             required: true,
-
         },
         time: {
             type: Number,
