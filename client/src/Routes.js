@@ -64,6 +64,8 @@ import { login } from './actions/userActions'
 import Schedule from "./component/calendar";
 import PatientHistory from './component/patientHstory'
 import AppointmentDetail from './component/appointmentDetail'
+import PrescriptionForm from "./component/prescriptionForm";
+import TimelineCalendar from "./component/timeline";
 
 
 const Routes = () => {
@@ -76,7 +78,7 @@ const Routes = () => {
                 <Route path="/signin" exact element={<Signin />} />
           <Route element={<AdminRoute />}>
           <Route path="/" element={<AdminDashboard />} />
-          <Route path="/calendar" element={<Schedule/>} />
+          <Route path="/calendar" element={<TimelineCalendar/>} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/update/users/:id" element={<UpdateUsers />} />
           <Route path="/test-result" element={<ListTestResult />} />
