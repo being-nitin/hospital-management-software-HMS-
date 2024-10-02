@@ -75,7 +75,7 @@ export const listPaidEnums = () => async (dispatch, getState) => {
 
 
 
-export const createPrescription = ({appId , ...prescrp}) => async (dispatch, getState) => {
+export const createPrescription = (appId , prescriptions) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRESCRIPTION_CREATE_REQUEST,
@@ -91,22 +91,22 @@ export const createPrescription = ({appId , ...prescrp}) => async (dispatch, get
             },
         }
 
-        const { data } = await axios.post(`${API}/pres-create/${userInfo._id}?appId=${appId}`, prescrp, config)
-
-        dispatch({
-            type: PRESCRIPTION_CREATE_SUCCESS,
-            payload: data,
-        })
+        const data  = await axios.post(`${API}/pres-create/${userInfo._id}?appId=${appId}`, [...prescriptions], config)
+        
+        console.log(data)
+        // dispatch({
+        //     type: PRESCRIPTION_CREATE_SUCCESS,
+        //     payload: data,
+        // })
     } catch (error) {
-        console.log(error.response)
-        console.log(error.response.data.error.message)
-        const message = error.response.data.error.message
-        if (message === 'Not authorized, token failed') {
-            dispatch(logout())
-        }
+        console.log(error)
+        // const message = error.message
+        // if (message === 'Not authorized, token failed') {
+        //     dispatch(logout())
+        // }
         dispatch({
             type: PRESCRIPTION_CREATE_FAIL,
-            payload: message,
+            payload: 'creation failed',
         })
     }
 }
@@ -151,7 +151,7 @@ export const listPrescriptions = () => async (dispatch, getState) => {
     }
 }
 
-export const deletePrescription = (id) => async (dispatch, getState) => {
+export const deletePrescription = (appId,id) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRESCRIPTION_DELETE_REQUEST,
@@ -167,7 +167,7 @@ export const deletePrescription = (id) => async (dispatch, getState) => {
             },
         }
 
-        await axios.delete(`${API}/pres-remove/${id}`, config)
+        await axios.delete(`${API}/pres-remove/${id}`, config ,appId)
 
         dispatch({ type: PRESCRIPTION_DELETE_SUCCESS })
     } catch (error) {

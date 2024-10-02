@@ -32,8 +32,11 @@ const VaccineAppointment = mongoose.Schema(
         },
         prescription :[{
             type : mongoose.ObjectId,
-
-        }]
+             ref : 'Prescription'
+        }], 
+        vitalSigns : {
+            type : Object,
+        }
     }
 )
 

@@ -142,7 +142,7 @@ const PatientDetails = () => {
                           <td>{prescription.drug}</td>
                           <td>{prescription.dosage}</td>
                           <td>{prescription.duration}</td>
-                          <td>{prescription.instructions}</td>
+                          <td>{prescription.instruction}</td>
                         </tr>
                       ))}
                     </tbody>

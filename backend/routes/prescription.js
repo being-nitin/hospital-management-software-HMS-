@@ -19,7 +19,7 @@ router.get('/pres-detail-user/:id/:userId', protect,  getPrescriptionDetailUser)
 
 router.put('/pres-update/:id/:userId', protect,  update);
 
-router.delete('/pres-remove/:prescription', protect,   remove);
+router.delete('/pres-remove/:id', protect,   remove);
 
 router.get('/pres-list/:userId', protect,  list);
 

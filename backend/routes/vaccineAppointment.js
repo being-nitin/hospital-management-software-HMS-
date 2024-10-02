@@ -17,7 +17,7 @@ router.get('/vaccine-app-detail/:id', protect, getVaccineApp);
 
 router.put('/vaccine-app-update/:id', protect, update);
 
-router.delete('/vaccine-app-remove/:id/:userId', protect,  remove);
+router.delete('/vaccine-app-remove/:id', protect,  remove);
 
 router.get('/vaccine-app-list/:userId', protect, list);
 

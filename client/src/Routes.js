@@ -62,7 +62,7 @@ import UpdateVaccApp from './admin/UpdateVaccApp'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from './actions/userActions'
 import Schedule from "./component/calendar";
-import PatientHistory from './component/patientHstory'
+import PatientHistory from './component/patientHistory'
 import AppointmentDetail from './component/appointmentDetail'
 import PrescriptionForm from "./component/prescriptionForm";
 import TimelineCalendar from "./component/timeline";

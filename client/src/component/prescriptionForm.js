@@ -1,103 +1,143 @@
-import React, { useState } from 'react';
-import { Form, Input, Select, Row, Col, Button } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Plus, DashCircle, PencilSquare } from 'react-bootstrap-icons';
+import { createPrescription, updatePrescription, deletePrescription } from '../actions/prescriptionActions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const { Option } = Select;
-
-const PrescriptionForm = ({ onSubmit }) => {
-  const [form] = Form.useForm();
+const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescriptions , medicines }) => {
   const [prescriptions, setPrescriptions] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
+
+  const dispatch = useDispatch();
+
+  // Load existing prescriptions for editing
+  useEffect(() => {
+    if (existingPrescriptions) {
+      setPrescriptions([{...existingPrescriptions}]);
+    }
+  }, [existingPrescriptions]);
 
   const addPrescription = () => {
-    setPrescriptions([...prescriptions, {}]);
+    setPrescriptions([
+      ...prescriptions,
+      { drug: '', dosage: '', durationNumber: '', durationUnit: '', instruction: '', doctor, patient },
+    ]);
   };
+  
+  const updatedPrescriptions = () =>{
+     dispatch(updatePrescription(prescriptions[0]))
+    
+  }
 
-  const removePrescription = (index) => {
+ 
+
+  const handleInputChange = (index, field, value) => {
     const updatedPrescriptions = [...prescriptions];
-    updatedPrescriptions.splice(index, 1);
+    updatedPrescriptions[index][field] = value;
     setPrescriptions(updatedPrescriptions);
   };
 
-  const onValuesChange = (changedValues, allValues) => {
-    allValues.prescriptions?.forEach((prescription, index) => {
-      const { durationNumber, durationUnit } = prescription || {};
-      if (durationNumber && durationUnit) {
-        form.setFieldsValue({
-          prescriptions: allValues.prescriptions.map((p, i) =>
-            i === index ? { ...p, duration: `${durationNumber} ${durationUnit}` } : p
-          )
-        });
-      }
-    });
-  };
+  const onFinish = (e) => {
+      // Create new prescription
+      dispatch(createPrescription(appId, prescriptions));
 
-  const onFinish = (values) => {
-    onSubmit(values);
-    form.resetFields(); // Reset form fields
-    setPrescriptions([]); // Clear prescription list
+    onSubmit(prescriptions);
+    setPrescriptions([]);
+    setEditIndex(null); // Reset edit index after submitting
   };
 
   return (
-    <Form form={form} onFinish={onFinish} onValuesChange={onValuesChange}>
-      <Form.List name="prescriptions">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map(({ key, name, ...restField }) => (
-              <Row key={key} gutter={16} align="middle">
-                <Col span={6}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'drug']}
-                    rules={[{ required: true, message: 'Please input drug name!' }]}
-                  >
-                    <Input placeholder="Drug Name" />
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'dosage']}
-                    rules={[{ required: true, message: 'Please input dosage!' }]}
-                  >
-                    <Input placeholder="Dosage" />
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item {...restField} name={[name, 'durationNumber']}>
-                    <Input type="number" placeholder="Duration" />
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item {...restField} name={[name, 'durationUnit']}>
-                    <Select placeholder="Unit">
-                      <Option value="days">Days</Option>
-                      <Option value="months">Months</Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={4}>
-                  <Form.Item {...restField} name={[name, 'instructions']}>
-                    <Input placeholder="Instructions" />
-                  </Form.Item>
-                </Col>
-                <Col span={2}>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Col>
-              </Row>
-            ))}
-            <Form.Item>
-              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Prescription
-              </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form.List>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
+    <Form onSubmit={onFinish}>
+      {prescriptions.map((prescription, index) => (
+        <Row key={index} className="mb-3 align-items-center">
+          <Col md={3}>
+            <Form.Group controlId={`drug-${index}`}>
+              <Form.Label>Drug Name</Form.Label>
+              <Form.Select
+                value={prescription.drug}
+                onChange={(e) => handleInputChange(index, 'drug', e.target.value)}
+                required
+                style={{
+                  backgroundColor: '#f8f9fa',
+                  borderColor: '#ced4da',
+                  borderRadius: '4px',
+                  padding: '0.375rem 0.75rem',
+                  fontSize: '1rem',
+                  color: '#495057',
+                  boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.075)',
+                }}
+              >
+                <option value="">Select a drug</option>
+                {medicines.map((medicine) => (
+                  <option key={medicine.id} value={medicine.name}>
+                    {medicine.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col md={2}>
+            <Form.Group controlId={`dosage-${index}`}>
+              <Form.Label>Dosage</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Dosage"
+                value={prescription.dosage}
+                onChange={(e) => handleInputChange(index, 'dosage', e.target.value)}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group controlId={`duration-${index}`}>
+              <Form.Label>Duration</Form.Label>
+              <div className="d-flex">
+                <Form.Control
+                  type="number"
+                  placeholder="0"
+                  value={prescription.durationNumber}
+                  onChange={(e) => handleInputChange(index, 'durationNumber', e.target.value)}
+                  required
+                />
+                <Form.Select
+                  className="ms-2"
+                  value={prescription.durationUnit}
+                  onChange={(e) => handleInputChange(index, 'durationUnit', e.target.value)}
+                >
+                  <option value="">Unit</option>
+                  <option value="days">Days</option>
+                  <option value="months">Months</option>
+                </Form.Select>
+              </div>
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group controlId={`instruction-${index}`}>
+              <Form.Label>Instruction</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Instruction"
+                value={prescription.instruction}
+                onChange={(e) => handleInputChange(index, 'instruction', e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+      ))}
+
+      {existingPrescriptions ?
+        <Button variant="secondary" onClick={updatedPrescriptions} className="mb-3">
+        UpdatePrescriptions
+      </Button> :
+      <Button variant="secondary" onClick={addPrescription} className="mb-3">
+        <Plus size={16} /> Add Prescription
+      </Button>}
+
+      {!existingPrescriptions && (<div>
+        <Button variant="primary" type="submit">
           Submit
         </Button>
-      </Form.Item>
+      </div>)}
     </Form>
   );
 };

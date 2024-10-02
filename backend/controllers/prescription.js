@@ -3,25 +3,22 @@ const asyncHandler  = require( 'express-async-handler')
 const Appointment = require('../models/VaccineAppointment')
 
 exports.createPrescription = asyncHandler(async (req, res) => {
-    const { appId } = req.query
-    const prescription = new Prescription(req.body);
-
-    await prescription.save(async(err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
+    try {
+        const { appId } = req.query
+    const prescriptions = await  Prescription.insertMany(req.body);
 
         if(appId) {
         const findappointment = await Appointment.findById(appId)
-
-        findappointment.prescription.push(prescription._id)
-    
+          
+        let prescriptionIds  =prescriptions.map((prescription , index)  => prescription._id)
+        findappointment.prescription.push([...prescriptionIds])
         await findappointment.save()
         }
-        res.json({ data });
-    });
+        res.json({ data : prescriptions });
+    }
+    catch(err) {
+        console.log(err)
+    }
 })
 
 
@@ -84,6 +81,7 @@ exports.update = asyncHandler(async (req, res) => {
             runValidators: true
         })
 
+
         if (!prescription) {
             return res.status(404).send()
         }
@@ -102,9 +100,17 @@ exports.update = asyncHandler(async (req, res) => {
 
 exports.remove = asyncHandler(async (req, res) => {
 
-    const { prescription } = req.params
+    const { id } = req.params
+     const {appId } = req.body
+    const result = await Prescription.findById(id)
 
-    const result = await Prescription.findById(prescription)
+    if(appId) {
+        const findappointment = await Appointment.findById(appId)
+          
+        findappointment.prescription.pull(result._id)
+        
+        await findappointment.save()
+        }
 
     if (result) {
         await result.remove()

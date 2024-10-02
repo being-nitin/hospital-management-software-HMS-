@@ -165,12 +165,12 @@ export const updateVacApp = ({_id ,...appVacc}) => async (dispatch, getState) =>
             },
         }
 
-        console.log(appVacc)
-        const { data } = await axios.put(
-            `${API}/vaccine-app-update/${_id}/`,
-            appVacc,
-            config
-        )
+        console.log("vital :", appVacc)
+            const { data } = await axios.put(
+                `${API}/vaccine-app-update/${_id}/`,
+                appVacc,
+                config
+            )
 
         dispatch({
             type: UPDATE_APPOINTMENT_VACCINE_SUCCESS,

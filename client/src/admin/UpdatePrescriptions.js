@@ -7,10 +7,6 @@ import { listTreatments } from '../actions/treatmentActions'
 import {listCatTests} from '../actions/testActions'
 import { listUsers  } from '../actions/userActions'
 
-
-
-
-
 const UpdatePrescriptions = ({ history: history1, match }) => {
 
     const id = match.params.id
