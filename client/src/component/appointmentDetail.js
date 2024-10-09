@@ -3,6 +3,7 @@ import { Dropdown, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
 import PrescriptionForm from "../component/prescriptionForm"; // Importing the PrescriptionForm component
 import { useDispatch, useSelector } from "react-redux";
+import {updatePatients } from '../actions/patientActions'
 import {
   listVacApp,
   deleteVacApp,
@@ -22,6 +23,7 @@ const AppointmentDetail = () => {
   const [selectedPrescription, setSelectedPrescription] = useState(null); // For editing
   const [vitalSignsForm, setVitalSignsForm] = useState(false);
   const [selectedVitalSign, setSelectedVitalSign] = useState(null);
+  const [medicalHistory , setMedicalHistory] = useState([])
   const { id } = useParams();
   const appointmentRefs = useRef([]);
   const dispatch = useDispatch();
@@ -30,7 +32,7 @@ const AppointmentDetail = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-  const { loading, error, appointment } = vaccineAppList;
+  const { loading, error, appointment : { appointment ,pastAppointments} } = vaccineAppList;
 
   const medicineList = useSelector((state) => state.medicineList)
   const { medicines } = medicineList
@@ -47,6 +49,7 @@ const AppointmentDetail = () => {
   // Handle form submission for creating or updating a prescription
   const handleFormSubmit = (values) => {
     setPrescriptionForm(false);
+    dispatch(detailsVacApp(id))
     setSelectedPrescription(null); // Reset after edit
   };
 
@@ -62,6 +65,11 @@ const AppointmentDetail = () => {
     const prescriptionToEdit = appointment?.prescription[idx];
     setSelectedPrescription(prescriptionToEdit);
     setPrescriptionForm(true); // Show form for editing
+  };
+
+  const handleCancel = () => {
+    setPrescriptionForm(false) // Hide the form when canceled
+    setSelectedPrescription(null)
   };
 
   const handleEditVitalSigns = () =>{
@@ -92,8 +100,14 @@ const AppointmentDetail = () => {
     printWindow.close();
   };
 
+  const handleVitalCancel = () =>{
+      setVitalSignsForm(false)
+      setSelectedVitalSign(null)
+  }
+
   useEffect(()=>{
      detailsVacApp(id)
+     setMedicalHistory(appointment?.patient?.medicalhistory)
   },[appointment])
 
   const menu = (
@@ -112,7 +126,6 @@ const AppointmentDetail = () => {
     </Menu>
   );
 
-  console.log(appointment)
   return (
     <div className="container mt-4">
       <div className="row">
@@ -152,10 +165,12 @@ const AppointmentDetail = () => {
                 <PrescriptionForm
                   onSubmit={handleFormSubmit}
                   existingPrescriptions={selectedPrescription} // Pass the selected prescription for editing
+                  onCancel={handleCancel}
                   appId={appointment._id}
                   patient={appointment?.patient._id}
                   doctor={appointment?.doctor._id}
                   medicines ={medicines}
+                  detailsVacApp={detailsVacApp}
                 />
               )}
 
@@ -163,6 +178,7 @@ const AppointmentDetail = () => {
                 <VitalSignsForm
                   onSubmit={handleVitalSignsSubmit}
                   existingVitals={selectedVitalSign}
+                  handleCancel={handleVitalCancel}
                   appId={appointment._id}
                 />
               )}
@@ -171,7 +187,7 @@ const AppointmentDetail = () => {
                 className="mb-4 p-3 border rounded"
               >
                 <h6>
-                  <strong>Appointment Date:</strong> {appointment?.date}
+                  <strong>Appointment Date:</strong> {appointment?.date?.toLocaleString()}
                 </h6>
                 <h6>
                   <strong>Appointment Time:</strong> {appointment?.time}
@@ -275,33 +291,102 @@ const AppointmentDetail = () => {
               </div>
             </div>
           </div>
+
+          { pastAppointments && pastAppointments.map((appointment , index) =>(
+                      <div
+                      key ={index}
+                      ref={(el) => (appointmentRefs.current[0] = el)}
+                      className="mb-4 p-3 border rounded"
+                    >
+                      <h6>
+                        <strong>Appointment Date:</strong> {appointment?.date.toLocaleString()}
+                      </h6>
+                      <h6>
+                        <strong>Appointment Time:</strong> {appointment?.time}
+                      </h6>
+                      <h6>
+                        <strong>Doctor:</strong> Dr.{appointment?.doctor?.name}
+                      </h6>
+      
+                      {/* Vital Signs Section */}
+                      <div className="mb-4">
+                        <div>
+                          <strong>Vital Signs</strong>
+                        </div>
+                        <div>
+                          <table  className="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Weight (kg)</th>
+                                <th>B.P. (mmHg)</th>
+                                <th>Pulse (Heartbeats/min)</th>
+                                <th>Temperature (°C)</th>
+                                <th>Resp. Rate (breaths/min)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>{appointment?.vitalSigns?.weight || "N/A"}</td>
+                                <td>{appointment?.vitalSigns?.bp || "N/A"}</td>
+                                <td>{appointment?.vitalSigns?.pulse || "N/A"}</td>
+                                <td>
+                                  {appointment?.vitalSigns?.temperature || "N/A"}
+                                </td>
+                                <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
+                              </tr>
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+      
+                      {/* Prescriptions Section as Table */}
+                      <h6 className="mt-3">
+                        <strong>Prescriptions:</strong>
+                      </h6>
+                      <table className="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Drug</th>
+                            <th>Dosage</th>
+                            <th>Duration</th>
+                            <th>Instructions</th>
+                          
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {appointment?.prescription &&
+                            appointment?.prescription.map((prescription, idx) => (
+                              <tr key={idx}>
+                                <td>{prescription?.drug}</td>
+                                <td>{prescription?.dosage}</td>
+                                <td>
+                                  {prescription?.durationNumber +
+                                    prescription?.durationUnit}
+                                </td>
+                                <td>{prescription?.instruction}</td>
+                                
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+      
+                      {/* Print Button */}
+                      <div className="d-flex justify-content-end mt-3">
+                        <Button type="primary" onClick={() => handlePrint(0)}>
+                          Print Prescription
+                        </Button>
+                      </div>
+                      <hr />
+                    </div> 
+          ))}
         </div>
 
-        {/* Medical History Section */}
-        {/* <div className="col-lg-4">
-          <div className="card mb-4">
-            <div className="card-header bg-info text-white">
-              <h5>Medical History</h5>
-            </div>
-            <div className="card-body">
-              <p><strong>Personal Medical History</strong></p>
-              <ul className="list-group">
-                {patient.medicalHistory.length > 0 ? (
-                  patient.medicalHistory.map((condition, index) => (
-                    <li key={index} className="list-group-item">{condition}</li>
-                  ))
-                ) : (
-                  <li className="list-group-item">No Personal Medical History</li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div> */}
-        <MedicalHistoryForm initialConditions={[]}/>
+       
+        <MedicalHistoryForm medicalHistory={medicalHistory} id = {appointment?.patient?._id} detailsVacApp={detailsVacApp} appointment={appointment} setMedicalHistory={setMedicalHistory} />
       </div>
 
-      {/* Prescription Form Modal */}
-      {prescriptionForm && <PrescriptionForm onSubmit={handleFormSubmit} />}
+
     </div>
   );
 };
