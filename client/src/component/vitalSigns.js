@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
-const VitalSignsForm = ({ onSubmit, appId , existingVitals}) => {
+const VitalSignsForm = ({ onSubmit, appId , existingVitals , handleCancel}) => {
   const [vitalSigns, setVitalSigns] = useState({
     weight: '',
     bp: '',
@@ -34,6 +34,9 @@ const VitalSignsForm = ({ onSubmit, appId , existingVitals}) => {
       setVitalSigns({...existingVitals});
     }
   }, [existingVitals]);
+
+  
+
   return (
     <Form onSubmit={onFinish}>
       <Row className="mb-3">
@@ -99,9 +102,16 @@ const VitalSignsForm = ({ onSubmit, appId , existingVitals}) => {
         </Col>
       </Row>
 
+
+
+       <div> 
       <Button variant="primary" type="submit">
         Submit
       </Button>
+      <Button variant="danger" className={"ml-3"} onClick={handleCancel} >
+      Cancel
+    </Button>
+      </div>
     </Form>
   );
 };

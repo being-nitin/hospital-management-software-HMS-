@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Trash } from 'react-bootstrap-icons';
+import {updatePatients } from '../actions/patientActions'
+import { useDispatch, useSelector } from 'react-redux';
 
-const MedicalHistoryForm = ({ initialConditions }) => {
-  const [medicalHistory, setMedicalHistory] = useState(initialConditions);
+const MedicalHistoryForm = ({ medicalHistory , id , setMedicalHistory , appointment ,detailsVacApp}) => {
+  // const [medicalHistory, setMedicalHistory] = useState(initialConditions);
   const [newCondition, setNewCondition] = useState('');
+
+  const dispatch = useDispatch()
 
   // Add a new condition
   const handleAddCondition = () => {
     if (newCondition.trim()) {
-      setMedicalHistory([...medicalHistory, newCondition]);
-      setNewCondition(''); // Reset input field
+
+    if(newCondition != "" ) {
+        dispatch(updatePatients({_id : id , medicalhistory : [...medicalHistory , newCondition]}))
+        dispatch(detailsVacApp(appointment?._id))  
+      } // Reset input field
+        
+        setNewCondition("")
     }
-  };
+
+   };
 
   // Delete a condition
   const handleDeleteCondition = (index) => {
     const updatedHistory = medicalHistory.filter((_, i) => i !== index);
-    setMedicalHistory(updatedHistory);
+      dispatch(updatePatients({_id : id , medicalhistory : updatedHistory}))
+      dispatch(detailsVacApp(appointment?._id))  
+
   };
 
   return (
@@ -30,7 +42,7 @@ const MedicalHistoryForm = ({ initialConditions }) => {
           <Form>
             <strong>Personal Medical History</strong>
             <ul className="list-group">
-              {medicalHistory.length > 0 ? (
+              {medicalHistory?.length > 0 ? (
                 medicalHistory.map((condition, index) => (
                   <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                     <span>{condition}</span>

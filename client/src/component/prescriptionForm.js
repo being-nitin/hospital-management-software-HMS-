@@ -4,7 +4,7 @@ import { Plus, DashCircle, PencilSquare } from 'react-bootstrap-icons';
 import { createPrescription, updatePrescription, deletePrescription } from '../actions/prescriptionActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescriptions , medicines }) => {
+const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescriptions , medicines , onCancel , detailsVacApp}) => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
 
@@ -26,8 +26,16 @@ const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescripti
   
   const updatedPrescriptions = () =>{
      dispatch(updatePrescription(prescriptions[0]))
-    
+     dispatch(detailsVacApp(appId))
+     onSubmit(prescriptions);
+     setPrescriptions([]);
+     setEditIndex(null); 
   }
+
+  const removePrescription = (index) => {
+    const updatedPrescriptions = prescriptions.filter((_, i) => i !== index);
+    setPrescriptions(updatedPrescriptions);
+  };
 
  
 
@@ -40,11 +48,13 @@ const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescripti
   const onFinish = (e) => {
       // Create new prescription
       dispatch(createPrescription(appId, prescriptions));
-
+      dispatch(detailsVacApp(appId))
     onSubmit(prescriptions);
     setPrescriptions([]);
     setEditIndex(null); // Reset edit index after submitting
   };
+
+  
 
   return (
     <Form onSubmit={onFinish}>
@@ -122,21 +132,40 @@ const PrescriptionForm = ({ onSubmit, appId, doctor, patient, existingPrescripti
               />
             </Form.Group>
           </Col>
+          {!existingPrescriptions && (<Col md={1} className="text-end">
+            <DashCircle
+              size={16}
+              onClick={() => removePrescription(index)}
+              style={{ cursor: 'pointer' }}
+            />
+          </Col>)}
         </Row>
       ))}
 
       {existingPrescriptions ?
-        <Button variant="secondary" onClick={updatedPrescriptions} className="mb-3">
+      <>
+        <Button variant="secondary" onClick={updatedPrescriptions} className="mb-3 mr-3">
         UpdatePrescriptions
-      </Button> :
-      <Button variant="secondary" onClick={addPrescription} className="mb-3">
+      </Button> 
+      <Button variant="danger" onClick={onCancel} className="mb-3">
+      Cancel
+    </Button>
+    </>
+       :
+       <>
+      <Button variant="secondary" onClick={addPrescription} className="mb-3 mr-3">
         <Plus size={16} /> Add Prescription
-      </Button>}
+      </Button>
+ 
+      </>}
 
       {!existingPrescriptions && (<div>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className='mr-3'>
           Submit
         </Button>
+        <Button variant="danger" onClick={onCancel} >
+      Cancel
+    </Button>
       </div>)}
     </Form>
   );

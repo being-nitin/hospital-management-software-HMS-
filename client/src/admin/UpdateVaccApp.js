@@ -58,12 +58,12 @@ const  UpdateVaccApp = () => {
     const { days } = vaccineAppDays
 
     const vaccineAppDetails = useSelector((state) => state.vaccineAppDetails)
-    const { loading, error, appointment } = vaccineAppDetails
+    const { loading, error, appointment :{ appointment } } = vaccineAppDetails
 
+    console.log(appointment)
     useEffect(() => {
 
         if (successUpdate) {
-            dispatch({ type: UPDATE_APPOINTMENT_VACCINE_RESET })
             navigate('/list-app-vaccine')
 
         } else {
@@ -86,7 +86,7 @@ const  UpdateVaccApp = () => {
             }
 
         }
-    }, [ dispatch, id, appointment, successUpdate])
+    }, [ dispatch, id, successUpdate])
 
 
 

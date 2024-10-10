@@ -55,6 +55,9 @@ const patientDetails = mongoose.Schema(
         vital : {
             type : Array
         },
+        medicalhistory : {
+            type : Array
+        },
         // statusPatient: {
         //     type: String,
         //     default: "Cured",
