@@ -32,16 +32,12 @@ const  UpdateVaccApp = () => {
     const vaccineCatList = useSelector((state) => state.vaccineCatList)
     const { vaccines } = vaccineCatList
 
-    console.log(vaccines)
 
     const userList = useSelector((state) => state.userList)
     const { users } = userList
-    console.log(users)
-
 
     const medicineType = useSelector((state) => state.medicineType)
     const { types } = medicineType
-    console.log(types)
 
     const vaccineAppUpdate = useSelector((state) => state.vaccineAppUpdate)
     const {
@@ -54,41 +50,32 @@ const  UpdateVaccApp = () => {
     const vaccineAppTaken = useSelector((state) => state.vaccineAppTaken)
     const { takes } = vaccineAppTaken
 
-    const vaccineAppDays = useSelector((state) => state.vaccineAppDays)
-    const { days } = vaccineAppDays
 
     const vaccineAppDetails = useSelector((state) => state.vaccineAppDetails)
     const { loading, error, appointment :{ appointment } } = vaccineAppDetails
-
-    console.log(appointment)
     useEffect(() => {
-
         if (successUpdate) {
             navigate('/list-app-vaccine')
+            dispatch({type :UPDATE_APPOINTMENT_VACCINE_RESET})
 
         } else {
-            if (appointment?._id !== id) {
-                dispatch(listUsers())
-                dispatch(listVacTakenEnums())
-                dispatch(listVacDaysEnums())
-                dispatch(listVacCat())
-                dispatch(detailsVacApp(id))
-
-
-            } else {
-                setPatient(appointment.patient)
-                setDoctor(appointment.doctor)
-                setDate(moment(appointment.date).format("YYYY-MM-DD"))
-                setTime(appointment.time)
-                setStatus(appointment.status)
-                setRemarks(appointment.remarks)
-
+                setPatient(appointment?.patient)
+                setDoctor(appointment?.doctor)
+                setDate(moment(appointment?.date).format("YYYY-MM-DD"))
+                setTime(appointment?.time)
+                setStatus(appointment?.status)
+                setRemarks(appointment?.remarks)
+                   
             }
+        }, [ dispatch, id, successUpdate, appointment])
 
-        }
-    }, [ dispatch, id, successUpdate])
-
-
+     
+        useEffect(() =>{
+            dispatch(listUsers())
+            dispatch(listVacTakenEnums())
+            dispatch(listVacCat())
+            dispatch(detailsVacApp(id))
+        },[])
 
 
     const showError = () => (
@@ -125,35 +112,6 @@ const  UpdateVaccApp = () => {
 
         <div className="form-group col-md-12">
             <form onSubmit={submitHandler}>
-                {/* <div className="form-row">
-                    <div className="form-group col-md-4">
-                        <label className="text-muted">User</label>
-                        <select onChange={(e) => setPatient(e.target.value)} className="form-control">
-                            <option>Select Patient</option>
-                            {users &&
-                            users.filter(filtered => filtered.role === 2).map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="form-group col-md-4">
-                        <label className="text-muted">User</label>
-                        <select onChange={(e) => setDoctor(e.target.value)} className="form-control">
-                            <option>Select Doctor</option>
-                            {users &&
-                            users.filter(filtered => filtered.role === 1).map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div> */}
-
-
-
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <label htmlFor="inputAddress">Time</label>

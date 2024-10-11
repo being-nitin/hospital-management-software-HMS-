@@ -108,11 +108,7 @@ const  AddAppVaccine = () => {
         
     }
 
-    console.log({ patient, doctor, date, time, status , day, remarks })
-
-
     const AddAppointmentForm = () => (
-
         <div className="form-group col-md-12">
             <form onSubmit={submitHandler}>
                 <div className="form-row">
@@ -141,9 +137,6 @@ const  AddAppVaccine = () => {
                     </div>
                    
                 </div>
-
-
-
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <label htmlFor="inputAddress">Time In</label>

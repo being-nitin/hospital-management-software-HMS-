@@ -91,13 +91,13 @@ export const vaccineAppUpdateReducer = (state = { appointment: {} }, action) => 
 
     switch (action.type) {
         case UPDATE_APPOINTMENT_VACCINE_REQUEST:
-            return { loading: true }
+            return { loading: true ,  success: false}
         case UPDATE_APPOINTMENT_VACCINE_SUCCESS:
             return { loading: false, success: true, appointment: action.payload }
         case UPDATE_APPOINTMENT_VACCINE_FAIL:
-            return { loading: false, error: action.payload }
+            return { loading: false, success: false ,error: action.payload }
         case UPDATE_APPOINTMENT_VACCINE_RESET:
-            return { appointment: {} }
+            return { loading : false , appointment : {} ,success: false}
         default:
             return state
     }
