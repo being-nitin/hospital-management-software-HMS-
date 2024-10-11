@@ -10162,6 +10162,7 @@ body {
     font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
+    background-color: #1d2869;
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link {
     display: flex;
@@ -10169,6 +10170,7 @@ body {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     position: relative;
+    background-color: #1d2869;
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
     font-size: 0.9rem;
