@@ -186,7 +186,7 @@ const ListUsers = ({ history }) => {
         showError()
       ) : (
         <div className="row">
-          <div className="col-lg-8">
+          <div className="col-lg-12">
             <form>
               <div className="input-group">
                 <input
@@ -206,7 +206,7 @@ const ListUsers = ({ history }) => {
             </form>
           </div>
 
-          <div className="col-sm-10">
+          <div className="col-sm-12">
             <table className="table" style={tableStyles}>
               <thead style={theadStyles}>
                 <tr>

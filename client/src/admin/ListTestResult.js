@@ -140,7 +140,7 @@ const ListTestResult = ({ history }) => {
         showError()
       ) : (
         <div className="row">
-          <div className="col-sm-10" style={tableStyles}>
+          <div className="col-sm-12" style={tableStyles}>
             <table className="table" style={theadStyles}>
               <thead>
                 <tr>

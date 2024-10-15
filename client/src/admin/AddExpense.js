@@ -1,179 +1,278 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../core/Layout";
-import { listPaidEnums, createExpenses} from '../actions/expensesActions'
-import { listDeparts } from '../actions/departmentActions'
+import { listPaidEnums, createExpenses } from "../actions/expensesActions";
+import { listDeparts } from "../actions/departmentActions";
 import DatePicker from "react-datepicker";
-import { EXPENSES_CREATE_RESET } from '../constants/expensesConstants'
-
-
-
-
-
+import { EXPENSES_CREATE_RESET } from "../constants/expensesConstants";
 
 const AddExpense = ({ history: history1 }) => {
+  const [name, setName] = useState("");
+  const [department, setDepartment] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [description, setDescription] = useState("");
+  const [fromDate, setFromDate] = useState(new Date());
+  const [to, setTo] = useState(new Date());
+  const [paid, setPaid] = useState("Un-paid");
 
-    const [name, setName] = useState('')
-    const [department, setDepartment] = useState('')
-    const [amount, setAmount] = useState(0)
-    const [description, setDescription] = useState('')
-    const [fromDate, setFromDate] = useState(new Date())
-    const [to, setTo] = useState(new Date())
-    const [paid, setPaid] = useState("Un-paid")
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
-    
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-    const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
+  const departsList = useSelector((state) => state.departsList);
+  const { departments } = departsList;
 
-    const departsList = useSelector((state) => state.departsList)
-    const { departments } = departsList
-    
-    const expenseCreate = useSelector((state) => state.expenseCreate)
-    const { error, loading, success } = expenseCreate
+  const expenseCreate = useSelector((state) => state.expenseCreate);
+  const { error, loading, success } = expenseCreate;
 
-    const expensesPaid = useSelector((state) => state.expensesPaid)
-    const { pays } = expensesPaid
+  const expensesPaid = useSelector((state) => state.expensesPaid);
+  const { pays } = expensesPaid;
 
-    useEffect(() => {
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(listDeparts());
+      dispatch(listPaidEnums());
 
-        if (userInfo ) {
-            dispatch(listDeparts())
-            dispatch(listPaidEnums())
-
-            if(success) {
-                dispatch({ type: EXPENSES_CREATE_RESET })
-                history1.push('/list-expenses')
-            }
-            
-        } else {
-            history1.push('/signin')
-        }
-
-
-    }, [ dispatch, userInfo, success])
-
-
-    const showError = () => (
-        <div className="alert alert-danger" style={{ display: error ? '' : 'none' }}>
-            {error}
-        </div>
-    );
-    //
-    const showLoading = () =>
-        loading && (
-            <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </div>
-            </div>
-        );
-
-    const submitHandler = (e) => {
-        e.preventDefault()
-        dispatch(createExpenses({ name, department, amount, description, fromDate, to,  paid }))
-
+      if (success) {
+        dispatch({ type: EXPENSES_CREATE_RESET });
+        history1.push("/list-expenses");
+      }
+    } else {
+      history1.push("/signin");
     }
+  }, [dispatch, userInfo, success]);
 
-    const addExpenseForm = () => (
-
-        <div className="form-group col-md-12">
-            <form onSubmit={submitHandler}>
-                <div className="form-row">
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="inputAddress2">Name</label>
-                        <input type="text" className="form-control" id="inputAddress2"
-                               placeholder="name" value={name}
-                               onChange={(e) => setName(e.target.value)}/>
-                    </div>
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="inputAddress">Amount</label>
-                        <input type="text" className="form-control"  placeholder="Amount" value={amount}
-                               onChange={(e) => setAmount(e.target.value)}/>
-                    </div>
-
-                </div>
-
-                <div className="form-row">
-
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="inputAddress">From date</label>
-                        <DatePicker selected={fromDate} onChange={date => setFromDate(date)} className="form-control" />
-                    </div>
-
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="inputAddress">To date</label>
-                        <DatePicker selected={to} onChange={date => setTo(date)} className="form-control" />
-                    </div>
-
-
-                </div>
-
-
-                <div className="form-row">
-
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="exampleFormControlSelect2">Department</label>
-                        <select multiple className="form-control" id="exampleFormControlSelect2" onChange={(e) => setDepartment(e.target.value)}>
-                            <option>Select Department</option>
-                            {departments &&
-                            departments.map((c, i) => (
-                                <option key={i} value={c._id}>
-                                    {c.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className="form-group col-md-6">
-                        <label className="font-weight-bold" htmlFor="exampleFormControlTextarea1">Description</label>
-                        <textarea className="form-control" id="exampleFormControlTextarea1" value={description}
-                                  onChange={(e) => setDescription(e.target.value)} placeholder="write a description" rows="3"/>
-                    </div>
-
-
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group col-md-3">
-                        <div className="form-group">
-                            <label className="font-weight-bold" htmlFor="exampleFormControlSelect1">Paid</label>
-                            <select onChange={(e) => setPaid(e.target.value)} className="form-control" id="exampleFormControlSelect1">
-                                <option>Select Pay</option>
-                                {pays &&
-                                pays.map((p, i) => (
-                                    <option key={i} value={p}>
-                                        {p}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" className="btn btn-primary">Save</button>
-            </form>
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
+    >
+      {error}
+    </div>
+  );
+  //
+  const showLoading = () =>
+    loading && (
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
         </div>
-    )
+      </div>
+    );
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      createExpenses({
+        name,
+        department,
+        amount,
+        description,
+        fromDate,
+        to,
+        paid,
+      })
+    );
+  };
+  const formContainerStyles = {
+    maxWidth: "1000px", // Adjust the max width of the form container
+    margin: "0 auto", // Center the form horizontally
+    padding: "40px", // Add some padding around the form
+    borderRadius: "10px", // Rounded corners for the container
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for a classy effect
+    backgroundColor: "#f9f9f9", // Light background color to make it stand out
+  };
 
-    return  (
-        <Layout title="Category treatment Form">
+  const inputStyles = {
+    width: "100%",
+    padding: "12px",
+    fontSize: "1rem",
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    backgroundColor: "#fff",
+    transition: "border-color 0.2s ease-in-out",
+  };
 
-            <>
-                <h2 className="mb-4">Add Expense</h2>
-                {showLoading()}
-                {showError()}
-                {addExpenseForm()}
-            </>
+  const selectStyles = {
+    ...inputStyles,
+    padding: "5px",
+    fontSize: "1rem",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
 
-        </Layout>
-    )
+  const buttonStyles = {
+    backgroundColor: "#007bff",
+    border: "none",
+    color: "white",
+    padding: "12px 25px",
+    fontSize: "1rem",
+    borderRadius: "20px",
+    cursor: "pointer",
+    transition: "background-color 0.2s ease-in-out",
+  };
 
-}
+  // Add hover effect for button
+  buttonStyles[":hover"] = {
+    backgroundColor: "#0056b3",
+  };
+  const formGroupStyles = {
+    marginBottom: "20px",
+  };
+  const formRowStyle = {
+    marginBottom: "15px",
+  };
+  const labelStyles = {
+    fontWeight: "bold",
+  };
 
+  const addExpenseForm = () => (
+    <div className="form-group col-md-12">
+      <form onSubmit={submitHandler} style={formContainerStyles}>
+        <div className="form-row" style={formRowStyle}>
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="inputAddress2">
+              Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="inputAddress2"
+              style={inputStyles}
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="inputAmount">
+              Amount
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="inputAmount"
+              style={inputStyles}
+              placeholder="Enter amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+          </div>
+        </div>
 
+        <div className="form-row" style={formRowStyle}>
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="fromDate">
+              From Date
+            </label>
+            <DatePicker
+              selected={fromDate}
+              onChange={(date) => setFromDate(date)}
+              className="form-control"
+              style={inputStyles}
+              placeholderText="Select from date"
+              required
+            />
+          </div>
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="toDate">
+              To Date
+            </label>
+            <DatePicker
+              selected={to}
+              onChange={(date) => setTo(date)}
+              className="form-control"
+              style={inputStyles}
+              placeholderText="Select to date"
+              required
+            />
+          </div>
+        </div>
 
+        <div className="form-row" style={formRowStyle}>
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="departmentSelect">
+              Department
+            </label>
+            <select
+              multiple
+              className="form-control"
+              id="departmentSelect"
+              style={inputStyles}
+              onChange={(e) => setDepartment(e.target.value)}
+              required
+            >
+              <option disabled>Select Department</option>
+              {departments &&
+                departments.map((c, i) => (
+                  <option key={i} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
+            </select>
+          </div>
 
-export default AddExpense
+          <div className="form-group col-md-6">
+            <label style={labelStyles} htmlFor="descriptionTextarea">
+              Description
+            </label>
+            <textarea
+              className="form-control"
+              id="descriptionTextarea"
+              style={inputStyles}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Write a description"
+              rows="3"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-row" style={formRowStyle}>
+          <div className="form-group col-md-3">
+            <label style={labelStyles} htmlFor="paidSelect">
+              Paid
+            </label>
+            <select
+              onChange={(e) => setPaid(e.target.value)}
+              className="form-control"
+              id="paidSelect"
+              style={selectStyles}
+              required
+            >
+              <option disabled>Select Payment Status</option>
+              {pays &&
+                pays.map((p, i) => (
+                  <option key={i} value={p}>
+                    {p}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" style={buttonStyles}>
+          Save
+        </button>
+      </form>
+    </div>
+  );
+
+  return (
+    <Layout title="Category treatment Form">
+      <>
+        <h2 className="mb-4">Add Expense</h2>
+        {showLoading()}
+        {showError()}
+        {addExpenseForm()}
+      </>
+    </Layout>
+  );
+};
+
+export default AddExpense;
