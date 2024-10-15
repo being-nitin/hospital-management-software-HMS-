@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const ListAppVaccine = () => {
 
     const dispatch = useDispatch()
-    const naviagte = useNavigate()
+    const navigate = useNavigate()
     const vaccineAppList = useSelector((state) => state.vaccineAppList)
     const { loading, error, appointments } = vaccineAppList
 
@@ -28,7 +28,7 @@ const ListAppVaccine = () => {
         if (userInfo) {
             dispatch(listVacApp())
         } else {
-            naviagte('/signin')
+            navigate('/signin')
         }
     }, [dispatch, successDelete, userInfo])
 
@@ -109,9 +109,10 @@ const ListAppVaccine = () => {
                             <td>{app.remarks}</td>
                             <td>
                               <div className="btn-group" role="group">
-                                <Link to={`/update-vacc-app/${app._id}`}>
-                                  <Button type="primary" size="small" className="mr-2">Edit</Button>
-                                </Link>
+                                  <Button type="primary" size="small" className="mr-2" onClick={(e) =>{
+                                   e.preventDefault()  
+                                   console.log(app._id)
+                                   navigate(`/update-vacc-app/${app._id}`)}}>Edit</Button>
                                 <Button
                                   type="danger"
                                   size="small"

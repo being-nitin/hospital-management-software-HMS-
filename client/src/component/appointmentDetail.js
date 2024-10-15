@@ -14,7 +14,6 @@ import { deletePrescription } from "../actions/prescriptionActions";
 import { useNavigate, useParams } from "react-router-dom";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import VitalSignsForm from "./vitalSigns";
-import {UPDATE_APPOINTMENT_VACCINE_RESET} from "../constants/vaccineAppointmentConstants";
 import MedicalHistoryForm from "./medicalHistoryForm";
 import { listMedicines, deleteMedicine } from '../actions/medicineActions'
 
@@ -57,7 +56,6 @@ const AppointmentDetail = () => {
     dispatch(updateVacApp({ _id: appointment._id, vitalSigns }));
 
     setVitalSignsForm(false); // Hide the form after submission
-    dispatch({ type: UPDATE_APPOINTMENT_VACCINE_RESET })
   };
 
   // Handle editing a prescription
@@ -103,10 +101,17 @@ const AppointmentDetail = () => {
   const handleVitalCancel = () =>{
       setVitalSignsForm(false)
       setSelectedVitalSign(null)
+
+  }
+
+  const closeAppointment = () =>{
+      dispatch(updateVacApp({ _id: appointment._id, status : 'closed' })); 
+      dispatch({ type : 'UPDATE_APPOINTMENT_VACCINE_RESET' })
+      dispatch(detailsVacApp(id))
   }
 
   useEffect(()=>{
-     detailsVacApp(id)
+     dispatch(detailsVacApp(id))
      setMedicalHistory(appointment?.patient?.medicalhistory)
   },[appointment])
 
@@ -123,6 +128,11 @@ const AppointmentDetail = () => {
       </Menu.Item>
       <Menu.Item key="4">Psychological Form</Menu.Item>
       <Menu.Item key="5">Billing</Menu.Item>
+      <Menu.SubMenu key="6" title="More">
+      <Menu.Item key="6-1" onClick={closeAppointment}>
+        Close Appointment
+      </Menu.Item>
+    </Menu.SubMenu>
     </Menu>
   );
 
@@ -155,11 +165,14 @@ const AppointmentDetail = () => {
           {/* Treatment and Prescription History */}
           <div className="card mb-4">
             <div className="card-header bg-success text-white d-flex justify-content-between">
-              <h5>Treatment and Prescription History</h5>
+            <h5>Treatment and Prescription History</h5>
+              { appointment?.status !== 'closed' && (
+                <>
               <Dropdown overlay={menu} placement="bottomRight" arrow>
                 <Button type="default">Add Record</Button>
               </Dropdown>
-            </div>
+          </>)}
+          </div>
             <div className="card-body">
               {prescriptionForm && (
                 <PrescriptionForm
@@ -225,6 +238,7 @@ const AppointmentDetail = () => {
                         
                       </tbody>
                     </table>
+                    { appointment?.status !== 'closed' && (
                     <div>
                             <PencilSquare
                               size={24}
@@ -233,6 +247,7 @@ const AppointmentDetail = () => {
                               onClick={() => handleEditVitalSigns()} // Trigger edit form
                             />
                           </div>
+                    )}
                   </div>
                 </div>
 
@@ -247,7 +262,7 @@ const AppointmentDetail = () => {
                       <th>Dosage</th>
                       <th>Duration</th>
                       <th>Instructions</th>
-                      <th>Actions</th>
+                      { appointment?.status !== 'closed' && (<th>Actions</th>)}
                     </tr>
                   </thead>
                   <tbody>
@@ -261,6 +276,7 @@ const AppointmentDetail = () => {
                               prescription?.durationUnit}
                           </td>
                           <td>{prescription?.instruction}</td>
+                          { appointment?.status !== 'closed' && (
                           <td>
                             <PencilSquare
                               size={24}
@@ -276,7 +292,9 @@ const AppointmentDetail = () => {
                               } // Delete prescription
                             />
                           </td>
+                          )}
                         </tr>
+                          
                       ))}
                   </tbody>
                 </table>
@@ -287,6 +305,7 @@ const AppointmentDetail = () => {
                     Print Prescription
                   </Button>
                 </div>
+            
                 <hr />
               </div>
             </div>

@@ -177,6 +177,7 @@ export const updateVacApp = ({_id ,...appVacc}) => async (dispatch, getState) =>
             payload: data,
         })
         dispatch({ type: DETAILS_APPOINTMENT_VACCINE_SUCCESS, payload: data })
+
     } catch (error) {
         console.log(error.response)
         const message =

@@ -10,15 +10,12 @@ const VitalSignsForm = ({ onSubmit, appId , existingVitals , handleCancel}) => {
     respRate: '',
   });
 
-  console.log(existingVitals  )
-
   const handleInputChange = (field, value) => {
     setVitalSigns({ ...vitalSigns, [field]: value });
   };
 
   const onFinish = (e) => {
     e.preventDefault();
-    console.log(vitalSigns);
     onSubmit(vitalSigns);
     setVitalSigns({
       weight: '',
