@@ -59,7 +59,7 @@ const TimelineCalendar = () => {
           },
           navLinks: true,
         events: listData.map(data =>{
-          return { title: data.patient.firstName + "-" + data.patient.patientNumber , start: moment(`${data.date} ${data.time}`, 'YYYY-MM-DD HH:mm').valueOf() , url: `/list-app-vaccine/${data._id}` }
+          return { title: data.patient?.firstName + "-" + data.patient?.patientNumber , start: moment(`${data.date} ${data.time}`, 'YYYY-MM-DD HH:mm').valueOf() , url: `/list-app-vaccine/${data._id}` }
           }),
         eventClick: function(info) {
           navigate(info.url)

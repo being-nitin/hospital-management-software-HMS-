@@ -96,7 +96,7 @@ const ListAppVaccine = () => {
                           <Fragment>
                             <td>{app._id.substring(0, 7)}</td>
                             <td>{app.doctor.name}</td>
-                            <td>{app.patient.firstName + "-" +app.patient.patientNumber}</td>
+                            <td>{app?.patient?.firstName + "-" +app?.patient?.patientNumber}</td>
                             <td>{moment(app.date).format('YYYY-MM-DD')}</td>
                             <td>{app.time}</td>
                             <td>

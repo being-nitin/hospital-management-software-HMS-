@@ -114,7 +114,7 @@ const ListPrescriptions = ({ history }) => {
                                     <tr key={i}>
                                         <Fragment>
                                             <th scope="row">{pres._id.substring(0, 6)}</th>
-                                            <td>{pres.patient.firstName + "-" + pres.patient.patientNumber}</td>
+                                            <td>{pres.patient?.firstName + "-" + pres.patient?.patientNumber}</td>
                                             <td>{pres.treatment.name}</td>
                                             <td>{pres.medicine}</td>
                                             <td>{pres.time}</td>

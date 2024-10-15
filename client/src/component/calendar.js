@@ -38,7 +38,7 @@ const Schedule = () => {
       <Link to={`/list-app-vaccine/${data._id}`}>
       <div style={{ cursor : "pointer"}}>
        <p>{index +1}.{" "}Dr.{data.doctor.name}</p>
-       <p>Patient - {data.patient.firstName + "-" + data.patient.patientNumber}</p>
+       <p>Patient - {data?.patient?.firstName + "-" + data?.patient?.patientNumber}</p>
        <p>Time - {data.time}</p>
        <hr/>
       </div>

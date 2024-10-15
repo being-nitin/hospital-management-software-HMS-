@@ -178,7 +178,7 @@ const AddAppVaccine = () => {
               {patients &&
                 patients.map((c, i) => (
                   <option key={i} value={c._id}>
-                    {`${c.firstName}-${c.patientNumber}`}
+                    {`${c?.firstName}-${c?.patientNumber}`}
                   </option>
                 ))}
             </select>

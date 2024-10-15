@@ -162,7 +162,7 @@ const ListPatients = () => {
                       <Fragment>
                         <th scope="row">{patient.patientNumber}</th>
                         {/* <td><img src={`http://localhost:8000${patient.image}`} className="img-fluid rounded-circle"/></td> */}
-                        <td>{patient.firstName + " " + patient.lastName}</td>
+                        <td>{patient?.firstName + " " + patient?.lastName}</td>
                         {/* <td>{patient.statusPatient}</td> */}
                         {/* <td>{patient.patientType}</td> */}
                         <td>{patient.phoneNo}</td>

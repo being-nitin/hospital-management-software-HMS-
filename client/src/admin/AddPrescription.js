@@ -113,7 +113,7 @@ const AddPrescription = () => {
                 <div className="form-row">
                 <div className="form-group col-md-3">
                         <label htmlFor="inputAddress">patient</label>
-                        <input type="text" className="form-control"  placeholder="Medicine" value={appointment.patient.firstName + "-" + appointment.patient.patientNumber}/>
+                        <input type="text" className="form-control"  placeholder="Medicine" value={appointment?.patient?.firstName + "-" + appointment?.patient?.patientNumber}/>
                     </div>
                     <div className="form-group col-md-6">
                         <label className="text-muted">Treatment for</label>
