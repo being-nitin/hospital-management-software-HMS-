@@ -17,8 +17,9 @@ exports.vaccineAppointById = async (req, res, next, id) => {
 
 
 exports.getVaccineApp = asyncHandler(async (req, res) => {
+    try{
     const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor prescription")
-    
+    console.log(appointment)
     const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}]}).populate("patient doctor prescription")
     
     if (appointment) {
@@ -27,6 +28,10 @@ exports.getVaccineApp = asyncHandler(async (req, res) => {
         res.status(404)
         throw new Error('Vaccine Appointment not found')
     }
+}
+catch(err){
+    console.log(err)
+}
 })
 
 
@@ -76,10 +81,9 @@ exports.remove = asyncHandler(async (req, res) => {
 
     const { id } = req.params
 
-    const result = await VaccineAppointment.findById(id)
+    const result = await VaccineAppointment.findByIdAndDelete(id)
 
     if (result) {
-        await result.remove()
         res.json({ message: 'Vaccine Appointment removed' })
     } else {
         res.status(404)
