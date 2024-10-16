@@ -129,7 +129,7 @@ export const deleteVacApp = (id) => async (dispatch, getState) => {
             },
         }
 
-        await axios.delete(`${API}/vaccine-app-remove/${id}/${userInfo._id}`, config)
+        await axios.delete(`${API}/vaccine-app-remove/${id}`, config)
 
         dispatch({ type: DELETE_APPOINTMENT_VACCINE_SUCCESS })
     } catch (error) {

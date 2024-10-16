@@ -31,7 +31,8 @@ const AppointmentDetail = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-  const { loading, error, appointment : { appointment ,pastAppointments} } = vaccineAppList;
+  const { loading, error, appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+
 
   const medicineList = useSelector((state) => state.medicineList)
   const { medicines } = medicineList
@@ -54,7 +55,7 @@ const AppointmentDetail = () => {
 
   const handleVitalSignsSubmit = (vitalSigns) => {
     dispatch(updateVacApp({ _id: appointment._id, vitalSigns }));
-
+    dispatch(detailsVacApp(id))
     setVitalSignsForm(false); // Hide the form after submission
   };
 
@@ -63,6 +64,7 @@ const AppointmentDetail = () => {
     const prescriptionToEdit = appointment?.prescription[idx];
     setSelectedPrescription(prescriptionToEdit);
     setPrescriptionForm(true); // Show form for editing
+     
   };
 
   const handleCancel = () => {
@@ -112,8 +114,8 @@ const AppointmentDetail = () => {
 
   useEffect(()=>{
      dispatch(detailsVacApp(id))
-     setMedicalHistory(appointment?.patient?.medicalhistory)
-  },[appointment])
+     setMedicalHistory(appointment?.patient?.medicalhistory ? [...appointment?.patient?.medicalhistory] : [])
+  },[])
 
   const menu = (
     <Menu>

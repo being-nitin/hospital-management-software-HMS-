@@ -57,7 +57,8 @@ const  UpdateVaccApp = () => {
         if (successUpdate) {
             navigate('/list-app-vaccine')
             dispatch({type :UPDATE_APPOINTMENT_VACCINE_RESET})
-
+            
+            detailsVacApp(id)
         } else {
                 setPatient(appointment?.appointment?.patient)
                 setDoctor(appointment?.appointment?.doctor)

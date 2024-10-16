@@ -16,21 +16,26 @@ const MedicalHistoryForm = ({ medicalHistory , id , setMedicalHistory , appointm
 
     if(newCondition != "" ) {
         dispatch(updatePatients({_id : id , medicalhistory : [...medicalHistory , newCondition]}))
+        setMedicalHistory([...medicalHistory , newCondition])
         dispatch(detailsVacApp(appointment?._id))  
       } // Reset input field
-        
         setNewCondition("")
     }
-
    };
 
   // Delete a condition
   const handleDeleteCondition = (index) => {
     const updatedHistory = medicalHistory.filter((_, i) => i !== index);
       dispatch(updatePatients({_id : id , medicalhistory : updatedHistory}))
+      setMedicalHistory([...updatedHistory])
       dispatch(detailsVacApp(appointment?._id))  
-
   };
+
+  useEffect(()=>{
+    setMedicalHistory(appointment?.patient?.medicalhistory ? [...appointment?.patient?.medicalhistory] : [])
+ },[appointment])
+
+
 
   return (
     <div className="col-lg-4">
