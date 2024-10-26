@@ -3,7 +3,7 @@ import { Dropdown, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
 import PrescriptionForm from "../component/prescriptionForm"; // Importing the PrescriptionForm component
 import { useDispatch, useSelector } from "react-redux";
-import {updatePatients } from '../actions/patientActions'
+import { updatePatients } from "../actions/patientActions";
 import {
   listVacApp,
   deleteVacApp,
@@ -15,32 +15,104 @@ import { useNavigate, useParams } from "react-router-dom";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import VitalSignsForm from "./vitalSigns";
 import MedicalHistoryForm from "./medicalHistoryForm";
-import { listMedicines, deleteMedicine } from '../actions/medicineActions'
+import { listMedicines, deleteMedicine } from "../actions/medicineActions";
 
 const AppointmentDetail = () => {
   const [prescriptionForm, setPrescriptionForm] = useState(false);
   const [selectedPrescription, setSelectedPrescription] = useState(null); // For editing
   const [vitalSignsForm, setVitalSignsForm] = useState(false);
+  const [PsychologicalForm, setPsychologicalForm] = useState(false);
   const [selectedVitalSign, setSelectedVitalSign] = useState(null);
-  const [medicalHistory , setMedicalHistory] = useState([])
+  const [medicalHistory, setMedicalHistory] = useState([]);
+  const [formType, setFormType] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
   const appointmentRefs = useRef([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [form1Data, setForm1Data] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    motherTongue: "",
+    date: "",
+    address: "",
+    informant: "",
+    refByDr: "",
+    reasonForReferral: "",
+    chiefComplaints: "",
+    precipitation: "",
+    onset: "",
+    course: "",
+    progression: "",
+    background: "",
+    behavioralObservations: "",
+    toolsUsed: "",
+    interpretation: "",
+    impression: "",
+    suggestion: "",
+  });
+
+  const [form2Data, setForm2Data] = useState({
+    age: "",
+    experience: "",
+  });
+
+  const handleFormTypeChange = (type) => {
+    setFormType(type);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setFormType(null);
+  };
+
+  const handleForm1Change = (e) => {
+    const { name, value } = e.target;
+    setForm1Data((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleForm1Submit = (e) => {
+    e.preventDefault();
+    console.log("Form 1 Data Submitted:", form1Data);
+    closeModal(); // Close modal after submit
+  };
+
+  const handleForm2Change = (e) => {
+    const { name, value } = e.target;
+    setForm2Data((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleForm2Submit = (e) => {
+    e.preventDefault();
+    console.log("Form 2 Data Submitted:", form2Data);
+    closeModal(); // Close modal after submit
+  };
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-  const { loading, error, appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+  const {
+    loading,
+    error,
+    appointment: { appointment, pastAppointments } = {},
+  } = vaccineAppList || {};
 
-
-  const medicineList = useSelector((state) => state.medicineList)
-  const { medicines } = medicineList
+  const medicineList = useSelector((state) => state.medicineList);
+  const { medicines } = medicineList;
 
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
-      dispatch(listMedicines())          
+      dispatch(listMedicines());
     } else {
       navigate("/signin");
     }
@@ -49,13 +121,13 @@ const AppointmentDetail = () => {
   // Handle form submission for creating or updating a prescription
   const handleFormSubmit = (values) => {
     setPrescriptionForm(false);
-    dispatch(detailsVacApp(id))
+    dispatch(detailsVacApp(id));
     setSelectedPrescription(null); // Reset after edit
   };
 
   const handleVitalSignsSubmit = (vitalSigns) => {
     dispatch(updateVacApp({ _id: appointment._id, vitalSigns }));
-    dispatch(detailsVacApp(id))
+    dispatch(detailsVacApp(id));
     setVitalSignsForm(false); // Hide the form after submission
   };
 
@@ -64,18 +136,17 @@ const AppointmentDetail = () => {
     const prescriptionToEdit = appointment?.prescription[idx];
     setSelectedPrescription(prescriptionToEdit);
     setPrescriptionForm(true); // Show form for editing
-     
   };
 
   const handleCancel = () => {
-    setPrescriptionForm(false) // Hide the form when canceled
-    setSelectedPrescription(null)
+    setPrescriptionForm(false); // Hide the form when canceled
+    setSelectedPrescription(null);
   };
 
-  const handleEditVitalSigns = () =>{
-    setSelectedVitalSign(appointment?.vitalSigns)
-    setVitalSignsForm(true)
-  }
+  const handleEditVitalSigns = () => {
+    setSelectedVitalSign(appointment?.vitalSigns);
+    setVitalSignsForm(true);
+  };
 
   // Handle deleting a prescription
   const handleDeletePrescription = (prescriptionId) => {
@@ -100,22 +171,25 @@ const AppointmentDetail = () => {
     printWindow.close();
   };
 
-  const handleVitalCancel = () =>{
-      setVitalSignsForm(false)
-      setSelectedVitalSign(null)
+  const handleVitalCancel = () => {
+    setVitalSignsForm(false);
+    setSelectedVitalSign(null);
+  };
 
-  }
+  const closeAppointment = () => {
+    dispatch(updateVacApp({ _id: appointment._id, status: "closed" }));
+    dispatch({ type: "UPDATE_APPOINTMENT_VACCINE_RESET" });
+    dispatch(detailsVacApp(id));
+  };
 
-  const closeAppointment = () =>{
-      dispatch(updateVacApp({ _id: appointment._id, status : 'closed' })); 
-      dispatch({ type : 'UPDATE_APPOINTMENT_VACCINE_RESET' })
-      dispatch(detailsVacApp(id))
-  }
-
-  useEffect(()=>{
-     dispatch(detailsVacApp(id))
-     setMedicalHistory(appointment?.patient?.medicalhistory ? [...appointment?.patient?.medicalhistory] : [])
-  },[])
+  useEffect(() => {
+    dispatch(detailsVacApp(id));
+    setMedicalHistory(
+      appointment?.patient?.medicalhistory
+        ? [...appointment?.patient?.medicalhistory]
+        : []
+    );
+  }, []);
 
   const menu = (
     <Menu>
@@ -128,13 +202,18 @@ const AppointmentDetail = () => {
       <Menu.Item key="3" onClick={() => setPrescriptionForm(true)}>
         Prescription
       </Menu.Item>
-      <Menu.Item key="4">Psychological Form</Menu.Item>
+      <Menu.Item
+        key="4"
+        onClick={() => setPsychologicalForm(!PsychologicalForm)}
+      >
+        Psychological Form
+      </Menu.Item>
       <Menu.Item key="5">Billing</Menu.Item>
       <Menu.SubMenu key="6" title="More">
-      <Menu.Item key="6-1" onClick={closeAppointment}>
-        Close Appointment
-      </Menu.Item>
-    </Menu.SubMenu>
+        <Menu.Item key="6-1" onClick={closeAppointment}>
+          Close Appointment
+        </Menu.Item>
+      </Menu.SubMenu>
     </Menu>
   );
 
@@ -167,14 +246,15 @@ const AppointmentDetail = () => {
           {/* Treatment and Prescription History */}
           <div className="card mb-4">
             <div className="card-header bg-success text-white d-flex justify-content-between">
-            <h5>Treatment and Prescription History</h5>
-              { appointment?.status !== 'closed' && (
+              <h5>Treatment and Prescription History</h5>
+              {appointment?.status !== "closed" && (
                 <>
-              <Dropdown overlay={menu} placement="bottomRight" arrow>
-                <Button type="default">Add Record</Button>
-              </Dropdown>
-          </>)}
-          </div>
+                  <Dropdown overlay={menu} placement="bottomRight" arrow>
+                    <Button type="default">Add Record</Button>
+                  </Dropdown>
+                </>
+              )}
+            </div>
             <div className="card-body">
               {prescriptionForm && (
                 <PrescriptionForm
@@ -184,7 +264,7 @@ const AppointmentDetail = () => {
                   appId={appointment._id}
                   patient={appointment?.patient._id}
                   doctor={appointment?.doctor._id}
-                  medicines ={medicines}
+                  medicines={medicines}
                   detailsVacApp={detailsVacApp}
                 />
               )}
@@ -197,12 +277,288 @@ const AppointmentDetail = () => {
                   appId={appointment._id}
                 />
               )}
+              {PsychologicalForm && (
+                <div style={styles.container}>
+                  <h2 style={styles.header}>Psychological Form Options</h2>
+                  <div style={styles.buttonContainer}>
+                    <button
+                      style={styles.button}
+                      onClick={() => handleFormTypeChange("option1")}
+                    >
+                      Psychodiagnostic Report
+                    </button>
+                    <button
+                      style={styles.button}
+                      onClick={() => handleFormTypeChange("option2")}
+                    >
+                      Hamilton Anxiety Rating Scale (HAM-A)
+                    </button>
+                  </div>
+
+                  {showModal && (
+                    <div style={styles.modalOverlay}>
+                      <div style={styles.modal}>
+                        <button style={styles.closeButton} onClick={closeModal}>
+                          &times;
+                        </button>
+
+                        {formType === "option1" && (
+                          <form
+                            onSubmit={handleForm1Submit}
+                            style={styles.form}
+                          >
+                            <h3 style={styles.formHeader}>
+                              Psychodiagnostic Report
+                            </h3>
+                            <label style={styles.label}>
+                              Name:
+                              <input
+                                type="text"
+                                name="name"
+                                value={form1Data.name}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Age:
+                              <input
+                                type="number"
+                                name="age"
+                                value={form1Data.age}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Gender:
+                              <input
+                                type="text"
+                                name="gender"
+                                value={form1Data.gender}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Mother Tongue:
+                              <input
+                                type="text"
+                                name="mothertongue"
+                                value={form1Data.motherTongue}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Date:
+                              <input
+                                type="date"
+                                name="date"
+                                value={form1Data.date}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Address:
+                              <input
+                                type="text"
+                                name="address"
+                                value={form1Data.address}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Informant:
+                              <input
+                                type="text"
+                                name="informant"
+                                value={form1Data.informant}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Refer By Doctor:
+                              <input
+                                type="text"
+                                name="refbydr"
+                                value={form1Data.refByDr}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Reason For Referral:
+                              <input
+                                type="text"
+                                name="reasonForReferral"
+                                value={form1Data.reasonForReferral}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Chief Complaints:
+                              <input
+                                type="text"
+                                name="chiefComplaints"
+                                value={form1Data.chiefComplaints}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Precipitation:
+                              <input
+                                type="text"
+                                name="precipitation"
+                                value={form1Data.precipitation}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Onset:
+                              <input
+                                type="text"
+                                name="onset"
+                                value={form1Data.onset}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Course:
+                              <input
+                                type="text"
+                                name="course"
+                                value={form1Data.course}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Progression:
+                              <input
+                                type="text"
+                                name="progression"
+                                value={form1Data.progression}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Background:
+                              <input
+                                type="text"
+                                name="background"
+                                value={form1Data.background}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Behavioral Observations:
+                              <input
+                                type="text"
+                                name="behavioralObservations"
+                                value={form1Data.behavioralObservations}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Tools Used:
+                              <input
+                                type="text"
+                                name="toolsUsed"
+                                value={form1Data.toolsUsed}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Interpretation:
+                              <input
+                                type="text"
+                                name="interpretation"
+                                value={form1Data.interpretation}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Impression:
+                              <input
+                                type="text"
+                                name="impression"
+                                value={form1Data.impression}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Suggestion:
+                              <input
+                                type="text"
+                                name="suggestion"
+                                value={form1Data.suggestion}
+                                onChange={handleForm1Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <button type="submit" style={styles.submitButton}>
+                              Submit Form 1
+                            </button>
+                          </form>
+                        )}
+
+                        {formType === "option2" && (
+                          <form
+                            onSubmit={handleForm2Submit}
+                            style={styles.form}
+                          >
+                            <h3 style={styles.formHeader}>Form 2</h3>
+                            <label style={styles.label}>
+                              Age:
+                              <input
+                                type="number"
+                                name="age"
+                                value={form2Data.age}
+                                onChange={handleForm2Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <label style={styles.label}>
+                              Experience:
+                              <input
+                                type="text"
+                                name="experience"
+                                value={form2Data.experience}
+                                onChange={handleForm2Change}
+                                style={styles.input}
+                              />
+                            </label>
+                            <button type="submit" style={styles.submitButton}>
+                              Submit Form 2
+                            </button>
+                          </form>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
               <div
                 ref={(el) => (appointmentRefs.current[0] = el)}
                 className="mb-4 p-3 border rounded"
               >
                 <h6>
-                  <strong>Appointment Date:</strong> {appointment?.date?.toLocaleString()}
+                  <strong>Appointment Date:</strong>{" "}
+                  {appointment?.date?.toLocaleString()}
                 </h6>
                 <h6>
                   <strong>Appointment Time:</strong> {appointment?.time}
@@ -217,7 +573,7 @@ const AppointmentDetail = () => {
                     <strong>Vital Signs</strong>
                   </div>
                   <div>
-                    <table  className="table table-bordered">
+                    <table className="table table-bordered">
                       <thead>
                         <tr>
                           <th>Weight (kg)</th>
@@ -237,18 +593,17 @@ const AppointmentDetail = () => {
                           </td>
                           <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
                         </tr>
-                        
                       </tbody>
                     </table>
-                    { appointment?.status !== 'closed' && (
-                    <div>
-                            <PencilSquare
-                              size={24}
-                              className="me-2"
-                              style={{ cursor: "pointer", color: "blue" }}
-                              onClick={() => handleEditVitalSigns()} // Trigger edit form
-                            />
-                          </div>
+                    {appointment?.status !== "closed" && (
+                      <div>
+                        <PencilSquare
+                          size={24}
+                          className="me-2"
+                          style={{ cursor: "pointer", color: "blue" }}
+                          onClick={() => handleEditVitalSigns()} // Trigger edit form
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
@@ -264,7 +619,7 @@ const AppointmentDetail = () => {
                       <th>Dosage</th>
                       <th>Duration</th>
                       <th>Instructions</th>
-                      { appointment?.status !== 'closed' && (<th>Actions</th>)}
+                      {appointment?.status !== "closed" && <th>Actions</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -278,25 +633,24 @@ const AppointmentDetail = () => {
                               prescription?.durationUnit}
                           </td>
                           <td>{prescription?.instruction}</td>
-                          { appointment?.status !== 'closed' && (
-                          <td>
-                            <PencilSquare
-                              size={24}
-                              className="me-2"
-                              style={{ cursor: "pointer", color: "blue" }}
-                              onClick={() => handleEditPrescription(idx)} // Trigger edit form
-                            />
-                            <Trash
-                              size={24}
-                              style={{ cursor: "pointer", color: "red" }}
-                              onClick={() =>
-                                handleDeletePrescription(prescription._id)
-                              } // Delete prescription
-                            />
-                          </td>
+                          {appointment?.status !== "closed" && (
+                            <td>
+                              <PencilSquare
+                                size={24}
+                                className="me-2"
+                                style={{ cursor: "pointer", color: "blue" }}
+                                onClick={() => handleEditPrescription(idx)} // Trigger edit form
+                              />
+                              <Trash
+                                size={24}
+                                style={{ cursor: "pointer", color: "red" }}
+                                onClick={() =>
+                                  handleDeletePrescription(prescription._id)
+                                } // Delete prescription
+                              />
+                            </td>
                           )}
                         </tr>
-                          
                       ))}
                   </tbody>
                 </table>
@@ -307,109 +661,207 @@ const AppointmentDetail = () => {
                     Print Prescription
                   </Button>
                 </div>
-            
+
                 <hr />
               </div>
             </div>
           </div>
 
-          { pastAppointments && pastAppointments.map((appointment , index) =>(
-                      <div
-                      key ={index}
-                      ref={(el) => (appointmentRefs.current[0] = el)}
-                      className="mb-4 p-3 border rounded"
-                    >
-                      <h6>
-                        <strong>Appointment Date:</strong> {appointment?.date.toLocaleString()}
-                      </h6>
-                      <h6>
-                        <strong>Appointment Time:</strong> {appointment?.time}
-                      </h6>
-                      <h6>
-                        <strong>Doctor:</strong> Dr.{appointment?.doctor?.name}
-                      </h6>
-      
-                      {/* Vital Signs Section */}
-                      <div className="mb-4">
-                        <div>
-                          <strong>Vital Signs</strong>
-                        </div>
-                        <div>
-                          <table  className="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th>Weight (kg)</th>
-                                <th>B.P. (mmHg)</th>
-                                <th>Pulse (Heartbeats/min)</th>
-                                <th>Temperature (°C)</th>
-                                <th>Resp. Rate (breaths/min)</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>{appointment?.vitalSigns?.weight || "N/A"}</td>
-                                <td>{appointment?.vitalSigns?.bp || "N/A"}</td>
-                                <td>{appointment?.vitalSigns?.pulse || "N/A"}</td>
-                                <td>
-                                  {appointment?.vitalSigns?.temperature || "N/A"}
-                                </td>
-                                <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
-                              </tr>
-                              
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-      
-                      {/* Prescriptions Section as Table */}
-                      <h6 className="mt-3">
-                        <strong>Prescriptions:</strong>
-                      </h6>
-                      <table className="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>Drug</th>
-                            <th>Dosage</th>
-                            <th>Duration</th>
-                            <th>Instructions</th>
-                          
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {appointment?.prescription &&
-                            appointment?.prescription.map((prescription, idx) => (
-                              <tr key={idx}>
-                                <td>{prescription?.drug}</td>
-                                <td>{prescription?.dosage}</td>
-                                <td>
-                                  {prescription?.durationNumber +
-                                    prescription?.durationUnit}
-                                </td>
-                                <td>{prescription?.instruction}</td>
-                                
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-      
-                      {/* Print Button */}
-                      <div className="d-flex justify-content-end mt-3">
-                        <Button type="primary" onClick={() => handlePrint(0)}>
-                          Print Prescription
-                        </Button>
-                      </div>
-                      <hr />
-                    </div> 
-          ))}
+          {pastAppointments &&
+            pastAppointments.map((appointment, index) => (
+              <div
+                key={index}
+                ref={(el) => (appointmentRefs.current[0] = el)}
+                className="mb-4 p-3 border rounded"
+              >
+                <h6>
+                  <strong>Appointment Date:</strong>{" "}
+                  {appointment?.date.toLocaleString()}
+                </h6>
+                <h6>
+                  <strong>Appointment Time:</strong> {appointment?.time}
+                </h6>
+                <h6>
+                  <strong>Doctor:</strong> Dr.{appointment?.doctor?.name}
+                </h6>
+
+                {/* Vital Signs Section */}
+                <div className="mb-4">
+                  <div>
+                    <strong>Vital Signs</strong>
+                  </div>
+                  <div>
+                    <table className="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Weight (kg)</th>
+                          <th>B.P. (mmHg)</th>
+                          <th>Pulse (Heartbeats/min)</th>
+                          <th>Temperature (°C)</th>
+                          <th>Resp. Rate (breaths/min)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{appointment?.vitalSigns?.weight || "N/A"}</td>
+                          <td>{appointment?.vitalSigns?.bp || "N/A"}</td>
+                          <td>{appointment?.vitalSigns?.pulse || "N/A"}</td>
+                          <td>
+                            {appointment?.vitalSigns?.temperature || "N/A"}
+                          </td>
+                          <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Prescriptions Section as Table */}
+                <h6 className="mt-3">
+                  <strong>Prescriptions:</strong>
+                </h6>
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Drug</th>
+                      <th>Dosage</th>
+                      <th>Duration</th>
+                      <th>Instructions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointment?.prescription &&
+                      appointment?.prescription.map((prescription, idx) => (
+                        <tr key={idx}>
+                          <td>{prescription?.drug}</td>
+                          <td>{prescription?.dosage}</td>
+                          <td>
+                            {prescription?.durationNumber +
+                              prescription?.durationUnit}
+                          </td>
+                          <td>{prescription?.instruction}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+
+                {/* Print Button */}
+                <div className="d-flex justify-content-end mt-3">
+                  <Button type="primary" onClick={() => handlePrint(0)}>
+                    Print Prescription
+                  </Button>
+                </div>
+                <hr />
+              </div>
+            ))}
         </div>
 
-       
-        <MedicalHistoryForm medicalHistory={medicalHistory} id = {appointment?.patient?._id} detailsVacApp={detailsVacApp} appointment={appointment} setMedicalHistory={setMedicalHistory} />
+        <MedicalHistoryForm
+          medicalHistory={medicalHistory}
+          id={appointment?.patient?._id}
+          detailsVacApp={detailsVacApp}
+          appointment={appointment}
+          setMedicalHistory={setMedicalHistory}
+        />
       </div>
-
-
     </div>
   );
+};
+
+const styles = {
+  container: {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+    textAlign: "center",
+  },
+  header: {
+    marginBottom: "20px",
+    fontSize: "24px",
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    marginBottom: "20px",
+  },
+  button: {
+    backgroundColor: "#007BFF",
+    color: "#FFFFFF",
+    border: "none",
+    padding: "10px 20px",
+    margin: "0 10px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
+    transition: "background-color 0.3s",
+  },
+  buttonHover: {
+    backgroundColor: "#0056b3",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modal: {
+    backgroundColor: "#fff",
+    padding: "20px",
+    borderRadius: "8px",
+    width: "80%", // Increased width for a larger modal
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    position: "relative",
+  },
+  closeButton: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    fontSize: "20px",
+    border: "none",
+    background: "transparent",
+    cursor: "pointer",
+  },
+  form: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)", // Four columns per row
+    gap: "15px",
+    alignItems: "flex-start",
+    width: "100%",
+  },
+  formHeader: {
+    gridColumn: "1 / -1", // Make header span all columns
+    marginBottom: "10px",
+    fontSize: "20px",
+    fontWeight: "bold",
+  },
+  label: {
+    fontSize: "16px",
+    color: "#333",
+    display: "flex",
+    flexDirection: "column",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginTop: "5px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    fontSize: "16px",
+  },
+  submitButton: {
+    gridColumn: "1 / -1", // Make submit button span all columns
+    backgroundColor: "#28a745",
+    color: "#FFFFFF",
+    border: "none",
+    padding: "10px 15px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "16px",
+    transition: "background-color 0.3s",
+  },
 };
 
 export default AppointmentDetail;
