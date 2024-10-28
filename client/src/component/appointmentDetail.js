@@ -57,6 +57,7 @@ const AppointmentDetail = () => {
   const [form2Data, setForm2Data] = useState({
     age: "",
     experience: "",
+    fields: Array(14).fill(null), // initialize empty values for 14 fields
   });
 
   const handleFormTypeChange = (type) => {
@@ -81,6 +82,14 @@ const AppointmentDetail = () => {
     e.preventDefault();
     console.log("Form 1 Data Submitted:", form1Data);
     closeModal(); // Close modal after submit
+  };
+
+  const handleRadioChange = (index, value) => {
+    setForm2Data((prevData) => {
+      const updatedFields = [...prevData.fields];
+      updatedFields[index] = value;
+      return { ...prevData, fields: updatedFields };
+    });
   };
 
   const handleForm2Change = (e) => {
@@ -190,6 +199,22 @@ const AppointmentDetail = () => {
         : []
     );
   }, []);
+  const fieldNames = [
+    "Anxious Mood",
+    "Tension",
+    "Fears",
+    "Insomnia",
+    "Intellectual",
+    "Depressed Mood",
+    "Somatic (Muscular)",
+    "Somatic (Sensory)",
+    "Cardiovascular Symptoms",
+    "Respiratory Systems",
+    "Gastrointestinal Symptoms",
+    "Gastrourinatory Symptoms",
+    "Autonomic Symptoms",
+    "Behaviour At Interview",
+  ];
 
   const menu = (
     <Menu>
@@ -521,27 +546,58 @@ const AppointmentDetail = () => {
                             onSubmit={handleForm2Submit}
                             style={styles.form}
                           >
-                            <h3 style={styles.formHeader}>Form 2</h3>
-                            <label style={styles.label}>
-                              Age:
-                              <input
-                                type="number"
-                                name="age"
-                                value={form2Data.age}
-                                onChange={handleForm2Change}
-                                style={styles.input}
-                              />
-                            </label>
-                            <label style={styles.label}>
-                              Experience:
-                              <input
-                                type="text"
-                                name="experience"
-                                value={form2Data.experience}
-                                onChange={handleForm2Change}
-                                style={styles.input}
-                              />
-                            </label>
+                            <h3 style={styles.formHeader}>
+                              Hamilton Anxiety Rating Scale (HAM-A)
+                            </h3>
+                            <p style={styles.formHeader}>
+                              Below is a list of phrases that describe certain
+                              feeling that people have. Rate the patients by
+                              finding the answer which best describes the extent
+                              to which he/she has these conditions. Select one
+                              of the five responses for each of the fourteen
+                              questions.
+                            </p>
+                            <div style={styles.formHeaders}>
+                              <p>0 = Not present</p>
+                              <p>1 = Mild</p>
+                              <p>2 = Moderate</p>
+                              <p>3 = Severe</p>
+                              <p>4 = Very severe</p>
+                            </div>
+                            {fieldNames.map((fieldName, index) => (
+                              <div
+                                key={index}
+                                style={{ flex: "1 1 45%", minWidth: "280px" }}
+                              >
+                                <label style={styles.label}>{fieldName}:</label>
+                                <div style={styles.inputGroup}>
+                                  {[1, 2, 3, 4, 5].map((option) => (
+                                    <label
+                                      key={option}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <input
+                                        type="radio"
+                                        name={`field-${index}`}
+                                        value={option}
+                                        checked={
+                                          form2Data.fields[index] === option
+                                        }
+                                        onChange={() =>
+                                          handleRadioChange(index, option)
+                                        }
+                                        style={styles.input}
+                                      />
+                                      {option}
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+
                             <button type="submit" style={styles.submitButton}>
                               Submit Form 2
                             </button>
@@ -837,6 +893,14 @@ const styles = {
     fontSize: "20px",
     fontWeight: "bold",
   },
+  formHeaders: {
+    gridColumn: "1 / -1", // Make header span all columns
+    marginBottom: "10px",
+    fontSize: "20px",
+    fontWeight: "bold",
+    display: "flex",
+    justifyContent: "space-between",
+  },
   label: {
     fontSize: "16px",
     color: "#333",
@@ -850,6 +914,12 @@ const styles = {
     borderRadius: "5px",
     border: "1px solid #ccc",
     fontSize: "16px",
+  },
+  inputGroup: {
+    display: "flex",
+    alignItems: "center",
+    marginRight: "10px",
+    gap: "8px",
   },
   submitButton: {
     gridColumn: "1 / -1", // Make submit button span all columns
