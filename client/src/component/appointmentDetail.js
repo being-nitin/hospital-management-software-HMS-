@@ -437,7 +437,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Precipitation:
-                              <input
+                              <textArea
                                 type="text"
                                 name="precipitation"
                                 value={form1Data.precipitation}
@@ -447,7 +447,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Onset:
-                              <input
+                              <textArea
                                 type="text"
                                 name="onset"
                                 value={form1Data.onset}
@@ -457,7 +457,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Course:
-                              <input
+                              <textArea
                                 type="text"
                                 name="course"
                                 value={form1Data.course}
@@ -467,7 +467,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Progression:
-                              <input
+                              <textArea
                                 type="text"
                                 name="progression"
                                 value={form1Data.progression}
@@ -476,8 +476,8 @@ const AppointmentDetail = () => {
                               />
                             </label>
                             <label style={styles.label}>
-                              Background:
-                              <input
+                              Background Information:
+                              <textArea
                                 type="text"
                                 name="background"
                                 value={form1Data.background}
@@ -487,7 +487,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Behavioral Observations:
-                              <input
+                              <textArea
                                 type="text"
                                 name="behavioralObservations"
                                 value={form1Data.behavioralObservations}
@@ -507,7 +507,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Interpretation:
-                              <input
+                              <textArea
                                 type="text"
                                 name="interpretation"
                                 value={form1Data.interpretation}
@@ -517,7 +517,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Impression:
-                              <input
+                              <textArea
                                 type="text"
                                 name="impression"
                                 value={form1Data.impression}
@@ -527,7 +527,7 @@ const AppointmentDetail = () => {
                             </label>
                             <label style={styles.label}>
                               Suggestion:
-                              <input
+                              <textArea
                                 type="text"
                                 name="suggestion"
                                 value={form1Data.suggestion}
