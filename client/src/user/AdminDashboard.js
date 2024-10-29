@@ -179,12 +179,8 @@ const AdminDashboard = () => {
 
         appointmentList.push(data.vaccinated, data.notVaccinated)
 
-
-
         let labels = ["Vaccinated", "Not Vaccinated"]
         let customLabels = labels.map((label, index) => `${label}: ${appointmentList[index]}`)
-
-
 
         return {labels, customLabels, appointmentList}
     }

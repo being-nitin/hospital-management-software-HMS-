@@ -80,7 +80,16 @@ const AppointmentDetail = () => {
 
   const handleForm1Submit = (e) => {
     e.preventDefault();
-    console.log("Form 1 Data Submitted:", form1Data);
+    const submittedData = {
+      age: form2Data.age,
+      experience: form2Data.experience,
+      selectedFields: fieldNames.reduce((result, fieldName, index) => {
+        result[fieldName] = form2Data.fields[index];
+        return result;
+      }, {}),
+    };
+    dispatch(updateVacApp({ _id: appointment._id, pschological : { ...form1Data , hamA : submittedData} }));
+    dispatch(detailsVacApp(id))
     closeModal(); // Close modal after submit
   };
 
@@ -92,17 +101,9 @@ const AppointmentDetail = () => {
     });
   };
 
-  const handleForm2Change = (e) => {
-    const { name, value } = e.target;
-    setForm2Data((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const handleForm2Submit = (e) => {
     e.preventDefault();
-    console.log("Form 2 Data Submitted:", form2Data);
     const submittedData = {
       age: form2Data.age,
       experience: form2Data.experience,
@@ -112,7 +113,8 @@ const AppointmentDetail = () => {
       }, {}),
     };
 
-    console.log("Form data submitted:", submittedData);
+    dispatch(updateVacApp({ _id: appointment._id, pschological : { ...appointment.pschological ,hamA : submittedData } }));
+    dispatch(detailsVacApp(id))
     closeModal(); // Close modal after submit
   };
 
@@ -132,6 +134,7 @@ const AppointmentDetail = () => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
       dispatch(listMedicines());
+    
     } else {
       navigate("/signin");
     }
@@ -203,6 +206,9 @@ const AppointmentDetail = () => {
 
   useEffect(() => {
     dispatch(detailsVacApp(id));
+    const data  =appointment?.pschological?.hamA
+    console.log(data)
+    setForm2Data(appointment?.pschological?.hamA ? {...data , fields : appointment.pschological.hamA?.selectedFields} : {})
     setMedicalHistory(
       appointment?.patient?.medicalhistory
         ? [...appointment?.patient?.medicalhistory]
@@ -379,7 +385,7 @@ const AppointmentDetail = () => {
                               Mother Tongue:
                               <input
                                 type="text"
-                                name="mothertongue"
+                                name="motherTongue"
                                 value={form1Data.motherTongue}
                                 onChange={handleForm1Change}
                                 style={styles.input}
@@ -872,6 +878,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    zIndex : 100
   },
   modal: {
     backgroundColor: "#fff",

@@ -5,16 +5,24 @@ const Appointment = require('../models/VaccineAppointment')
 exports.createPrescription = asyncHandler(async (req, res) => {
     try {
         const { appId } = req.query
-    const prescriptions = await  Prescription.insertMany(req.body);
+        console.log(req.body)
+        const prescriptions = await  Prescription.insertMany(req.body);
 
         if(appId) {
         const findappointment = await Appointment.findById(appId)
           
-        let prescriptionIds  =prescriptions.map((prescription , index)  => prescription._id)
-        findappointment.prescription.push([...prescriptionIds])
-        await findappointment.save()
+        let prescriptionIds  = prescriptions.map((prescription , index)  => prescription._id)
+        
+        for( let prescriptionId of prescriptionIds) {
+            console.log(prescriptionId)
+        findappointment.prescription.push(prescriptionId)
+        await findappointment.save() 
         }
+
+       
+    }
         res.json({ data : prescriptions });
+    
     }
     catch(err) {
         console.log(err)

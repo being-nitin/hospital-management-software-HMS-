@@ -365,9 +365,9 @@ const AddPatientDetails = ({ history: history1 }) => {
   );
 
   return (
-    <Layout title="Category treatment Form">
+    <Layout title="">
       <>
-        <h2 className="mb-4">Add Patient Details</h2>
+        <h2 style={{ marginBottom : "100px"}}>Add Patient Details</h2>
         {showError()}
         {showLoading()}
         {patientDetailsForm()}
