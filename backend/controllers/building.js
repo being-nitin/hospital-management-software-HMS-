@@ -1,11 +1,6 @@
 const building = require('../models/buildings')
 const asyncHandler  = require( 'express-async-handler')
 
-
-
-
-
-
 exports.buildingById = async (req, res, next, id) => {
 
     await building.findById(id).exec((err, building) => {

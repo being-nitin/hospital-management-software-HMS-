@@ -206,9 +206,7 @@ const AppointmentDetail = () => {
 
   useEffect(() => {
     dispatch(detailsVacApp(id));
-    const data  =appointment?.pschological?.hamA
-    console.log(data)
-    setForm2Data(appointment?.pschological?.hamA ? {...data , fields : appointment.pschological.hamA?.selectedFields} : {})
+
     setMedicalHistory(
       appointment?.patient?.medicalhistory
         ? [...appointment?.patient?.medicalhistory]
