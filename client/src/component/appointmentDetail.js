@@ -103,6 +103,16 @@ const AppointmentDetail = () => {
   const handleForm2Submit = (e) => {
     e.preventDefault();
     console.log("Form 2 Data Submitted:", form2Data);
+    const submittedData = {
+      age: form2Data.age,
+      experience: form2Data.experience,
+      selectedFields: fieldNames.reduce((result, fieldName, index) => {
+        result[fieldName] = form2Data.fields[index];
+        return result;
+      }, {}),
+    };
+
+    console.log("Form data submitted:", submittedData);
     closeModal(); // Close modal after submit
   };
 
