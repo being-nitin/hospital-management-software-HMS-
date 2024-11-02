@@ -679,10 +679,19 @@ const Layout = ({ title, children }) => {
       </Fragment>
     );
   };
-  const loggedIn = () => <div className="small">Logged in as:</div>;
+  const loggedIn = () => (
+    <div
+      style={{
+        backgroundColor: "#1d2869",
+      }}
+      className="small"
+    >
+      Logged in as:
+    </div>
+  );
 
   return (
-    <nav className="sb-nav-fixed">
+    <nav style={{}} className="sb-nav-fixed">
       <Menu />
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -699,7 +708,12 @@ const Layout = ({ title, children }) => {
                   : staffLink()}
               </div>
             </div>
-            <div className="sb-sidenav-footer">
+            <div
+              style={{
+                backgroundColor: "#1d2869",
+              }}
+              className="sb-sidenav-footer"
+            >
               {loggedIn()}
               {userInfo && userInfo.name}
             </div>
