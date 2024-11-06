@@ -10149,9 +10149,13 @@ body {
     flex-direction: column;
     height: 100%;
     flex-wrap: nowrap;
+    background-color: #1d2869;
+    
 }
 .sb-sidenav .sb-sidenav-menu {
     flex-grow: 1;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav {
     flex-direction: column;
@@ -10181,17 +10185,25 @@ body {
     display: inline-block;
     margin-left: auto;
     transition: transform 0.15s ease;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link.collapsed .sb-sidenav-collapse-arrow {
     transform: rotate(-90deg);
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
     margin-left: 1.5rem;
     flex-direction: column;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-footer {
     padding: 0.75rem;
     flex-shrink: 0;
+    background-color: #1d2869;
+
 }
 
 .sb-sidenav-dark {

@@ -1,104 +1,122 @@
-import React from "react"
-import { BrowserRouter , Routes as Switch, Route } from 'react-router-dom';
-import AdminDashboard from './user/AdminDashboard';
-import Signup from './user/Signup';
-import Signin from './user/Signin';
-import PrivateRoute from './auth/PrivateRoute';
-import AdminRoute from './auth/AdminRoute';
-import PatientRoute from './auth/PatientRoute';
-import DoctorRoute from './auth/DoctorRoute';
-import Profile from './user/Profile';
-import ListUsers from './admin/ListUsers'
-import ListCatTest from './admin/ListCatTest'
-import CreateTestCat from './admin/CreateTestCat'
-import CatTestUpdate from './admin/CatTestUpdate'
-import ListTestResult from './admin/ListTestResult'
-import CreateTest from './admin/CreateTest'
-import TestUpdate from './admin/TestUpdate'
-import ListTreatment from './admin/ListTreatment'
-import CreateTreatment from './admin/CreateTreatment'
-import TreatmentUpdate from './admin/TreatmentUpdate'
-import AddPrescription from './admin/AddPrescription'
-import ListPrescriptions from './admin/ListPrescriptions'
-import UpdatePrescriptions from './admin/UpdatePrescriptions'
-import AddPatientDetails from './admin/AddPatientDetails'
-import ListPatients from './admin/ListPatients'
-import UpdatePatientProfile from './admin/UpdatePatientProfile'
-import ListBuildings from './admin/ListBuildings'
-import AddBuilding from './admin/AddBuilding'
-import UpdateBuilding from './admin/UpdateBuilding'
-import ListFloors from './admin/ListFloors'
-import AddFloor from './admin/AddFloor'
-import UpdateFloor from './admin/UpdateFloor'
-import UpdateUsers from './admin/UpdateUsers'
-import AddUsers from './admin/AddUsers'
-import ListDeparts from './admin/ListDeparts'
-import AddDepartment from './admin/AddDepartment'
-import UpdateDepartment from './admin/UpdateDepartment'
-import ListDesignate from './admin/ListDesignate'
-import AddDesignation from './admin/AddDesignation'
-import UpdateDesignation from './admin/UpdateDesignation'
-import ListSpecialize from './admin/ListSpecialize'
-import AddSpecialization from './admin/AddSpecialization'
-import UpdateSpecialize from './admin/UpdateSpecialize'
-import FileUpload from './admin/FileUpload'
-import ListVendors from './admin/ListVendors'
-import ListDoctors from './admin/ListDoctors'
-import AddDoctorDetails from './admin/AddDoctorDetails'
-import UpdateDoctorProfile from './admin/UpdateDoctorProfile'
-import ListExpenses from "./admin/ListExpenses"  
-import AddExpense from './admin/AddExpense'
-import UpdateExpenses from './admin/UpdateExpenses'
-import PatDetails from './admin/PatDetails'
-import ListMedicine from "./admin/ListMedicine"
-import AddMedicine from './admin/AddMedicine'
-import UpdateMedicine from './admin/UpdateMedicine'
-import ListVaccineCat from "./admin/ListVaccineCat"
-import AddVaccineCat from './admin/AddVaccineCat'
-import UpdateVaccineCat from './admin/UpdateVaccineCat'
-import ListAppVaccine from "./admin/ListAppVaccine"
-import AddAppVaccine from './admin/AddAppVaccine'
-import UpdateVaccApp from './admin/UpdateVaccApp'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from './actions/userActions'
+import React from "react";
+import { BrowserRouter, Routes as Switch, Route } from "react-router-dom";
+import AdminDashboard from "./user/AdminDashboard";
+import Signup from "./user/Signup";
+import Signin from "./user/Signin";
+import PrivateRoute from "./auth/PrivateRoute";
+import AdminRoute from "./auth/AdminRoute";
+import PatientRoute from "./auth/PatientRoute";
+import DoctorRoute from "./auth/DoctorRoute";
+import Profile from "./user/Profile";
+import ListUsers from "./admin/ListUsers";
+import ListCatTest from "./admin/ListCatTest";
+import CreateTestCat from "./admin/CreateTestCat";
+import CatTestUpdate from "./admin/CatTestUpdate";
+import ListTestResult from "./admin/ListTestResult";
+import CreateTest from "./admin/CreateTest";
+import TestUpdate from "./admin/TestUpdate";
+import ListTreatment from "./admin/ListTreatment";
+import CreateTreatment from "./admin/CreateTreatment";
+import TreatmentUpdate from "./admin/TreatmentUpdate";
+import AddPrescription from "./admin/AddPrescription";
+import ListPrescriptions from "./admin/ListPrescriptions";
+import UpdatePrescriptions from "./admin/UpdatePrescriptions";
+import AddPatientDetails from "./admin/AddPatientDetails";
+import ListPatients from "./admin/ListPatients";
+import UpdatePatientProfile from "./admin/UpdatePatientProfile";
+import ListBuildings from "./admin/ListBuildings";
+import AddBuilding from "./admin/AddBuilding";
+import UpdateBuilding from "./admin/UpdateBuilding";
+import ListFloors from "./admin/ListFloors";
+import AddFloor from "./admin/AddFloor";
+import UpdateFloor from "./admin/UpdateFloor";
+import UpdateUsers from "./admin/UpdateUsers";
+import AddUsers from "./admin/AddUsers";
+import ListDeparts from "./admin/ListDeparts";
+import AddDepartment from "./admin/AddDepartment";
+import UpdateDepartment from "./admin/UpdateDepartment";
+import ListDesignate from "./admin/ListDesignate";
+import AddDesignation from "./admin/AddDesignation";
+import UpdateDesignation from "./admin/UpdateDesignation";
+import ListSpecialize from "./admin/ListSpecialize";
+import AddSpecialization from "./admin/AddSpecialization";
+import UpdateSpecialize from "./admin/UpdateSpecialize";
+import FileUpload from "./admin/FileUpload";
+import ListVendors from "./admin/ListVendors";
+import ListDoctors from "./admin/ListDoctors";
+import AddDoctorDetails from "./admin/AddDoctorDetails";
+import UpdateDoctorProfile from "./admin/UpdateDoctorProfile";
+import ListExpenses from "./admin/ListExpenses";
+import AddExpense from "./admin/AddExpense";
+import UpdateExpenses from "./admin/UpdateExpenses";
+import PatDetails from "./admin/PatDetails";
+import ListMedicine from "./admin/ListMedicine";
+import AddMedicine from "./admin/AddMedicine";
+import UpdateMedicine from "./admin/UpdateMedicine";
+import ListVaccineCat from "./admin/ListVaccineCat";
+import AddVaccineCat from "./admin/AddVaccineCat";
+import UpdateVaccineCat from "./admin/UpdateVaccineCat";
+import ListAppVaccine from "./admin/ListAppVaccine";
+import AddAppVaccine from "./admin/AddAppVaccine";
+import UpdateVaccApp from "./admin/UpdateVaccApp";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "./actions/userActions";
 import Schedule from "./component/calendar";
-import PatientHistory from './component/patientHistory'
-import AppointmentDetail from './component/appointmentDetail'
+import PatientHistory from "./component/patientHistory";
+import AppointmentDetail from "./component/appointmentDetail";
 import PrescriptionForm from "./component/prescriptionForm";
 import TimelineCalendar from "./component/timeline";
-
+import Psychodiagnostic from "./component/Psychodiagnostic";
 
 const Routes = () => {
-    const userLogin = useSelector((state) => state.userLogin)
-    console.log(userLogin)
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route path="/signup" exact element={<Signup/>} />
-                <Route path="/signin" exact element={<Signin />} />
-          <Route element={<AdminRoute />}>
+  const userLogin = useSelector((state) => state.userLogin);
+  console.log(userLogin);
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/signup" exact element={<Signup />} />
+        <Route path="/signin" exact element={<Signin />} />
+        <Route element={<AdminRoute />}>
           <Route path="/" element={<AdminDashboard />} />
-          <Route path="/calendar" element={<TimelineCalendar/>} />
+          <Route path="/calendar" element={<TimelineCalendar />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/update/users/:id" element={<UpdateUsers />} />
           <Route path="/test-result" element={<ListTestResult />} />
           <Route path="/list-prescriptions" element={<ListPrescriptions />} />
-          <Route path="/update-cat-test/:catTestId" element={<CatTestUpdate />} />
+          <Route
+            path="/update-cat-test/:catTestId"
+            element={<CatTestUpdate />}
+          />
           <Route path="/update-test/:testId" element={<TestUpdate />} />
-          <Route path="/update-prescription/:id" element={<UpdatePrescriptions />} />
-          <Route path="/patient-history" element={<PatientHistory/>}/>
+          <Route
+            path="/update-prescription/:id"
+            element={<UpdatePrescriptions />}
+          />
+          <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/update-building/:id" element={<UpdateBuilding />} />
-          <Route path="/update-designation/:id" element={<UpdateDesignation />} />
+          <Route
+            path="/update-designation/:id"
+            element={<UpdateDesignation />}
+          />
           <Route path="/update-floor/:id" element={<UpdateFloor />} />
           <Route path="/update-expenses/:id" element={<UpdateExpenses />} />
           <Route path="/update-doctor/:id" element={<UpdateDoctorProfile />} />
           <Route path="/update-depart/:id" element={<UpdateDepartment />} />
-          <Route path="/update-patient/:id" element={<UpdatePatientProfile />} />
+          <Route
+            path="/update-patient/:id"
+            element={<UpdatePatientProfile />}
+          />
           <Route path="/update-specialize/:id" element={<UpdateSpecialize />} />
           <Route path="/update-medicine/:id" element={<UpdateMedicine />} />
-          <Route path="/update-vaccine-cat/:id" element={<UpdateVaccineCat />} />
+          <Route
+            path="/update-vaccine-cat/:id"
+            element={<UpdateVaccineCat />}
+          />
           <Route path="/update-vacc-app/:id" element={<UpdateVaccApp />} />
-          <Route path="/update-treatment/:treatmentId" element={<TreatmentUpdate />} />
+          <Route
+            path="/update-treatment/:treatmentId"
+            element={<TreatmentUpdate />}
+          />
           <Route path="/list/users" element={<ListUsers />} />
           <Route path="/list/medicine" element={<ListMedicine />} />
           <Route path="/list-cat-test" element={<ListCatTest />} />
@@ -111,6 +129,7 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
+          <Route path="/PsychologicalForm" element={<Psychodiagnostic />} />
           <Route path="/list-designate" element={<ListDesignate />} />
           <Route path="/list-expenses" element={<ListExpenses />} />
           <Route path="/list-specialize" element={<ListSpecialize />} />
@@ -134,14 +153,13 @@ const Routes = () => {
           <Route path="/add-specialize" element={<AddSpecialization />} />
           <Route path="/file-upload" element={<FileUpload />} />
         </Route>
-      
+
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
-            </Switch>
-        </BrowserRouter>
-    )
-}
-
+      </Switch>
+    </BrowserRouter>
+  );
+};
 
 export default Routes;

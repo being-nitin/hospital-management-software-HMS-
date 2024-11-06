@@ -330,7 +330,7 @@ const AppointmentDetail = () => {
                   <div style={styles.buttonContainer}>
                     <button
                       style={styles.button}
-                      onClick={() => handleFormTypeChange("option1")}
+                      onClick={() => navigate("/PsychologicalForm")}
                     >
                       Psychodiagnostic Report
                     </button>

@@ -27,14 +27,14 @@ const Menu = () => {
           color: "white",
         }}
       >
-        Hospital Management system{" "}
+        Ravi Neuro - Psychiatry Centre{" "}
       </a>
       <button
         className="btn btn-link btn-sm order-1 order-lg-0"
         id="sidebarToggle"
         href="#"
       >
-        <i className="fas fa-bars"></i>
+        {/* <i className="fas fa-bars"></i> */}
       </button>
 
       <form className="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
