@@ -7,9 +7,9 @@ import Menu from "./Menu";
 // Check if the current path is active
 const isActive = (location, path) => {
   if (location.pathname === path) {
-    return { color: "#ff9900" };
+    return { color: "#ff9900", fontFamily: "Roboto sans-serif" };
   } else {
-    return { color: "#ffffff" };
+    return { color: "#ffffff", fontFamily: "Roboto sans-serif" };
   }
 };
 
@@ -20,10 +20,26 @@ const Layout = ({ title, children }) => {
 
   const adminLinks = () => {
     return (
-      <Fragment>
-        <div className="sb-sidenav-menu-heading">Core</div>
+      <Fragment
+        style={{
+          fontFamily: "Roboto sans-serif",
+        }}
+      >
+        <div
+          className="sb-sidenav-menu-heading"
+          style={{
+            fontFamily: "Roboto sans-serif",
+          }}
+        >
+          Core
+        </div>
         <Link className="nav-link" style={isActive(location, "/")} to="/">
-          <div className="sb-nav-link-icon">
+          <div
+            className="sb-nav-link-icon"
+            style={{
+              fontFamily: "Roboto sans-serif",
+            }}
+          >
             <i className="fas fa-tachometer-alt" />
           </div>
           Dashboard
@@ -34,7 +50,12 @@ const Layout = ({ title, children }) => {
           style={isActive(location, `/profile/${userInfo._id}`)}
           to={`/profile/${userInfo._id}`}
         >
-          <div className="sb-nav-link-icon">
+          <div
+            className="sb-nav-link-icon"
+            style={{
+              fontFamily: "Roboto sans-serif",
+            }}
+          >
             <i className="bi bi-person-badge-fill" />
           </div>
           Update Profile
@@ -45,7 +66,12 @@ const Layout = ({ title, children }) => {
           style={isActive(location, "/calendar")}
           to="/calendar"
         >
-          <div className="sb-nav-link-icon">
+          <div
+            className="sb-nav-link-icon"
+            style={{
+              fontFamily: "Roboto sans-serif",
+            }}
+          >
             <i className="bi bi-people" />
           </div>
           Calendar
@@ -722,7 +748,14 @@ const Layout = ({ title, children }) => {
         <div id="layoutSidenav_content">
           <main>
             <div className="container-fluid">
-              <h1 className="mt-3">{title}</h1>
+              <h1
+                className="mt-3"
+                style={{
+                  fontFamily: "Roboto sans-serif",
+                }}
+              >
+                {title}
+              </h1>
               {children}
             </div>
           </main>

@@ -18,8 +18,15 @@ const Psychodiagnostic = () => {
     progression: "",
     backgroundInfo: [],
     behavioralInfo: [],
-    additionalInfo: "",
+    additionalInfo1: "",
+    additionalInfo2: "",
+    toolsUsed: "",
+    interpretations: "",
+    impression: "",
+    suggestions: "",
   });
+
+  const toolsOptions = ["Tool A", "Tool B", "Tool C"];
 
   const [customEntry, setCustomEntry] = useState("");
 
@@ -384,126 +391,233 @@ const Psychodiagnostic = () => {
     {
       label: "Attention And Concentration",
       subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
         {
-          label: "Place",
+          label: "Digit Span Test (DF & DB)",
+          subSubCategories: [
+            "Easily Aroused And Sustained",
+            "Difficult To Arouse And Sustain",
+            "Easy To Arouse But Not Sustained",
+            "Difficult To Arouse But Sustained",
+          ],
+        },
+        {
+          label: "Serial Subtraction",
+          subSubCategories: [
+            "Easily Aroused And Sustained",
+            "Difficult To Arouse And Sustain",
+            "Easy To Arouse But Not Sustained",
+            "Difficult To Arouse But Sustained",
+          ],
+        },
+        {
+          label: "Backwards From Friday",
+          subSubCategories: [
+            "Easily Aroused And Sustained",
+            "Difficult To Arouse And Sustain",
+            "Easy To Arouse But Not Sustained",
+            "Difficult To Arouse But Sustained",
+          ],
+        },
+        {
+          label: "Months Backwards",
+          subSubCategories: [
+            "Easily Aroused And Sustained",
+            "Difficult To Arouse And Sustain",
+            "Easy To Arouse But Not Sustained",
+            "Difficult To Arouse But Sustained",
+          ],
+        },
+      ],
+    },
+    {
+      label: "Speech",
+      subCategories: [
+        {
+          label: "Intensity",
+          subSubCategories: ["Audible", "Loud", "Soft"],
+        },
+        {
+          label: "Reaction Time",
+          subSubCategories: ["Normal", "Shortened", "Delayed"],
+        },
+        {
+          label: "Speed",
+          subSubCategories: [
+            "Normal",
+            "Very Slow",
+            "Rapid",
+            "Pressure Of Speech",
+          ],
+        },
+        {
+          label: "Ease",
+          subSubCategories: [
+            "Spontaneous",
+            "Hesitant",
+            "Mute",
+            "Slurring",
+            "Sluttering",
+            "Whispering",
+            "Muttering",
+            "Speaks Only When Questioned",
+          ],
+        },
+        {
+          label: "Relevance",
+          subSubCategories: ["Relevant", "Irrelevant"],
+        },
+        {
+          label: "Coherant",
+          subSubCategories: ["Coherant", "Incoherant"],
+        },
+        {
+          label: "Goal Directed",
+          subSubCategories: ["Goal-Directed", "Circumstantial", "Tangential"],
+        },
+        {
+          label: "Deviation",
+          subSubCategories: [
+            "Rhyming",
+            "Talking Past The Point",
+            "Clang Associations",
+            "Stereotype",
+            "Preseveration",
+          ],
+        },
+      ],
+    },
+    {
+      label: "Memory",
+      subCategories: [
+        {
+          label: "Immediate",
           subSubCategories: ["Impaired", "Partial", "Intact"],
         },
         {
-          label: "Person",
+          label: "Recent",
           subSubCategories: ["Impaired", "Partial", "Intact"],
         },
         {
-          label: "Sense Of Passage Of Time",
+          label: "Remote",
           subSubCategories: ["Impaired", "Partial", "Intact"],
         },
       ],
     },
     {
-      label: "Orientation",
+      label: "Thaught",
       subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
         {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Stream",
+          subSubCategories: [
+            "Flight Of Ideas",
+            "Prolixity",
+            "Retardation",
+            "Preseverati",
+          ],
         },
         {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Form",
+          subSubCategories: [
+            "Loosening Of Associations",
+            "Illogical Thinking",
+            "Derailment",
+            "Desultory",
+            "Drivelling",
+            "Neologism",
+            "Word-Salad",
+            "Overinclusion",
+            "Condensation",
+            "Circumstantiality",
+            "Tangentiality",
+            "Poverty Of Thaught",
+          ],
         },
         {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Possesion",
+          subSubCategories: [
+            "Obsession",
+            "Thought Broadcasting",
+            "Thought Insertion",
+            "Thought Withdrawal ",
+          ],
+        },
+        {
+          label: "Content",
+          subSubCategories: [
+            "Preoccupations ( Religious, Somatic, Philosophical, Sexual",
+            "Phobias/Obsessions",
+            "Depressive Thoughts",
+            "Delusions",
+            "Perceptual Disturbances (Illusions, Hallucination)",
+          ],
         },
       ],
     },
     {
-      label: "Orientation",
+      label: "Intelligences",
       subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
         {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Fund Of Information",
+          subSubCategories: ["Above Average", "Average", "Below Average"],
         },
         {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Calculations",
+          subSubCategories: [
+            "Simple99999verbal",
+            "Complex Verbal",
+            "Money Problems",
+          ],
         },
         {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Abstract Reasoning",
+          subSubCategories: ["Proverbs", "Similarities", "Differences"],
         },
       ],
     },
     {
-      label: "Orientation",
+      label: "Judgement",
       subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
+        { label: "Social", subSubCategories: ["", "", ""] },
         {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Personal",
+          subSubCategories: ["", "", ""],
         },
         {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
-        },
-        {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "Test",
+          subSubCategories: [
+            "Money",
+            "House On Fire",
+            "Child Drowning",
+            "Bribe",
+          ],
         },
       ],
     },
     {
-      label: "Orientation",
+      label: "Insight",
       subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
+        { label: "GradeI", subSubCategories: ["Complete Denial"] },
         {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "GradeII",
+          subSubCategories: ["Acceptance of Symptoms", "Denial Of Illness"],
         },
         {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "GradeIII",
+          subSubCategories: [
+            "Attributions to external factors or unknown organic causes",
+          ],
         },
         {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
-        },
-      ],
-    },
-    {
-      label: "Orientation",
-      subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
-        {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "GradeIV",
+          subSubCategories: ["Unknown Problem In Body"],
         },
         {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "GradeV",
+          subSubCategories: ["Not Applying Knowledge To Future Experiences"],
         },
         {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
-        },
-      ],
-    },
-    {
-      label: "Orientation",
-      subCategories: [
-        { label: "Time", subSubCategories: ["Impaired", "Partial", "Intact"] },
-        {
-          label: "Place",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
-        },
-        {
-          label: "Person",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
-        },
-        {
-          label: "Sense Of Passage Of Time",
-          subSubCategories: ["Impaired", "Partial", "Intact"],
+          label: "GradeVI",
+          subSubCategories: ["True Emotional Insight"],
         },
       ],
     },
@@ -546,15 +660,60 @@ const Psychodiagnostic = () => {
   const handleAdditionalInfoChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
-      additionalInfo: e.target.value,
+      additionalInfo1: e.target.value,
+    }));
+  };
+  const handleAdditionalInfoChange2 = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      additionalInfo2: e.target.value,
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validation for required fields
+    const requiredFields = [
+      "name",
+      "age",
+      "motherTongue",
+      "date",
+      "address",
+      "refByDr",
+      "reasonForReferral",
+      "precipitation",
+      "onset",
+      "course",
+      "progression",
+      "toolsUsed",
+      "interpretations",
+      "impression",
+      "suggestions",
+    ];
+
+    // Check if all required fields are filled
+    const isEmptyField =
+      requiredFields.some((field) => formData[field].trim() === "") ||
+      formData.chiefComplaints.some(
+        (complaint) =>
+          complaint.complaint.trim() === "" || complaint.duration.trim() === ""
+      );
+
+    if (isEmptyField) {
+      alert("Please fill in all required details.");
+      return;
+    }
+
+    // If validation passes, proceed with form submission
+    console.log("Form submitted successfully:", formData);
+  };
+
   return (
-    <form style={styles.form}>
+    <form style={styles.form} onSubmit={handleSubmit}>
       <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Name:
         <input
           type="text"
@@ -565,7 +724,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Age:
         <input
           type="number"
@@ -576,7 +735,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Mother Tongue:
         <input
           type="text"
@@ -587,7 +746,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Date:
         <input
           type="date"
@@ -598,7 +757,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Address:
         <input
           type="text"
@@ -609,7 +768,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Refer By Doctor:
         <input
           type="text"
@@ -620,7 +779,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Reason For Referral:
         <input
           type="text"
@@ -665,7 +824,7 @@ const Psychodiagnostic = () => {
         Add Complaint
       </button>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Precipitation:
         <input
           type="text"
@@ -676,7 +835,7 @@ const Psychodiagnostic = () => {
         />
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Onset:
         <select
           name="onset"
@@ -692,7 +851,7 @@ const Psychodiagnostic = () => {
         </select>
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Course:
         <select
           name="course"
@@ -707,7 +866,7 @@ const Psychodiagnostic = () => {
         </select>
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Progression:
         <select
           name="progression"
@@ -722,7 +881,7 @@ const Psychodiagnostic = () => {
         </select>
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Background Information:
         <div>
           {backgroundOptions.map((option, index) => (
@@ -773,17 +932,17 @@ const Psychodiagnostic = () => {
           ))}
 
           {/* Custom Textarea for manual input */}
-          <label style={styles.label}>Additional Information:</label>
+          <label style={styles.labels}>Additional Information:</label>
           <textarea
             style={styles.textarea}
             placeholder="Enter any other relevant information here..."
-            value={formData.additionalInfo}
+            value={formData.additionalInfo1}
             onChange={handleAdditionalInfoChange}
           ></textarea>
         </div>
       </label>
 
-      <label style={styles.label}>
+      <label style={styles.labels}>
         Behavioral Information:
         <div>
           {behavioralOptions.map((option, index) => (
@@ -836,7 +995,64 @@ const Psychodiagnostic = () => {
               ))}
             </div>
           ))}
+          <label style={styles.labels}>Additional Information:</label>
+          <textarea
+            style={styles.textarea}
+            placeholder="Enter any other relevant information here..."
+            value={formData.additionalInfo2}
+            onChange={handleAdditionalInfoChange2}
+          ></textarea>
         </div>
+      </label>
+
+      <label style={styles.label}>
+        Tools Used:
+        <select
+          name="toolsUsed"
+          style={styles.dropdown}
+          value={formData.toolsUsed}
+          onChange={handleChange}
+        >
+          <option value="">Select a tool</option>
+          {toolsOptions.map((tool, index) => (
+            <option key={index} value={tool}>
+              {tool}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label style={styles.label}>
+        Interpretations:
+        <textarea
+          name="interpretations"
+          style={styles.textarea}
+          rows="5"
+          value={formData.interpretations}
+          onChange={handleChange}
+        ></textarea>
+      </label>
+
+      <label style={styles.label}>
+        Impression:
+        <textarea
+          name="impression"
+          style={styles.textarea}
+          rows="5"
+          value={formData.impression}
+          onChange={handleChange}
+        ></textarea>
+      </label>
+
+      <label style={styles.label}>
+        Suggestions:
+        <textarea
+          name="suggestions"
+          style={styles.textarea}
+          rows="5"
+          value={formData.suggestions}
+          onChange={handleChange}
+        ></textarea>
       </label>
 
       <button type="submit" style={styles.submitButton}>
@@ -865,7 +1081,13 @@ const styles = {
   },
   label: {
     fontSize: "16px",
-    fontWeight: "500",
+    fontWeight: "600",
+    marginBottom: "5px",
+    color: "#333",
+  },
+  labels: {
+    fontSize: "20px",
+    fontWeight: "600",
     marginBottom: "5px",
     color: "#333",
   },

@@ -39,12 +39,14 @@ const ListCatTest = ({ history }) => {
     borderSpacing: "0 10px",
     margin: "20px 0",
     borderRadius: "8px",
+    fontFamily: "Roboto sans-serif",
   };
 
   const theadStyles = {
     backgroundColor: "#f8f9fa",
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: "Roboto sans-serif",
   };
 
   const rowStyles = {
@@ -52,11 +54,13 @@ const ListCatTest = ({ history }) => {
     borderBottom: "1px solid #dee2e6",
     transition: "background-color 0.3s",
     textAlign: "center",
+    fontFamily: "Roboto sans-serif",
   };
 
   const emailStyles = {
     fontStyle: "italic",
     color: "#495057",
+    fontFamily: "Roboto sans-serif",
   };
 
   const buttonStyles = {
@@ -64,6 +68,7 @@ const ListCatTest = ({ history }) => {
     padding: "3px 10px",
     fontSize: "12px",
     fontWeight: "bold",
+    fontFamily: "Roboto sans-serif",
   };
 
   const iconStyles = {
@@ -80,6 +85,7 @@ const ListCatTest = ({ history }) => {
     height: "100px",
     margin: "0 auto",
     fontWeight: "bold",
+    fontFamily: "Roboto sans-serif",
   };
 
   const showError = () => (
@@ -95,7 +101,14 @@ const ListCatTest = ({ history }) => {
     loading && (
       <div className="d-flex justify-content-center">
         <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
+          <span
+            className="sr-only"
+            style={{
+              fontFamily: "Roboto sans-serif",
+            }}
+          >
+            Loading...
+          </span>
         </div>
       </div>
     );

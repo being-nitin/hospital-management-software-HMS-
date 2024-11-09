@@ -62,12 +62,14 @@ const ListVendors = ({ history }) => {
     borderSpacing: "0 10px",
     margin: "20px 0",
     borderRadius: "8px",
+    fontFamily: "Roboto sans-serif",
   };
 
   const theadStyles = {
     backgroundColor: "#f8f9fa",
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: "Roboto sans-serif",
   };
 
   const rowStyles = {
@@ -75,11 +77,13 @@ const ListVendors = ({ history }) => {
     borderBottom: "1px solid #dee2e6",
     transition: "background-color 0.3s",
     textAlign: "center",
+    fontFamily: "Roboto sans-serif",
   };
 
   const emailStyles = {
     fontStyle: "italic",
     color: "#495057",
+    fontFamily: "Roboto sans-serif",
   };
 
   const buttonStyles = {
@@ -87,6 +91,7 @@ const ListVendors = ({ history }) => {
     padding: "3px 10px",
     fontSize: "12px",
     fontWeight: "bold",
+    fontFamily: "Roboto sans-serif",
   };
 
   const iconStyles = {
@@ -103,6 +108,7 @@ const ListVendors = ({ history }) => {
     height: "100px", // Optional: Adjust height as needed for vertical centering
     margin: "0 auto",
     fontWeight: "bold",
+    fontFamily: "Roboto sans-serif",
   };
 
   const showLoading = () =>
