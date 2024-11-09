@@ -10141,7 +10141,7 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 .sb-topnav.navbar-light #sidebarToggle {
-    color: #212529;
+    background-color: #1d2869;
 }
 
 .sb-sidenav {
@@ -10149,13 +10149,18 @@ body {
     flex-direction: column;
     height: 100%;
     flex-wrap: nowrap;
+    background-color: #1d2869;
+    
 }
 .sb-sidenav .sb-sidenav-menu {
     flex-grow: 1;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav {
     flex-direction: column;
     flex-wrap: nowrap;
+    background-color: #1d2869;
 }
 .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-heading {
     padding: 1.75rem 1rem 0.75rem;
@@ -10174,22 +10179,31 @@ body {
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
     font-size: 0.9rem;
+    background-color: #1d2869;
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {
     display: inline-block;
     margin-left: auto;
     transition: transform 0.15s ease;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link.collapsed .sb-sidenav-collapse-arrow {
     transform: rotate(-90deg);
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
     margin-left: 1.5rem;
     flex-direction: column;
+    background-color: #1d2869;
+
 }
 .sb-sidenav .sb-sidenav-footer {
     padding: 0.75rem;
     flex-shrink: 0;
+    background-color: #1d2869;
+
 }
 
 .sb-sidenav-dark {

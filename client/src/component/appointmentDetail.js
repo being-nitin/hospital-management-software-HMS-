@@ -88,8 +88,13 @@ const AppointmentDetail = () => {
         return result;
       }, {}),
     };
-    dispatch(updateVacApp({ _id: appointment._id, pschological : { ...form1Data , hamA : submittedData} }));
-    dispatch(detailsVacApp(id))
+    dispatch(
+      updateVacApp({
+        _id: appointment._id,
+        pschological: { ...form1Data, hamA: submittedData },
+      })
+    );
+    dispatch(detailsVacApp(id));
     closeModal(); // Close modal after submit
   };
 
@@ -100,7 +105,6 @@ const AppointmentDetail = () => {
       return { ...prevData, fields: updatedFields };
     });
   };
-
 
   const handleForm2Submit = (e) => {
     e.preventDefault();
@@ -113,8 +117,13 @@ const AppointmentDetail = () => {
       }, {}),
     };
 
-    dispatch(updateVacApp({ _id: appointment._id, pschological : { ...appointment.pschological ,hamA : submittedData } }));
-    dispatch(detailsVacApp(id))
+    dispatch(
+      updateVacApp({
+        _id: appointment._id,
+        pschological: { ...appointment.pschological, hamA: submittedData },
+      })
+    );
+    dispatch(detailsVacApp(id));
     closeModal(); // Close modal after submit
   };
 
@@ -134,7 +143,6 @@ const AppointmentDetail = () => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
       dispatch(listMedicines());
-    
     } else {
       navigate("/signin");
     }
@@ -322,7 +330,7 @@ const AppointmentDetail = () => {
                   <div style={styles.buttonContainer}>
                     <button
                       style={styles.button}
-                      onClick={() => handleFormTypeChange("option1")}
+                      onClick={() => navigate("/PsychologicalForm")}
                     >
                       Psychodiagnostic Report
                     </button>
@@ -354,7 +362,11 @@ const AppointmentDetail = () => {
                               <input
                                 type="text"
                                 name="name"
-                                value={form1Data.name}
+                                value={
+                                  appointment?.patient?.firstName +
+                                  " " +
+                                  appointment?.patient?.lastName
+                                }
                                 onChange={handleForm1Change}
                                 style={styles.input}
                               />
@@ -364,7 +376,7 @@ const AppointmentDetail = () => {
                               <input
                                 type="number"
                                 name="age"
-                                value={form1Data.age}
+                                value={appointment?.patient?.age}
                                 onChange={handleForm1Change}
                                 style={styles.input}
                               />
@@ -394,7 +406,7 @@ const AppointmentDetail = () => {
                               <input
                                 type="date"
                                 name="date"
-                                value={form1Data.date}
+                                value={appointment?.date?.toLocaleString()}
                                 onChange={handleForm1Change}
                                 style={styles.input}
                               />
@@ -876,7 +888,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    zIndex : 100
+    zIndex: 100,
   },
   modal: {
     backgroundColor: "#fff",
