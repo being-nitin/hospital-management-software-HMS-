@@ -330,13 +330,15 @@ const AppointmentDetail = () => {
                   <div style={styles.buttonContainer}>
                     <button
                       style={styles.button}
-                      onClick={() => navigate(`/PsychologicalForm/${appointment?._id}`)}
+                      onClick={() =>
+                        navigate(`/PsychologicalForm/${appointment?._id}`)
+                      }
                     >
                       Psychodiagnostic Report
                     </button>
                     <button
                       style={styles.button}
-                      onClick={() => handleFormTypeChange("option2")}
+                      onClick={() => navigate(`/HamiltonForm`)}
                     >
                       Hamilton Anxiety Rating Scale (HAM-A)
                     </button>
