@@ -330,7 +330,7 @@ const AppointmentDetail = () => {
                   <div style={styles.buttonContainer}>
                     <button
                       style={styles.button}
-                      onClick={() => navigate("/PsychologicalForm")}
+                      onClick={() => navigate(`/PsychologicalForm/${appointment?._id}`)}
                     >
                       Psychodiagnostic Report
                     </button>

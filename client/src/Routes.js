@@ -129,7 +129,7 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
-          <Route path="/PsychologicalForm" element={<Psychodiagnostic />} />
+          <Route path="/PsychologicalForm/:id" element={<Psychodiagnostic />} />
           <Route path="/list-designate" element={<ListDesignate />} />
           <Route path="/list-expenses" element={<ListExpenses />} />
           <Route path="/list-specialize" element={<ListSpecialize />} />

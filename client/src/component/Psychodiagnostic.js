@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
+import { useParams , useNavigate} from "react-router-dom";
 import { Dropdown, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
+import {detailsVacApp,
+updateVacApp,
+} from "../actions/vaccineAppointmentActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Psychodiagnostic = () => {
   const [formData, setFormData] = useState({
@@ -25,11 +30,14 @@ const Psychodiagnostic = () => {
     impression: "",
     suggestions: "",
   });
+  const [existingData , setExistingData] = useState(null)
 
   const toolsOptions = ["Tool A", "Tool B", "Tool C"];
 
   const [customEntry, setCustomEntry] = useState("");
-
+  const dispatch = useDispatch();
+  const { id } = useParams()
+  const navigate = useNavigate()
   // Handle input change for text and number fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -671,45 +679,42 @@ const Psychodiagnostic = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
+    dispatch(updateVacApp({ _id: appointment._id, psychodiagnostic : formData }));
+    dispatch(detailsVacApp(id));
+  }
 
-    // Validation for required fields
-    const requiredFields = [
-      "name",
-      "age",
-      "motherTongue",
-      "date",
-      "address",
-      "refByDr",
-      "reasonForReferral",
-      "precipitation",
-      "onset",
-      "course",
-      "progression",
-      "toolsUsed",
-      "interpretations",
-      "impression",
-      "suggestions",
-    ];
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+  const {
+    loading,
+    error,
+    appointment: { appointment, pastAppointments } = {},
+  } = vaccineAppList || {};
 
-    // Check if all required fields are filled
-    const isEmptyField =
-      requiredFields.some((field) => formData[field].trim() === "") ||
-      formData.chiefComplaints.some(
-        (complaint) =>
-          complaint.complaint.trim() === "" || complaint.duration.trim() === ""
-      );
-
-    if (isEmptyField) {
-      alert("Please fill in all required details.");
-      return;
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(detailsVacApp(id));
+    } else {
+      navigate("/signin");
     }
+  }, [dispatch, userInfo]);
 
-    // If validation passes, proceed with form submission
-    console.log("Form submitted successfully:", formData);
-  };
+  useEffect(() =>{
+     setExistingData(appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null)
+  },[appointment])
+
+  useEffect(()=>{
+     if(existingData) {
+      setFormData({...existingData})
+     }
+  },[existingData])
+
 
   return (
+    <>
+    <button style={styles.viewButton} onClick={()=> navigate('/psychodiagnosticreport')} >View </button>
     <form style={styles.form} onSubmit={handleSubmit}>
       <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
@@ -1059,6 +1064,7 @@ const Psychodiagnostic = () => {
         Submit
       </button>
     </form>
+    </>
   );
 };
 
@@ -1149,6 +1155,15 @@ const styles = {
   submitButton: {
     padding: "10px 20px",
     backgroundColor: "#28a745",
+    color: "#FFFFFF",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  viewButton: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    margin : "20px",
     color: "#FFFFFF",
     border: "none",
     borderRadius: "5px",

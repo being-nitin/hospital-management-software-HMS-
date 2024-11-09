@@ -34,24 +34,8 @@ const VaccineAppointment = mongoose.Schema(
             type : mongoose.ObjectId,
              ref : 'Prescription'
         }], 
-        pschological : {
-  informant: { type: String },
-  referByDoctor: { type: String },
-  reasonForReferral: { type: String },
-  chiefComplaints: { type: String },
-  precipitation: { type: String },
-  onset: { type: String },
-  course: { type: String },
-  progression: { type: String },
-  background: { type: String },
-  behavioralObservations: { type: String },
-  toolsUsed: { type: String },
-  interpretation: { type: String },
-  impression: { type: String },
-  suggestion: { type: String },
-  hamA: {
-    type : Object
-  }
+        psychodiagnostic :{
+             type : Object
         },
         vitalSigns : {
             type : Object,

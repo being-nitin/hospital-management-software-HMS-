@@ -56,6 +56,7 @@ exports.read = (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
+        console.log(req.body)
         const appointment = await VaccineAppointment.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
