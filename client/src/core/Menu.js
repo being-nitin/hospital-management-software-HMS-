@@ -25,7 +25,11 @@ const Menu = () => {
         href="index.html"
         style={{
           color: "white",
+          fontFamily: "Roboto sans-serif",
         }}
+        // style={{
+        // fontFamily: "Roboto sans-serif",
+        //   }}
       >
         Ravi Neuro - Psychiatry Centre{" "}
       </a>
