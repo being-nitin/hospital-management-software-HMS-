@@ -88,11 +88,12 @@ const AddPatientDetails = ({ history: history1 }) => {
     width: "100%",
     maxWidth: "900px",
     margin: "0 auto",
-    padding: "30px",
+    padding: "15px",
     backgroundColor: "#f9f9f9",
     borderRadius: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    height: "100vh",
+    height: "80vh",
+    fontFamily: "Roboto sans-serif",
   };
 
   const formRowStyles = {
@@ -100,11 +101,13 @@ const AddPatientDetails = ({ history: history1 }) => {
     justifyContent: "space-between",
     flexWrap: "wrap",
     marginBottom: "25px",
+    fontFamily: "Roboto sans-serif",
   };
 
   const formGroupStyles = {
     width: "48%",
     marginBottom: "15px",
+    fontFamily: "Roboto sans-serif",
   };
 
   const labelStyles = {
@@ -123,6 +126,7 @@ const AddPatientDetails = ({ history: history1 }) => {
     borderRadius: "6px",
     backgroundColor: "#fff",
     transition: "border-color 0.2s ease-in-out",
+    fontFamily: "Roboto sans-serif",
   };
 
   const buttonStyles = {
@@ -210,8 +214,8 @@ const AddPatientDetails = ({ history: history1 }) => {
   const patientDetailsForm = () => (
     <div style={formContainerStyles}>
       <form onSubmit={submitHandler}>
-        <div style={formRowStyles}>
-          <div style={formGroupStyles}>
+        <div className="form-row" style={formRowStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Doctor</label>
             <select
               onChange={(e) => setDoctor(e.target.value)}
@@ -230,9 +234,10 @@ const AddPatientDetails = ({ history: history1 }) => {
             </select>
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>First Name</label>
             <input
+              className="form-control py-4"
               type="text"
               style={inputStyles}
               placeholder="First Name"
@@ -241,9 +246,10 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Last Name</label>
             <input
+              className="form-control py-4"
               type="text"
               style={inputStyles}
               placeholder="Last Name"
@@ -255,6 +261,7 @@ const AddPatientDetails = ({ history: history1 }) => {
           <div style={formGroupStyles}>
             <label style={labelStyles}>Patient Number</label>
             <input
+              className="form-control py-4"
               type="text"
               style={inputStyles}
               placeholder="Patient Number"
@@ -263,7 +270,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Registration Date</label>
             <DatePicker
               selected={regDate}
@@ -285,7 +292,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Phone No</label>
             <input
               type="text"
@@ -296,7 +303,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Date of Birth</label>
             <DatePicker
               selected={birthDate}
@@ -306,7 +313,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Guardian</label>
             <input
               type="text"
@@ -317,7 +324,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Relation</label>
             <input
               type="text"
@@ -328,7 +335,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             />
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Gender</label>
             <select
               onChange={(e) => setGender(e.target.value)}
@@ -344,7 +351,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             </select>
           </div>
 
-          <div style={formGroupStyles}>
+          <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Symptoms</label>
             <textarea
               className="form-control"
@@ -367,7 +374,9 @@ const AddPatientDetails = ({ history: history1 }) => {
   return (
     <Layout title="">
       <>
-        <h2 style={{ marginBottom : "100px"}}>Add Patient Details</h2>
+        <h2 style={{ marginBottom: "100px", fontFamily: "Roboto sans-serif" }}>
+          Add Patient Details
+        </h2>
         {showError()}
         {showLoading()}
         {patientDetailsForm()}

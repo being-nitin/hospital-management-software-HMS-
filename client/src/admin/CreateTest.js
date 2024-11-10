@@ -121,7 +121,12 @@ const CreateTest = ({ history }) => {
 
   const TestForm = () => (
     <div style={formContainerStyles}>
-      <form onSubmit={submitHandler}>
+      <form
+        onSubmit={submitHandler}
+        style={{
+          fontFamily: "Roboto sans-serif",
+        }}
+      >
         <div className="form-row">
           <div className="col-md-8">
             <div className="form-group" style={formGroupStyles}>
@@ -251,7 +256,14 @@ const CreateTest = ({ history }) => {
 
   return (
     <Layout title="Category test Form">
-      <h2 className="mb-4">Create Test Result</h2>
+      <h2
+        className="mb-4"
+        style={{
+          fontFamily: "Roboto sans-serif",
+        }}
+      >
+        Create Test Result
+      </h2>
 
       {showLoading()}
       {showError()}

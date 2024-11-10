@@ -980,8 +980,8 @@ const Psychodiagnostic = () => {
           Behavioral Information:
           <div>
             {behavioralOptions.map((option, index) => (
-              <div key={index}>
-                <label>{option.label}</label>
+              <div key={index} style={styles.optionContainer}>
+                <label style={styles.label}>{option.label}</label>
                 <select
                   style={styles.dropdown}
                   onChange={(e) =>
@@ -1001,29 +1001,32 @@ const Psychodiagnostic = () => {
                 </select>
 
                 {option.subCategories.map((sub, subIndex) => (
-                  <div key={subIndex}>
+                  <div key={subIndex} style={styles.subOptionContainer}>
                     {formData.behavioralInfo.some(
                       (item) =>
                         item.category === option.label &&
                         item.subCategory === sub.label
                     ) && (
-                      <select
-                        style={styles.dropdown}
-                        onChange={(e) =>
-                          handleBehaviouralObservation(
-                            option.label,
-                            sub.label,
-                            e.target.value
-                          )
-                        }
-                      >
-                        <option value="">Select Sub-Subcategory</option>
-                        {sub.subSubCategories.map((subSub, subSubIndex) => (
-                          <option key={subSubIndex} value={subSub}>
-                            {subSub}
-                          </option>
-                        ))}
-                      </select>
+                      <>
+                        <label style={styles.subLabel}>{sub.label}</label>
+                        <select
+                          style={styles.dropdown}
+                          onChange={(e) =>
+                            handleBehaviouralObservation(
+                              option.label,
+                              sub.label,
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="">Select Sub-Subcategory</option>
+                          {sub.subSubCategories.map((subSub, subSubIndex) => (
+                            <option key={subSubIndex} value={subSub}>
+                              {subSub}
+                            </option>
+                          ))}
+                        </select>
+                      </>
                     )}
                   </div>
                 ))}
@@ -1108,6 +1111,36 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
     backgroundColor: "#f9f9f9",
   },
+  optionContainer: {
+    marginBottom: "15px",
+  },
+  label: {
+    display: "block",
+    marginBottom: "6px",
+    fontWeight: "600",
+    fontSize: "12px",
+    color: "#333",
+    paddingLeft: "5px",
+  },
+  dropdown: {
+    width: "100%",
+    padding: "8px 10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "10px",
+  },
+  subOptionContainer: {
+    paddingLeft: "20px", // Indent sub-options
+    marginBottom: "10px",
+  },
+  subLabel: {
+    display: "block",
+    marginBottom: "6px",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#555",
+    paddingLeft: "10px",
+  },
   formHeader: {
     fontSize: "22px", // Slightly larger font size
     fontWeight: "bold",
@@ -1121,7 +1154,7 @@ const styles = {
     color: "#333",
   },
   labels: {
-    fontSize: "20px",
+    fontSize: "17px",
     fontWeight: "600",
     marginBottom: "5px",
     color: "#333",

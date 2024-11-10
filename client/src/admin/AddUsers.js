@@ -43,10 +43,13 @@ const AddUsers = ({ history }) => {
     width: "100%",
     maxWidth: "800px",
     margin: "0 auto",
-    padding: "20px",
+    padding: "30px 40px",
     backgroundColor: "#f9f9f9",
     borderRadius: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    fontFamily: "Roboto sans-serif",
   };
 
   const formRowStyles = {
@@ -82,7 +85,7 @@ const AddUsers = ({ history }) => {
     backgroundColor: "#007bff",
     border: "none",
     color: "white",
-    padding: "12px 25px",
+    padding: "6px 12px",
     fontSize: "1rem",
     borderRadius: "20px",
     cursor: "pointer",
@@ -214,7 +217,14 @@ const AddUsers = ({ history }) => {
 
   return (
     <Layout className="container-fluid">
-      <h2 className="mb-4">Add User</h2>
+      <h2
+        className="mb-4"
+        style={{
+          fontFamily: "Roboto sans-serif",
+        }}
+      >
+        Add User
+      </h2>
       {email}
 
       {showError()}

@@ -92,7 +92,7 @@ const Hamilton = () => {
           ))}
         </div>
         <button type="submit" style={styles.submitButton}>
-          Submit Form 2
+          Submit
         </button>
       </form>
     </>
