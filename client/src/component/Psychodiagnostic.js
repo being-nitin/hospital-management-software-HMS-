@@ -712,7 +712,7 @@ const Psychodiagnostic = () => {
 
   useEffect(() => {
     if (existingData) {
-      setFormData({ ...existingData });
+      setFormData({ ...formData , ...existingData });
     }
   }, [existingData]);
 
@@ -723,6 +723,7 @@ const Psychodiagnostic = () => {
     }));
   };
 
+  console.log(formData)
   return (
     <>
     <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment._id}`)} >View </button>
@@ -932,7 +933,7 @@ const Psychodiagnostic = () => {
 
                 {option.subCategories.map((sub, subIndex) => (
                   <div key={subIndex}>
-                    {formData.backgroundInfo.some(
+                    {formData?.backgroundInfo.some(
                       (item) =>
                         item.category === option.label &&
                         item.subCategory === sub.label
