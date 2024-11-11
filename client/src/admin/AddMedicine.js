@@ -134,7 +134,16 @@ const AddMedicine = ({ history: history1 }) => {
     cursor: "pointer",
     transition: "background-color 0.2s ease-in-out",
   };
-
+  const centeredHeading = {
+    display: "flex",
+    justifyContent: "center", // Centers horizontally
+    alignItems: "center", // Centers vertically (if there's height)
+    textAlign: "center",
+    height: "100px", // Optional: Adjust height as needed for vertical centering
+    margin: "0 auto",
+    fontWeight: "bold",
+    fontFamily: "Roboto sans-serif",
+  };
   // Add hover effect for button
   buttonStyles[":hover"] = {
     backgroundColor: "#0056b3",
@@ -341,7 +350,9 @@ const AddMedicine = ({ history: history1 }) => {
   return (
     <Layout title="Category treatment Form">
       <>
-        <h2 className="mb-4">Add Medicine</h2>
+        <h2 className="mb-4" style={centeredHeading}>
+          Add Medicine
+        </h2>
         {showError()}
         {showLoading()}
         {AddMedicineForm()}

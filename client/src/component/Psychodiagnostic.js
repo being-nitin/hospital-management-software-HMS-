@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useParams , useNavigate} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Dropdown, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
-import {detailsVacApp,
-updateVacApp,
+import {
+  detailsVacApp,
+  updateVacApp,
 } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -30,14 +31,14 @@ const Psychodiagnostic = () => {
     impression: "",
     suggestions: "",
   });
-  const [existingData , setExistingData] = useState(null)
+  const [existingData, setExistingData] = useState(null);
 
   const toolsOptions = ["Tool A", "Tool B", "Tool C"];
 
   const [customEntry, setCustomEntry] = useState("");
   const dispatch = useDispatch();
-  const { id } = useParams()
-  const navigate = useNavigate()
+  const { id } = useParams();
+  const navigate = useNavigate();
   // Handle input change for text and number fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -679,10 +680,12 @@ const Psychodiagnostic = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(updateVacApp({ _id: appointment._id, psychodiagnostic : formData }));
+    e.preventDefault();
+    dispatch(
+      updateVacApp({ _id: appointment._id, psychodiagnostic: formData })
+    );
     dispatch(detailsVacApp(id));
-  }
+  };
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -701,369 +704,398 @@ const Psychodiagnostic = () => {
     }
   }, [dispatch, userInfo]);
 
-  useEffect(() =>{
-     setExistingData(appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null)
-  },[appointment])
+  useEffect(() => {
+    setExistingData(
+      appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null
+    );
+  }, [appointment]);
 
-  useEffect(()=>{
-     if(existingData) {
-      setFormData({...existingData})
-     }
-  },[existingData])
+  useEffect(() => {
+    if (existingData) {
+      setFormData({ ...existingData });
+    }
+  }, [existingData]);
 
+  const deleteChiefComplaint = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      chiefComplaints: prevData.chiefComplaints.filter((_, i) => i !== index),
+    }));
+  };
 
   return (
     <>
-    <button style={styles.viewButton} onClick={()=> navigate('/psychodiagnosticreport')} >View </button>
-    <form style={styles.form} onSubmit={handleSubmit}>
-      <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
+      <button
+        style={styles.viewButton}
+        onClick={() => navigate("/psychodiagnosticreport")}
+      >
+        View{" "}
+      </button>
+      <form style={styles.form} onSubmit={handleSubmit}>
+        <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
-      <label style={styles.labels}>
-        Name:
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Age:
-        <input
-          type="number"
-          name="age"
-          value={formData.age}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Mother Tongue:
-        <input
-          type="text"
-          name="motherTongue"
-          value={formData.motherTongue}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Date:
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Address:
-        <input
-          type="text"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Refer By Doctor:
-        <input
-          type="text"
-          name="refByDr"
-          value={formData.refByDr}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <label style={styles.labels}>
-        Reason For Referral:
-        <input
-          type="text"
-          name="reasonForReferral"
-          value={formData.reasonForReferral}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
-
-      <h4>Chief Complaints</h4>
-      {formData.chiefComplaints.map((complaint, index) => (
-        <div key={index} style={styles.chiefComplaintGroup}>
+        <label style={styles.labels}>
+          Name:
           <input
             type="text"
-            value={complaint.complaint}
-            onChange={(e) =>
-              handleChiefComplaintChange(index, "complaint", e.target.value)
-            }
-            placeholder="Chief Complaint"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             style={styles.input}
           />
+        </label>
+
+        <label style={styles.labels}>
+          Age:
+          <input
+            type="number"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Mother Tongue:
+          <input
+            type="text"
+            name="motherTongue"
+            value={formData.motherTongue}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Date:
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Address:
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Refer By Doctor:
+          <input
+            type="text"
+            name="refByDr"
+            value={formData.refByDr}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Reason For Referral:
+          <input
+            type="text"
+            name="reasonForReferral"
+            value={formData.reasonForReferral}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <h4>Chief Complaints</h4>
+        {formData.chiefComplaints.map((complaint, index) => (
+          <div key={index} style={styles.chiefComplaintGroup}>
+            <input
+              type="text"
+              value={complaint.complaint}
+              onChange={(e) =>
+                handleChiefComplaintChange(index, "complaint", e.target.value)
+              }
+              placeholder="Chief Complaint"
+              style={styles.input}
+            />
+            <select
+              value={complaint.duration}
+              onChange={(e) =>
+                handleChiefComplaintChange(index, "duration", e.target.value)
+              }
+              style={styles.select}
+            >
+              <option value="day">Days</option>
+              <option value="week">Weeks</option>
+              <option value="month">Months</option>
+              <option value="year">Years</option>
+            </select>
+            <button
+              type="button"
+              onClick={() => deleteChiefComplaint(index)}
+              style={styles.deleteButton}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addChiefComplaint}
+          style={styles.addButton}
+        >
+          Add Complaint
+        </button>
+
+        <label style={styles.labels}>
+          Precipitation:
+          <input
+            type="text"
+            name="precipitation"
+            value={formData.precipitation}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+
+        <label style={styles.labels}>
+          Onset:
           <select
-            value={complaint.duration}
+            name="onset"
+            value={formData.onset}
+            onChange={(e) => handleDropdownChange("onset", e.target.value)}
+            style={styles.select}
+          >
+            <option value="">Select Onset</option>
+            <option value="acute">Acute</option>
+            <option value="subacute">Subacute</option>
+            <option value="abrupt">Abrupt</option>
+            <option value="insidious">Insidious</option>
+          </select>
+        </label>
+
+        <label style={styles.labels}>
+          Course:
+          <select
+            name="course"
+            value={formData.course}
+            onChange={(e) => handleDropdownChange("course", e.target.value)}
+            style={styles.select}
+          >
+            <option value="">Select Course</option>
+            <option value="continuous">Continuous</option>
+            <option value="fluctuating">Fluctuating</option>
+            <option value="episodic">Episodic</option>
+          </select>
+        </label>
+
+        <label style={styles.labels}>
+          Progression:
+          <select
+            name="progression"
+            value={formData.progression}
             onChange={(e) =>
-              handleChiefComplaintChange(index, "duration", e.target.value)
+              handleDropdownChange("progression", e.target.value)
             }
             style={styles.select}
           >
-            <option value="day">Days</option>
-            <option value="week">Weeks</option>
-            <option value="month">Months</option>
-            <option value="year">Years</option>
+            <option value="">Select Progression</option>
+            <option value="deteriorating">Deteriorating</option>
+            <option value="constant">Constant</option>
+            <option value="improving">Improving</option>
           </select>
-        </div>
-      ))}
-      <button
-        type="button"
-        onClick={addChiefComplaint}
-        style={styles.addButton}
-      >
-        Add Complaint
-      </button>
+        </label>
 
-      <label style={styles.labels}>
-        Precipitation:
-        <input
-          type="text"
-          name="precipitation"
-          value={formData.precipitation}
-          onChange={handleChange}
-          style={styles.input}
-        />
-      </label>
+        <label style={styles.labels}>
+          Background Information:
+          <div>
+            {backgroundOptions.map((option, index) => (
+              <div key={index}>
+                <label>{option.label}</label>
+                <select
+                  style={styles.dropdown}
+                  onChange={(e) =>
+                    handleBackgroundSelection(
+                      option.label,
+                      e.target.value,
+                      null
+                    )
+                  }
+                >
+                  <option value="">Select Subcategory</option>
+                  {option.subCategories.map((sub, subIndex) => (
+                    <option key={subIndex} value={sub.label}>
+                      {sub.label}
+                    </option>
+                  ))}
+                </select>
 
-      <label style={styles.labels}>
-        Onset:
-        <select
-          name="onset"
-          value={formData.onset}
-          onChange={(e) => handleDropdownChange("onset", e.target.value)}
-          style={styles.select}
-        >
-          <option value="">Select Onset</option>
-          <option value="acute">Acute</option>
-          <option value="subacute">Subacute</option>
-          <option value="abrupt">Abrupt</option>
-          <option value="insidious">Insidious</option>
-        </select>
-      </label>
-
-      <label style={styles.labels}>
-        Course:
-        <select
-          name="course"
-          value={formData.course}
-          onChange={(e) => handleDropdownChange("course", e.target.value)}
-          style={styles.select}
-        >
-          <option value="">Select Course</option>
-          <option value="continuous">Continuous</option>
-          <option value="fluctuating">Fluctuating</option>
-          <option value="episodic">Episodic</option>
-        </select>
-      </label>
-
-      <label style={styles.labels}>
-        Progression:
-        <select
-          name="progression"
-          value={formData.progression}
-          onChange={(e) => handleDropdownChange("progression", e.target.value)}
-          style={styles.select}
-        >
-          <option value="">Select Progression</option>
-          <option value="deteriorating">Deteriorating</option>
-          <option value="constant">Constant</option>
-          <option value="improving">Improving</option>
-        </select>
-      </label>
-
-      <label style={styles.labels}>
-        Background Information:
-        <div>
-          {backgroundOptions.map((option, index) => (
-            <div key={index}>
-              <label>{option.label}</label>
-              <select
-                style={styles.dropdown}
-                onChange={(e) =>
-                  handleBackgroundSelection(option.label, e.target.value, null)
-                }
-              >
-                <option value="">Select Subcategory</option>
                 {option.subCategories.map((sub, subIndex) => (
-                  <option key={subIndex} value={sub.label}>
-                    {sub.label}
-                  </option>
+                  <div key={subIndex}>
+                    {formData.backgroundInfo.some(
+                      (item) =>
+                        item.category === option.label &&
+                        item.subCategory === sub.label
+                    ) && (
+                      <select
+                        style={styles.dropdown}
+                        onChange={(e) =>
+                          handleBackgroundSelection(
+                            option.label,
+                            sub.label,
+                            e.target.value
+                          )
+                        }
+                      >
+                        <option value="">Select Sub-Subcategory</option>
+                        {sub.subSubCategories.map((subSub, subSubIndex) => (
+                          <option key={subSubIndex} value={subSub}>
+                            {subSub}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
                 ))}
-              </select>
+              </div>
+            ))}
 
-              {option.subCategories.map((sub, subIndex) => (
-                <div key={subIndex}>
-                  {formData.backgroundInfo.some(
-                    (item) =>
-                      item.category === option.label &&
-                      item.subCategory === sub.label
-                  ) && (
-                    <select
-                      style={styles.dropdown}
-                      onChange={(e) =>
-                        handleBackgroundSelection(
-                          option.label,
-                          sub.label,
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="">Select Sub-Subcategory</option>
-                      {sub.subSubCategories.map((subSub, subSubIndex) => (
-                        <option key={subSubIndex} value={subSub}>
-                          {subSub}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+            {/* Custom Textarea for manual input */}
+            <label style={styles.labels}>Additional Information:</label>
+            <textarea
+              style={styles.textarea}
+              placeholder="Enter any other relevant information here..."
+              value={formData.additionalInfo1}
+              onChange={handleAdditionalInfoChange}
+            ></textarea>
+          </div>
+        </label>
 
-          {/* Custom Textarea for manual input */}
-          <label style={styles.labels}>Additional Information:</label>
-          <textarea
-            style={styles.textarea}
-            placeholder="Enter any other relevant information here..."
-            value={formData.additionalInfo1}
-            onChange={handleAdditionalInfoChange}
-          ></textarea>
-        </div>
-      </label>
+        <label style={styles.labels}>
+          Behavioral Information:
+          <div>
+            {behavioralOptions.map((option, index) => (
+              <div key={index} style={styles.optionContainer}>
+                <label style={styles.label}>{option.label}</label>
+                <select
+                  style={styles.dropdown}
+                  onChange={(e) =>
+                    handleBehaviouralObservation(
+                      option.label,
+                      e.target.value,
+                      null
+                    )
+                  }
+                >
+                  <option value="">Select Subcategory</option>
+                  {option.subCategories.map((sub, subIndex) => (
+                    <option key={subIndex} value={sub.label}>
+                      {sub.label}
+                    </option>
+                  ))}
+                </select>
 
-      <label style={styles.labels}>
-        Behavioral Information:
-        <div>
-          {behavioralOptions.map((option, index) => (
-            <div key={index}>
-              <label>{option.label}</label>
-              <select
-                style={styles.dropdown}
-                onChange={(e) =>
-                  handleBehaviouralObservation(
-                    option.label,
-                    e.target.value,
-                    null
-                  )
-                }
-              >
-                <option value="">Select Subcategory</option>
                 {option.subCategories.map((sub, subIndex) => (
-                  <option key={subIndex} value={sub.label}>
-                    {sub.label}
-                  </option>
+                  <div key={subIndex} style={styles.subOptionContainer}>
+                    {formData.behavioralInfo.some(
+                      (item) =>
+                        item.category === option.label &&
+                        item.subCategory === sub.label
+                    ) && (
+                      <>
+                        <label style={styles.subLabel}>{sub.label}</label>
+                        <select
+                          style={styles.dropdown}
+                          onChange={(e) =>
+                            handleBehaviouralObservation(
+                              option.label,
+                              sub.label,
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="">Select Sub-Subcategory</option>
+                          {sub.subSubCategories.map((subSub, subSubIndex) => (
+                            <option key={subSubIndex} value={subSub}>
+                              {subSub}
+                            </option>
+                          ))}
+                        </select>
+                      </>
+                    )}
+                  </div>
                 ))}
-              </select>
+              </div>
+            ))}
+            <label style={styles.labels}>Additional Information:</label>
+            <textarea
+              style={styles.textarea}
+              placeholder="Enter any other relevant information here..."
+              value={formData.additionalInfo2}
+              onChange={handleAdditionalInfoChange2}
+            ></textarea>
+          </div>
+        </label>
 
-              {option.subCategories.map((sub, subIndex) => (
-                <div key={subIndex}>
-                  {formData.behavioralInfo.some(
-                    (item) =>
-                      item.category === option.label &&
-                      item.subCategory === sub.label
-                  ) && (
-                    <select
-                      style={styles.dropdown}
-                      onChange={(e) =>
-                        handleBehaviouralObservation(
-                          option.label,
-                          sub.label,
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="">Select Sub-Subcategory</option>
-                      {sub.subSubCategories.map((subSub, subSubIndex) => (
-                        <option key={subSubIndex} value={subSub}>
-                          {subSub}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-          <label style={styles.labels}>Additional Information:</label>
+        <label style={styles.label}>
+          Tools Used:
+          <select
+            name="toolsUsed"
+            style={styles.dropdown}
+            value={formData.toolsUsed}
+            onChange={handleChange}
+          >
+            <option value="">Select a tool</option>
+            {toolsOptions.map((tool, index) => (
+              <option key={index} value={tool}>
+                {tool}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label style={styles.label}>
+          Interpretations:
           <textarea
+            name="interpretations"
             style={styles.textarea}
-            placeholder="Enter any other relevant information here..."
-            value={formData.additionalInfo2}
-            onChange={handleAdditionalInfoChange2}
+            rows="5"
+            value={formData.interpretations}
+            onChange={handleChange}
           ></textarea>
-        </div>
-      </label>
+        </label>
 
-      <label style={styles.label}>
-        Tools Used:
-        <select
-          name="toolsUsed"
-          style={styles.dropdown}
-          value={formData.toolsUsed}
-          onChange={handleChange}
-        >
-          <option value="">Select a tool</option>
-          {toolsOptions.map((tool, index) => (
-            <option key={index} value={tool}>
-              {tool}
-            </option>
-          ))}
-        </select>
-      </label>
+        <label style={styles.label}>
+          Impression:
+          <textarea
+            name="impression"
+            style={styles.textarea}
+            rows="5"
+            value={formData.impression}
+            onChange={handleChange}
+          ></textarea>
+        </label>
 
-      <label style={styles.label}>
-        Interpretations:
-        <textarea
-          name="interpretations"
-          style={styles.textarea}
-          rows="5"
-          value={formData.interpretations}
-          onChange={handleChange}
-        ></textarea>
-      </label>
+        <label style={styles.label}>
+          Suggestions:
+          <textarea
+            name="suggestions"
+            style={styles.textarea}
+            rows="5"
+            value={formData.suggestions}
+            onChange={handleChange}
+          ></textarea>
+        </label>
 
-      <label style={styles.label}>
-        Impression:
-        <textarea
-          name="impression"
-          style={styles.textarea}
-          rows="5"
-          value={formData.impression}
-          onChange={handleChange}
-        ></textarea>
-      </label>
-
-      <label style={styles.label}>
-        Suggestions:
-        <textarea
-          name="suggestions"
-          style={styles.textarea}
-          rows="5"
-          value={formData.suggestions}
-          onChange={handleChange}
-        ></textarea>
-      </label>
-
-      <button type="submit" style={styles.submitButton}>
-        Submit
-      </button>
-    </form>
+        <button type="submit" style={styles.submitButton}>
+          Submit
+        </button>
+      </form>
     </>
   );
 };
@@ -1079,6 +1111,36 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
     backgroundColor: "#f9f9f9",
   },
+  optionContainer: {
+    marginBottom: "15px",
+  },
+  label: {
+    display: "block",
+    marginBottom: "6px",
+    fontWeight: "600",
+    fontSize: "12px",
+    color: "#333",
+    paddingLeft: "5px",
+  },
+  dropdown: {
+    width: "100%",
+    padding: "8px 10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    marginBottom: "10px",
+  },
+  subOptionContainer: {
+    paddingLeft: "20px", // Indent sub-options
+    marginBottom: "10px",
+  },
+  subLabel: {
+    display: "block",
+    marginBottom: "6px",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#555",
+    paddingLeft: "10px",
+  },
   formHeader: {
     fontSize: "22px", // Slightly larger font size
     fontWeight: "bold",
@@ -1092,7 +1154,7 @@ const styles = {
     color: "#333",
   },
   labels: {
-    fontSize: "20px",
+    fontSize: "17px",
     fontWeight: "600",
     marginBottom: "5px",
     color: "#333",
@@ -1163,11 +1225,21 @@ const styles = {
   viewButton: {
     padding: "10px 20px",
     backgroundColor: "#28a745",
-    margin : "20px",
+    margin: "20px",
     color: "#FFFFFF",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+  },
+  deleteButton: {
+    padding: "8px 12px",
+    backgroundColor: "#dc3545", // Red color for delete button
+    color: "#FFFFFF",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginTop: "10px",
+    marginLeft: "10px",
   },
 };
 export default Psychodiagnostic;

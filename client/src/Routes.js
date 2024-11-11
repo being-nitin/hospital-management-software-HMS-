@@ -67,6 +67,7 @@ import AppointmentDetail from "./component/appointmentDetail";
 import PrescriptionForm from "./component/prescriptionForm";
 import TimelineCalendar from "./component/timeline";
 import Psychodiagnostic from "./component/Psychodiagnostic";
+import Hamilton from "./component/Hamilton";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -129,6 +130,7 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
+          <Route path="/HamiltonForm" element={<Hamilton />} />
           <Route path="/PsychologicalForm/:id" element={<Psychodiagnostic />} />
           <Route path="/list-designate" element={<ListDesignate />} />
           <Route path="/list-expenses" element={<ListExpenses />} />

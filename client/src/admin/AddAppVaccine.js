@@ -107,7 +107,35 @@ const AddAppVaccine = () => {
     borderRadius: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
   };
-
+  const formRow = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+    backgroundColor: "#f9f9f9",
+    borderRadius: "10px",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
+    maxWidth: "600px",
+    margin: "20px auto",
+  };
+  const formGroup = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    width: "100%",
+  };
+  const timePickerInput = {
+    width: "100%",
+    padding: "10px",
+    fontSize: "16px",
+    color: "#333",
+    backgroundColor: "#fff",
+    border: "1px solid #ddd",
+    borderRadius: "8px",
+    transition: "all 0.3s ease",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    cursor: "pointer",
+  };
   const formRowStyles = {
     display: "flex",
     justifyContent: "space-between",
@@ -164,8 +192,8 @@ const AddAppVaccine = () => {
   console.log({ patient, doctor, date, time, status, day, remarks });
 
   const AddAppointmentForm = () => (
-    <div className="form-group col-md-12">
-      <form onSubmit={submitHandler} style={formContainerStyles}>
+    <div className="form-group col-md-12" style={formContainerStyles}>
+      <form onSubmit={submitHandler}>
         <div className="form-row" style={formRowStyles}>
           <div className="form-group col-md-4">
             <label style={labelStyles}>Patient</label>
@@ -212,7 +240,7 @@ const AddAppVaccine = () => {
               onChange={setTime}
               value={time}
               className="class1 class2"
-              style={inputStyles}
+              // style={inputStyles}
             />
           </div>
           <div className="form-group col-md-6">
