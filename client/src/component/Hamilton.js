@@ -9,13 +9,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 const Hamilton = () => {
-  const dispatch = useDispatch();
+  
   const [form2Data, setForm2Data] = useState({
-    age: "",
-    experience: "",
     fields: Array(14).fill(null), // initialize empty values for 14 fields
   });
-
+  
+  const [existingData , setExistingData] = useState(null)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } =useParams()
   const fieldNames = [
     "Anxious Mood",
     "Tension",
@@ -33,16 +35,34 @@ const Hamilton = () => {
     "Behaviour At Interview",
   ];
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+  const {
+    loading,
+    error,
+    appointment: { appointment, pastAppointments } = {},
+  } = vaccineAppList || {};
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(detailsVacApp(id));
+    } else {
+      navigate("/signin");
+    }
+  }, [dispatch, userInfo]);
+
   const handleForm2Submit = (e) => {
     e.preventDefault();
-    const submittedData = {
-      age: form2Data.age,
-      experience: form2Data.experience,
-      selectedFields: fieldNames.reduce((result, fieldName, index) => {
+    console.log(form2Data)
+    const submittedData = fieldNames.reduce((result, fieldName, index) => {
         result[fieldName] = form2Data.fields[index];
         return result;
-      }, {}),
-    };
+      }, {})
+    dispatch(
+      updateVacApp({ _id: appointment._id, hamA : submittedData})
+    );
+    dispatch(detailsVacApp(id));
   };
 
   const handleRadioChange = (index, value) => {
@@ -52,8 +72,25 @@ const Hamilton = () => {
       return { ...prevData, fields: updatedFields };
     });
   };
+
+  useEffect(() => {
+    setExistingData(
+      appointment?.hamA ? appointment?.hamA : null
+    );
+  }, [appointment]);
+
+  useEffect(() => {
+    if (existingData) {
+      console.log(form2Data)
+      console.log(Object.values(existingData))
+      setForm2Data({ fields : Object.values(existingData) } );
+    }
+  }, [existingData]);
+
   return (
     <>
+     <button style={styles.viewButton} onClick={()=> navigate(`/viewHamiltomForm/${appointment._id}`)} >View </button>
+
       <form onSubmit={handleForm2Submit} style={styles.form}>
         <h3 style={styles.formHeader}>Hamilton Anxiety Rating Scale (HAM-A)</h3>
         <p style={styles.formDescription}>
@@ -176,6 +213,15 @@ const styles = {
     fontWeight: "600",
     cursor: "pointer",
     transition: "background-color 0.3s",
+  },
+  viewButton: {
+    padding: "10px 20px",
+    backgroundColor: "#28a745",
+    margin: "20px",
+    color: "#FFFFFF",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
   },
 };
 export default Hamilton;

@@ -725,14 +725,9 @@ const Psychodiagnostic = () => {
 
   return (
     <>
-      <button
-        style={styles.viewButton}
-        onClick={() => navigate("/psychodiagnosticreport")}
-      >
-        View{" "}
-      </button>
-      <form style={styles.form} onSubmit={handleSubmit}>
-        <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
+    <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment._id}`)} >View </button>
+    <form style={styles.form} onSubmit={handleSubmit}>
+      <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
         <label style={styles.labels}>
           Name:

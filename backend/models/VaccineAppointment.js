@@ -37,6 +37,9 @@ const VaccineAppointment = mongoose.Schema(
         psychodiagnostic :{
              type : Object
         },
+        hamA : {
+            type : Object
+        },
         vitalSigns : {
             type : Object,
         }

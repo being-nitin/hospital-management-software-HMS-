@@ -68,6 +68,9 @@ import PrescriptionForm from "./component/prescriptionForm";
 import TimelineCalendar from "./component/timeline";
 import Psychodiagnostic from "./component/Psychodiagnostic";
 import Hamilton from "./component/Hamilton";
+import ViewPDReport from "./component/viewpsychodiagnosticreport";
+import HamAView from "./component/viewHamiltionForm";
+import ClinicalNotes from "./component/clinicalNotes";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -93,6 +96,7 @@ const Routes = () => {
             path="/update-prescription/:id"
             element={<UpdatePrescriptions />}
           />
+          <Route path="/psychodiagnosticreport/:id" element={<ViewPDReport/>}/>
           <Route path="/patient-history" element={<PatientHistory />} />
           <Route path="/update-building/:id" element={<UpdateBuilding />} />
           <Route
@@ -130,7 +134,9 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
-          <Route path="/HamiltonForm" element={<Hamilton />} />
+          <Route path="/clinicalNotes/:id" element={<ClinicalNotes/>}/>
+          <Route path="/HamiltonForm/:id" element={<Hamilton />} />
+          <Route path="/viewHamiltomForm/:id" element={<HamAView/>} />
           <Route path="/PsychologicalForm/:id" element={<Psychodiagnostic />} />
           <Route path="/list-designate" element={<ListDesignate />} />
           <Route path="/list-expenses" element={<ListExpenses />} />
