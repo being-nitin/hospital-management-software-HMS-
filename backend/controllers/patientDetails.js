@@ -1,5 +1,6 @@
 const patientDetails = require('../models/patientDetails')
 const asyncHandler  = require( 'express-async-handler')
+const VaccineAppointment = require('../models/VaccineAppointment')
 
 exports.patientsById = asyncHandler (async (req, res, next, id) => {
 
@@ -83,7 +84,8 @@ exports.getPatientDetail = asyncHandler(async (req, res) => {
 
 exports.getPatientDetailUser = asyncHandler(async (req, res) => {
 
-    const patient = await patientDetails.find({ user: req.params.id }).populate("doctor")
+    // const patient = await patientDetails.findOne({ _id: req.params.id }).populate("doctor")
+    const patient = await VaccineAppointment.find({patient : req.params.id}).populate("patient doctor prescription")
 
     if (patient) {
         res.json(patient)
@@ -132,18 +134,45 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    await patientDetails.find({}).populate("user").exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
-        res.json(data);
+    const { firstName, lastName, phoneNo, patientNumber , address , page = 1, limit = 10 } = req.query;
+  
+    const query = {};
+  
+    if (firstName) {
+      query.firstName = { $regex: firstName, $options: "i" };
+    }
+    if (lastName) {
+      query.lastName = { $regex: lastName, $options: "i" };
+    }
+    if (phoneNo) {
+      query.phoneNo = { $regex: phoneNo, $options: "i" };
+    }
+    if (patientNumber) {
+      query.patientNumber = { $regex: patientNumber, $options: "i" };
+    }
+    if (address) {
+      query.address = { $regex: address, $options: "i" };
+    }
+  
+    console.log(query)
+    const pageNumber = parseInt(page, 10);
+    const pageSize = parseInt(limit, 10);
+  
+    console.log(pageNumber)
+    const totalPatients = await patientDetails.countDocuments(query); // Get total count
+    const patient = await patientDetails.find(query)
+      .populate("doctor")
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
+  
+    res.json({
+      patient,
+      page: pageNumber,
+      totalPages: Math.ceil(totalPatients / pageSize),
+      totalPatients,
     });
+
 })
-
-
-
 
 exports.getGenderValues = (req, res) => {
     res.json(patientDetails.schema.path('gender').enumValues);
