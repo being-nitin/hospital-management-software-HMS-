@@ -151,7 +151,7 @@ const Routes = () => {
           <Route path="/add-building" element={<AddBuilding />} />
           <Route path="/add-floor" element={<AddFloor />} />
           <Route path="/add-users" element={<AddUsers />} />
-          <Route path="/add-vacc-app" element={<AddAppVaccine />} />
+          <Route path="/add-appointment/:id" element={<AddAppVaccine />} />
           <Route path="/add-medicine" element={<AddMedicine />} />
           <Route path="/add-expenses" element={<AddExpense />} />
           <Route path="/add-vac-cat" element={<AddVaccineCat />} />
