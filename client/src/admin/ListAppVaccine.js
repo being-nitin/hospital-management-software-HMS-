@@ -1,20 +1,31 @@
-import React, { Fragment, useEffect } from "react";
-import { Button } from "antd";
+import React, { Fragment, useEffect, useState } from "react";
+import { Button, Input, Select, DatePicker, Pagination } from "antd";
 import Layout from "../core/Layout";
-import { listVacApp, deleteVacApp } from "../actions/vaccineAppointmentActions";
+import { listVacApp , deleteVacApp } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
+const { Option } = Select;
+
 const ListAppVaccine = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  // State for filters and pagination
+  const [filters, setFilters] = useState({
+    status: null,
+    date: null,
+  });
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    pageSize: 10,
+  });
+
   const vaccineAppList = useSelector((state) => state.vaccineAppList);
-  const { loading, error, appointments } = vaccineAppList;
-
-  console.log(appointments);
-
+  const { loading, error, appointments: {appointment, currentPage, totalPages, totalAppointments} = {}} = vaccineAppList;
+  
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -23,43 +34,45 @@ const ListAppVaccine = () => {
 
   useEffect(() => {
     if (userInfo) {
-      dispatch(listVacApp());
+      // Fetch appointment with current filters and pagination
+      const { status, date } = filters;
+      const formattedDate = date ? moment(date).format("YYYY-MM-DD") : null;
+      dispatch(listVacApp(pagination.currentPage, pagination.pageSize, status, formattedDate));
     } else {
       navigate("/signin");
     }
-  }, [dispatch, successDelete, userInfo]);
+  }, [dispatch, successDelete, userInfo, filters, pagination]);
 
   const deleteHandler = (id) => {
-    console.log(id);
-    if (window.confirm("Are you sure")) {
+    if (window.confirm("Are you sure?")) {
       dispatch(deleteVacApp(id));
     }
   };
 
-  const showError = () => (
-    <div
-      className="alert alert-danger"
-      style={{ display: error ? "" : "none" }}
-    >
-      {error}
-    </div>
-  );
+  const handleFilterChange = (field, value) => {
+    setFilters((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const showLoading = () =>
-    loading && (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+  const applyFilters = () => {
+    const { status, date } = filters;
+    const formattedDate = date ? moment(date).format("YYYY-MM-DD") : null;
+    dispatch(listVacApp(1, pagination.pageSize, status, formattedDate)); // Apply filters and reset to first page
+    setPagination({ currentPage: 1, pageSize: pagination.pageSize });
+  };
+
+  const handlePaginationChange = (page, pageSize) => {
+    setPagination({ currentPage: page, pageSize });
+    const { status, date } = filters;
+    const formattedDate = date ? moment(date).format("YYYY-MM-DD") : null;
+    dispatch(listVacApp(page, pageSize, status, formattedDate)); // Fetch data for the selected page
+  };
 
   return (
     <Layout
       style={{
         fontFamily: "Roboto sans-serif",
       }}
-      title="Appointments"
+      title="appointment"
       className="container-fluid"
     >
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -69,86 +82,72 @@ const ListAppVaccine = () => {
             fontFamily: "Roboto sans-serif",
           }}
         >
-          List of Appointments
+          List of appointment
         </h2>
-        <Link to="/add-vacc-app">
-          <Button
-            type="primary"
-            size="large"
-            style={{
-              fontFamily: "Roboto sans-serif",
-            }}
+        <div className="d-flex gap-2">
+          {/* Filters */}
+          <Select
+            placeholder="Filter by Status"
+            style={{ width: 150 }}
+            onChange={(value) => handleFilterChange("status", value)}
+            allowClear
           >
-            Add Appointment
+            <Option value="Scheduled">scheduled</Option>
+            <Option value="closed">closed</Option>
+            <Option value="pending">pending</Option>
+          </Select>
+          <DatePicker
+            placeholder="Filter by Date"
+            onChange={(date) => handleFilterChange("date", date)}
+            allowClear
+          />
+          <Button type="primary" onClick={applyFilters}>
+            Search
           </Button>
-        </Link>
+        </div>
       </div>
 
       {loading ? (
         <div className="text-center">
           <div className="spinner-border" role="status">
-            <span
-              className="sr-only"
-              style={{
-                fontFamily: "Roboto sans-serif",
-              }}
-            >
-              Loading...
-            </span>
+            <span className="sr-only">Loading...</span>
           </div>
         </div>
       ) : error ? (
         <div className="alert alert-danger">{error}</div>
-      ) : appointments.length === 0 ? (
-        <div
-          className="alert alert-info"
-          style={{
-            fontFamily: "Roboto sans-serif",
-          }}
-        >
-          No Appointments Found
-        </div>
+      ) : (appointment && appointment.length  === 0) ? (
+        <div className="alert alert-info">No appointment Found</div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover">
-            <thead className="thead-dark">
-              <tr
-                style={{
-                  fontFamily: "Roboto sans-serif",
-                }}
-              >
-                <th scope="col">ID</th>
-                <th scope="col">Doctor</th>
-                <th scope="col">Patient</th>
-                <th scope="col">Date</th>
-                <th scope="col">Time</th>
-                <th scope="col">Status</th>
-                <th scope="col">Remarks</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody
-              style={{
-                fontFamily: "Roboto sans-serif",
-              }}
-            >
-              {appointments.map((app, i) => (
-                <tr key={i}>
-                  <Fragment>
+        <Fragment>
+          <div className="table-responsive">
+            <table className="table table-striped table-hover">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Doctor</th>
+                  <th scope="col">Patient</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Remarks</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointment && appointment.length && appointment.map((app, i) => (
+                  <tr key={i}>
                     <td>{app._id.substring(0, 7)}</td>
                     <td>{app.doctor.name}</td>
                     <td>
                       {app?.patient?.firstName +
-                        "-" +
+                        " - " +
                         app?.patient?.patientNumber}
                     </td>
                     <td>{moment(app.date).format("YYYY-MM-DD")}</td>
                     <td>{app.time}</td>
                     <td>
-                      {app.taken === "scheduled" ? (
-                        <span className="badge badge-success">
-                          {app.status}
-                        </span>
+                      {app.status === "Scheduled" ? (
+                        <span className="badge badge-success">{app.status}</span>
                       ) : (
                         <span className="badge badge-danger">{app.status}</span>
                       )}
@@ -162,11 +161,7 @@ const ListAppVaccine = () => {
                           className="mr-2"
                           onClick={(e) => {
                             e.preventDefault();
-                            console.log(app._id);
                             navigate(`/update-vacc-app/${app._id}`);
-                          }}
-                          style={{
-                            fontFamily: "Roboto sans-serif",
                           }}
                         >
                           Edit
@@ -174,33 +169,34 @@ const ListAppVaccine = () => {
                         <Button
                           type="danger"
                           size="small"
-                          className="mr-2"
                           onClick={() => deleteHandler(app._id)}
-                          style={{
-                            fontFamily: "Roboto sans-serif",
-                          }}
                         >
                           Delete
                         </Button>
                         <Link to={`/list-app-vaccine/${app._id}`}>
-                          <Button
-                            type="default"
-                            size="small"
-                            style={{
-                              fontFamily: "Roboto sans-serif",
-                            }}
-                          >
+                          <Button type="default" size="small">
                             Details
                           </Button>
                         </Link>
                       </div>
                     </td>
-                  </Fragment>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <Pagination
+            current={currentPage}
+            total={totalAppointments}
+            pageSize={pagination.pageSize}
+            onChange={handlePaginationChange}
+            showSizeChanger
+            pageSizeOptions={["10", "20", "50"]}
+            onShowSizeChange={handlePaginationChange}
+          />
+        </Fragment>
       )}
     </Layout>
   );

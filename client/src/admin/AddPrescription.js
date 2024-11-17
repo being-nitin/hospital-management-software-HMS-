@@ -9,7 +9,6 @@ import { PRESCRIPTION__CREATE_RESET } from '../constants/prescriptionConstants'
 import {TEST_CREATE_RESET} from "../constants/testConstants";
 import { listMedicines } from '../actions/medicineActions';
 import { useNavigate, useParams } from 'react-router-dom';
-import { listPatients } from '../actions/patientActions'
 import { detailsVacApp } from '../actions/vaccineAppointmentActions';
 
 
@@ -65,7 +64,6 @@ const AddPrescription = () => {
             
         if (userInfo ) {
             dispatch(detailsVacApp(id))
-            dispatch(listPatients())
             dispatch(listUsers())
             dispatch(listMedicines())
             dispatch(listCatTests())

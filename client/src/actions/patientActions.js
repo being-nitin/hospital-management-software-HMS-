@@ -80,8 +80,9 @@ export const createPatient = (patient) => async (dispatch, getState) => {
     }
 }
 
-export const listPatients = () => async (dispatch, getState) => {
+export const listPatients = (searchDetails, page=1) => async (dispatch, getState) => {
     try {
+        console.log(searchDetails)
         dispatch({
             type: LIST_PATIENT_REQUEST,
         })
@@ -89,14 +90,17 @@ export const listPatients = () => async (dispatch, getState) => {
         const {
             userLogin: { userInfo },
         } = getState()
-
-        const config = {
+        
+        const { data } = await axios({
+            url : `${API}/patient-list/${userInfo._id}`, 
             headers: {
                 Authorization: `Bearer ${userInfo.token}`,
             },
+            
+                params: { ...searchDetails, page, limit: 5 }, // Include pagination params
         }
-
-        const { data } = await axios.get(`${API}/patient-list/${userInfo._id}`, config)
+        );
+        
 
         dispatch({
             type: LIST_PATIENT_SUCCESS,

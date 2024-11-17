@@ -14,11 +14,10 @@ import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { CREATE_APPOINTMENT_VACCINE_RESET } from "../constants/vaccineAppointmentConstants";
-import { useNavigate } from "react-router-dom";
-import { listPatients } from "../actions/patientActions";
+import { useNavigate, useParams} from "react-router-dom";
+import { patientsDetails } from '../actions/patientActions'
 
 const AddAppVaccine = () => {
-  const [patient, setPatient] = useState("");
   const [doctor, setDoctor] = useState("");
   const [vaccine, setVaccine] = useState("");
   const [date, setDate] = useState(new Date());
@@ -29,11 +28,10 @@ const AddAppVaccine = () => {
   const [remarks, setRemarks] = useState("");
 
   const navigate = useNavigate();
-
+   const {id} = useParams()
   const dispatch = useDispatch();
-
-  const patientList = useSelector((state) => state.patientList);
-  const { patients } = patientList;
+  const patientDetails = useSelector((state) => state.patientDetails)
+  const { patient } = patientDetails
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -66,7 +64,7 @@ const AddAppVaccine = () => {
       dispatch(listVacTakenEnums());
       dispatch(listVacDaysEnums());
       dispatch(listVacCat());
-      dispatch(listPatients());
+      dispatch(patientsDetails(id))
       if (success) {
         dispatch({ type: CREATE_APPOINTMENT_VACCINE_RESET });
         navigate("/list-app-vaccine");
@@ -197,19 +195,10 @@ const AddAppVaccine = () => {
         <div className="form-row" style={formRowStyles}>
           <div className="form-group col-md-4">
             <label style={labelStyles}>Patient</label>
-            <select
-              onChange={(e) => setPatient(e.target.value)}
-              className="form-control"
-              style={selectStyles}
-            >
-              <option>Select Patient</option>
-              {patients &&
-                patients.map((c, i) => (
-                  <option key={i} value={c._id}>
-                    {`${c?.firstName}-${c?.patientNumber}`}
-                  </option>
-                ))}
-            </select>
+                
+              <div>{`${patient?.firstName}-${patient?.patientNumber}`}</div>
+              
+          
           </div>
           <div className="form-group col-md-4">
             <label style={labelStyles}>Doctor</label>
@@ -282,15 +271,14 @@ const AddAppVaccine = () => {
             <label style={labelStyles} htmlFor="remarks">
               Remarks
             </label>
-            <textarea
-              className="form-control"
-              id="remarks"
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
-              placeholder="write description"
-              rows="3"
-              style={inputStyles}
-            />
+            <select
+    style={{ width: 200 }}
+    placeholder="Select Remark"
+    onChange={(e) => setRemarks(e.target.value)}
+  >
+    <option value="fever">Suffering from Fever</option>
+    <option value="flu">Suffering from Flu</option>
+  </select>
           </div>
         </div>
 

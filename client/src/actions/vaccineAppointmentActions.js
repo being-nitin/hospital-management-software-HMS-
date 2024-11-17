@@ -74,28 +74,39 @@ export const createVacApp = (app) => async (dispatch, getState) => {
 }
 
 
-export const listVacApp = () => async (dispatch, getState) => {
+export const listVacApp = (page = null, limit = null, status = null, date = null) => async (dispatch, getState) => {
     try {
-        dispatch({
-            type: LIST_APPOINTMENT_VACCINE_REQUEST,
-        })
+            dispatch({
+                type: LIST_APPOINTMENT_VACCINE_REQUEST,
+            });
 
-        const {
-            userLogin: { userInfo },
-        } = getState()
+            const {
+                userLogin: { userInfo },
+            } = getState();
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`,
-            },
-        }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${userInfo.token}`,
+                },
+            };
 
-        const { data } = await axios.get(`${API}/vaccine-app-list/${userInfo._id}`, config)
+            // Build query parameters dynamically
+            const queryParams = new URLSearchParams();
+            if (page) queryParams.append("page", page);
+            if (limit) queryParams.append("limit", limit);
+            if (status) queryParams.append("status", status);
+            if (date) queryParams.append("date", date);
 
-        dispatch({
-            type: LIST_APPOINTMENT_VACCINE_SUCCESS,
-            payload: data,
-        })
+            // Make API request
+            const { data } = await axios.get(
+                `${API}/vaccine-app-list/${userInfo._id}?${queryParams.toString()}`,
+                config
+            );
+
+            dispatch({
+                type: LIST_APPOINTMENT_VACCINE_SUCCESS,
+                payload: data,
+            });
         console.log(data)
     } catch (error) {
         console.log(error)

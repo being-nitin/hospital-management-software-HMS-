@@ -1,6 +1,7 @@
 const VaccineAppointment = require('../models/VaccineAppointment')
 const asyncHandler  = require( 'express-async-handler')
 const User = require ('../models/user.js')
+const moment = require("moment")
 
 exports.vaccineAppointById = async (req, res, next, id) => {
 
@@ -95,26 +96,66 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    let field = {}
+    const { status, date, page, limit } = req.query; // Pagination and filters
 
-    if(req.params)
-    {
-        const findUser = await User.findById({_id : req.params.userId})
+    let field = {};
 
-        if(findUser.role === 1){
-        field['doctor'] = req.params.userId
-        }
-        
+    // Check if userId is provided and find the user
+    if (req.params.userId) {
+      const findUser = await User.findById({ _id: req.params.userId });
+
+      if (findUser && findUser.role === 1) {
+        field["doctor"] = req.params.userId;
+      }
     }
 
-    await VaccineAppointment.find(field).populate("patient doctor prescription").exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
-        }
-        res.json(data);
-    });
+    // Add filters for status and date if provided
+    if (status) {
+      field["status"] = status;
+    }
+
+    if (date) {
+        const startDate = moment(date).startOf('day').utc().toDate(); // Start of the day in UTC
+        const endDate = moment(date).endOf('day').utc().toDate(); // End of the day in UTC
+      
+        field["date"] = {
+          $gte: startDate, // Start of the day in UTC
+          $lte: endDate, // End of the day in UTC
+        };
+    }
+
+    // If pagination parameters are provided, apply pagination
+    if (page && limit) {
+      const pageNumber = parseInt(page, 10) || 1;
+      const pageSize = parseInt(limit, 10) || 10;
+
+      // Get total count for pagination
+      const totalAppointments = await VaccineAppointment.countDocuments(field);
+       
+      console.log(field)
+      // Query with pagination and filters
+      const data = await VaccineAppointment.find(field)
+        .populate("patient doctor prescription")
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .exec();
+
+      // Send paginated response
+      return res.json({
+        appointment: data,
+        currentPage: pageNumber,
+        totalPages: Math.ceil(totalAppointments / pageSize),
+        totalAppointments,
+      });
+    }
+
+    // If no pagination, return all results
+    const data = await VaccineAppointment.find(field)
+      .populate("patient doctor prescription")
+      .exec();
+
+    // Send all results
+    res.json(data);
 })
 
 
