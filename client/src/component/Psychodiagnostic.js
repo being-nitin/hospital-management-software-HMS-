@@ -585,50 +585,11 @@ const Psychodiagnostic = () => {
     },
     {
       label: "Judgement",
-      subCategories: [
-        { label: "Social", subSubCategories: ["", "", ""] },
-        {
-          label: "Personal",
-          subSubCategories: ["", "", ""],
-        },
-        {
-          label: "Test",
-          subSubCategories: [
-            "Money",
-            "House On Fire",
-            "Child Drowning",
-            "Bribe",
-          ],
-        },
-      ],
+      subCategories: ["Social", "personal" , "test"],
     },
     {
       label: "Insight",
-      subCategories: [
-        { label: "GradeI", subSubCategories: ["Complete Denial"] },
-        {
-          label: "GradeII",
-          subSubCategories: ["Acceptance of Symptoms", "Denial Of Illness"],
-        },
-        {
-          label: "GradeIII",
-          subSubCategories: [
-            "Attributions to external factors or unknown organic causes",
-          ],
-        },
-        {
-          label: "GradeIV",
-          subSubCategories: ["Unknown Problem In Body"],
-        },
-        {
-          label: "GradeV",
-          subSubCategories: ["Not Applying Knowledge To Future Experiences"],
-        },
-        {
-          label: "GradeVI",
-          subSubCategories: ["True Emotional Insight"],
-        },
-      ],
+      subCategories: ["GradeI" , "GradeII", "GradeIII","GradeIV","GradeV","GradeVI"],
     },
   ];
 
