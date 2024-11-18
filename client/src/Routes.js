@@ -71,6 +71,7 @@ import Hamilton from "./component/Hamilton";
 import ViewPDReport from "./component/viewpsychodiagnosticreport";
 import HamAView from "./component/viewHamiltionForm";
 import ClinicalNotes from "./component/clinicalNotes";
+import HamiltonDepressionForm from "./component/HamiltionS";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -134,6 +135,7 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
+          <Route path="/hamS/:id" element={<HamiltonDepressionForm/>} />
           <Route path="/clinicalNotes/:id" element={<ClinicalNotes/>}/>
           <Route path="/HamiltonForm/:id" element={<Hamilton />} />
           <Route path="/viewHamiltomForm/:id" element={<HamAView/>} />
