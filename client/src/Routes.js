@@ -72,6 +72,7 @@ import ViewPDReport from "./component/viewpsychodiagnosticreport";
 import HamAView from "./component/viewHamiltionForm";
 import ClinicalNotes from "./component/clinicalNotes";
 import HamiltonDepressionForm from "./component/HamiltionS";
+import CDRSForm from "./component/CDRS";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -138,6 +139,7 @@ const Routes = () => {
           <Route path="/hamS/:id" element={<HamiltonDepressionForm/>} />
           <Route path="/clinicalNotes/:id" element={<ClinicalNotes/>}/>
           <Route path="/HamiltonForm/:id" element={<Hamilton />} />
+          <Route path="/cdrs/:id" element={<CDRSForm/>} />
           <Route path="/viewHamiltomForm/:id" element={<HamAView/>} />
           <Route path="/PsychologicalForm/:id" element={<Psychodiagnostic />} />
           <Route path="/list-designate" element={<ListDesignate />} />
