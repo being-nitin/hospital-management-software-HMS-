@@ -10,13 +10,11 @@ const ViewPDReport = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-  const {
-    loading,
-    error,
-    appointment: { appointment, pastAppointments } = {},
-  } = vaccineAppList || {};
+  const { loading, error, appointment : {appointment} = {} } = vaccineAppList || {};
   const dispatch = useDispatch();
 
+
+  console.log(appointment)
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
@@ -110,31 +108,103 @@ const ViewPDReport = () => {
 
           {/* Background Information */}
           <h5>Background Information</h5>
-          <ul className="list-unstyled">
-            {patientData.backgroundInfo.map((info, index) => (
+          {/* Personal History */}
+          <h6>Personal History</h6>
+          <ul>
+            {Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => (
               <li key={index}>
-                - {info.category} - {info.subCategory} {info.subSubCategory && `- ${info.subSubCategory}`}
+                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
               </li>
             ))}
           </ul>
+
+          {/* Premorbid Personality */}
+          <h6>Premorbid Personality</h6>
+          {Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => (
+            <div key={index}>
+              <h6>{category.replace(/([A-Z])/g, ' $1').toUpperCase()}</h6>
+              <ul>
+                {questions.map((q, idx) => (
+                  <li key={idx}>
+                    <strong>{q.question}:</strong> {q.answer || 'N/A'}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           <hr />
 
           {/* Behavioral Information */}
           <h5>Behavioral Information</h5>
-          <ul className="list-unstyled">
-            {patientData.behavioralInfo.map((info, index) => (
-              <li key={index}>
-                - {info.category} - {info.subCategory} {info.subSubCategory && `- ${info.subSubCategory}`}
-              </li>
+          {/* General Appearance and Behavior */}
+          <h6>General Appearance and Behavior</h6>
+          <div className="row">
+            {Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => (
+              <div key={index} className="col-md-6 mb-3">
+                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
+              </div>
             ))}
-          </ul>
+          </div>
+
+          {/* Orientation */}
+          <h6>Orientation</h6>
+          <div className="row">
+            {Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => (
+              <div key={index} className="col-md-6 mb-3">
+                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
+              </div>
+            ))}
+          </div>
+
+          {/* Other Behavioral Information */}
+          <h6>Motor Behaviour</h6>
+          <p><strong>Psychomotor Activity:</strong> {patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'N/A'}</p>
+          <p><strong>Disturbances:</strong> {patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'N/A'}</p>
+
+          <h6>Level of Consciousness</h6>
+          <p><strong>Mediate:</strong> {patientData.behaviouralInfo.levelOfConsciousness.mediate || 'N/A'}</p>
+
+          <h6>Speech</h6>
+          <div className="row">
+            {Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => (
+              <div key={index} className="col-md-6 mb-3">
+                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
+              </div>
+            ))}
+          </div>
+
+          <h6>Memory</h6>
+          <div className="row">
+            {Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => (
+              <div key={index} className="col-md-6 mb-3">
+                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
+              </div>
+            ))}
+          </div>
+
+          {/* Thought Section */}
+          <h6>Thought</h6>
+          {Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => (
+            <div key={index}>
+              <strong>{category.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong>
+              <ul>
+                {options.length ? options.map((option, idx) => <li key={idx}>{option}</li>) : 'N/A'}
+              </ul>
+            </div>
+          ))}
 
           <hr />
 
           {/* Additional Information */}
           <h5>Additional Information</h5>
-          <p>{patientData.additionalInfo}</p>
+          <p>{patientData.additionalInfo1}</p>
+          <p>{patientData.additionalInfo2}</p>
+
+          <h5>Impressions and Suggestions</h5>
+          <p>{patientData.impression}</p>
+          <p>{patientData.suggestions}</p>
+
         </div>
       </div>
     </div>
