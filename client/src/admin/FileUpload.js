@@ -44,7 +44,7 @@ const FileUpload = ({ history }) => {
     uploadLabel: {
       display: "inline-block",
       padding: "10px 20px",
-      backgroundColor: "#007BFF",
+      backgroundColor: "#0056d2",
       color: "#fff",
       borderRadius: "5px",
       cursor: "pointer",
@@ -64,7 +64,7 @@ const FileUpload = ({ history }) => {
     spinner: {
       width: "2rem",
       height: "2rem",
-      color: "#007BFF",
+      color: "#0056d2",
     },
   };
 

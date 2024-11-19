@@ -585,11 +585,18 @@ const Psychodiagnostic = () => {
     },
     {
       label: "Judgement",
-      subCategories: ["Social", "personal" , "test"],
+      subCategories: ["Social", "personal", "test"],
     },
     {
       label: "Insight",
-      subCategories: ["GradeI" , "GradeII", "GradeIII","GradeIV","GradeV","GradeVI"],
+      subCategories: [
+        "GradeI",
+        "GradeII",
+        "GradeIII",
+        "GradeIV",
+        "GradeV",
+        "GradeVI",
+      ],
     },
   ];
 
@@ -673,7 +680,7 @@ const Psychodiagnostic = () => {
 
   useEffect(() => {
     if (existingData) {
-      setFormData({ ...formData , ...existingData });
+      setFormData({ ...formData, ...existingData });
     }
   }, [existingData]);
 
@@ -684,12 +691,17 @@ const Psychodiagnostic = () => {
     }));
   };
 
-  console.log(formData)
+  console.log(formData);
   return (
     <>
-    <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment._id}`)} >View </button>
-    <form style={styles.form} onSubmit={handleSubmit}>
-      <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
+      <button
+        style={styles.viewButton}
+        onClick={() => navigate(`/psychodiagnosticreport/${appointment._id}`)}
+      >
+        View{" "}
+      </button>
+      <form style={styles.form} onSubmit={handleSubmit}>
+        <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
         <label style={styles.labels}>
           Name:
@@ -1165,7 +1177,7 @@ const styles = {
   },
   addButton: {
     padding: "8px 16px",
-    backgroundColor: "#007BFF",
+    backgroundColor: "#0056d2",
     color: "#FFFFFF",
     border: "none",
     borderRadius: "5px",
@@ -1173,7 +1185,7 @@ const styles = {
   },
   submitButton: {
     padding: "10px 20px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#218838",
     color: "#FFFFFF",
     border: "none",
     borderRadius: "5px",
@@ -1181,7 +1193,7 @@ const styles = {
   },
   viewButton: {
     padding: "10px 20px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#218838",
     margin: "20px",
     color: "#FFFFFF",
     border: "none",
@@ -1190,7 +1202,7 @@ const styles = {
   },
   deleteButton: {
     padding: "8px 12px",
-    backgroundColor: "#dc3545", // Red color for delete button
+    backgroundColor: "#c82333", // Red color for delete button
     color: "#FFFFFF",
     border: "none",
     borderRadius: "5px",

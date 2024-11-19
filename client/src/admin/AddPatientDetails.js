@@ -132,7 +132,7 @@ const AddPatientDetails = ({ history: history1 }) => {
   const buttonStyles = {
     width: "100%",
     maxWidth: "200px",
-    backgroundColor: "#007bff",
+    backgroundColor: "#0056d2",
     border: "none",
     color: "white",
     padding: "12px 25px",

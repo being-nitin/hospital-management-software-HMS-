@@ -104,7 +104,7 @@ const AddExpense = ({ history: history1 }) => {
   };
 
   const buttonStyles = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#0056d2",
     border: "none",
     color: "white",
     padding: "12px 25px",

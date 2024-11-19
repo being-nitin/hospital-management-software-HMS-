@@ -244,8 +244,14 @@ const AppointmentDetail = () => {
         <Link href="#">Vital Signs</Link>
       </Menu.Item>
       <Menu.Item key="2">
-        <Link onClick={(e) => {e.preventDefault() 
-          navigate(`/clinicalNotes/${appointment._id}`)}}>Clinal Notes</Link>
+        <Link
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/clinicalNotes/${appointment._id}`);
+          }}
+        >
+          Clinal Notes
+        </Link>
       </Menu.Item>
       <Menu.Item key="3" onClick={() => setPrescriptionForm(true)}>
         Prescription
@@ -339,13 +345,13 @@ const AppointmentDetail = () => {
                     </button>
                     <button
                       style={styles.button}
-                      onClick={() => navigate(`/HamiltonForm/${appointment?._id}`)}
+                      onClick={() =>
+                        navigate(`/HamiltonForm/${appointment?._id}`)
+                      }
                     >
                       Hamilton Anxiety Rating Scale (HAM-A)
                     </button>
                   </div>
-
-                
                 </div>
               )}
               <div
@@ -579,7 +585,7 @@ const styles = {
     marginBottom: "20px",
   },
   button: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#0056d2",
     color: "#FFFFFF",
     border: "none",
     padding: "10px 20px",
@@ -664,7 +670,7 @@ const styles = {
   },
   submitButton: {
     gridColumn: "1 / -1", // Make submit button span all columns
-    backgroundColor: "#28a745",
+    backgroundColor: "#218838",
     color: "#FFFFFF",
     border: "none",
     padding: "10px 15px",

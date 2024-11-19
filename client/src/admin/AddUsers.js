@@ -82,7 +82,7 @@ const AddUsers = ({ history }) => {
   };
 
   const buttonStyles = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#0056d2",
     border: "none",
     color: "white",
     padding: "6px 12px",

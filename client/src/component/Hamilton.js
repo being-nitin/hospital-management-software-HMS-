@@ -9,15 +9,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 const Hamilton = () => {
-  
   const [form2Data, setForm2Data] = useState({
     fields: Array(14).fill(null), // initialize empty values for 14 fields
   });
-  
-  const [existingData , setExistingData] = useState(null)
+
+  const [existingData, setExistingData] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } =useParams()
+  const { id } = useParams();
   const fieldNames = [
     "Anxious Mood",
     "Tension",
@@ -54,14 +53,12 @@ const Hamilton = () => {
 
   const handleForm2Submit = (e) => {
     e.preventDefault();
-    console.log(form2Data)
+    console.log(form2Data);
     const submittedData = fieldNames.reduce((result, fieldName, index) => {
-        result[fieldName] = form2Data.fields[index];
-        return result;
-      }, {})
-    dispatch(
-      updateVacApp({ _id: appointment._id, hamA : submittedData})
-    );
+      result[fieldName] = form2Data.fields[index];
+      return result;
+    }, {});
+    dispatch(updateVacApp({ _id: appointment._id, hamA: submittedData }));
     dispatch(detailsVacApp(id));
   };
 
@@ -74,22 +71,25 @@ const Hamilton = () => {
   };
 
   useEffect(() => {
-    setExistingData(
-      appointment?.hamA ? appointment?.hamA : null
-    );
+    setExistingData(appointment?.hamA ? appointment?.hamA : null);
   }, [appointment]);
 
   useEffect(() => {
     if (existingData) {
-      console.log(form2Data)
-      console.log(Object.values(existingData))
-      setForm2Data({ fields : Object.values(existingData) } );
+      console.log(form2Data);
+      console.log(Object.values(existingData));
+      setForm2Data({ fields: Object.values(existingData) });
     }
   }, [existingData]);
 
   return (
     <>
-     <button style={styles.viewButton} onClick={()=> navigate(`/viewHamiltomForm/${appointment._id}`)} >View </button>
+      <button
+        style={styles.viewButton}
+        onClick={() => navigate(`/viewHamiltomForm/${appointment._id}`)}
+      >
+        View{" "}
+      </button>
 
       <form onSubmit={handleForm2Submit} style={styles.form}>
         <h3 style={styles.formHeader}>Hamilton Anxiety Rating Scale (HAM-A)</h3>
@@ -200,12 +200,12 @@ const styles = {
     gap: "5px",
   },
   radioInput: {
-    accentColor: "#007BFF",
+    accentColor: "#0056d2",
   },
   submitButton: {
     alignSelf: "center",
     padding: "12px 24px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#218838",
     color: "#fff",
     border: "none",
     borderRadius: "5px",
@@ -216,7 +216,7 @@ const styles = {
   },
   viewButton: {
     padding: "10px 20px",
-    backgroundColor: "#28a745",
+    backgroundColor: "#218838",
     margin: "20px",
     color: "#FFFFFF",
     border: "none",

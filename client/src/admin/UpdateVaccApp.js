@@ -137,7 +137,7 @@ const UpdateVaccApp = () => {
   };
 
   const buttonStyles = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#0056d2",
     border: "none",
     color: "white",
     padding: "12px 25px",
@@ -155,16 +155,14 @@ const UpdateVaccApp = () => {
   };
   const centeredHeading = {
     display: "flex",
-    justifyContent: "center", // Centers horizontally
-    alignItems: "center", // Centers vertically (if there's height)
+    justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
-    height: "100px", // Optional: Adjust height as needed for vertical centering
+    height: "100px",
     margin: "0 auto",
     fontWeight: "bold",
     fontFamily: "Roboto sans-serif",
   };
-
-  // Add hover effect for button
   buttonStyles[":hover"] = {
     backgroundColor: "#0056b3",
   };
