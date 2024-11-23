@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import YMRS_DATA from "./YMRS_DATA.json";
 
 //YMRS From
 const YMRSform = () => {
@@ -6,19 +7,9 @@ const YMRSform = () => {
 		fields: Array(11).fill(null),
 	});
 
-	const fieldNames = [
-		"Elevated Mood",
-		"Increased Motor Activity-Energy",
-		"Sexual Interest",
-		"Sleep",
-		"Irritability",
-		"Speech (Rate and Amount)",
-		"Language-Thought Disorder",
-		"Content",
-		"Disruptive-Aggressive Behavior",
-		"Appearance",
-		"Insight",
-	];
+	const fieldNames = Object.values(YMRS_DATA).map((item) => {
+		return item.fieldName;
+	});
 
 	const handleRadioChange = (index, value) => {
 		setForm2Data((prevData) => {
@@ -66,28 +57,33 @@ const YMRSform = () => {
 					<p>4 = Very severe</p>
 				</div>
 				<div style={styles.fieldsContainer}>
-					{fieldNames.map((fieldName, index) => (
+					{Object.values(YMRS_DATA).map((YMRS_OBJ, index) => (
 						<div key={index} style={styles.fieldWrapper}>
-							<label style={styles.label}>{fieldName}:</label>
+							<label style={styles.label}>
+								{YMRS_OBJ.fieldName}:
+							</label>
 							<div style={styles.radioGroup}>
-								{[0, 1, 2, 3, 4].map((option) => (
+								{YMRS_OBJ.options.map((option) => (
 									<label
-										key={option}
+										key={option.label}
 										style={styles.radioOption}>
 										<input
 											type="radio"
 											name={`field-${index}`}
-											value={option}
+											value={option.label}
 											checked={
 												form2Data.fields[index] ===
-												option
+												option.value
 											}
 											onChange={() =>
-												handleRadioChange(index, option)
+												handleRadioChange(
+													index,
+													option.value
+												)
 											}
 											style={styles.radioInput}
 										/>
-										{option}
+										{option.value} : {option.label}
 									</label>
 								))}
 							</div>
@@ -156,8 +152,9 @@ const styles = {
 	},
 	radioGroup: {
 		display: "flex",
-		justifyContent: "space-between",
-		alignItems: "center",
+		flexDirection: "column",
+		// justifyContent: "space-between",
+		// alignItems: "center",
 		padding: "5px 0",
 	},
 	radioOption: {
