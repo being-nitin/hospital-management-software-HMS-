@@ -1,0 +1,277 @@
+{
+	"1": {
+		"fieldName": "Elevated Mood",
+		"options": [
+			{
+				"value": 0,
+				"label": "Absent"
+			},
+			{
+				"value": 1,
+				"label": "Mildly or possibly increased on questioning"
+			},
+			{
+				"value": 2,
+				"label": "Definite subjective elevation; optimistic, self-confident; cheerful; appropriate to content"
+			},
+			{
+				"value": 3,
+				"label": "Elevated; inappropriate to content; humorous"
+			},
+			{
+				"value": 4,
+				"label": "Euphoric; inappropriate laughter; singing"
+			}
+		]
+	},
+	"2": {
+		"fieldName": "Increased Motor Activity-Energy",
+		"options": [
+			{
+				"value": 0,
+				"label": "Absent"
+			},
+			{
+				"value": 1,
+				"label": "Subjectively increased"
+			},
+			{
+				"value": 2,
+				"label": "Animated; gestures increased"
+			},
+			{
+				"value": 3,
+				"label": "Excessive energy; hyperactive at times; restless (can be calmed)"
+			},
+			{
+				"value": 4,
+				"label": "Motor excitement; continuous hyperactivity (cannot be calmed)"
+			}
+		]
+	},
+	"3": {
+		"fieldName": "Sexual Interest",
+		"options": [
+			{
+				"value": 0,
+				"label": "Normal; not increased"
+			},
+			{
+				"value": 1,
+				"label": "Mildly or possibly increased"
+			},
+			{
+				"value": 2,
+				"label": "Definite subjective increase on questioning"
+			},
+			{
+				"value": 3,
+				"label": "Spontaneous sexual content; elaborates on sexual matters; hypersexual by self-report"
+			},
+			{
+				"value": 4,
+				"label": "Overt sexual acts (toward patients, staff, or interviewer)"
+			}
+		]
+	},
+	"4": {
+		"fieldName": "Sleep",
+		"options": [
+			{
+				"value": 0,
+				"label": "Reports no decrease in sleep"
+			},
+			{
+				"value": 1,
+				"label": "Sleeping less than normal amount by up to one hour"
+			},
+			{
+				"value": 2,
+				"label": "Sleeping less than normal by more than one hour"
+			},
+			{
+				"value": 3,
+				"label": "Reports decreased need for sleep"
+			},
+			{
+				"value": 4,
+				"label": "Denies need for sleep"
+			}
+		]
+	},
+	"5": {
+		"fieldName": "Irritability",
+		"options": [
+			{
+				"value": 0,
+				"label": "Absent"
+			},
+			{
+				"value": 1,
+				"label": "Subjectively increased"
+			},
+			{
+				"value": 2,
+				"label": "Irritable at times during interview; recent episodes of anger or annoyance on ward"
+			},
+			{
+				"value": 3,
+				"label": "Frequently irritable during interview; short, curt throughout"
+			},
+			{
+				"value": 4,
+				"label": "Hostile, uncooperative; interview impossible"
+			}
+		]
+	},
+	"6": {
+		"fieldName": "Speech (Rate and Amount)",
+		"options": [
+			{
+				"value": 0,
+				"label": "No increase"
+			},
+			{
+				"value": 1,
+				"label": "Feels talkative"
+			},
+			{
+				"value": 2,
+				"label": "Increased rate or amount at times, verbose at times"
+			},
+			{
+				"value": 3,
+				"label": "Push; consistently increased rate and amount; difficult to interrupt"
+			},
+			{
+				"value": 4,
+				"label": "Pressured; uninterruptible, continuous speech"
+			}
+		]
+	},
+	"7": {
+		"fieldName": "Language-Thought Disorder",
+		"options": [
+			{
+				"value": 0,
+				"label": "Absent"
+			},
+			{
+				"value": 1,
+				"label": "Circumstantial; mild distractibility; quick thoughts"
+			},
+			{
+				"value": 2,
+				"label": "Distractible, loses goal of thought; changes topics frequently; racing thoughts"
+			},
+			{
+				"value": 3,
+				"label": "Flight of ideas; tangentiality; difficult to follow; rhyming, echolalia"
+			},
+			{
+				"value": 4,
+				"label": "Incoherent; communication impossible"
+			}
+		]
+	},
+	"8": {
+		"fieldName": "Content",
+		"options": [
+			{
+				"value": 0,
+				"label": "Normal"
+			},
+			{
+				"value": 1,
+				"label": "Questionable plans, new interests"
+			},
+			{
+				"value": 2,
+				"label": "Special project(s); hyper-religious"
+			},
+			{
+				"value": 3,
+				"label": "Grandiose or paranoid ideas; ideas of reference"
+			},
+			{
+				"value": 4,
+				"label": "Delusions; hallucinations"
+			}
+		]
+	},
+	"9": {
+		"fieldName": "Disruptive-Aggressive Behavior",
+		"options": [
+			{
+				"value": 0,
+				"label": "Absent, cooperative"
+			},
+			{
+				"value": 1,
+				"label": "Sarcastic; loud at times, guarded"
+			},
+			{
+				"value": 2,
+				"label": "Demanding; threats on ward"
+			},
+			{
+				"value": 3,
+				"label": "Threatens interviewer; shouting; interview difficult"
+			},
+			{
+				"value": 4,
+				"label": "Assaultive; destructive; interview impossible"
+			}
+		]
+	},
+	"10": {
+		"fieldName": "Appearance",
+		"options": [
+			{
+				"value": 0,
+				"label": "Appropriate dress and grooming"
+			},
+			{
+				"value": 1,
+				"label": "Minimally unkempt"
+			},
+			{
+				"value": 2,
+				"label": "Poorly groomed; moderately disheveled; overdressed"
+			},
+			{
+				"value": 3,
+				"label": "Disheveled; partly clothed; garish make-up"
+			},
+			{
+				"value": 4,
+				"label": "Completely unkempt; decorated; bizarre garb"
+			}
+		]
+	},
+	"11": {
+		"fieldName": "Insight",
+		"options": [
+			{
+				"value": 0,
+				"label": "Present; admits illness; agrees with need for treatment"
+			},
+			{
+				"value": 1,
+				"label": "Possibly ill"
+			},
+			{
+				"value": 2,
+				"label": "Admits behavior change, but denies illness"
+			},
+			{
+				"value": 3,
+				"label": "Admits possible change in behavior, but denies illness"
+			},
+			{
+				"value": 4,
+				"label": "Denies any behavior change"
+			}
+		]
+	}
+}
