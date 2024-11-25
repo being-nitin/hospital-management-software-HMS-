@@ -229,7 +229,7 @@ const Psychodiagnostic = () => {
       },
     }));
   };
-  // Handle change for each chief complaint and duration
+
   const handleChiefComplaintChange = (index, field, value) => {
     const updatedComplaints = formData.chiefComplaints.map((item, i) =>
       i === index ? { ...item, [field]: value } : item
