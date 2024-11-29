@@ -6,38 +6,60 @@ const { ObjectId } = mongoose.Schema;
 
 const expenses = mongoose.Schema(
     {
-        name: {
-            type: String,
-            required: true
-
-        },
-        department: {
+        // name: {
+        //     type: String,
+        //     required: true
+        // },
+        // department: {
+        //     type: ObjectId,
+        //     required: true,
+        //     ref: 'department',
+        // },
+        // amount: {
+        //     type: Number,
+        //     required: true,
+        //     default: 0.0,
+        // },
+        // description: {
+        //     type: String,
+        //     required: true
+        // },
+        // fromDate: {
+        //     type: String,
+        //     required: true
+        // },
+        // to: {
+        //     type: String,
+        //     required: true
+        // },
+        // paid: {
+        //     type: String,
+        //     default: "Un-paid",
+        //     enum: ["Un-paid", "Paid"]
+        // },
+        doctor : {
             type: ObjectId,
-            required: true,
-            ref: 'department',
+            ref: 'User',
         },
-        amount: {
-            type: Number,
-            required: true,
-            default: 0.0,
+        patient: {
+            type: ObjectId,
+            ref: 'patientDetails',
         },
-        description: {
-            type: String,
-            required: true
-        },
-        fromDate: {
-            type: String,
-            required: true
-        },
-        to: {
-            type: String,
-            required: true
-        },
+        appointment : {
+           type : ObjectId,
+           ref : 'VaccineAppointment'
+        }, 
+        treatment : [{ id: String, name: String, unit: Number, cost: Number, discount: Number, tax: Number }],
+        totalCost : { type : Number},
+        totalDiscount : { type : Number},
+        totalTax : { type : Number},
+        grandTotal : { type : Number},
         paid: {
-            type: String,
-            default: "Un-paid",
-            enum: ["Un-paid", "Paid"]
+                type: String,
+                default: "Un-paid",
+                enum: ["Un-paid", "Paid"]
         },
+        paymentMethod : { type : String}
     }
 )
 

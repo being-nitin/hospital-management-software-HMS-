@@ -62,7 +62,7 @@ exports.update = asyncHandler(async (req, res) => {
 
 exports.getExpenseDetail = asyncHandler(async (req, res) => {
 
-    const expense = await expenses.findById(req.params.id).populate("department")
+    const expense = await expenses.findById(req.params.id).populate("appointment")
 
     if (expense) {
         res.json({
@@ -100,7 +100,7 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    await expenses.find({}).populate("department").exec((err, data) => {
+    await expenses.find({}).populate("appointment doctor patient").exec((err, data) => {
         if (err) {
             return res.status(400).json({
                 error: err

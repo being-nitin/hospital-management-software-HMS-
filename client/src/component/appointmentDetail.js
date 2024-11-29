@@ -266,7 +266,8 @@ const AppointmentDetail = () => {
 				onClick={() => setPsychologicalForm(!PsychologicalForm)}>
 				Psychological Form
 			</Menu.Item>
-			<Menu.Item key="5">Billing</Menu.Item>
+			<Menu.Item key="5" onClick={() =>
+				navigate(`/billing/${id}`)}>Billing</Menu.Item>
 			<Menu.SubMenu key="6" title="More">
 				<Menu.Item key="6-1" onClick={closeAppointment}>
 					Close Appointment

@@ -74,6 +74,8 @@ import ClinicalNotes from "./component/clinicalNotes";
 import HamiltonDepressionForm from "./component/HamiltionS";
 import CDRSForm from "./component/CDRS";
 import PanssForm from "./component/panss";
+import YMRSform from "./component/YMRSform";
+import InvoiceLayout from "./component/billingDetail";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -94,6 +96,8 @@ const Routes = () => {
             path="/update-cat-test/:catTestId"
             element={<CatTestUpdate />}
           />
+          <Route path="/ymrs" element={<YMRSform/>}/>
+          <Route path="/billing/:id" element={<InvoiceLayout/>} />
           <Route path="/update-test/:testId" element={<TestUpdate />} />
           <Route
             path="/update-prescription/:id"
