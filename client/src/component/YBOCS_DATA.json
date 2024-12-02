@@ -1,7 +1,7 @@
 {
     "Obsessive thoughts": [
         {
-            "fieldName": "TIME OCCUPIED BY OBSESSIVE THOUGHTS",
+            "fieldName": "1. TIME OCCUPIED BY OBSESSIVE THOUGHTS",
             "options": [
                 {
                     "value": 0,
@@ -26,7 +26,7 @@
             ]
         },
         {
-            "fieldName": "INTERFERENCE DUE TO OBSESSIVE THOUGHTS",
+            "fieldName": "2. INTERFERENCE DUE TO OBSESSIVE THOUGHTS",
             "options": [
                 {
                     "value": 0,
@@ -51,7 +51,7 @@
             ]
         },
         {
-            "fieldName": "DISTRESS ASSOCIATED WITH OBSESSIVE THOUGHTS",
+            "fieldName": "3. DISTRESS ASSOCIATED WITH OBSESSIVE THOUGHTS",
             "options": [
                 {
                     "value": 0,
@@ -76,7 +76,7 @@
             ]
         },
         {
-            "fieldName": "RESISTANCE AGAINST OBSESSIONS",
+            "fieldName": "4. RESISTANCE AGAINST OBSESSIONS",
             "options": [
                 {
                     "value": 0,
@@ -101,7 +101,7 @@
             ]
         },
         {
-            "fieldName": "DEGREE OF CONTROL OVER OBSESSIVE THOUGHTS",
+            "fieldName": "5. DEGREE OF CONTROL OVER OBSESSIVE THOUGHTS",
             "options": [
                 {
                     "value": 0,
@@ -128,7 +128,7 @@
     ],
     "Compulsive Behaviors": [
         {
-            "fieldName": "TIME SPENT PERFORMING COMPULSIVE BEHAVIORS",
+            "fieldName": "6. TIME SPENT PERFORMING COMPULSIVE BEHAVIORS",
             "options": [
                 {
                     "value": 0,
@@ -153,7 +153,7 @@
             ]
         },
         {
-            "fieldName": "INTERFERENCE DUE TO COMPULSIVE BEHAVIORS",
+            "fieldName": "7.INTERFERENCE DUE TO COMPULSIVE BEHAVIORS",
             "options": [
                 {
                     "value": 0,
@@ -178,7 +178,7 @@
             ]
         },
         {
-            "fieldName": "DISTRESS ASSOCIATED WITH COMPULSIVE BEHAVIOR",
+            "fieldName": "8. DISTRESS ASSOCIATED WITH COMPULSIVE BEHAVIOR",
             "options": [
                 {
                     "value": 0,
@@ -203,7 +203,7 @@
             ]
         },
         {
-            "fieldName": "RESISTANCE AGAINST COMPULSIONS",
+            "fieldName": "9. RESISTANCE AGAINST COMPULSIONS",
             "options": [
                 {
                     "value": 0,
@@ -228,7 +228,7 @@
             ]
         },
         {
-            "fieldName": "DEGREE OF CONTROL OVER COMPULSIVE BEHAVIOR",
+            "fieldName": "10. DEGREE OF CONTROL OVER COMPULSIVE BEHAVIOR",
             "options": [
                 {
                     "value": 0,
