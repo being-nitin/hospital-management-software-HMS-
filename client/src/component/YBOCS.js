@@ -5,6 +5,7 @@ const YBOCS = () => {
 	const [form2Data, setForm2Data] = useState({
 		fields: Array(10).fill(null),
 	});
+	const [totalScore, setTotalScore] = useState(0);
 
 	const handleRadioChange = (index, value) => {
 		setForm2Data((prevData) => {
@@ -27,13 +28,14 @@ const YBOCS = () => {
 		}, {});
 		console.log(submittedData);
 
-		const totalSum = Object.values(submittedData).reduce(
+		const calculateScore = Object.values(submittedData).reduce(
 			(acc, currValue) => {
 				return acc + currValue;
 			},
 			0
 		);
-		console.log("Total Score", totalSum);
+		setTotalScore(calculateScore);
+		console.log("Total Score", calculateScore);
 	};
 
 	return (
@@ -42,6 +44,19 @@ const YBOCS = () => {
 				<h3 style={styles.formHeader}>
 					YALE-BROWN OBSESSIVE COMPULSIVE SCALE (Y-BOCS)
 				</h3>
+				<p style={styles.formDescription}>
+					Obsessions are unwanted ideas, images or impulses that
+					intrude on thinking against your wishes and efforts to
+					resist them. They usually involve themes of harm, risk and
+					danger. Common obsessions are excessive fears of
+					contamination; recurring doubts about danger, extreme
+					concern with order, symmetry, or exactness; fear of losing
+					important things.
+				</p>
+
+				<h5>Questions 1-5: Evaluating Obsessive Thinking Patterns</h5>
+				<h5>Questions 6-10: Assessing Compulsive Thinking Behaviors</h5>
+
 				<div styles={styles.fieldsContainer}>
 					{YBOCS_DATA["Obsessive thoughts"]
 						.concat(YBOCS_DATA["Compulsive Behaviors"])
@@ -126,6 +141,7 @@ const styles = {
 		display: "flex",
 		flexDirection: "column",
 		padding: "10px",
+		margin: "10px 0px",
 		backgroundColor: "#ffffff",
 		borderRadius: "8px",
 		boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
