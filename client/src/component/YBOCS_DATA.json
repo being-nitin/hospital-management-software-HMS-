@@ -1,0 +1,256 @@
+{
+    "Obsessive thoughts": [
+        {
+            "fieldName": "1. TIME OCCUPIED BY OBSESSIVE THOUGHTS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Less than 1 hr/day or occasional occurrence"
+                },
+                {
+                    "value": 2,
+                    "label": "1 to 3 hrs/day or frequent"
+                },
+                {
+                    "value": 3,
+                    "label": "Greater than 3 and up to 8 hrs/day or very frequent occurrence"
+                },
+                {
+                    "value": 4,
+                    "label": "Greater than 8 hrs/day or nearly constant occurrence"
+                }
+            ]
+        },
+        {
+            "fieldName": "2. INTERFERENCE DUE TO OBSESSIVE THOUGHTS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Slight interference with social or other activities, but overall performance not impaired"
+                },
+                {
+                    "value": 2,
+                    "label": "Definite interference with social or occupational performance, but still manageable"
+                },
+                {
+                    "value": 3,
+                    "label": "Causes substantial impairment in social or occupational performance"
+                },
+                {
+                    "value": 4,
+                    "label": "Incapacitating"
+                }
+            ]
+        },
+        {
+            "fieldName": "3. DISTRESS ASSOCIATED WITH OBSESSIVE THOUGHTS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Not too disturbing"
+                },
+                {
+                    "value": 2,
+                    "label": "Disturbing, but still manageable"
+                },
+                {
+                    "value": 3,
+                    "label": "Very disturbing"
+                },
+                {
+                    "value": 4,
+                    "label": "Near constant and disabling distress"
+                }
+            ]
+        },
+        {
+            "fieldName": "4. RESISTANCE AGAINST OBSESSIONS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "Try to resist all the time"
+                },
+                {
+                    "value": 1,
+                    "label": "Try to resist most of the time"
+                },
+                {
+                    "value": 2,
+                    "label": "Make some effort to resist"
+                },
+                {
+                    "value": 3,
+                    "label": "Yield to all obsessions without attempting to control them, but with some reluctance"
+                },
+                {
+                    "value": 4,
+                    "label": "Completely and willingly yield to all obsessions"
+                }
+            ]
+        },
+        {
+            "fieldName": "5. DEGREE OF CONTROL OVER OBSESSIVE THOUGHTS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "Complete control"
+                },
+                {
+                    "value": 1,
+                    "label": "Usually able to stop or divert obsessions with some effort and concentration"
+                },
+                {
+                    "value": 2,
+                    "label": "Sometimes able to stop or divert obsessions"
+                },
+                {
+                    "value": 3,
+                    "label": "Rarely successful in stopping or dismissing obsessions, can only divert attention with difficulty"
+                },
+                {
+                    "value": 4,
+                    "label": "Obsessions are completely involuntary, rarely able to even momentarily alter obsessive thinking"
+                }
+            ]
+        }
+    ],
+    "Compulsive Behaviors": [
+        {
+            "fieldName": "6. TIME SPENT PERFORMING COMPULSIVE BEHAVIORS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Less than 1 hr/day or occasional performance of compulsive behaviors"
+                },
+                {
+                    "value": 2,
+                    "label": "From 1 to 3 hrs/day, or frequent performance of compulsive behaviors"
+                },
+                {
+                    "value": 3,
+                    "label": "More than 3 and up to 8 hrs/day, or very frequent performance of compulsive behaviors"
+                },
+                {
+                    "value": 4,
+                    "label": "More than 8 hrs/day, or near constant performance of compulsive behaviors (too numerous to count)"
+                }
+            ]
+        },
+        {
+            "fieldName": "7.INTERFERENCE DUE TO COMPULSIVE BEHAVIORS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Slight interference with social or other activities, but overall performance not impaired"
+                },
+                {
+                    "value": 2,
+                    "label": "Definite interference with social or occupational performance, but still manageable"
+                },
+                {
+                    "value": 3,
+                    "label": "Causes substantial impairment in social or occupational performance"
+                },
+                {
+                    "value": 4,
+                    "label": "Incapacitating"
+                }
+            ]
+        },
+        {
+            "fieldName": "8. DISTRESS ASSOCIATED WITH COMPULSIVE BEHAVIOR",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "None"
+                },
+                {
+                    "value": 1,
+                    "label": "Only slightly anxious if compulsions prevented"
+                },
+                {
+                    "value": 2,
+                    "label": "Anxiety would mount but remain manageable if compulsions prevented"
+                },
+                {
+                    "value": 3,
+                    "label": "Prominent and very disturbing increase in anxiety if compulsions interrupted"
+                },
+                {
+                    "value": 4,
+                    "label": "Incapacitating anxiety from any intervention aimed at modifying activity"
+                }
+            ]
+        },
+        {
+            "fieldName": "9. RESISTANCE AGAINST COMPULSIONS",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "Always try to resist"
+                },
+                {
+                    "value": 1,
+                    "label": "Try to resist most of the time"
+                },
+                {
+                    "value": 2,
+                    "label": "Make some effort to resist"
+                },
+                {
+                    "value": 3,
+                    "label": "Yield to almost all compulsions without attempting to control them, but with some reluctance"
+                },
+                {
+                    "value": 4,
+                    "label": "Completely and willingly yield to all compulsions"
+                }
+            ]
+        },
+        {
+            "fieldName": "10. DEGREE OF CONTROL OVER COMPULSIVE BEHAVIOR",
+            "options": [
+                {
+                    "value": 0,
+                    "label": "Complete control"
+                },
+                {
+                    "value": 1,
+                    "label": "Pressure to perform the behavior but usually able to exercise voluntary control over it"
+                },
+                {
+                    "value": 2,
+                    "label": "Strong pressure to perform behavior, can control it only with difficulty"
+                },
+                {
+                    "value": 3,
+                    "label": "Very strong drive to perform behavior, must be carried to completion, can only delay with difficulty"
+                },
+                {
+                    "value": 4,
+                    "label": "Drive to perform behavior experienced as completely involuntary and overpowering, rarely able to even momentarily delay activity"
+                }
+            ]
+        }
+    ]
+}
