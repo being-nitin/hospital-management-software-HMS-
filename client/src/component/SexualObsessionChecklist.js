@@ -47,9 +47,7 @@ const SexualObsessionChecklist = () => {
 							}}>
 							Past
 						</td>
-						<td style={{ padding: "10px" }}>
-							Contamination Obsession
-						</td>
+						<td style={{ padding: "10px" }}>Sexual Obsession</td>
 					</tr>
 				</thead>
 				<tbody>
