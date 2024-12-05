@@ -27,7 +27,7 @@ const SomaticObsessionChecklist = () => {
 	console.log(checkboxstate);
 	return (
 		<div style={styles.container}>
-			<h1 style={styles.heading}>CONTAMINATION OBSESSION CHECKLIST</h1>
+			<h1 style={styles.heading}>SOMATIC OBSESSION CHECKLIST</h1>
 			<table style={styles.table}>
 				<thead>
 					<tr>
