@@ -1,0 +1,92 @@
+{
+	"AGGRESSIVE OBSESSIONS": [
+		"Fear might harm self",
+		"Fear might harm others",
+		"Violent or horrific images",
+		"Fear of blurting out obscenities or insults",
+		"Fear of doing something else embarrassing",
+		"Fear will act on unwanted impulses (e.g., to stab friend)",
+		"Fear will steal things",
+		"Fear will harm others because not careful enough (e.g., hit/run motor vehicle accident)",
+		"Fear will be responsible for something else terrible happening (e.g., fire, burglary, Other)"
+	],
+	"CONTAMINATION OBSESSIONS": [
+		"Concerns or disgust w with bodily waste or secretions (e.g., urine, feces, saliva Concern with dirt or germs",
+		"Excessive concern with environmental contaminants (e.g. asbestos, radiation toxic waste)",
+		"Excessive concern with household items (e.g., cleansers solvents)",
+		"Excessive concern with animals (e.g., insects)",
+		"Bothered by sticky substances or residues",
+		"Concerned will get ill because of contaminant",
+		"Concerned will get others ill by spreading contaminant (Aggressive)",
+		"No concern with consequences of contamination other than how it might feel"
+	],
+	"SEXUAL OBSESSIONS": [
+		"Forbidden or perverse sexual thoughts. images. or impulses",
+		"Content involves children or incest",
+		"Content involves homosexuality*",
+		"Sexual behavior towards  others (Aggressive)*",
+		"Other"
+	],
+	"HOARDING SAVING_OBSESSIONS": [
+		"distinguish from hobbies and concern with objects of monetary orsentimental value"
+	],
+	"RELEGIOUS OBSESSION": [
+		"Concerned with sacrilege and blasphemy",
+		"Excess concern with right/wrong, morality",
+		"Other:"
+	],
+	"OBSESSION WITH NEED FOR SYMMETRY OR EXACTNESS": [
+		"Accompanied by magical thinking (e.g., concerned that another will have  accident dent unless  less things are in the right place",
+		"Not accompanied by magical thinking"
+	],
+	"MISCELLANEOUS OBSESSIONS": [
+		"Need to know or remember",
+		"Fear of saying certain things",
+		"Fear of not saying just the right thing",
+		"Fear of losing things",
+		"Intrusive (nonviolent) images",
+		"Intrusive nonsense sounds, words, or music",
+		"Bothered by certain sounds/noises*",
+		"Lucky/unlucky numbers",
+		"Colors with special significance",
+		"3 superstitious fears",
+		"others"
+	],
+	"SOMATIC OBSESSIONS": [
+		"Concern with illness or disease*",
+		"Excessive concern with body part or aspect ofAppearance (eg., dysmorphophobia)*",
+		"Other"
+	],
+	"CLEANING WASHING COMPULSIONS": [
+		"Excessive or ritualized handwashing",
+		"Excessive or ritualized showering, bathing,  toothbrushing grooming, or toilet routine Involves cleaning of household items or other inanimate objects Other measures to prevent or remove contact with contaminants",
+		"Other"
+	],
+	"CHECKING COMPULSION": [
+		"Checking locks, stove, appliances etc.",
+		"Checking that did not/will not harm others",
+		"Checking that did not/will not harm self",
+		"Checking that nothing terrible did/will happen",
+		"Checking that did not make mistake",
+		"Checking tied to somatic obsessions",
+		"Other"
+	],
+	"REPEATING RITUALS": [
+		"Rereading or rewriting",
+		"Need to repeat routine activities (e.g., jog, in/out door, up/down from chair)",
+		"Other"
+	],
+	"MISCELLANEOUS COMPULSION": [
+		"Mental rituals (other than checking/counting)",
+		"Excessive listmaking",
+		"Need to tell, ask, or confess",
+		"Need to touch, tap, or rub",
+		"Rituals involving blinking or staring",
+		"Measures (not checking) to prevent: harm to self, harm to others, terrible consequences",
+		"Ritualized eating behaviors",
+		"Superstitious behaviors",
+		"Trichotillomania",
+		"Other self-damaging or self-mutilating behaviors",
+		"Other"
+	]
+}
