@@ -76,6 +76,7 @@ const SympotomChecklist = ({ obsessionArray, heading }) => {
 const YBOCSSymptomsChecklist = () => {
 	return (
 		<>
+			<h1 style={{ textAlign: "center" }}>Y-BOCS Symptom Checklist</h1>
 			{Object.keys(SympotomsData).map((item) => (
 				<SympotomChecklist
 					key={item}
