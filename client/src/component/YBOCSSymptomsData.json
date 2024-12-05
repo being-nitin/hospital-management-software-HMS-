@@ -76,6 +76,15 @@
 		"Need to repeat routine activities (e.g., jog, in/out door, up/down from chair)",
 		"Other"
 	],
+	"COUNTING COMPULSIONS": [
+		"Counting Compulsion"
+	],
+	"ORDERING/ARRANGING COMPULSIONS": [
+		"Ordering/Arranging Compulsion"
+	],
+	"HOARDING/COLLECTING COMPULSIONS": [
+		"distinguish from hobbies and concern with objects of monetary or sentimental values (e.g. carefully reads junk mail, piles up old newspaper, sorts through garbage, collects useless objects)"
+	],
 	"MISCELLANEOUS COMPULSION": [
 		"Mental rituals (other than checking/counting)",
 		"Excessive listmaking",
