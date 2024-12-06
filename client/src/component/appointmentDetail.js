@@ -192,21 +192,20 @@ const AppointmentDetail = () => {
   };
 
   // Handle printing the prescription
-  const handlePrint = (index) => {
-    const content = appointmentRefs.current[index];
-    const printWindow = window.open("", "", "width=800,height=600");
-    printWindow.document.write("<html><head><title>Print Prescription</title>");
-    printWindow.document.write(
-      "<style>body { font-family: Arial, sans-serif; } table { width: 100%; border-collapse: collapse; } th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }</style>"
-    );
-    printWindow.document.write("</head><body>");
-    printWindow.document.write(content.innerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    printWindow.close();
-  };
+    const appointmentRef = useRef();
+  
+    const handlePrint = () => {
+      const printContent = appointmentRef.current;
+      const printWindow = window.open("", "width=800,height=600");
+      printWindow.document.write("<html><head><title>Appointment Details</title>");
+      printWindow.document.write("<style>body{font-family: Arial, sans-serif; margin: 20px;} table{width: 100%; border-collapse: collapse;} th, td{padding: 8px; text-align: left; border: 1px solid #ddd;} th{background-color: #f2f2f2;} .actions{display: flex; gap: 10px;}</style></head><body>");
+      printWindow.document.write(printContent.innerHTML); // Copy the content to the print window
+      printWindow.document.write("</body></html>");
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print(); // Trigger the print dialog
+      printWindow.close()
+    }
 
   const handleVitalCancel = () => {
     setVitalSignsForm(false);
@@ -400,130 +399,115 @@ const AppointmentDetail = () => {
                   </div>
                 </div>
               )}
-              <div
-                ref={(el) => (appointmentRefs.current[0] = el)}
-                className="mb-4 p-3 border rounded"
-              >
-                <h6>
-                  <strong>Appointment Date:</strong>{" "}
-                  {dayjs(appointment?.date?.toLocaleString()).format(
-                    "YYYY-MM-DD"
-                  )}
-                </h6>
-                <h6>
-                  <strong>Appointment Time:</strong> {appointment?.time}
-                </h6>
-                <h6>
-                  <strong>Doctor:</strong> Dr.
-                  {appointment?.doctor?.name}
-                </h6>
+               <div>
+      <div
+        ref={appointmentRef}
+        className="mb-4 p-3 border rounded"
+      >
+        <h6>
+          <strong>Appointment Date:</strong> {dayjs(appointment?.date?.toLocaleString()).format("YYYY-MM-DD")}
+        </h6>
+        <h6>
+          <strong>Appointment Time:</strong> {appointment?.time}
+        </h6>
+        <h6>
+          <strong>Doctor:</strong> Dr. {appointment?.doctor?.name}
+        </h6>
 
-                {/* Vital Signs Section */}
-                <div className="mb-4">
-                  <div>
-                    <strong>Vital Signs</strong>
-                  </div>
-                  <div>
-                    <table className="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Weight (kg)</th>
-                          <th>B.P. (mmHg)</th>
-                          <th>Pulse (Heartbeats/min)</th>
-                          <th>Temperature (°C)</th>
-                          <th>Resp. Rate (breaths/min)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{appointment?.vitalSigns?.weight || "N/A"}</td>
-                          <td>{appointment?.vitalSigns?.bp || "N/A"}</td>
-                          <td>{appointment?.vitalSigns?.pulse || "N/A"}</td>
-                          <td>
-                            {appointment?.vitalSigns?.temperature || "N/A"}
-                          </td>
-                          <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    {appointment?.status !== "closed" && (
-                      <div>
-                        <PencilSquare
-                          size={24}
-                          className="me-2"
-                          style={{
-                            cursor: "pointer",
-                            color: "blue",
-                          }}
-                          onClick={() => handleEditVitalSigns()} // Trigger edit form
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Prescriptions Section as Table */}
-                <h6 className="mt-3">
-                  <strong>Prescriptions:</strong>
-                </h6>
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Drug</th>
-                      <th>Dosage</th>
-                      <th>Duration</th>
-                      <th>Instructions</th>
-                      {appointment?.status !== "closed" && <th>Actions</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {appointment?.prescription &&
-                      appointment?.prescription.map((prescription, idx) => (
-                        <tr key={idx}>
-                          <td>{prescription?.drug}</td>
-                          <td>{prescription?.dosage}</td>
-                          <td>
-                            {prescription?.durationNumber +
-                              prescription?.durationUnit}
-                          </td>
-                          <td>{prescription?.instruction}</td>
-                          {appointment?.status !== "closed" && (
-                            <td>
-                              <PencilSquare
-                                size={24}
-                                className="me-2"
-                                style={{
-                                  cursor: "pointer",
-                                  color: "blue",
-                                }}
-                                onClick={() => handleEditPrescription(idx)} // Trigger edit form
-                              />
-                              <Trash
-                                size={24}
-                                style={{
-                                  cursor: "pointer",
-                                  color: "red",
-                                }}
-                                onClick={() =>
-                                  handleDeletePrescription(prescription._id)
-                                } // Delete prescription
-                              />
-                            </td>
-                          )}
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-
-                {/* Print Button */}
-                <div className="d-flex justify-content-end mt-3">
-                  <Button type="primary" onClick={() => handlePrint(0)}>
-                    Print Prescription
-                  </Button>
-                </div>
-
-                <hr />
+        {/* Vital Signs Section */}
+        <div className="mb-4">
+          <div><strong>Vital Signs</strong></div>
+          <div>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Weight (kg)</th>
+                  <th>B.P. (mmHg)</th>
+                  <th>Pulse (Heartbeats/min)</th>
+                  <th>Temperature (°C)</th>
+                  <th>Resp. Rate (breaths/min)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{appointment?.vitalSigns?.weight || "N/A"}</td>
+                  <td>{appointment?.vitalSigns?.bp || "N/A"}</td>
+                  <td>{appointment?.vitalSigns?.pulse || "N/A"}</td>
+                  <td>{appointment?.vitalSigns?.temperature || "N/A"}</td>
+                  <td>{appointment?.vitalSigns?.respRate || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+            {appointment?.status !== "closed" && (
+              <div>
+                <PencilSquare
+                  size={24}
+                  className="me-2"
+                  style={{
+                    cursor: "pointer",
+                    color: "blue",
+                  }}
+                  onClick={() => handleEditVitalSigns()} // Trigger edit form
+                />
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* Prescriptions Section */}
+        <h6 className="mt-3"><strong>Prescriptions:</strong></h6>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Dosage</th>
+              <th>Duration</th>
+              <th>Instructions</th>
+              {appointment?.status !== "closed" && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {appointment?.prescription &&
+              appointment?.prescription.map((prescription, idx) => (
+                <tr key={idx}>
+                  <td>{prescription?.drug}</td>
+                  <td>{prescription?.dosage}</td>
+                  <td>{prescription?.durationNumber + prescription?.durationUnit}</td>
+                  <td>{prescription?.instruction}</td>
+                  {appointment?.status !== "closed" && (
+                    <td>
+                      <PencilSquare
+                        size={24}
+                        className="me-2"
+                        style={{
+                          cursor: "pointer",
+                          color: "blue",
+                        }}
+                        onClick={() => handleEditPrescription(idx)} // Trigger edit form
+                      />
+                      <Trash
+                        size={24}
+                        style={{
+                          cursor: "pointer",
+                          color: "red",
+                        }}
+                        onClick={() => handleDeletePrescription(prescription._id)} // Delete prescription
+                      />
+                    </td>
+                  )}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Print Button */}
+      <div className="d-flex justify-content-end mt-3">
+        <Button variant="primary" onClick={handlePrint}>
+          Print Appointment Details
+        </Button>
+      </div>
+    </div>
             </div>
           </div>
 
