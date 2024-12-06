@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import YBOCS_DATA from "./YBOCS_DATA.json";
+import YBOCSSymptomsChecklist from "./YBOCSSymptomsChecklist";
 
 const YBOCS = () => {
 	const [form2Data, setForm2Data] = useState({
@@ -91,6 +92,7 @@ const YBOCS = () => {
 							</div>
 						))}
 				</div>
+				<YBOCSSymptomsChecklist/>
 				<button type="submit" style={styles.submitButton}>
 					Submit
 				</button>

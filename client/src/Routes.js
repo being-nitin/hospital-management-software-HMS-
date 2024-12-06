@@ -76,6 +76,7 @@ import CDRSForm from "./component/CDRS";
 import PanssForm from "./component/panss";
 import YMRSform from "./component/YMRSform";
 import InvoiceLayout from "./component/billingDetail";
+import YBOCS from "./component/YBOCS";
 
 const Routes = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -96,7 +97,7 @@ const Routes = () => {
             path="/update-cat-test/:catTestId"
             element={<CatTestUpdate />}
           />
-          <Route path="/ymrs" element={<YMRSform/>}/>
+        
           <Route path="/billing/:id" element={<InvoiceLayout/>} />
           <Route path="/update-test/:testId" element={<TestUpdate />} />
           <Route
@@ -130,6 +131,7 @@ const Routes = () => {
             element={<TreatmentUpdate />}
           />
           <Route path="/list/users" element={<ListUsers />} />
+          
           <Route path="/list/medicine" element={<ListMedicine />} />
           <Route path="/list-cat-test" element={<ListCatTest />} />
           <Route path="/list-patients" element={<ListPatients />} />
@@ -141,13 +143,17 @@ const Routes = () => {
           <Route path="/list-doctors" element={<ListDoctors />} />
           <Route path="/list-app-vaccine" element={<ListAppVaccine />} />
           <Route path="/list-app-vaccine/:id" element={<AppointmentDetail />} />
-          <Route path="/hamS/:id" element={<HamiltonDepressionForm/>} />
+          
           <Route path="/clinicalNotes/:id" element={<ClinicalNotes/>}/>
-          <Route path="/HamiltonForm/:id" element={<Hamilton />} />
-          <Route path="/cdrs/:id" element={<CDRSForm/>} />
+
           <Route path="/viewHamiltomForm/:id" element={<HamAView/>} />
           <Route path="/PsychologicalForm/:id" element={<Psychodiagnostic />} />
           <Route path="/panss/:id" element={<PanssForm/>}/>
+          <Route path="/HamiltonForm/:id" element={<Hamilton />} />
+          <Route path="/cdrs/:id" element={<CDRSForm/>} />
+          <Route path="/hamD/:id" element={<HamiltonDepressionForm/>} />
+          <Route path="/ybocs/:id" element={<YBOCS/>}/>
+          <Route path="/ymrs/:id" element={<YMRSform/>}/>
           <Route path="/list-designate" element={<ListDesignate />} />
           <Route path="/list-expenses" element={<ListExpenses />} />
           <Route path="/list-specialize" element={<ListSpecialize />} />

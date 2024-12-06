@@ -1,12 +1,6 @@
 const expenses = require('../models/expenses')
 const asyncHandler  = require( 'express-async-handler')
-
-
-
-
-
-
-
+const User = require ('../models/user.js')
 
 exports.expenseById = asyncHandler (async (req, res, next, id) => {
 
@@ -100,14 +94,58 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    await expenses.find({}).populate("appointment doctor patient").exec((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
+    const { doctor, startDate, endDate, page, limit } = req.query; // Pagination and filters
+
+    let field = {};
+    if (req.params.userId) {
+        const findUser = await User.findById({ _id: req.params.userId });
+  
+        if (findUser && findUser.role === 1) {
+          field["doctor"] = req.params.userId;
         }
-        res.json(data);
-    });
+      }
+  
+      // Add filters for status and date if provided
+      if (doctor) {
+        field["doctor"] = doctor;
+      }
+  
+      if (startDate) {
+        
+          field["date"] = {
+            $gte: startDate, // Start of the day in UTC
+            $lte: endDate, // End of the day in UTC
+          };
+      }
+  
+      // If pagination parameters are provided, apply pagination
+      if (page && limit) {
+        const pageNumber = parseInt(page, 10) || 1;
+        const pageSize = parseInt(limit, 10) || 10;
+  
+        // Get total count for pagination
+        const totalExpenses = await expenses.countDocuments(field);
+         
+        console.log(field)
+        // Query with pagination and filters
+        const data = await expenses.find(field)
+          .populate("patient doctor prescription")
+          .skip((pageNumber - 1) * pageSize)
+          .limit(pageSize)
+          .exec();
+  
+        // Send paginated response
+        return res.json({
+          expense: data,
+          currentPage: pageNumber,
+          totalPages: Math.ceil(totalExpenses / pageSize),
+          totalExpenses,
+        });
+      }
+
+    const data =  await expenses.find(field).populate("appointment doctor patient")
+   res.json(data);
+   
 })
 
 

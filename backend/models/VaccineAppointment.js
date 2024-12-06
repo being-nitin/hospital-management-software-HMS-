@@ -42,7 +42,10 @@ const VaccineAppointment = mongoose.Schema(
         },
         vitalSigns : {
             type : Object,
-        }
+        },
+        hamD : {
+            type : Object
+        },
     }
 )
 

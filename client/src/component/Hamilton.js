@@ -19,20 +19,75 @@ const Hamilton = () => {
   const navigate = useNavigate();
   const { id } =useParams()
   const fieldNames = [
-    "Anxious Mood",
-    "Tension",
-    "Fears",
-    "Insomnia",
-    "Intellectual",
-    "Depressed Mood",
-    "Somatic (Muscular)",
-    "Somatic (Sensory)",
-    "Cardiovascular Symptoms",
-    "Respiratory Systems",
-    "Gastrointestinal Symptoms",
-    "Gastrourinatory Symptoms",
-    "Autonomic Symptoms",
-    "Behaviour At Interview",
+    {
+      name: "Anxious Mood",
+      description:
+        "Worries, anticipation of the worst, fearful anticipation, irritability.",
+    },
+    {
+      name: "Tension",
+      description:
+        "Feelings of tension, fatigability, startled response, moved to tears easily, trembling, feelings of restlessness, inability to relax.",
+    },
+    {
+      name: "Fears",
+      description:
+        "Of dark, of strangers, of being left alone, of animals, of traffic, of crowds.",
+    },
+    {
+      name: "Insomnia",
+      description:
+        "Difficulty in falling asleep, broken sleep, unsatisfying sleep and fatigue on waking, dreams, nightmares, night terrors.",
+    },
+    {
+      name: "Intellectual",
+      description: "Difficulty in concentration, poor memory.",
+    },
+    {
+      name: "Depressed Mood",
+      description:
+        "Loss of interest, lack of pleasure in hobbies, depression, early waking, diurnal swing.",
+    },
+    {
+      name: "Somatic (Muscular)",
+      description:
+        "Pains and aches, twitching, stiffness, myoclonic jerks, grinding of teeth, unsteady voice, increased muscular tone.",
+    },
+    {
+      name: "Somatic (Sensory)",
+      description:
+        "Tinnitus, blurring of vision, hot and cold flushes, feelings of weakness, pricking sensation.",
+    },
+    {
+      name: "Cardiovascular Symptoms",
+      description:
+        "Tachycardia, palpitations, pain in chest, throbbing of vessels, fainting feelings, missing beat.",
+    },
+    {
+      name: "Respiratory Symptoms",
+      description:
+        "Pressure or constriction in chest, choking feelings, sighing, dyspnea.",
+    },
+    {
+      name: "Gastrointestinal Symptoms",
+      description:
+        "Difficulty in swallowing, wind, abdominal pain, burning sensations, abdominal fullness, nausea, vomiting, borborygm, looseness of bowels, loss of weight, constipation.",
+    },
+    {
+      name: "Genitourinary Symptoms",
+      description:
+        "Frequency of micturition, urgency of micturition, amenorrhea, menorrhagia, development of frigidity, premature ejaculation, loss of libido, impotence.",
+    },
+    {
+      name: "Autonomic Symptoms",
+      description:
+        "Dry mouth, flushing, pallor, tendency to sweat, giddiness, tension headache, raising of hair.",
+    },
+    {
+      name: "Behavior At Interview",
+      description:
+        "Fidgeting, restlessness or pacing, tremor of hands, furrowed brow, strained face, sighing or rapid respiration, facial pallor, swallowing, etc.",
+    },
   ];
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -56,11 +111,11 @@ const Hamilton = () => {
     e.preventDefault();
     console.log(form2Data)
     const submittedData = fieldNames.reduce((result, fieldName, index) => {
-        result[fieldName] = form2Data.fields[index];
+        result[fieldName.name] = form2Data.fields[index];
         return result;
       }, {})
     dispatch(
-      updateVacApp({ _id: appointment._id, hamA : submittedData})
+      updateVacApp({ _id: appointment._id, hamA : {info : submittedData , score : Object.values(submittedData).reduce((acc, value) => acc + value, 0)}})
     );
     dispatch(detailsVacApp(id));
   };
@@ -75,7 +130,7 @@ const Hamilton = () => {
 
   useEffect(() => {
     setExistingData(
-      appointment?.hamA ? appointment?.hamA : null
+      appointment?.hamA ? appointment?.hamA?.info : null
     );
   }, [appointment]);
 
@@ -109,7 +164,8 @@ const Hamilton = () => {
         <div style={styles.fieldsContainer}>
           {fieldNames.map((fieldName, index) => (
             <div key={index} style={styles.fieldWrapper}>
-              <label style={styles.label}>{fieldName}:</label>
+              <label style={styles.label}>{fieldName.name}:</label>
+              <p style={styles.description}>{fieldName.description}</p>
               <div style={styles.radioGroup}>
                 {[0, 1, 2, 3, 4].map((option) => (
                   <label key={option} style={styles.radioOption}>

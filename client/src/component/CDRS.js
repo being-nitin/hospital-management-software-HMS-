@@ -238,6 +238,7 @@ const CDRSForm = () => {
     setResponses({ ...responses, [id]: value });
   };
 
+
   // Submit form handler
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -263,7 +264,7 @@ const CDRSForm = () => {
                     onChange={() => handleChange(q.id, index)}
                     required
                   />
-                  {` ${option}`}
+                  {`  ${index} ${option}`}
                 </label>
               ))}
             </div>

@@ -28,7 +28,7 @@ const HamAView = () => {
   }, [dispatch, userInfo, id, navigate]);
 
   useEffect(() => {
-    setHamA(appointment?.hamA);
+    setHamA(appointment?.hamA?.info);
   }, [appointment]);
 
   const handlePrint = () => {
@@ -104,7 +104,7 @@ const HamAView = () => {
               </tbody>
             </Table>
             <div className="text-center mt-3">
-              <h5>Total Score: {hamA ? Object.values(hamA).reduce((acc, value) => acc + value, 0) : 0}</h5>
+              <h5>Total Score: {hamA ? appointment?.hamA?.score : 0}</h5>
             </div>
           </Card>
         </div>

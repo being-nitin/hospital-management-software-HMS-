@@ -172,15 +172,16 @@ const HamiltonDepressionForm = () => {
     const [existingData, setExistingData] = useState(null);
   
     const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-    const { appointment } = vaccineAppList || {};
+    const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
   
+    console.log(vaccineAppList)
     useEffect(() => {
       dispatch(detailsVacApp(id));
     }, [dispatch, id]);
   
     useEffect(() => {
       if (appointment && appointment.hamD) {
-        setExistingData(appointment.hamD);
+        setExistingData(appointment?.hamD?.info);
       }
     }, [appointment]);
   
@@ -195,12 +196,12 @@ const HamiltonDepressionForm = () => {
         ...prevData,
         [field]: value,
       }));
-      console.log(formData)
+    
     };
-  
+    console.log(formData)
     const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(updateVacApp({ _id: appointment._id, hamD: formData }));
+      dispatch(updateVacApp({ _id: appointment._id, hamD: {info : formData , score : Object.values(formData).reduce((acc, value) => acc + value, 0)} }));
       dispatch(detailsVacApp(id));
     };
   
@@ -214,18 +215,18 @@ const HamiltonDepressionForm = () => {
               <div key={key} className="form-group">
                 <label className="field-label">{field.fieldName}</label>
                 <div className="radio-options">
-                  {field.options.map((option) => (
+                  {field.options.map((option, i) => (
                     <label key={option.value} className="radio-label">
                       <input
                         type="radio"
-                        name={key}
+                        name={field.fieldName}
                         value={option.value}
-                        checked={formData[key] === option.value}
-                        onChange={() => handleRadioChange(key, option.value)}
+                        checked={formData[field.fieldName] === option.value}
+                        onChange={() => handleRadioChange(field.fieldName, option.value)}
                         className="radio-input"
                       />
-                      {option.label}
-                    </label>
+                      {i}{" "}{option.label}
+                    </label> 
                   ))}
                 </div>
               </div>

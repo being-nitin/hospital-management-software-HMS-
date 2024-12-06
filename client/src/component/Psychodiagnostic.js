@@ -130,9 +130,8 @@ const Psychodiagnostic = () => {
     suggestions: "",
   });
   const [existingData, setExistingData] = useState(null);
-
-  const toolsOptions = ["Tool A", "Tool B", "Tool C"];
-
+  const [toolsOptions, setToolOptions] = useState([])
+  
   const [customEntry, setCustomEntry] = useState("");
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -306,6 +305,8 @@ const Psychodiagnostic = () => {
     setExistingData(
       appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null
     );
+    setToolOptions([{tool: "HAM-A" , score : appointment.hamA.score},{tool : "HAM-D", score : appointment.hamD.score}]);
+
   }, [appointment]);
 
   useEffect(() => {
@@ -1059,19 +1060,13 @@ const Psychodiagnostic = () => {
 
         <label style={styles.label}>
           Tools Used:
-          <select
-            name="toolsUsed"
-            style={styles.dropdown}
-            value={formData.toolsUsed}
-            onChange={handleChange}
-          >
-            <option value="">Select a tool</option>
+       
             {toolsOptions.map((tool, index) => (
-              <option key={index} value={tool}>
-                {tool}
-              </option>
+              <div key={index} value={tool}>
+                {tool.tool}  Score : { tool.score}
+              </div>
             ))}
-          </select>
+        
         </label>
 
         <label style={styles.label}>

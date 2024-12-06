@@ -20,7 +20,7 @@ exports.vaccineAppointById = async (req, res, next, id) => {
 exports.getVaccineApp = asyncHandler(async (req, res) => {
     try{
     const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor prescription")
-    console.log(appointment)
+    
     const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}]}).populate("patient doctor prescription")
     
     if (appointment) {

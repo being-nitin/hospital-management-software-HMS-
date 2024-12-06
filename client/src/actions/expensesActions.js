@@ -70,7 +70,7 @@ export const createExpenses = (expense) => async (dispatch, getState) => {
 }
 
 
-export const listExpenses = () => async (dispatch, getState) => {
+export const listExpenses = (page = null, limit = null, doctor = null, startDate = null, endDate= null) => async (dispatch, getState) => {
     try {
         dispatch({
             type: LIST_EXPENSES_REQUEST,
@@ -86,7 +86,13 @@ export const listExpenses = () => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.get(`${API}/expenses-list/${userInfo._id}`, config)
+        const queryParams = new URLSearchParams();
+        if (page) queryParams.append("page", page);
+        if (limit) queryParams.append("limit", limit);
+        if (doctor) queryParams.append("doctor", doctor);
+        if (startDate) queryParams.append("startDate", startDate);
+        if (endDate) queryParams.append("endDate", endDate);
+        const { data } = await axios.get(`${API}/expenses-list/${userInfo._id}?${queryParams.toString()}`, config)
 
         dispatch({
             type: LIST_EXPENSES_SUCCESS,
