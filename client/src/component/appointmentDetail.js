@@ -17,6 +17,8 @@ import VitalSignsForm from "./vitalSigns";
 import MedicalHistoryForm from "./medicalHistoryForm";
 import { listMedicines, deleteMedicine } from "../actions/medicineActions";
 import dayjs from "dayjs";
+import header from "../assets/header.PNG"
+import PrintLayout from "../core/printLayout";
 
 const AppointmentDetail = () => {
   const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -198,9 +200,10 @@ const AppointmentDetail = () => {
       const printContent = appointmentRef.current;
       const printWindow = window.open("", "width=800,height=600");
       printWindow.document.write("<html><head><title>Appointment Details</title>");
-      printWindow.document.write("<style>body{font-family: Arial, sans-serif; margin: 20px;} table{width: 100%; border-collapse: collapse;} th, td{padding: 8px; text-align: left; border: 1px solid #ddd;} th{background-color: #f2f2f2;} .actions{display: flex; gap: 10px;}</style></head><body>");
+      printWindow.document.write("<style>body{font-family: Arial, sans-serif; margin: 20px;} table{width: 100%; border-collapse: collapse;} th, td{padding: 8px; text-align: left; border: 1px solid #ddd;} th{background-color: #f2f2f2;} header : { position : fixed; top: 0 ;}} .actions{display: flex; gap: 10px;}</style></head><body>");
+      printWindow.document.write(`<img src=${header}>`)
       printWindow.document.write(printContent.innerHTML); // Copy the content to the print window
-      printWindow.document.write("</body></html>");
+      printWindow.document.write(`</body></html>`);
       printWindow.document.close();
       printWindow.focus();
       printWindow.print(); // Trigger the print dialog
@@ -400,8 +403,10 @@ const AppointmentDetail = () => {
                 </div>
               )}
                <div>
+  
+  <PrintLayout>
       <div
-        ref={appointmentRef}
+        // ref={appointmentRef}
         className="mb-4 p-3 border rounded"
       >
         <h6>
@@ -500,13 +505,8 @@ const AppointmentDetail = () => {
           </tbody>
         </table>
       </div>
-
+      </PrintLayout>
       {/* Print Button */}
-      <div className="d-flex justify-content-end mt-3">
-        <Button variant="primary" onClick={handlePrint}>
-          Print Appointment Details
-        </Button>
-      </div>
     </div>
             </div>
           </div>
