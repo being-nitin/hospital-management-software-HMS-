@@ -8,6 +8,22 @@ import {
 } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 
+const suggestionsList = [
+  "Psychoeducation",
+  "CBT",
+  "DBT",
+  "MET IRPT",
+  "BI CBT",
+  "ERP",
+  "RMT RPPT",
+  "Social Skill Training",
+  "Family Therapy",
+  "IPSRP",
+  "Pharmacotherapy Relaxation",
+  "Mindfulness",
+  "Pharmacotherapy"
+];
+
 const Psychodiagnostic = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -120,8 +136,10 @@ const Psychodiagnostic = () => {
         form: [],  
         possession: [], 
         content: [],  
-      }
+      },
+      
     },
+    mood : "",
     additionalInfo1: "",
     additionalInfo2: "",
     toolsUsed: "",
@@ -305,7 +323,7 @@ const Psychodiagnostic = () => {
     setExistingData(
       appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null
     );
-    setToolOptions([{tool: "HAM-A" , score : appointment.hamA.score},{tool : "HAM-D", score : appointment.hamD.score}]);
+    setToolOptions([{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},{tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null}]);
 
   }, [appointment]);
 
@@ -988,8 +1006,37 @@ const Psychodiagnostic = () => {
         <label>{option}</label>
       </div>
     ))}
+
   </div>
 ))}
+
+<label style={styles.label}>
+    Mood:
+    <select
+      name="mood"
+      style={styles.dropdown}
+      value={formData.mood || ""}
+      onChange={handleChange}
+    >
+      <option value="">Select a mood</option>
+      {[
+  "Anxious",
+  "Depressed",
+  "Dysthymic",
+  "Sad",
+  "Dysphoric",
+  "Euthymic",
+  "Irritable",
+  "Cheerful",
+  "Euphoric",
+  "Elated"
+].map((mood, index) => (
+        <option key={index} value={mood}>
+          {mood}
+        </option>
+      ))}
+    </select>
+  </label>
 
       </fieldset>
         {/* <label style={styles.labels}>
@@ -1092,15 +1139,21 @@ const Psychodiagnostic = () => {
         </label>
 
         <label style={styles.label}>
-          Suggestions:
-          <textarea
-            name="suggestions"
-            style={styles.textarea}
-            rows="5"
-            value={formData.suggestions}
-            onChange={handleChange}
-          ></textarea>
-        </label>
+    Suggestions:
+    <select
+      name="suggestions"
+      style={styles.textarea}
+      value={formData.suggestions}
+      onChange={handleChange}
+    >
+      <option value="">Select a suggestion</option>
+      {suggestionsList.map((suggestion, index) => (
+        <option key={index} value={suggestion}>
+          {suggestion}
+        </option>
+      ))}
+    </select>
+  </label>
 
         <button type="submit" style={styles.submitButton}>
           Submit
