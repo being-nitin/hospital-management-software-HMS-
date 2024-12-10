@@ -19,7 +19,7 @@ const SympotomChecklist = ({ obsessionArray, heading }) => {
 		}));
 	};
 
-	console.log(checkboxstate);
+
 	return (
 		<div style={styles.container}>
 			<h1 style={styles.heading}>{heading} CHECKLIST</h1>

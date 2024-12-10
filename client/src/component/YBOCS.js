@@ -1,12 +1,40 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import YBOCS_DATA from "./YBOCS_DATA.json";
 import YBOCSSymptomsChecklist from "./YBOCSSymptomsChecklist";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
 
 const YBOCS = () => {
 	const [form2Data, setForm2Data] = useState({
 		fields: Array(10).fill(null),
 	});
 	const [totalScore, setTotalScore] = useState(0);
+
+	const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [existingData, setExistingData] = useState(null);
+
+  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+  const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+
+  useEffect(() => {
+    dispatch(detailsVacApp(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (appointment && appointment.ybocs) {
+      setExistingData(appointment?.ybocs?.info);
+    }
+  }, [appointment]);
+
+  useEffect(() => {
+    if (existingData) {
+      setForm2Data(existingData);
+    }
+  }, [existingData]);
 
 	const handleRadioChange = (index, value) => {
 		setForm2Data((prevData) => {
@@ -16,27 +44,22 @@ const YBOCS = () => {
 		});
 	};
 
+	console.log(form2Data)
 	const fieldNames = YBOCS_DATA["Obsessive thoughts"]
 		.concat(YBOCS_DATA["Compulsive Behaviors"])
 		.map(({ fieldName }) => fieldName);
 
 	const handeFormSubmit = (e) => {
 		e.preventDefault();
-		console.log(form2Data);
+	
 		const submittedData = fieldNames.reduce((result, currField, index) => {
 			result[currField] = form2Data.fields[index];
 			return result;
 		}, {});
-		console.log(submittedData);
-
-		const calculateScore = Object.values(submittedData).reduce(
-			(acc, currValue) => {
-				return acc + currValue;
-			},
-			0
-		);
-		setTotalScore(calculateScore);
-		console.log("Total Score", calculateScore);
+		
+		
+		dispatch(updateVacApp({ _id: appointment._id, ybocs: {info : form2Data , score : Object.values(form2Data).reduce((acc, value) => acc + value, 0)} }));
+		dispatch(detailsVacApp(id));
 	};
 
 	return (
@@ -61,31 +84,31 @@ const YBOCS = () => {
 				<div styles={styles.fieldsContainer}>
 					{YBOCS_DATA["Obsessive thoughts"]
 						.concat(YBOCS_DATA["Compulsive Behaviors"])
-						.map(({ fieldName, options }, index) => (
+						.map(({ fieldName, options }, key) => (
 							<div key={fieldName} style={styles.fieldWrapper}>
 								<label style={styles.label}>{fieldName}:</label>
 								<div style={styles.radioGroup}>
-									{options.map((option) => (
+									{options.map((option, index) => (
 										<label
-											key={option.label}
+											key={index}
 											style={styles.radioOption}>
 											<input
 												type="radio"
-												name={`field-${index}`}
-												value={option.label}
-												checked={
-													form2Data.fields[index] ===
-													option.value
+												name={`field-${key}`}
+												value={key}
+													checked={
+													Number(form2Data.fields[key]) ===
+													Number(option.value)
 												}
 												onChange={() =>
 													handleRadioChange(
-														index,
+														key,
 														option.value
 													)
 												}
 												style={styles.radioInput}
 											/>
-											{option.value} : {option.label}
+											{index} : {option.label}
 										</label>
 									))}
 								</div>

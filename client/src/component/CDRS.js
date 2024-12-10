@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
 
 const CDRSForm = () => {
-  // Initial state for form responses
-  const [responses, setResponses] = useState({});
+  // Initial state for form formdata
+  const [formData, setFormData] = useState({});
 
   // CDRS Questions Data
   const questions = [
@@ -39,7 +42,7 @@ const CDRSForm = () => {
           text: "Self-Esteem",
           scale: 5,
           description:
-            "The child’s ability to describe self is very concrete at 6 and 7, becoming more sophisticated at 9 and 10. Note affective tones around the child’s responses. Inappropriate guilt rates 3 or 4.",
+            "The child’s ability to describe self is very concrete at 6 and 7, becoming more sophisticated at 9 and 10. Note affective tones around the child’s formdata. Inappropriate guilt rates 3 or 4.",
           options: [
             "No information",
             "Child describes self in mostly positive terms",
@@ -235,16 +238,44 @@ const CDRSForm = () => {
 
   // Handle input change
   const handleChange = (id, value) => {
-    setResponses({ ...responses, [id]: value });
+    setFormData({ ...formData, [id]: value });
   };
 
 
-  // Submit form handler
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [existingData, setExistingData] = useState(null);
+
+  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+  const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+
+  useEffect(() => {
+    dispatch(detailsVacApp(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (appointment && appointment.cdrs) {
+      setExistingData(appointment?.cdrs?.info);
+    }
+  }, [appointment]);
+
+  useEffect(() => {
+    if (existingData) {
+      setFormData(existingData);
+    }
+  }, [existingData]);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Responses: ", responses);
-    alert("Form Submitted Successfully!");
+    dispatch(updateVacApp({ _id: appointment._id, cdrs: {info : formData , score : Object.values(formData).reduce((acc, value) => acc + value, 0)} }));
+    dispatch(detailsVacApp(id));
+    alert("Form submitted successfully")
   };
+
+ 
 
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px", fontFamily: "Arial, sans-serif" }}>
@@ -260,8 +291,9 @@ const CDRSForm = () => {
                   <input
                     type="radio"
                     name={`question-${q.id}`}
-                    value={index}
-                    onChange={() => handleChange(q.id, index)}
+                    value={option}
+                    checked={formData[q.text] === index}
+                    onChange={() => handleChange(q.text, index)}
                     required
                   />
                   {`  ${index} ${option}`}

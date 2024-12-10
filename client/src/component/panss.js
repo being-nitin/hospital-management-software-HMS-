@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
 
 const PANSSForm = () => {
   const [formData, setFormData] = useState({});
@@ -60,6 +63,26 @@ const PANSSForm = () => {
     { score: 7, description: 'Extreme' },
   ];
 
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [existingData, setExistingData] = useState(null);
+
+  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+  const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+
+  useEffect(() => {
+    dispatch(detailsVacApp(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (appointment && appointment.panss) {
+      setExistingData(appointment?.panss?.info);
+    }
+  }, [appointment]);
+
   const handleChange = (id, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -67,11 +90,20 @@ const PANSSForm = () => {
     }));
   };
 
+  useEffect(() => {
+    if (existingData) {
+      setFormData(existingData);
+    }
+  }, [existingData]);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
-    alert('Form submitted successfully!');
+    dispatch(updateVacApp({ _id: appointment._id, panss: {info : formData , score : Object.values(formData).reduce((acc, value) => acc + Number(value), 0)} }));
+    dispatch(detailsVacApp(id));
+    alert("Form submitted successfully")
   };
+ 
 
   return (
     <div className="container mt-5">
@@ -85,7 +117,7 @@ const PANSSForm = () => {
           <h2 className="text-primary border-bottom pb-2">{category.title}</h2>
           {category.questions.map((q) => (
             <div key={q.id} className="question mb-4 p-3 rounded border">
-              <h5 className="text-secondary fw-semibold">{q.label}</h5>
+              <h5 className="text-secondary fw-semibold">{q.id} {" "} {q.label}</h5>
               <p className="text-muted">{q.description}</p>
               <div className="d-flex flex-wrap align-items-center gap-3">
                 {scoreDescriptions.map((score) => (
@@ -98,6 +130,7 @@ const PANSSForm = () => {
                       type="radio"
                       name={q.id}
                       value={score.score}
+                      checked={Number(formData[q.id]) === Number(score.score)}
                       onChange={(e) => handleChange(q.id, e.target.value)}
                       className="form-check-input"
                       required

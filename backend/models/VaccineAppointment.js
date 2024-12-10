@@ -46,6 +46,18 @@ const VaccineAppointment = mongoose.Schema(
         hamD : {
             type : Object
         },
+        cdrs : {
+            type : Object
+        },
+        ymrs : {
+            type : Object
+        },
+        panss: {
+            type : Object
+        },
+        ybocs : {
+            type : Object
+        },
     }
 )
 
