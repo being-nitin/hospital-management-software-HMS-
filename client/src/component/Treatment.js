@@ -60,9 +60,8 @@ const styles = {
 	},
 };
 
-const list = ["got to gym"];
 const TreatmentList = () => {
-	const [treatments, setTreatments] = useState(list);
+	const [treatments, setTreatments] = useState([]);
 	const [newTreatment, setNewTreatment] = useState("");
 	const [editingIndex, setEditingIndex] = useState(null);
 	const [editingTreatment, setEditingTreatment] = useState("");
