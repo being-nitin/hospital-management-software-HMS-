@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Layout from "../core/Layout";
 
 const styles = {
 	container: {
@@ -97,74 +98,82 @@ const TreatmentList = () => {
 	};
 
 	return (
-		<div style={styles.container}>
-			<h3 style={styles.heading}>Treatment List</h3>
-			<div style={styles.addTreatmentSection}>
-				<input
-					style={styles.input}
-					type="text"
-					placeholder="Add a new treatment"
-					value={newTreatment}
-					onChange={(e) => setNewTreatment(e.target.value)}
-				/>
-				<button style={styles.button} onClick={addTreatment}>
-					Add
-				</button>
-			</div>
+		<Layout title={"Treatment List"}>
+			<div style={styles.container}>
+				<h3 style={styles.heading}>Treatment List</h3>
+				<div style={styles.addTreatmentSection}>
+					<input
+						style={styles.input}
+						type="text"
+						placeholder="Add a new treatment"
+						value={newTreatment}
+						onChange={(e) => setNewTreatment(e.target.value)}
+					/>
+					<button style={styles.button} onClick={addTreatment}>
+						Add
+					</button>
+				</div>
 
-			{treatments.length === 0 ? (
-				"Add a treatment"
-			) : (
-				<ul style={styles.list}>
-					{treatments.map((treatment, index) => (
-						<li key={index} style={styles.listItem}>
-							{editingIndex === index ? (
-								<>
-									<input
-										style={styles.editingInput}
-										type="text"
-										value={editingTreatment}
-										onChange={(e) =>
-											setEditingTreatment(e.target.value)
-										}
-									/>
-									<button
-										style={styles.button}
-										onClick={saveEditing}>
-										Save
-									</button>
-									<button
-										style={{
-											...styles.button,
-											...styles.buttonSecondary,
-										}}
-										onClick={() => setEditingIndex(null)}>
-										Cancel
-									</button>
-								</>
-							) : (
-								<>
-									{treatment}
-									<button
-										style={styles.button}
-										onClick={() => startEditing(index)}>
-										Edit
-									</button>
-									<button
-										style={{
-											...styles.button,
-											...styles.buttonDanger,
-										}}
-										onClick={() => deleteTreatment(index)}>
-										Delete
-									</button>
-								</>
-							)}
-						</li>
-					))}
-				</ul>
-			)}
-		</div>
+				{treatments.length === 0 ? (
+					"Add a treatment"
+				) : (
+					<ul style={styles.list}>
+						{treatments.map((treatment, index) => (
+							<li key={index} style={styles.listItem}>
+								{editingIndex === index ? (
+									<>
+										<input
+											style={styles.editingInput}
+											type="text"
+											value={editingTreatment}
+											onChange={(e) =>
+												setEditingTreatment(
+													e.target.value
+												)
+											}
+										/>
+										<button
+											style={styles.button}
+											onClick={saveEditing}>
+											Save
+										</button>
+										<button
+											style={{
+												...styles.button,
+												...styles.buttonSecondary,
+											}}
+											onClick={() =>
+												setEditingIndex(null)
+											}>
+											Cancel
+										</button>
+									</>
+								) : (
+									<>
+										{treatment}
+										<button
+											style={styles.button}
+											onClick={() => startEditing(index)}>
+											Edit
+										</button>
+										<button
+											style={{
+												...styles.button,
+												...styles.buttonDanger,
+											}}
+											onClick={() =>
+												deleteTreatment(index)
+											}>
+											Delete
+										</button>
+									</>
+								)}
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</Layout>
 	);
 };
 
