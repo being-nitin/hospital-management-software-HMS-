@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Layout from "../core/Layout";
+import HeaderImage from "../assets/header.PNG";
+import FooterImage from "../assets/footer.PNG";
 
 const PrintDetails = ({ history }) => {
 	const canvasRef = useRef(null);
@@ -8,11 +10,8 @@ const PrintDetails = ({ history }) => {
 	const headerImage = new Image();
 	const footerImage = new Image();
 
-	headerImage.src =
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq7xGaH6_XfwaWUojx-ToBd2sg6q08QSr9GQ&s";
-
-	footerImage.src =
-		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq7xGaH6_XfwaWUojx-ToBd2sg6q08QSr9GQ&s";
+	headerImage.src = HeaderImage;
+	footerImage.src = FooterImage;
 
 	function updateCanvas() {
 		const canvas = canvasRef.current;
@@ -23,24 +22,20 @@ const PrintDetails = ({ history }) => {
 			context.font = `20px Roboto sans-serif`;
 
 			//Header Image
-			context.drawImage(headerImage, 0, 0, canvas.width, 50);
+			context.drawImage(headerImage, 0, 0, canvas.width, 80);
 
 			// Footer Image
 			context.drawImage(
 				footerImage,
 				0,
-				canvas.height - 30,
+				canvas.height - 80,
 				canvas.width,
-				50
+				80
 			);
 
 			context.fillText(text, 50, 100);
 		}
 	}
-
-	const printCanvas = () => {
-		const elem = canvasRef.current;
-	};
 
 	useEffect(() => {
 		updateCanvas();
@@ -65,7 +60,7 @@ const PrintDetails = ({ history }) => {
 				<canvas
 					ref={canvasRef}
 					width={500}
-					height={300}
+					height={600}
 					style={{
 						border: "1px solid black",
 						width: "100%",
