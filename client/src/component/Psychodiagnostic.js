@@ -323,7 +323,11 @@ const Psychodiagnostic = () => {
     setExistingData(
       appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null
     );
-    setToolOptions([{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},{tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null}]);
+    setToolOptions([{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},
+      {tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null},
+      {tool : "YMRS", score : appointment?.ymrs ? appointment.ymrs.score : null},
+      {tool : "CDRS", score : appointment?.cdrs ? appointment.cdrs.score : null},
+      {tool : "PANSS", score : appointment?.panss ? appointment.panss .score : null}]);
 
   }, [appointment]);
 

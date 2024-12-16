@@ -404,7 +404,6 @@ const AppointmentDetail = () => {
               )}
                <div>
   
-  <PrintLayout>
       <div
         // ref={appointmentRef}
         className="mb-4 p-3 border rounded"
@@ -505,7 +504,7 @@ const AppointmentDetail = () => {
           </tbody>
         </table>
       </div>
-      </PrintLayout>
+      <PrintLayout></PrintLayout>
       {/* Print Button */}
     </div>
             </div>

@@ -1,8 +1,6 @@
 const mongoose =  require('mongoose')
 const { ObjectId } = mongoose.Schema;
 
-
-
 const floor = mongoose.Schema(
     {
         name: {

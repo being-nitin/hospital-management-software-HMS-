@@ -43,7 +43,6 @@ const AddAppVaccine = () => {
 
   const userList = useSelector((state) => state.userList);
   const { users } = userList;
-  console.log(users);
 
   const medicineType = useSelector((state) => state.medicineType);
   const { types } = medicineType;

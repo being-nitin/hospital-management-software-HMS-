@@ -115,7 +115,7 @@ const YBOCS = () => {
 							</div>
 						))}
 				</div>
-				<YBOCSSymptomsChecklist/>
+				<YBOCSSymptomsChecklist appointment={appointment}/>
 				<button type="submit" style={styles.submitButton}>
 					Submit
 				</button>

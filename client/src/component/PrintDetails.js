@@ -3,7 +3,7 @@ import Layout from "../core/Layout";
 import HeaderImage from "../assets/header.PNG";
 import FooterImage from "../assets/footer.PNG";
 
-const PrintDetails = ({ history }) => {
+const PrintDetails = () => {
 	const canvasRef = useRef(null);
 	const [text, setText] = useState("");
 

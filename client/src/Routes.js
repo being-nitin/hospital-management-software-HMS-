@@ -79,6 +79,8 @@ import InvoiceLayout from "./component/billingDetail";
 import YBOCS from "./component/YBOCS";
 import TreatmentList from "./component/Treatment";
 import PrintDetails from "./component/PrintDetails";
+import AddClinicalNotes from "./component/addClinicalNotes";
+import AssignRoles from "./component/AssignRoles";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -230,7 +232,9 @@ const Routes = () => {
 						element={<CreateTreatment />}
 					/>
 					<Route path="/create-test" element={<CreateTest />} />
-					<Route
+					<Route path= "/clinical-notes" element={<AddClinicalNotes/>} />
+					<Route path="/roles" element={<AssignRoles/>}/>
+					<Route 
 						path="/add-patient-details"
 						element={<AddPatientDetails />}
 					/>

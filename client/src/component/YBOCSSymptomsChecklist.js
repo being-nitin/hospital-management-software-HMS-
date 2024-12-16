@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import SympotomsData from "./YBOCSSymptomsData.json";
+import { useDispatch, useSelector } from "react-redux";
+import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
 
-const SympotomChecklist = ({ obsessionArray, heading }) => {
+const SympotomChecklist = ({ obsessionArray, heading}) => {
 	const [checkboxstate, setCheckboxstate] = useState(
 		obsessionArray.reduce((acc, current) => {
 			acc[current] = { current: false, past: false };
@@ -18,6 +20,13 @@ const SympotomChecklist = ({ obsessionArray, heading }) => {
 			},
 		}));
 	};
+
+	// const dispatch = useDispatch();
+    // useEffect(() =>{
+        
+	// 	dispatch(updateVacApp({ _id: appointment?._id, ybocs: { ...appointment?.ybocs , [heading] : checkboxstate }}));
+	// 	dispatch(detailsVacApp(appointment?.id));
+	// },[checkboxstate])
 
 
 	return (
@@ -73,7 +82,7 @@ const SympotomChecklist = ({ obsessionArray, heading }) => {
 	);
 };
 
-const YBOCSSymptomsChecklist = () => {
+const YBOCSSymptomsChecklist = ({appointment}) => {
 	return (
 		<>
 			<h1 style={{ textAlign: "center" }}>Y-BOCS Symptom Checklist</h1>

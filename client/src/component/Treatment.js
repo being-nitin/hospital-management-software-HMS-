@@ -62,19 +62,24 @@ const styles = {
 
 const TreatmentList = () => {
 	const [treatments, setTreatments] = useState([]);
-	const [newTreatment, setNewTreatment] = useState("");
+	const [newTreatment, setNewTreatment] = useState({ name: "", price: "" });
 	const [editingIndex, setEditingIndex] = useState(null);
-	const [editingTreatment, setEditingTreatment] = useState("");
+	const [editingTreatment, setEditingTreatment] = useState({
+		name: "",
+		price: "",
+	});
 
 	const addTreatment = () => {
-		if (newTreatment.trim()) {
-			setTreatments([...treatments, newTreatment.trim()]);
-			setNewTreatment("");
+		if (newTreatment.name.trim() && newTreatment.price.trim()) {
+			setTreatments([...treatments, { ...newTreatment }]);
+			setNewTreatment({ name: "", price: "" });
+		} else {
+			alert("Please fill in both name and price");
 		}
 	};
 
 	const deleteTreatment = (index) => {
-		setTreatments(treatments.filter((item, i) => i !== index));
+		setTreatments(treatments.filter((_, i) => i !== index));
 	};
 
 	const startEditing = (index) => {
@@ -83,16 +88,16 @@ const TreatmentList = () => {
 	};
 
 	const saveEditing = () => {
-		if (editingTreatment.trim()) {
+		if (editingTreatment.name.trim() && editingTreatment.price.trim()) {
 			setTreatments(
 				treatments.map((treatment, i) =>
-					i === editingIndex ? editingTreatment.trim() : treatment
+					i === editingIndex ? { ...editingTreatment } : treatment
 				)
 			);
 			setEditingIndex(null);
-			setEditingTreatment("");
+			setEditingTreatment({ name: "", price: "" });
 		} else {
-			alert("Write Something");
+			alert("Please provide both name and price");
 		}
 	};
 
@@ -104,9 +109,26 @@ const TreatmentList = () => {
 					<input
 						style={styles.input}
 						type="text"
-						placeholder="Add a new treatment"
-						value={newTreatment}
-						onChange={(e) => setNewTreatment(e.target.value)}
+						placeholder="Treatment name"
+						value={newTreatment.name}
+						onChange={(e) =>
+							setNewTreatment({
+								...newTreatment,
+								name: e.target.value,
+							})
+						}
+					/>
+					<input
+						style={styles.input}
+						type="text"
+						placeholder="Price"
+						value={newTreatment.price}
+						onChange={(e) =>
+							setNewTreatment({
+								...newTreatment,
+								price: e.target.value,
+							})
+						}
 					/>
 					<button style={styles.button} onClick={addTreatment}>
 						Add
@@ -124,11 +146,25 @@ const TreatmentList = () => {
 										<input
 											style={styles.editingInput}
 											type="text"
-											value={editingTreatment}
+											placeholder="Name"
+											value={editingTreatment.name}
 											onChange={(e) =>
-												setEditingTreatment(
-													e.target.value
-												)
+												setEditingTreatment({
+													...editingTreatment,
+													name: e.target.value,
+												})
+											}
+										/>
+										<input
+											style={styles.editingInput}
+											type="text"
+											placeholder="Price"
+											value={editingTreatment.price}
+											onChange={(e) =>
+												setEditingTreatment({
+													...editingTreatment,
+													price: e.target.value,
+												})
 											}
 										/>
 										<button
@@ -149,22 +185,29 @@ const TreatmentList = () => {
 									</>
 								) : (
 									<>
-										{treatment}
-										<button
-											style={styles.button}
-											onClick={() => startEditing(index)}>
-											Edit
-										</button>
-										<button
-											style={{
-												...styles.button,
-												...styles.buttonDanger,
-											}}
-											onClick={() =>
-												deleteTreatment(index)
-											}>
-											Delete
-										</button>
+										<span>
+											<strong>{treatment.name}</strong> -{" "}
+											₹{treatment.price}
+										</span>
+										<div>
+											<button
+												style={styles.button}
+												onClick={() =>
+													startEditing(index)
+												}>
+												Edit
+											</button>
+											<button
+												style={{
+													...styles.button,
+													...styles.buttonDanger,
+												}}
+												onClick={() =>
+													deleteTreatment(index)
+												}>
+												Delete
+											</button>
+										</div>
 									</>
 								)}
 							</li>

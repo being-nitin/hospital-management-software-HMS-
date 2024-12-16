@@ -1,15 +1,6 @@
 const doctorsDetails = require('../models/doctorsDetails')
 const asyncHandler  = require( 'express-async-handler')
 
-
-
-
-
-
-
-
-
-
 exports.doctorsById = asyncHandler (async (req, res, next, id) => {
 
     await doctorsDetails.findById(id).populate("user").exec((err, doctor) => {

@@ -636,6 +636,15 @@ const Layout = ({ title, children }) => {
 							</div>
 							Clinical Notes
 						</Link>
+						<Link
+							className="nav-link"
+							style={isActive(location, "/clinical-notes")}
+							to="/roles">
+							<div className="sb-nav-link-icon">
+								<i className="bi bi-journals" />
+							</div>
+							Assign roles
+						</Link>
 					</nav>
 				</div>
 			</Fragment>

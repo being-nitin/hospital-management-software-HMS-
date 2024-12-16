@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 require("./db/mongoose");
 const path = require("path");
-
+const cloudinary =  require("cloudinary");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware.js");
 
 //import routes
@@ -35,7 +35,7 @@ const vaccineCatRoutes = require("./routes/vaccineCat");
 const vaccineAppRoutes = require("./routes/vaccineAppointment");
 const consulCatAppRoutes = require("./routes/conslCat");
 const consultationAppRoutes = require("./routes/consultation");
-
+const settingRoutes = require('./routes/setting.js')
 require("dotenv").config();
 
 // middleware
@@ -57,6 +57,12 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
+
+cloudinary.v2.config({
+  cloud_name: `${process.env.CLOUD_NAME}`,
+  api_key: `${process.env.API_KEY}`,
+  api_secret: `${process.env.API_SECRET}`,
+});
 // app.use(function(req, res, next) { //allow cross origin requests
 //     res.setHeader("Access-Control-Allow-Origin", "*");
 //     res.header("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -88,7 +94,7 @@ app.use("/api", vaccineAppRoutes);
 app.use("/api", consulCatAppRoutes);
 app.use("/api", consultationAppRoutes);
 app.use("/uploadfile", uploadExelRoutes);
-
+app.use("/api/setting" , settingRoutes)
 //const __dirname = path.resolve()
 app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
 
