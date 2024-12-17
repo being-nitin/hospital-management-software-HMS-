@@ -45,7 +45,7 @@ const PrintDetails = () => {
 
 	useEffect(() => {
 		updateCanvas();
-	});
+	}, [text, headerImage, footerImage]);
 
 	const handleImageUpload = (e, setImage) => {
 		const file = e.target.files[0];
