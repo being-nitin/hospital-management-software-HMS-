@@ -607,7 +607,7 @@ const Layout = ({ title, children }) => {
 					</div>
 				</a>
 				<div
-					className="collapse"
+					// className="collapse"
 					id="collapseLayouts"
 					aria-labelledby="headingOne"
 					data-parent="#sidenavAccordion">
@@ -638,7 +638,7 @@ const Layout = ({ title, children }) => {
 						</Link>
 						<Link
 							className="nav-link"
-							style={isActive(location, "/clinical-notes")}
+							style={isActive(location, "/roles")}
 							to="/roles">
 							<div className="sb-nav-link-icon">
 								<i className="bi bi-journals" />
