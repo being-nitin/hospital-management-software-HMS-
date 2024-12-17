@@ -1,49 +1,43 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const {
-    authUser,
-    registerUser,
-    getUserProfile,
-    updateUserProfile,
-    getUsers,
-    deleteUser,
-    getUserById,
-    updateUser,
-    userById,
-    registerUsers
-} = require( '../controllers/user.js')
-const { protect, admin } = require('../middleware/authMiddleware.js')
+	authUser,
+	registerUser,
+	getUserProfile,
+	updateUserProfile,
+	getUsers,
+	deleteUser,
+	getUserById,
+	updateUser,
+	userById,
+	registerUsers,
+	getUserDetails,
+} = require("../controllers/user.js");
+const { protect, admin } = require("../middleware/authMiddleware.js");
 
+router.get("/details", getUserDetails);
 
+router.get("/user/:userId", protect, getUserProfile);
 
+router.get("/users/other/:id/:userId", protect, getUserById);
 
+router.put("/user/update/:userId", protect, updateUserProfile);
 
+router.get("/users/get", protect, getUsers);
 
-router.get('/user/:userId', protect, getUserProfile);
+router.put("/user/:userId", protect, updateUserProfile);
 
-router.get('/users/other/:id/:userId', protect,  getUserById);
+router.put("/users/update/:id/:userId", protect, updateUser);
 
-router.put('/user/update/:userId', protect, updateUserProfile);
+router.delete("/users/delete/:user", protect, deleteUser);
 
-router.get('/users/get', protect, getUsers);
+router.post("/signup", registerUser);
 
-router.put('/user/:userId', protect, updateUserProfile);
+router.post("/register-users/:userId", protect, registerUsers);
 
-router.put('/users/update/:id/:userId', protect,  updateUser);
-
-router.delete('/users/delete/:user', protect,  deleteUser);
-
-router.post('/signup', registerUser)
-
-router.post('/register-users/:userId', protect,  registerUsers)
-
-
-router.post('/signin', authUser)
-
+router.post("/signin", authUser);
 
 //router.param("user", getUserById)
-router.param('userId', userById);
+router.param("userId", userById);
 
-
-
-module.exports = router
+module.exports = router;
