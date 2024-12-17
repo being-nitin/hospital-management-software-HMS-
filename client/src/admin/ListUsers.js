@@ -147,7 +147,6 @@ const ListUsers = ({ history }) => {
 	};
 
 	const emailStyles = {
-		fontStyle: "italic",
 		color: "#495057",
 		fontFamily: "Roboto sans-serif",
 	};
@@ -226,16 +225,17 @@ const ListUsers = ({ history }) => {
 						</form>
 					</div>
 
-					<div className="col-sm-12">
-						<table className="table" style={tableStyles}>
-							<thead style={theadStyles}>
-								<tr>
-									<th scope="col">User Id</th>
-									<th scope="col">Name</th>
-									<th scope="col">Email</th>
-									<th scope="col">Role</th>
-									<th scope="col">Edit</th>
-									<th scope="col">Delete</th>
+					<div className="table-responsive my-4">
+						<table className="table table-striped table-hover">
+							<thead className="thead-dark">
+								<tr className="text-center">
+									<th>User Id</th>
+									<th>Name</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Edit</th>
+									<th>Delete</th>
+									<th>Details</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -246,12 +246,12 @@ const ListUsers = ({ history }) => {
 											indexOfLastUser
 										)
 										.map((user, i) => (
-											<tr key={i} style={rowStyles}>
-												<th scope="row">{user._id}</th>
-												<th>{user.name}</th>
-												<th style={emailStyles}>
+											<tr key={i} className="text-center">
+												<td>{user._id}</td>
+												<td>{user.name}</td>
+												<td style={emailStyles}>
 													{user.email}
-												</th>
+												</td>
 
 												<td>
 													{user.role === 0 ? (
@@ -335,7 +335,6 @@ const ListUsers = ({ history }) => {
 													{user.role === 2 ? (
 														<Link
 															to={`/pat-details/${user._id}`}>
-															{" "}
 															<button
 																type="button"
 																className="btn btn-success btn-sm"
