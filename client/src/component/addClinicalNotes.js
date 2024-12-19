@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Layout from "../core/Layout";
+import { listSetting, updateSetting } from "../actions/settingAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
 	container: {
@@ -82,6 +85,9 @@ const AddClinicalNotes = () => {
 	const [editingIndex, setEditingIndex] = useState(null);
 	const [editingNote, setEditingNote] = useState({ title: "", description: "" });
 
+	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
 	const addNote = () => {
 		if (newNote.title.trim() ) {
 			setNotes([...notes, { ...newNote }]);
@@ -112,6 +118,31 @@ const AddClinicalNotes = () => {
 			alert("Title is required");
 		}
 	};
+
+
+	const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+	
+	const userSetting = useSelector((state) => state.listSetting);
+    const { settings } = userSetting;
+
+	useEffect(()=>{
+        dispatch(updateSetting({clinicalNotes : notes}));
+    },[notes]);
+
+	useEffect(() => {
+		if (settings?.data.clinicalNotes) {
+			setNotes(settings?.data.clinicalNotes);
+		}
+	}, [settings]);
+
+	useEffect(() => {
+        if (userInfo) {
+            dispatch(listSetting());
+        } else {
+            navigate("/signin");
+        }
+    }, [dispatch, userInfo, navigate]);
 
 	return (
 		<Layout title={"Clinical Notes"}>

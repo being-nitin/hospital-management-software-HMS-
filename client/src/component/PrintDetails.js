@@ -1,131 +1,160 @@
 import React, { useEffect, useRef, useState } from "react";
 import Layout from "../core/Layout";
+import { listSetting, updateSetting } from "../actions/settingAction";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const PrintDetails = () => {
-	const canvasRef = useRef(null);
-	const [text, setText] = useState("");
-	const [headerImage, setHeaderImage] = useState(null);
-	const [footerImage, setFooterImage] = useState(null);
+    const canvasRef = useRef(null);
+    const [text, setText] = useState("");
+    const [headerImage, setHeaderImage] = useState(null);
+    const [footerImage, setFooterImage] = useState(null);
+    const [header, setHeader] = useState(null);
+    const [footer, setFooter] = useState(null);
 
-	function updateCanvas() {
-		const canvas = canvasRef.current;
-		if (canvas) {
-			const context = canvas.getContext("2d");
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			context.fillStyle = "#000000";
-			context.font = `20px Roboto sans-serif`;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-			// Draw header image if present
-			if (headerImage) {
-				const img = new Image();
-				img.onload = () => {
-					context.drawImage(img, 0, 0, canvas.width, 80);
-				};
-				img.src = headerImage;
-			}
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
 
-			// Draw footer image if present
-			if (footerImage) {
-				const img = new Image();
-				img.onload = () => {
-					context.drawImage(
-						img,
-						0,
-						canvas.height - 80,
-						canvas.width,
-						80
-					);
-				};
-				img.src = footerImage;
-			}
+    const userSetting = useSelector((state) => state.listSetting);
+    const { settings } = userSetting;
 
-			context.fillText(text, 50, 150);
-		}
-	}
+    useEffect(() => {
+        if (userInfo) {
+            dispatch(listSetting());
+        } else {
+            navigate("/signin");
+        }
+    }, [dispatch, userInfo, navigate]);
 
-	useEffect(() => {
-		updateCanvas();
-	}, [text, headerImage, footerImage]);
+    useEffect(() => {
+        if (settings) {
+            setText(settings.data.printText || "");
+            setHeaderImage(settings.data.header || null);
+            setFooterImage(settings.data.footer || null);
+        }
+    }, [settings]);
 
-	const handleImageUpload = (e, setImage) => {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = (event) => {
-				setImage(event.target.result); // Store the Data URL
-			};
-			reader.readAsDataURL(file);
-		}
-	};
+    useEffect(() => {
+        updateCanvas();
+    }, [text, headerImage, footerImage]);
 
-	return (
-		<Layout>
-			<h1 style={{ textAlign: "center" }}>Print Details</h1>
-			<div style={styles.container}>
-				<form>
-					<div style={{ width: "100%" }}>
-						<label for="text">Text:</label>
-						<input
-							id="text"
-							type="text"
-							value={text}
-							style={styles.input}
-							onChange={(e) => {
-								setText(e.target.value);
-							}}
-						/>
-					</div>
-					<div style={{ width: "100%", marginTop: "10px" }}>
-						<label htmlFor="headerImage">Header Image:</label>
-						<input
-							id="headerImage"
-							type="file"
-							style={styles.input}
-							accept="image/*"
-							onChange={(e) =>
-								handleImageUpload(e, setHeaderImage)
-							}
-						/>
-					</div>
-					<div style={{ width: "100%", marginTop: "10px" }}>
-						<label htmlFor="footerImage">Footer Image:</label>
-						<input
-							id="footerImage"
-							type="file"
-							style={styles.input}
-							accept="image/*"
-							onChange={(e) =>
-								handleImageUpload(e, setFooterImage)
-							}
-						/>
-					</div>
-				</form>
-				<canvas
-					ref={canvasRef}
-					width={400}
-					height={500}
-					style={{
-						border: "1px solid black",
-						width: "100%",
-					}}></canvas>
-			</div>
-		</Layout>
-	);
+    const updateCanvas = () => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const context = canvas.getContext("2d");
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw header image
+            if (headerImage) {
+                const img = new Image();
+                img.onload = () => {
+                    context.drawImage(img, 0, 0, canvas.width, 80);
+                };
+                img.src = headerImage;
+            }
+
+            // Draw footer image
+            if (footerImage) {
+                const img = new Image();
+                img.onload = () => {
+                    context.drawImage(img, 0, canvas.height - 80, canvas.width, 80);
+                };
+                img.src = footerImage;
+            }
+
+            // Draw text
+            context.fillStyle = "#000000";
+            context.font = `20px Roboto, sans-serif`;
+            context.fillText(text, 50, 150);
+        }
+    };
+
+    const handleImageUpload = (e, setImage, setFile) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFile(file);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        dispatch(updateSetting({printText : text , header , footer}));
+    };
+
+    return (
+        <Layout>
+            <h1 style={{ textAlign: "center" }}>Print Details</h1>
+            <div style={styles.container}>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ width: "100%" }}>
+                        <label htmlFor="text">Text:</label>
+                        <input
+                            id="text"
+                            type="text"
+                            value={text}
+                            style={styles.input}
+                            onChange={(e) => setText(e.target.value)}
+                        />
+                    </div>
+                    <div style={{ width: "100%", marginTop: "10px" }}>
+                        <label htmlFor="headerImage">Header Image:</label>
+                        <input
+                            id="headerImage"
+                            type="file"
+                            style={styles.input}
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setHeaderImage, setHeader)}
+                        />
+                    </div>
+                    <div style={{ width: "100%", marginTop: "10px" }}>
+                        <label htmlFor="footerImage">Footer Image:</label>
+                        <input
+                            id="footerImage"
+                            type="file"
+                            style={styles.input}
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setFooterImage, setFooter)}
+                        />
+                    </div>
+                    <Button type="submit">Submit</Button>
+                </form>
+                <canvas
+                    ref={canvasRef}
+                    width={400}
+                    height={500}
+                    style={{
+                        border: "1px solid black",
+                        width: "100%",
+                    }}
+                ></canvas>
+            </div>
+        </Layout>
+    );
 };
 
 const styles = {
-	container: {
-		display: "flex",
-		width: "100%",
-		justifyContent: "space-between",
-		padding: "20px",
-	},
-	input: {
-		flex: 1,
-		padding: "8px",
-		width: "80%",
-		border: "1px solid #ccc",
-		borderRadius: "4px",
-	},
+    container: {
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        padding: "20px",
+    },
+    input: {
+        padding: "8px",
+        width: "80%",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+    },
 };
+
 export default PrintDetails;

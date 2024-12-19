@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../core/Layout";
+import { listSetting, updateSetting } from "../actions/settingAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
 	container: {
@@ -69,6 +72,9 @@ const TreatmentList = () => {
 		price: "",
 	});
 
+	const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 	const addTreatment = () => {
 		if (newTreatment.name.trim() && newTreatment.price.trim()) {
 			setTreatments([...treatments, { ...newTreatment }]);
@@ -81,6 +87,24 @@ const TreatmentList = () => {
 	const deleteTreatment = (index) => {
 		setTreatments(treatments.filter((_, i) => i !== index));
 	};
+
+	const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+	
+	const userSetting = useSelector((state) => state.listSetting);
+    const { settings } = userSetting;
+
+	useEffect(()=>{
+        dispatch(updateSetting({treatment : treatments}));
+    },[treatments]);
+
+	useEffect(() => {
+        if (userInfo) {
+            dispatch(listSetting());
+        } else {
+            navigate("/signin");
+        }
+    }, [dispatch, userInfo, navigate]);
 
 	const startEditing = (index) => {
 		setEditingIndex(index);
@@ -100,6 +124,12 @@ const TreatmentList = () => {
 			alert("Please provide both name and price");
 		}
 	};
+
+	useEffect(() => {
+		if (settings?.data.treatment) {
+			setTreatments(settings.data.treatment);
+		}
+	}, [settings]);
 
 	return (
 		<Layout title={"Treatment List"}>

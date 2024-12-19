@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailsVacApp } from "../actions/vaccineAppointmentActions";
+import PrintDetails from './PrintDetails';
+import PrintLayout from '../core/printLayout';
+import { psychodiagnostic } from '../utils/printformat';
+import PatientDetails from './patientHistory';
 
 const ViewPDReport = () => {
   const [patientData, setPatientData] = useState(null);
@@ -35,11 +39,7 @@ const ViewPDReport = () => {
 
   return (
     <div className="container mt-4">
-      <div className="d-flex justify-content-end mb-3">
-        <button className="btn btn-primary" onClick={handlePrint}>
-          Print Report
-        </button>
-      </div>
+     <PrintLayout html ={psychodiagnostic} data ={PatientDetails}></PrintLayout>
       <div className="card">
         <div className="card-body">
           <h4 className="card-title mb-4">Patient Information</h4>

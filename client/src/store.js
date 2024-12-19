@@ -36,6 +36,10 @@ import {
 } from './reducers/treatmentReducers'
 
 import {
+    settingUpdateReducer, settingListMyReducer
+} from './reducers/settingReducers'
+
+import {
     prescriptionCreateReducer,
     prescriptionListReducer,
     prescriptionDeleteReducer,
@@ -158,6 +162,7 @@ import {
 
 
 
+
 const reducer = combineReducers({
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
@@ -261,7 +266,9 @@ const reducer = combineReducers({
     vaccineAppDelete: vaccineAppDeleteReducer,
     vaccineAppUpdate: vaccineAppUpdateReducer,
     vaccineAppTaken: vaccineTakenTypeListReducer,
-    vaccineAppDays: vaccineDayTypeListReducer
+    vaccineAppDays: vaccineDayTypeListReducer,
+    updatesettinginfo:  settingUpdateReducer,
+    listSetting : settingListMyReducer
 })
 
 

@@ -14,8 +14,11 @@ const Setting = mongoose.Schema(
         },
         treatment : {
             type : Object,
-            required : true
+          
         },
+        clinicalNotes : {
+            type : Object
+        }
     }
 )
 module.exports = mongoose.model('setting', Setting);

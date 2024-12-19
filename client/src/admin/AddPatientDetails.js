@@ -87,12 +87,12 @@ const AddPatientDetails = ({ history: history1 }) => {
     alignItems: "center",
     width: "100%",
     maxWidth: "900px",
-    margin: "0 auto",
+    marginTop : "50px",
     padding: "15px",
     backgroundColor: "#f9f9f9",
     borderRadius: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    height: "80vh",
+    height: "100vh",
     fontFamily: "Roboto sans-serif",
   };
 
@@ -140,7 +140,7 @@ const AddPatientDetails = ({ history: history1 }) => {
     borderRadius: "20px",
     cursor: "pointer",
     transition: "background-color 0.2s ease-in-out",
-    marginTop: "15px",
+    marginY: "20px",
   };
   //const selectStyles = {
   const selectStyles = {

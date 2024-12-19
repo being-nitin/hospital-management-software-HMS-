@@ -5,8 +5,7 @@ import Header from "../assets/header.PNG";
 import Footer from "../assets/footer.PNG";
 import Logo from "../assets/logo.PNG"
 
-
-const PrintLayout = ({ children }) => {
+const PrintLayout = ({ children , html , data }) => {
   const printRef = useRef(null);
 
 
@@ -19,11 +18,11 @@ const PrintLayout = ({ children }) => {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Print</title>
           <style>
             body {
               margin: 0;
               padding: 0;
+              line-height : 1;
               font-family: Arial, sans-serif;
               position : relative;
             }
@@ -31,7 +30,7 @@ const PrintLayout = ({ children }) => {
               display: flex;
               flex-direction: column;
               min-height: 100vh;
-      
+              z-index: 1;
             
             }
             .header, .footer {
@@ -39,12 +38,15 @@ const PrintLayout = ({ children }) => {
               text-align: center;
       
             }
-            .content {
-              flex: 1;
-              padding: 20px;
-              margin: 0 auto;
-              width: 90%;
-            }
+ .content {
+    flex: 1;
+    padding: 20px;
+    margin: 0 auto;
+    width: 90%;
+    height: 500px; 
+    z-index: 1;
+    overflow: auto; 
+}
             table {
               width: 100%;
               border-collapse: collapse;
@@ -54,13 +56,8 @@ const PrintLayout = ({ children }) => {
               padding: 8px;
             }
             th {
-              background-color: #f2f2f2;
+           
               text-align: center;
-            }
-            .footer {
-              position: absolute;
-              bottom: 0;
-              width: 100%;
             }
 
             .flex {
@@ -72,14 +69,13 @@ const PrintLayout = ({ children }) => {
             }
 
             .backgroundLogo {
-                position : absolute;
+                position : fixed;
                margin-left: auto;
-
-left: 0;
-bottom : 30;
-text-align: left;
-z-index: 0;
-width : 16rem;
+               left: 0;
+                bottom : 60;
+            text-align: left;
+             z-index: -1;
+             width : 14rem;
             }
             
             @media print {
@@ -93,90 +89,36 @@ width : 16rem;
                 display: none;
               }
              
+              .content {
+         
+        width: 100%;
+        padding: 20px;
+        margin: 0 auto;
+        z-index: 1;
+        overflow: hidden;
+        
+
+    }
               .footer {
-                position: fixed;
+               position:fixed;
+                display: block;
                 bottom: 0;
+                padding-top : 20px;
+                z-index: 10;
+             
               }
-               
-            }
+
           </style>
         </head>
         <body>
           <div class="print-container">
             <img src="${Header}" alt="Header" class="header" />
-            <div class="prescription">
-            <div class="flex">
-            <div class="app">
-  <h3>Appointment Details</h3>
-  <p><strong>Date:</strong> 2024-10-31</p>
-  <p><strong>Doctor:</strong> Dr. John Doe</p>
-  <p><strong>Appointment ID:</strong> 789456</p>
-  </div>
- <div class="pat">
-  <h3>Patient Details</h3>
-  <p><strong>Patient Name:</strong> Jasmine Roberts32</p>
-  <p><strong>Patient ID:</strong> 122333</p>
-  <p><strong>Symptoms:</strong> Fever, Chest Pain</p>
- </div>
- </div>
-  <h3>Treatment and Prescription History</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Weight (kg)</th>
-        <th>B.P. (mmHg)</th>
-        <th>Pulse (Heartbeats/min)</th>
-        <th>Temperature (°C)</th>
-        <th>Resp. Rate (breaths/min)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>12</td>
-        <td>22</td>
-        <td>33</td>
-        <td>32</td>
-        <td>22</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Prescriptions:</h4>
-  <table>
-    <thead>
-      <tr>
-        <th>Drug</th>
-        <th>Dosage</th>
-        <th>Duration</th>
-        <th>Instructions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Paracip</td>
-        <td>1-0-1</td>
-        <td>12 days</td>
-        <td>After food</td>
-      </tr>
-      <tr>
-        <td>Panadol</td>
-        <td>0-½-½</td>
-        <td>1 day</td>
-        <td>Before food</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h4>Additional Notes:</h4>
-  <p>
-    The patient is advised to rest for 5 days and report back for a follow-up
-    checkup.
-  </p>
-  
-</div>
- <img src=${Logo} class="backgroundLogo"></img>
+           ${html(data)}
+            <img src=${Logo} class="backgroundLogo"></img>
             <div class="content">${printContent.innerHTML}</div>
+            <div style = "margin-top : 90px; position: fixed;">
             <img src="${Footer}" alt="Footer" class="footer" />
+            </div>
           </div>
         </body>
       </html>

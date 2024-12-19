@@ -13,7 +13,7 @@ const Schedule = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const vaccineAppList = useSelector((state) => state.vaccineAppList)
-    const { loading, error, appointment :{ appointment} ={}} = vaccineAppList
+    const { loading, error, appointment :{ appointment } ={}} =vaccineAppList 
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
@@ -28,10 +28,12 @@ const Schedule = () => {
 
   const dateCellRender = (value) => {
     const stringValue = value.format("YYYY-MM-DD");
-    const listData = appointment?.filter((app)=> {
+    let listData = [];
+    if(appointment){
+    listData = appointment?.filter((app)=> {
       return moment(app.date).format("YYYY-MM-DD") === stringValue
     })
-
+  }
     const content = (
       <div>  
       {listData?.slice(0,2).map((data, index) => (

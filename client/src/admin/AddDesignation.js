@@ -4,21 +4,13 @@ import Layout from "../core/Layout";
 import { createDesignate } from '../actions/designateActions'
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
-
 const AddDesignation = ({ history }) => {
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const navigate = useNavigate()
 
-
     const dispatch = useDispatch()
-
-
 
     const designateCreate = useSelector((state) => state.designateCreate)
     const { success, error, loading } = designateCreate

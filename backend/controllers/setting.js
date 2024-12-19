@@ -1,5 +1,7 @@
 const Setting = require('../models/setting')
 const asyncHandler = require('express-async-handler');
+const getDataUri = require('../utils/datauri');
+const cloudinary = require('cloudinary')
 
 
 exports.create = asyncHandler(async (req,res) =>{
@@ -18,14 +20,13 @@ exports.create = asyncHandler(async (req,res) =>{
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-      const files = req.files; // Use req.files to handle multiple uploaded files
-      if (!files || Object.keys(files).length === 0) {
-        return res.status(400).json({ status: "fail", message: "No files uploaded" });
-      }
+      const files = req.files; 
+      let uploadResults = {};
+      if (files ) {
   
-      const uploadResults = {};
+    
       for (const [key, file] of Object.entries(files)) {
-        const fileUri = getDataUri(file[0]); // Extract the file from the array
+        const fileUri = getDataUri(file[0]);
         const result = await cloudinary.v2.uploader.upload(fileUri.content, {
           folder: "setting",
         });
@@ -35,21 +36,24 @@ exports.update = asyncHandler(async (req, res) => {
           url: result.secure_url,
         };
       }
+    }
   
       const updateFields = {
         ...req.body,
       };
-  
+
+  console.log(updateFields)
       if (uploadResults.header) {
-        updateFields.header = uploadResults.header;
+        updateFields.header = uploadResults.header.url;
       }
   
+      console.log(uploadResults)
       if (uploadResults.footer) {
-        updateFields.footer = uploadResults.footer;
+        updateFields.footer = uploadResults.footer.url;
       }
   
       const settings = await Setting.findOneAndUpdate(
-        { }, // Find the document by ID
+        { _id : '67625f47264ab73588c001da'}, // Find the document by ID
         { $set: updateFields }, // Update the fields dynamically
         { new: true } // Return the updated document
       );
@@ -64,3 +68,18 @@ exports.update = asyncHandler(async (req, res) => {
     }
   });
   
+exports.get = asyncHandler(async (req,res) =>{
+    try {
+
+      const settings = await Setting.findOne();
+  
+      res.status(200).json({
+        status: "success",
+        data: settings,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ status: "fail", message: "Internal server error" });
+    }
+
+})

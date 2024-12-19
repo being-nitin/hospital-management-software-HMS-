@@ -1,7 +1,7 @@
-import multer from "multer";
+const multer = require('multer')
 
 const storage = multer.memoryStorage();
 
-const singleUpload = multer({ storage });
+const multiUpload = multer({ storage })
 
-export default singleUpload;
+module.exports = multiUpload;

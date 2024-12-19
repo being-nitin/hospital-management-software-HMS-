@@ -19,6 +19,7 @@ import { listMedicines, deleteMedicine } from "../actions/medicineActions";
 import dayjs from "dayjs";
 import header from "../assets/header.PNG";
 import PrintLayout from "../core/printLayout";
+import { prescripitation, prescription } from "../utils/printformat";
 
 const AppointmentDetail = () => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -677,7 +678,7 @@ const AppointmentDetail = () => {
 										</tbody>
 									</table>
 								</div>
-								<PrintLayout></PrintLayout>
+								<PrintLayout html={prescription}></PrintLayout>
 								{/* Print Button */}
 							</div>
 						</div>
