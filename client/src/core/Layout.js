@@ -614,6 +614,15 @@ const Layout = ({ title, children }) => {
 					<nav className="sb-sidenav-menu-nested nav">
 						<Link
 							className="nav-link"
+							style={isActive(location, "/profile")}
+							to="/profile">
+							<div className="sb-nav-link-icon">
+								<i className="bi bi-person-circle"></i>
+							</div>
+							Profile
+						</Link>
+						<Link
+							className="nav-link"
 							style={isActive(location, "/print-details")}
 							to="/print-details">
 							<div className="sb-nav-link-icon">
