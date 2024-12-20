@@ -8,9 +8,12 @@ import {
   updateVacApp,
 } from "../actions/vaccineAppointmentActions";
 import moment from "moment"
+import { listSetting } from "../actions/settingAction";
 
 const InvoiceLayout = () => {
   const [treatments, setTreatments] = useState([]);
+  const [treatmentList, setTreatmentList] = useState([])
+  const [selectedTreatment, setSelectedTreatment] = useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const {id} = useParams()
@@ -21,7 +24,7 @@ const InvoiceLayout = () => {
     let totalCost = 0,
       totalDiscount = 0,
       totalTax = 0;
-    treatments.forEach((treatment) => {
+      treatments.forEach((treatment) => {
       console.log(treatment.discount)
       totalCost += treatment.unit * treatment.cost;
       totalDiscount += (treatment.unit * treatment.cost * treatment.discount) / 100;
@@ -59,8 +62,6 @@ const InvoiceLayout = () => {
     setTreatments((prev) => prev.filter((t) => t.id !== id));
   };
 
-  
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -78,6 +79,7 @@ const InvoiceLayout = () => {
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
+      dispatch(listSetting())
     } else {
       navigate("/signin");
     }
@@ -95,12 +97,13 @@ const InvoiceLayout = () => {
       navigate("/signin");
     }
   }, [dispatch, userInfo, success]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
       createExpenses({
         doctor : appointment?.doctor._id,
-      patient: appointment?.patient._id,
+        patient: appointment?.patient._id,
         appointment : id,
         treatment : [...treatments],
         totalCost : totals.totalCost,
@@ -111,7 +114,24 @@ const InvoiceLayout = () => {
       })
     );
   };
+    
+  const userSetting = useSelector((state) => state.listSetting);
+  console.log("userSetting", userSetting)
+  const { settings } = userSetting;
+  
+  useEffect(() => {
+    if (settings?.data.treatment) {
+        setTreatmentList(settings.data.treatment);
+        console.log("Treatment List", treatmentList)
+    }
+  }, [settings]);
+
+  function getPriceByName(name) {
+  const treatment = treatmentList?.find(item => item.name === name);
+  return treatment ? treatment.price : '';
+}
   console.log(appointment)
+
   return (
     <div className="container mt-4">
       {/* Header Section */}
@@ -139,14 +159,26 @@ const InvoiceLayout = () => {
             {treatments.map((treatment) => (
               <tr key={treatment.id}>
                 <td>
-                  <input
+                  {/* <input
                     type="text"
                     className="form-control"
                     value={treatment.name}
                     onChange={(e) =>
                       handleTreatmentChange(treatment.id, "name", e.target.value)
                     }
-                  />
+                  /> */}
+                 
+                  <select class="form-select form-control" aria-label="Default select example"  
+                  onChange={(e)=>setSelectedTreatment(e.target.value)}>
+                    <option selected disabled>Select Treatment</option>
+                    {
+                      treatmentList && treatmentList?.map(({name, price})=>{
+                        return <option value={name} key={name} 
+                      >{name}</option>
+                      })
+                    }
+                  </select>
+              
                 </td>
                 <td>
                   <input
@@ -162,7 +194,7 @@ const InvoiceLayout = () => {
                   <input
                     type="number"
                     className="form-control"
-                    value={treatment.cost}
+                    value={getPriceByName(selectedTreatment)}
                     onChange={(e) =>
                       handleTreatmentChange(treatment.id, "cost", e.target.value)
                     }

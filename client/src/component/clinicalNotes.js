@@ -6,6 +6,7 @@ import {
     updateVacApp,
   } from "../actions/vaccineAppointmentActions";
   import { useDispatch, useSelector } from "react-redux";
+import { listSetting } from "../actions/settingAction";
 
 const ClinicalNotes = () => {
   const [notes, setNotes] = useState([]);  // Store clinical notes
@@ -13,6 +14,7 @@ const ClinicalNotes = () => {
   const [currentNote, setCurrentNote] = useState(null);
   const [complaint, setComplaint] = useState('');
   const [duration, setDuration] = useState('');
+  const [clinicalList, setClinicalList] = useState()
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -27,9 +29,20 @@ const ClinicalNotes = () => {
     appointment: { appointment, pastAppointments } = {},
   } = vaccineAppList || {};
 
+  const userSetting = useSelector((state) => state.listSetting);
+  const {settings} = userSetting
+  console.log("Clinical List", clinicalList)
+
+  useEffect(()=>{
+    if (settings?.data.clinicalNotes) {
+			setClinicalList(settings.data.clinicalNotes);
+		}
+  },[settings])
+
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
+      dispatch(listSetting())
     } else {
       navigate("/signin");
     }
@@ -175,12 +188,14 @@ dispatch(
           <Form>
             <Form.Group controlId="formComplaint">
               <Form.Label>Complaint</Form.Label>
-              <Form.Control
-                type="text"
-                value={complaint}
-                onChange={(e) => setComplaint(e.target.value)}
-                placeholder="Enter complaint"
-              />
+             <div>
+                <Form.Select aria-label="Default select example" onChange={(e) => setComplaint(e.target.value)}>
+                  <option selected disabled >Select Complaint</option>
+                  {clinicalList && clinicalList.map(({title}, index)=>{
+                    return <option value={title} key={index}>{title}</option>
+                    })}
+                </Form.Select>
+              </div>
             </Form.Group>
             <Form.Group controlId="formDuration">
               <Form.Label>Duration</Form.Label>
