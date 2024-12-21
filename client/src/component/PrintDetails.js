@@ -49,10 +49,10 @@ const PrintDetails = () => {
     
             // Adjust for high-DPI screens
             const scale = window.devicePixelRatio || 1;
-            canvas.width = 794 * scale;
-            canvas.height = 1123 * scale;
-            canvas.style.width = "794px";
-            canvas.style.height = "1123px";
+            canvas.width = 600 * scale;
+            canvas.height = 800 * scale;
+            canvas.style.width = "600px";
+            canvas.style.height = "800px";
             context.scale(scale, scale);
     
             // Clear the canvas
@@ -63,8 +63,8 @@ const PrintDetails = () => {
                 const img = new Image();
                 img.onload = () => {
                     const aspectRatio = img.height / img.width;
-                    const headerHeight = 794 * aspectRatio; // Maintain aspect ratio for the resized width
-                    context.drawImage(img, 0, 0, 794, headerHeight);
+                    const headerHeight = 600 * aspectRatio; // Maintain aspect ratio for the resized width
+                    context.drawImage(img, 0, 0, 600, headerHeight);
                 };
                 img.src = headerImage;
             }
@@ -74,12 +74,12 @@ const PrintDetails = () => {
                 const img = new Image();
                 img.onload = () => {
                     const aspectRatio = img.height / img.width;
-                    const footerHeight = 794 * aspectRatio;
+                    const footerHeight = 600 * aspectRatio;
                     context.drawImage(
                         img,
                         0,
                         canvas.height / scale - footerHeight,
-                        794,
+                        600,
                         footerHeight
                     );
                 };
@@ -121,17 +121,19 @@ const PrintDetails = () => {
             <h1 style={{ textAlign: "center" }}>Print Details</h1>
             <div style={styles.container}>
                 <form onSubmit={handleSubmit}>
+                    <label htmlFor="text">Text:</label>
                     <div style={{ width: "100%" }}>
-                        <label htmlFor="text">Text:</label>
-                        <input
+                        <textarea
                             id="text"
-                            type="text"
                             value={text}
-                            style={styles.input}
+                            rows={7}
+                            cols={60}
+                            style={styles.textarea}
+                            placeholder="Enter Text"
                             onChange={(e) => setText(e.target.value)}
                         />
                     </div>
-                    <div style={{ width: "100%", marginTop: "10px" }}>
+                    <div style={{ width: "100%", marginTop: "20px" }}>
                         <label htmlFor="headerImage">Header Image:</label>
                         <input
                             id="headerImage"
@@ -141,7 +143,7 @@ const PrintDetails = () => {
                             onChange={(e) => handleImageUpload(e, setHeaderImage, setHeader)}
                         />
                     </div>
-                    <div style={{ width: "100%", marginTop: "10px" }}>
+                    <div style={{ width: "100%", marginTop: "20px" }}>
                         <label htmlFor="footerImage">Footer Image:</label>
                         <input
                             id="footerImage"
@@ -151,15 +153,14 @@ const PrintDetails = () => {
                             onChange={(e) => handleImageUpload(e, setFooterImage, setFooter)}
                         />
                     </div>
-                    <Button type="submit">Submit</Button>
+                    <button className="btn btn-primary mt-4 w-25">Submit</button>
                 </form>
                 <canvas
                     ref={canvasRef}
-                    width={794}
-                    height={1123}
+                    width={600}
+                    height={800}
                     style={{
-                        border: "1px solid black",
-                        width: "100%",
+                        border: "1px solid black",   
                     }}
                 ></canvas>
             </div>
@@ -171,15 +172,24 @@ const styles = {
     container: {
         display: "flex",
         flexDirection: "row",
+        justifyContent:"space-around",
+        gap:"10px",
         width: "100%",
         padding: "20px",
+        
     },
     input: {
         padding: "8px",
-        width: "80%",
+        marginBottom:"10px",
+        width: "100%",
         border: "1px solid #ccc",
         borderRadius: "4px",
     },
+    textarea:{
+        borderRadius:"4px",
+        padding:"8px"
+    }
+
 };
 
 export default PrintDetails;
