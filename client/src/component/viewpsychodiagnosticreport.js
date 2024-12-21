@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detailsVacApp } from "../actions/vaccineAppointmentActions";
 import PrintDetails from './PrintDetails';
 import PrintLayout from '../core/printLayout';
-import { psychodiagnostic } from '../utils/printformat';
+// import { psychodiagnostic } from '../utils/printformat';
 import PatientDetails from './patientHistory';
 
 const ViewPDReport = () => {
@@ -18,7 +18,6 @@ const ViewPDReport = () => {
   const dispatch = useDispatch();
 
 
-  console.log(appointment)
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
@@ -37,9 +36,160 @@ const ViewPDReport = () => {
 
   if (!patientData) return <p>Loading...</p>;
 
+  let psychodiagnostic = () => {
+
+  return `
+  <div style="background-color: #e0f7fa;  border-radius: 8px; margin: 20px;">
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+  <!-- Row 1 -->
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Name:</strong> ${patientData.name}
+  </div>
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Age:</strong> ${patientData.age}
+  </div>
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Mother Tongue:</strong> ${patientData.motherTongue}
+  </div>
+
+  <!-- Row 2 -->
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Date:</strong> ${patientData.date}
+  </div>
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Referred By Dr.:</strong> ${patientData.refByDr}
+  </div>
+  <div style="flex: 1 1 calc(33.33% - 1rem);">
+    <strong>Reason for Referral:</strong> ${patientData.reasonForReferral}
+  </div>
+
+  <!-- Full-Width Row -->
+  <div style="flex: 1 1 100%;">
+    <strong>Address:</strong> ${patientData.address}
+  </div>
+</div>
+
+<h5>Chief Complaints</h5>
+<table class="chief-complaints-table">
+  <thead>
+    <tr>
+      <th>Complaint</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${patientData.chiefComplaints
+      .map(
+        (complaint) => `
+      <tr>
+        <td>${complaint.complaint || ""}</td>
+        <td>${complaint.duration || ""}</td>
+      </tr>
+    `
+      )
+      .join("")}
+  </tbody>
+</table>
+<h5 style="margin-bottom: 10px;">Medical Details</h5>
+
+  <div>
+     ${patientData.precipitation || "NAD"} Precipitation, ${patientData.onset || "NAD"} Onset, ${patientData.course || "NAD"} Course , ${patientData.progression || "NAD"} Progression
+  </div>
+
+<h4 style="margin-bottom: 10px;">Background Information</h4>
+<!-- Personal History -->
+<h4>Personal History</h4>
+<div>
+  ${Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
+    <div >
+     <p style = "margin-bottom : 5px;">${key.replace(/([A-Z])/g, ' $1').toUpperCase()}-  ${value || 'Not Answered'} </p>
+    </div>
+  `).join('')}
+</div>
+<h4 style = "page-break-before: always;">Premorbid Personality</h4>
+<div>
+  ${Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => `
+    <div>
+      <p style="margin-bottom: 5px; font-weight: bold;">${category.replace(/([A-Z])/g, ' $1').toUpperCase()}</p>
+      ${questions.map((q, idx) => `
+        <p style="margin-bottom: 5px;">${q.question}: ${q.answer || 'N/A'}</p>
+      `).join('')}
+    </div>
+  `).join('')}
+</div>
+<h4>Behavioral Information</h4>
+<!-- General Appearance and Behavior -->
+<h4>General Appearance and Behavior</h4>
+<div>
+  ${Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => `
+    <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
+      ${value || 'NAD'} ,
+    </div>
+  `).join('')}
+</div>
+<h4  style = "page-break-before: always;">Orientation</h4>
+<div>
+  ${Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
+    <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
+      ${value || 'NAD'},
+    </div>
+  `).join('')}
+</div>
+<h4>Motor Behaviour</h4>
+<div>
+  <p > ${patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
+</div>
+
+<h4>Level of Consciousness</h4>
+<div>
+  <p >${patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
+</div>
+
+<h4>Speech</h4>
+<div>
+  ${Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => `
+    <span >
+      ${value || 'NAD'},
+    </span>
+  `).join('')}
+</div>
+
+<h4>Memory</h4>
+<div>
+  ${Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
+    <span style="margin-right: 10px;">
+     ${value || 'NAD'},
+    </span>
+  `).join('')}
+</div>
+
+<h4>Thought</h4>
+<div>
+  ${Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
+    <div style="margin-bottom: 10px;">
+      ${category.replace(/([A-Z])/g, ' $1').toUpperCase()}
+        ${options.length ? options.map(option => `
+          <span>${option},</span>
+        `).join('') : 'NAD'}
+      
+    </div>
+  `).join('')}
+
+      <h5>Additional Information</h5>
+          <p>${patientData.additionalInfo1}</p>
+          <p>${patientData.additionalInfo2}</p>
+</div>
+<div>
+   Sugession: <p>${patientData.suggestions.join(',')}</p>
+</div>
+</div>
+
+  `
+  }
+
   return (
     <div className="container mt-4">
-     <PrintLayout html ={psychodiagnostic} data ={PatientDetails}></PrintLayout>
+     <PrintLayout html ={psychodiagnostic} ></PrintLayout>
       <div className="card">
         <div className="card-body">
           <h4 className="card-title mb-4">Patient Information</h4>
@@ -158,21 +308,21 @@ const ViewPDReport = () => {
           </div>
 
           {/* Other Behavioral Information */}
-          <h6>Motor Behaviour</h6>
-          <p><strong>Psychomotor Activity:</strong> {patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'N/A'}</p>
-          <p><strong>Disturbances:</strong> {patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'N/A'}</p>
+            <h6>Motor Behaviour</h6>
+            <p><strong>Psychomotor Activity:</strong> {patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'N/A'}</p>
+            <p><strong>Disturbances:</strong> {patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'N/A'}</p>
 
-          <h6>Level of Consciousness</h6>
-          <p><strong>Mediate:</strong> {patientData.behaviouralInfo.levelOfConsciousness.mediate || 'N/A'}</p>
+            <h6>Level of Consciousness</h6>
+            <p><strong>Mediate:</strong> {patientData.behaviouralInfo.levelOfConsciousness.mediate || 'N/A'}</p>
 
-          <h6>Speech</h6>
-          <div className="row">
-            {Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => (
-              <div key={index} className="col-md-6 mb-3">
-                <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
-              </div>
-            ))}
-          </div>
+            <h6>Speech</h6>
+            <div className="row">
+              {Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => (
+                <div key={index} className="col-md-6 mb-3">
+                  <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
+                </div>
+              ))}
+            </div>
 
           <h6>Memory</h6>
           <div className="row">

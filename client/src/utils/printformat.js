@@ -2,7 +2,7 @@ export const prescription = () =>{
     return ` <div class="prescription" style="background-color: #e0f7fa;  border-radius: 8px; margin: 20px;">
     <div class="flex" style="display: flex; justify-content: space-between;">
         <div class="app" style="border-radius: 8px; width: 45%;">
-   
+                              
             <p style="color: grey; font-size: 14px;"><span style="color: #0288d1;">Date:</span> 2024-10-31</p>
             <p style="color: grey; font-size: 14px;"><span style="color: #0288d1;">Doctor:</span> Dr. John Doe</p>
             <p style="color: grey; font-size: 14px;"><span style="color: #0288d1;">Appointment ID:</span> 789456</p>
@@ -40,6 +40,7 @@ export const prescription = () =>{
 <table style="width: 100%; border-collapse: collapse; background-color: #f9f9f9; color: #616161; margin-bottom: 20px;">
   <thead>
     <tr>
+         <th style="border: 1px solid #ddd; background-color: #e0e0e0;">S.No</th>
       <th style="border: 1px solid #ddd; background-color: #e0e0e0;">Drug</th>
       <th style="border: 1px solid #ddd; background-color: #e0e0e0;">Dosage</th>
       <th style="border: 1px solid #ddd; background-color: #e0e0e0;">Duration</th>
@@ -48,12 +49,14 @@ export const prescription = () =>{
   </thead>
   <tbody>
     <tr style="background-color: #fafafa;">
+      <td style="border: 1px solid #ddd;">1</td>
       <td style="border: 1px solid #ddd;">Paracip</td>
       <td style="border: 1px solid #ddd;">1-0-1</td>
       <td style="border: 1px solid #ddd;">12 days</td>
       <td style="border: 1px solid #ddd;">After food</td>
     </tr>
     <tr style="background-color: #fafafa;">
+    <td style="border: 1px solid #ddd;">2</td>
       <td style="border: 1px solid #ddd;">Panadol</td>
       <td style="border: 1px solid #ddd;">0-½-½</td>
       <td style="border: 1px solid #ddd;">1 day</td>
@@ -96,9 +99,6 @@ export const psychodiagnostic = () => {
       <p>Reason for Referral: Behavioral changes and anxiety</p> 
     </div>
 </div>
-
-
-
 
         <!-- Chief Complaints -->
      <h5 class="section-title" style="color: #003366; margin-bottom: 20px; font-size : 20px;">Chief Complaints</h5>

@@ -46,32 +46,57 @@ const PrintDetails = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext("2d");
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
+    
+            // Adjust for high-DPI screens
+            const scale = window.devicePixelRatio || 1;
+            canvas.width = 794 * scale;
+            canvas.height = 1123 * scale;
+            canvas.style.width = "794px";
+            canvas.style.height = "1123px";
+            context.scale(scale, scale);
+    
+            // Clear the canvas
+            context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
+    
             // Draw header image
             if (headerImage) {
                 const img = new Image();
                 img.onload = () => {
-                    context.drawImage(img, 0, 0, canvas.width, 80);
+                    const aspectRatio = img.height / img.width;
+                    const headerHeight = 794 * aspectRatio; // Maintain aspect ratio for the resized width
+                    context.drawImage(img, 0, 0, 794, headerHeight);
                 };
                 img.src = headerImage;
             }
-
+    
             // Draw footer image
             if (footerImage) {
                 const img = new Image();
                 img.onload = () => {
-                    context.drawImage(img, 0, canvas.height - 80, canvas.width, 80);
+                    const aspectRatio = img.height / img.width;
+                    const footerHeight = 794 * aspectRatio;
+                    context.drawImage(
+                        img,
+                        0,
+                        canvas.height / scale - footerHeight,
+                        794,
+                        footerHeight
+                    );
                 };
                 img.src = footerImage;
             }
+    
+        // Draw text closer to the footer
+        const footerHeight = footerImage ? 100 : 0; // Approximate footer height
+        context.fillStyle = "#000000";
+        context.font = `16px Roboto, sans-serif`;
 
-            // Draw text
-            context.fillStyle = "#000000";
-            context.font = `20px Roboto, sans-serif`;
-            context.fillText(text, 50, 150);
+        // Position text above the footer
+        const textYPosition = canvas.height / scale - footerHeight - 50;
+        context.fillText(text, 50, textYPosition);
         }
     };
+    
 
     const handleImageUpload = (e, setImage, setFile) => {
         const file = e.target.files[0];
@@ -130,8 +155,8 @@ const PrintDetails = () => {
                 </form>
                 <canvas
                     ref={canvasRef}
-                    width={400}
-                    height={500}
+                    width={794}
+                    height={1123}
                     style={{
                         border: "1px solid black",
                         width: "100%",

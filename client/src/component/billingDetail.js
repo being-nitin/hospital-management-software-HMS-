@@ -116,21 +116,15 @@ const InvoiceLayout = () => {
   };
     
   const userSetting = useSelector((state) => state.listSetting);
-  console.log("userSetting", userSetting)
   const { settings } = userSetting;
   
   useEffect(() => {
     if (settings?.data.treatment) {
         setTreatmentList(settings.data.treatment);
-        console.log("Treatment List", treatmentList)
     }
   }, [settings]);
 
-  function getPriceByName(name) {
-  const treatment = treatmentList?.find(item => item.name === name);
-  return treatment ? treatment.price : '';
-}
-  console.log(appointment)
+
 
   return (
     <div className="container mt-4">
@@ -169,12 +163,15 @@ const InvoiceLayout = () => {
                   /> */}
                  
                   <select class="form-select form-control" aria-label="Default select example"  
-                  onChange={(e)=>setSelectedTreatment(e.target.value)}>
+                  onChange={(e)=>{
+                    setSelectedTreatment(e.target.value)
+                  
+                  }}>
                     <option selected disabled>Select Treatment</option>
                     {
                       treatmentList && treatmentList?.map(({name, price})=>{
                         return <option value={name} key={name} 
-                      >{name}</option>
+                      >{name}-{price}</option>
                       })
                     }
                   </select>
@@ -194,7 +191,7 @@ const InvoiceLayout = () => {
                   <input
                     type="number"
                     className="form-control"
-                    value={getPriceByName(selectedTreatment)}
+                    value={treatment.cost}
                     onChange={(e) =>
                       handleTreatmentChange(treatment.id, "cost", e.target.value)
                     }
