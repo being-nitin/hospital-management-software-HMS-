@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Pie, Bar } from "react-chartjs-2";
 import Layout from "../core/Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getDashboardData } from "../actions/dashboardDataAction";
 
 const AdminDashboard = () => {
+	const [dashboardData, setDashboardData] = useState({});
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const calculateExpenses = dashboardData?.expenses?.reduce(
+		(acc, { grandTotal }) => acc + grandTotal,
+		0
+	);
+
 	// Data for cards
 	const totals = {
-		appointment: 100,
-		patients: 350,
-		doctors: 100,
-		expenses: "$50,000",
+		appointments: dashboardData.appointments?.length,
+		patients: dashboardData.patients?.length,
+		doctors: dashboardData.doctors?.length,
+		expenses: `₹${calculateExpenses?.toFixed(2)}`,
 	};
 
 	// Pie chart data for User Types
@@ -18,7 +30,11 @@ const AdminDashboard = () => {
 		labels: ["Appointment", "Doctor", "Patient"],
 		datasets: [
 			{
-				data: [100, 100, 350],
+				data: [
+					dashboardData.appointments?.length,
+					dashboardData.doctors?.length,
+					dashboardData.patients?.length,
+				],
 				backgroundColor: ["#007bff", "#ffc107", "#28a745"],
 			},
 		],
@@ -35,7 +51,26 @@ const AdminDashboard = () => {
 			},
 		],
 	};
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
 
+	useEffect(() => {
+		if (userInfo) {
+			dispatch(getDashboardData());
+		} else {
+			navigate("/signin");
+		}
+	}, [dispatch, userInfo, navigate]);
+
+	const dashboardAPIData = useSelector((state) => state.dashboardData);
+
+	useEffect(() => {
+		if (dashboardAPIData.success === true) {
+			setDashboardData(dashboardAPIData?.dashboardData);
+		}
+	}, [dashboardAPIData]);
+
+	console.log("dashboardData", dashboardData);
 	return (
 		<Layout title="Dashboard">
 			<Container className="my-4">
@@ -56,7 +91,7 @@ const AdminDashboard = () => {
 						},
 						{
 							title: "Total Appointments",
-							value: totals.appointment,
+							value: totals.appointments,
 							color: "primary",
 							navigateTo: "/list-app-vaccine",
 						},
