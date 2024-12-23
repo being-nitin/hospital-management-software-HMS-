@@ -4,6 +4,7 @@ const User = require("../models/user.js");
 const Doctor = require("../models/doctorsDetails.js");
 const Patient = require("../models/patientDetails.js");
 const Expenses = require("../models/expenses.js");
+const VaccineAppointment = require("../models/VaccineAppointment.js");
 
 // @desc    Auth user & get token
 // @route   POST /api/users/signin
@@ -192,11 +193,13 @@ exports.getUserDetails = asyncHandler(async (req, res) => {
 		const doctors = await Doctor.find();
 		const patients = await Patient.find().select("firstName ");
 		const expenses = await Expenses.find();
+		const appointments = await VaccineAppointment.find();
 		res.status(200).json({
 			users: users,
 			doctors: doctors,
 			patients: patients,
 			expenses: expenses,
+			appointments: appointments,
 		});
 	} catch (error) {
 		res.json({
