@@ -165,13 +165,15 @@ const InvoiceLayout = () => {
                   <select className="form-select form-control" aria-label="Default select example"  
                   onChange={(e)=>{
                     setSelectedTreatment(e.target.value)
-                    
+                    console.log(e.target.value)
+                    handleTreatmentChange(treatment.id , "name" , e.target.value.split('-')[0])
+                    handleTreatmentChange(treatment.id , "cost" , e.target.value.split('-')[1])
                   }}>
                     <option selected disabled>Select Treatment</option>
                     {
-                      treatmentList && treatmentList?.map(({name, price})=>{
-                        return <option value={name} key={name} 
-                      >{name}-{price}</option>
+                      treatmentList && treatmentList?.map(({name,price},index)=>{
+                        return <option value={`${name}-${price}`} key={name} 
+                      >{name}</option>
                       })
                     }
                   </select>

@@ -5,13 +5,15 @@ import Layout from "../core/Layout";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDashboardData } from "../actions/dashboardDataAction";
+import moment from "moment";
 
 const AdminDashboard = () => {
 	const [dashboardData, setDashboardData] = useState({});
-
+	const [last7DaysData, setLast7DaysData] = useState([]);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	const dashboardAPIData = useSelector((state) => state.dashboardData);
 	const calculateExpenses = dashboardData?.expenses?.reduce(
 		(acc, { grandTotal }) => acc + grandTotal,
 		0
@@ -41,19 +43,45 @@ const AdminDashboard = () => {
 	};
 
 	// Bar chart data for Expenses
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	useEffect(() => {
+		if (dashboardAPIData.success === true) {
+			setDashboardData(dashboardAPIData?.dashboardData);
+
+			// Calculate last 7 days data
+			const today = new Date();
+			const last7Days = [...Array(7)].map((_, i) => {
+				const date = new Date(today);
+				date.setDate(today.getDate() - i);
+				return date.toISOString().split("T")[0];
+			});
+
+			const expensesByDate = last7Days.map((date) => {
+				const total = dashboardAPIData.dashboardData.expenses
+					?.filter((expense) => moment(expense.createdAt).format('YYYY-MM-DD') === date)
+					.reduce((acc, { grandTotal }) => acc + grandTotal, 0);
+
+				return { date, total: total || 0 };
+			});
+
+			setLast7DaysData(expensesByDate.reverse());
+		}
+	}, [dashboardAPIData]);
+
+	// Bar chart data for Expenses Over Last 7 Days
 	const expenseData = {
-		labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+		labels: last7DaysData.map((data) => data.date),
 		datasets: [
 			{
-				label: "Expenses ($)",
-				data: [8000, 7000, 6500, 7200, 7500],
+				label: "Expenses (₹)",
+				data: last7DaysData.map((data) => data.total),
 				backgroundColor: "#dc3545",
 			},
 		],
 	};
-	const userLogin = useSelector((state) => state.userLogin);
-	const { userInfo } = userLogin;
-
 	useEffect(() => {
 		if (userInfo) {
 			dispatch(getDashboardData());
@@ -62,13 +90,9 @@ const AdminDashboard = () => {
 		}
 	}, [dispatch, userInfo, navigate]);
 
-	const dashboardAPIData = useSelector((state) => state.dashboardData);
+	
 
-	useEffect(() => {
-		if (dashboardAPIData.success === true) {
-			setDashboardData(dashboardAPIData?.dashboardData);
-		}
-	}, [dashboardAPIData]);
+	
 
 	console.log("dashboardData", dashboardData);
 	return (

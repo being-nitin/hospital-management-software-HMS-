@@ -193,6 +193,9 @@ const ListExpenses = () => {
 						style={{ width: 200 }}
 						onChange={handleDoctorChange}
 						allowClear>
+								<Option key={0} value={null}>
+										All
+									</Option>
 						{users &&
 							users.length !== 0 &&
 							users
@@ -202,6 +205,7 @@ const ListExpenses = () => {
 										{doc.name}
 									</Option>
 								))}
+							
 					</Select>
 					<Button type="primary" onClick={applyFilters}>
 						Search
