@@ -162,10 +162,10 @@ const InvoiceLayout = () => {
                     }
                   /> */}
                  
-                  <select class="form-select form-control" aria-label="Default select example"  
+                  <select className="form-select form-control" aria-label="Default select example"  
                   onChange={(e)=>{
                     setSelectedTreatment(e.target.value)
-                  
+                    
                   }}>
                     <option selected disabled>Select Treatment</option>
                     {
