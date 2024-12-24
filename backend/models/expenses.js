@@ -61,6 +61,8 @@ const expenses = mongoose.Schema(
         },
         paymentMethod : { type : String}
     }
+    ,
+    { timestamps: true }
 )
 
 

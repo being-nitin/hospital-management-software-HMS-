@@ -19,14 +19,6 @@ import {
     UPDATE_CONSUL_SUCCESS
 } from '../constants/consulCat'
 
-
-
-
-
-
-
-
-
 export const consultCatCreateReducer = (state = {}, action) => {
     switch (action.type) {
         case CREATE_CONSUL_REQUEST:
@@ -41,7 +33,6 @@ export const consultCatCreateReducer = (state = {}, action) => {
             return state
     }
 }
-
 
 export const cunsultCatListReducer = (state = { consultations: [] }, action) => {
     switch (action.type) {

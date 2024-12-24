@@ -9,11 +9,10 @@ import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 
 const Schedule = () => {
-  
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const vaccineAppList = useSelector((state) => state.vaccineAppList)
-    const { loading, error, appointment :{ appointment } ={}} =vaccineAppList 
+    const { loading, error, appointment } =vaccineAppList 
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin

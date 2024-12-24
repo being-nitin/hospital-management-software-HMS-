@@ -190,7 +190,7 @@ exports.getUsers = asyncHandler(async (req, res) => {
 exports.getUserDetails = asyncHandler(async (req, res) => {
 	try {
 		const users = await User.find().select("name email");
-		const doctors = await Doctor.find();
+		const doctors = await User.find({role : 1});
 		const patients = await Patient.find().select("firstName ");
 		const expenses = await Expenses.find();
 		const appointments = await VaccineAppointment.find();

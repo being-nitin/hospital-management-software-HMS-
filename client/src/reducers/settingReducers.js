@@ -1,6 +1,5 @@
 import { UPDATE_SETTING_FAIL, UPDATE_SETTING_REQUEST, UPDATE_SETTING_SUCCESS , UPDATE_SETTING_RESET, LIST_SETTING_FAIL, LIST_SETTING_REQUEST, LIST_SETTING_RESET, LIST_SETTING_SUCCESS } from "../constants/settingConstant";
 
-
 export const settingUpdateReducer = (state = { setting: {} }, action) => {
     switch (action.type) {
         case UPDATE_SETTING_REQUEST:

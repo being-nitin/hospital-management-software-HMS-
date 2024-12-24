@@ -112,7 +112,7 @@ exports.list = asyncHandler(async (req, res) => {
   
       if (startDate) {
         
-          field["date"] = {
+          field["createdAt"] = {
             $gte: startDate, // Start of the day in UTC
             $lte: endDate, // End of the day in UTC
           };
