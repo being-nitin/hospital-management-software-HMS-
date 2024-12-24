@@ -9,6 +9,9 @@ const Setting = mongoose.Schema(
         footer : {
             type : String,
         },
+        logo : {
+            type : String
+        },
         printText : {
             type : String
         },

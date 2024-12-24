@@ -51,6 +51,10 @@ exports.update = asyncHandler(async (req, res) => {
       if (uploadResults.footer) {
         updateFields.footer = uploadResults.footer.url;
       }
+
+      if (uploadResults.logo) {
+        updateFields.logo = uploadResults.logo.url;
+      }
   
       const settings = await Setting.findOneAndUpdate(
         { _id : '67625f47264ab73588c001da'}, // Find the document by ID

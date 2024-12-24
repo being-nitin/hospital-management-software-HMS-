@@ -10,8 +10,10 @@ const PrintDetails = () => {
     const [text, setText] = useState("");
     const [headerImage, setHeaderImage] = useState(null);
     const [footerImage, setFooterImage] = useState(null);
+    const [LogoImage, setLogoImage] = useState(null);
     const [header, setHeader] = useState(null);
     const [footer, setFooter] = useState(null);
+    const [logo, setLogo] = useState(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -34,13 +36,14 @@ const PrintDetails = () => {
         if (settings) {
             setText(settings.data.printText || "");
             setHeaderImage(settings.data.header || null);
+            setLogoImage(settings.data.logo || null)
             setFooterImage(settings.data.footer || null);
         }
     }, [settings]);
 
     useEffect(() => {
         updateCanvas();
-    }, [text, headerImage, footerImage]);
+    }, [text, headerImage, footerImage, LogoImage]);
 
     const updateCanvas = () => {
         const canvas = canvasRef.current;
@@ -85,6 +88,25 @@ const PrintDetails = () => {
                 };
                 img.src = footerImage;
             }
+
+            if (LogoImage) {
+                const img = new Image();
+                img.onload = () => {
+                    const logoWidth = 200;
+                    const logoHeight = (img.height / img.width) * logoWidth; // Maintain aspect ratio
+                    const xPosition = 10; // Left corner with some padding
+                    const footerHeight = footerImage ? 50* (img.height / img.width) : 0;
+                    const yPosition = canvas.height / scale - footerHeight - logoHeight - 10; // Above footer with padding
+                    context.drawImage(img, xPosition, yPosition, logoWidth, logoHeight);
+
+                       const textXPosition = xPosition + 20; // Add padding from the left corner of the logo
+        const textYPosition = yPosition + logoHeight / 2; // Place text in the middle of the logo's height
+        context.fillStyle = "#000000";
+        context.font = `16px Roboto, sans-serif`;
+        context.fillText(text, textXPosition, textYPosition);
+                };
+                img.src = LogoImage;
+            }
     
         // Draw text closer to the footer
         const footerHeight = footerImage ? 100 : 0; // Approximate footer height
@@ -113,7 +135,7 @@ const PrintDetails = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(updateSetting({printText : text , header , footer}));
+        dispatch(updateSetting({printText : text , header , footer , logo}));
     };
 
     return (
@@ -141,6 +163,16 @@ const PrintDetails = () => {
                             style={styles.input}
                             accept="image/*"
                             onChange={(e) => handleImageUpload(e, setHeaderImage, setHeader)}
+                        />
+                    </div>
+                    <div style={{ width: "100%", marginTop: "20px" }}>
+                        <label htmlFor="LogoImage">Logo Image:</label>
+                        <input
+                            id="LogoImage"
+                            type="file"
+                            style={styles.input}
+                            accept="image/*"
+                            onChange={(e) => handleImageUpload(e, setLogoImage, setLogo)}
                         />
                     </div>
                     <div style={{ width: "100%", marginTop: "20px" }}>

@@ -13,6 +13,10 @@ router.put('/' , multiUpload.fields([
       { 
         name: 'footer', 
         maxCount: 1 
+      },
+      { 
+        name: 'logo', 
+        maxCount: 1 
       }
 ]), update)
 
