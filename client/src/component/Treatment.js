@@ -30,7 +30,8 @@ const styles = {
 		borderRadius: "4px",
 	},
 	button: {
-		padding: "8px 12px",
+		padding: "5px 12px",
+		margin: "0px 8px",
 		backgroundColor: "#007BFF",
 		color: "white",
 		border: "none",
@@ -73,7 +74,7 @@ const TreatmentList = () => {
 	});
 
 	const dispatch = useDispatch();
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const addTreatment = () => {
 		if (newTreatment.name.trim() && newTreatment.price.trim()) {
@@ -89,22 +90,22 @@ const TreatmentList = () => {
 	};
 
 	const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-	
-	const userSetting = useSelector((state) => state.listSetting);
-    const { settings } = userSetting;
+	const { userInfo } = userLogin;
 
-	useEffect(()=>{
-        dispatch(updateSetting({treatment : treatments}));
-    },[treatments]);
+	const userSetting = useSelector((state) => state.listSetting);
+	const { settings } = userSetting;
 
 	useEffect(() => {
-        if (userInfo) {
-            dispatch(listSetting());
-        } else {
-            navigate("/signin");
-        }
-    }, [dispatch, userInfo, navigate]);
+		dispatch(updateSetting({ treatment: treatments }));
+	}, [treatments]);
+
+	useEffect(() => {
+		if (userInfo) {
+			dispatch(listSetting());
+		} else {
+			navigate("/signin");
+		}
+	}, [dispatch, userInfo, navigate]);
 
 	const startEditing = (index) => {
 		setEditingIndex(index);
