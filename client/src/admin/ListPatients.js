@@ -203,7 +203,7 @@ const ListPatients = () => {
 						<thead className="thead-dark">
 							<tr className="text-center">
 								<th>Patient Number</th>
-								<th>Doctor</th>
+								<th>Patient</th>
 								<th>Phone No</th>
 								<th>Reg Date</th>
 								<th>Gender</th>
