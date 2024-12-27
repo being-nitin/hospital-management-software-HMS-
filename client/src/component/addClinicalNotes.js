@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { listSetting, updateSetting } from "../actions/settingAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +40,7 @@ const styles = {
 	},
 	button: {
 		padding: "8px 12px",
+		margin: "0px 8px",
 		backgroundColor: "#007BFF",
 		color: "white",
 		border: "none",
@@ -70,7 +71,7 @@ const styles = {
 		fontWeight: "bold",
 		marginBottom: "5px",
 	},
-    editingInput: {
+	editingInput: {
 		width: "100%",
 		padding: "8px",
 		marginBottom: "10px",
@@ -83,13 +84,16 @@ const AddClinicalNotes = () => {
 	const [notes, setNotes] = useState([]);
 	const [newNote, setNewNote] = useState({ title: "", description: "" });
 	const [editingIndex, setEditingIndex] = useState(null);
-	const [editingNote, setEditingNote] = useState({ title: "", description: "" });
+	const [editingNote, setEditingNote] = useState({
+		title: "",
+		description: "",
+	});
 
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const addNote = () => {
-		if (newNote.title.trim() ) {
+		if (newNote.title.trim()) {
 			setNotes([...notes, { ...newNote }]);
 			setNewNote({ title: "", description: "" });
 		} else {
@@ -119,16 +123,15 @@ const AddClinicalNotes = () => {
 		}
 	};
 
-
 	const userLogin = useSelector((state) => state.userLogin);
-    const { userInfo } = userLogin;
-	
-	const userSetting = useSelector((state) => state.listSetting);
-    const { settings } = userSetting;
+	const { userInfo } = userLogin;
 
-	useEffect(()=>{
-        dispatch(updateSetting({clinicalNotes : notes}));
-    },[notes]);
+	const userSetting = useSelector((state) => state.listSetting);
+	const { settings } = userSetting;
+
+	useEffect(() => {
+		dispatch(updateSetting({ clinicalNotes: notes }));
+	}, [notes]);
 
 	useEffect(() => {
 		if (settings?.data.clinicalNotes) {
@@ -137,12 +140,12 @@ const AddClinicalNotes = () => {
 	}, [settings]);
 
 	useEffect(() => {
-        if (userInfo) {
-            dispatch(listSetting());
-        } else {
-            navigate("/signin");
-        }
-    }, [dispatch, userInfo, navigate]);
+		if (userInfo) {
+			dispatch(listSetting());
+		} else {
+			navigate("/signin");
+		}
+	}, [dispatch, userInfo, navigate]);
 
 	return (
 		<Layout title={"Clinical Notes"}>
@@ -261,7 +264,6 @@ const AddClinicalNotes = () => {
 				)}
 			</div>
 		</Layout>
-	
 	);
 };
 
