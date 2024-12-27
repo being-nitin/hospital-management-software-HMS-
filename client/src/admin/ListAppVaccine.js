@@ -100,7 +100,11 @@ const ListAppVaccine = () => {
 					}}>
 					List of appointment
 				</h2>
-				<div className="d-flex gap-2">
+				<div
+					className="d-flex"
+					style={{
+						gap: 10,
+					}}>
 					{/* Filters */}
 					<Select
 						placeholder="Filter by Status"
