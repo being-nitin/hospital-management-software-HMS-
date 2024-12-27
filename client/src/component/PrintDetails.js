@@ -14,6 +14,7 @@ const PrintDetails = () => {
     const [header, setHeader] = useState(null);
     const [footer, setFooter] = useState(null);
     const [logo, setLogo] = useState(null);
+    const [selectedCategory , setSelectedCategory ] = useState("prescription")
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,14 +31,19 @@ const PrintDetails = () => {
         } else {
             navigate("/signin");
         }
-    }, [dispatch, userInfo, navigate]);
+    }, [dispatch, userInfo, navigate , selectedCategory]);
 
     useEffect(() => {
-        if (settings) {
-            setText(settings.data.printText || "");
-            setHeaderImage(settings.data.header || null);
-            setLogoImage(settings.data.logo || null)
-            setFooterImage(settings.data.footer || null);
+        if (settings && settings.data && settings.data[selectedCategory]) {
+            setText(settings.data[selectedCategory].printText || "");
+            setHeaderImage(settings.data[selectedCategory].header || null);
+            setLogoImage(settings.data[selectedCategory].logo || null);
+            setFooterImage(settings.data[selectedCategory].footer || null);
+        } else {
+            setText("");
+            setHeaderImage(null);
+            setLogoImage(null);
+            setFooterImage(null);
         }
     }, [settings]);
 
@@ -134,8 +140,8 @@ const PrintDetails = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        dispatch(updateSetting({printText : text , header , footer , logo}));
+        
+        dispatch(updateSetting(selectedCategory, {printText : text , header , footer , logo}));
     };
 
     return (
@@ -143,6 +149,24 @@ const PrintDetails = () => {
             <h1 style={{ textAlign: "center" }}>Print Details</h1>
             <div style={styles.container}>
                 <form onSubmit={handleSubmit}>
+                <div style={{ width: "100%", marginTop: "20px" }}>
+    <label htmlFor="category">Category:</label>
+    <select
+        id="category"
+        style={styles.input}
+        value = {selectedCategory}
+        onChange={(e) => {
+            console.log(selectedCategory)
+            setSelectedCategory(e.target.value)
+        }} // Replace this with the appropriate state handling logic
+    >
+        <option value="billing">Billing</option>
+        <option value="forms">Forms</option>
+        <option value="prescription">Prescription</option>
+        <option value="patient">Patient</option>
+        <option value="expense">Expense</option>
+    </select>
+</div>
                     <label htmlFor="text">Text:</label>
                     <div style={{ width: "100%" }}>
                         <textarea
@@ -155,6 +179,7 @@ const PrintDetails = () => {
                             onChange={(e) => setText(e.target.value)}
                         />
                     </div>
+             
                     <div style={{ width: "100%", marginTop: "20px" }}>
                         <label htmlFor="headerImage">Header Image:</label>
                         <input

@@ -3,14 +3,60 @@ const { ObjectId } = mongoose.Schema;
 
 const Setting = mongoose.Schema(
     {
-        header : {
-            type : String,
+        prescription : {
+            header : {
+                type : String,
+            },
+            footer : {
+                type : String,
+            },
+            logo : {
+                type : String
+            }
         },
-        footer : {
-            type : String,
+        patient : {
+            header : {
+                type : String,
+            },
+            footer : {
+                type : String,
+            },
+            logo : {
+                type : String
+            }
         },
-        logo : {
-            type : String
+        forms : {
+            header : {
+                type : String,
+            },
+            footer : {
+                type : String,
+            },
+            logo : {
+                type : String
+            }
+        },
+        expense : {
+            header : {
+                type : String,
+            },
+            footer : {
+                type : String,
+            },
+            logo : {
+                type : String
+            }
+        },
+        billing : {
+            header : {
+                type : String,
+            },
+            footer : {
+                type : String,
+            },
+            logo : {
+                type : String
+            }
         },
         printText : {
             type : String

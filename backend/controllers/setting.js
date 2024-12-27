@@ -20,8 +20,10 @@ exports.create = asyncHandler(async (req,res) =>{
 
 exports.update = asyncHandler(async (req, res) => {
     try {
+      const { category } = req.query
       const files = req.files; 
       let uploadResults = {};
+      console.log(category)
       if (files ) {
   
     
@@ -42,18 +44,23 @@ exports.update = asyncHandler(async (req, res) => {
         ...req.body,
       };
 
-  console.log(updateFields)
+      if (!updateFields[category]) {
+        updateFields[category] = {}; // Initialize if not already defined
+    }
+    
       if (uploadResults.header) {
-        updateFields.header = uploadResults.header.url;
+        updateFields[`${category}`]["header"] = uploadResults.header.url;
       }
+
+      console.log(updateFields)
   
       console.log(uploadResults)
       if (uploadResults.footer) {
-        updateFields.footer = uploadResults.footer.url;
+        updateFields[`${category}`]["footer"] = uploadResults.footer.url;
       }
 
       if (uploadResults.logo) {
-        updateFields.logo = uploadResults.logo.url;
+        updateFields[`${category}`]["logo"] = uploadResults.logo.url;
       }
   
       const settings = await Setting.findOneAndUpdate(

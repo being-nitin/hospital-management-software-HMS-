@@ -5,7 +5,7 @@ import { UPDATE_SETTING_FAIL, UPDATE_SETTING_REQUEST, UPDATE_SETTING_SUCCESS , U
 import { logout } from './userActions'
 import { API } from "../config";
 
-export const updateSetting = (setting) => async (dispatch, getState) => {
+export const updateSetting = (category , setting) => async (dispatch, getState) => {
     try {
         dispatch({
             type: UPDATE_SETTING_REQUEST,
@@ -24,7 +24,7 @@ export const updateSetting = (setting) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.put(
-            `${API}/setting/`,
+            `${API}/setting/?category=${category}`,
             {...setting},
             config
         )

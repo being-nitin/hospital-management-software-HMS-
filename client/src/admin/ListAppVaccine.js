@@ -85,6 +85,7 @@ const ListAppVaccine = () => {
 		dispatch(listVacApp(page, pageSize, status, formattedDate)); // Fetch data for the selected page
 	};
 
+	console.log(appointment)
 	return (
 		<Layout
 			style={{

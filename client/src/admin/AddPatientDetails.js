@@ -351,7 +351,7 @@ const AddPatientDetails = ({ history: history1 }) => {
             </select>
           </div>
 
-          <div className="form-group" style={formGroupStyles}>
+          {/* <div className="form-group" style={formGroupStyles}>
             <label style={labelStyles}>Symptoms</label>
             <textarea
               className="form-control"
@@ -361,7 +361,7 @@ const AddPatientDetails = ({ history: history1 }) => {
               value={symptoms}
               onChange={(e) => setSymptoms(e.target.value)}
             />
-          </div>
+          </div> */}
         </div>
 
         <button type="submit" style={buttonStyles}>

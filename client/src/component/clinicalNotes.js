@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Modal, Form, Table } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
 	detailsVacApp,
 	updateVacApp,
@@ -31,7 +32,6 @@ const ClinicalNotes = () => {
 
 	const userSetting = useSelector((state) => state.listSetting);
 	const { settings } = userSetting;
-	console.log("Clinical List", clinicalList);
 
 	useEffect(() => {
 		if (settings?.data.clinicalNotes) {
@@ -49,29 +49,22 @@ const ClinicalNotes = () => {
 	}, [dispatch, userInfo]);
 
 	useEffect(() => {
-		// Load the initial clinical notes (Replace with actual API call)
 		if (appointment) {
-			console.log(appointment);
 			setNotes(
-				appointment?.psychodiagnostic
-					? [...appointment?.psychodiagnostic?.chiefComplaints]
+				appointment?.psychodiagnostic?.chiefComplaints
+					? [...appointment.psychodiagnostic.chiefComplaints]
 					: []
 			);
 		}
 	}, [appointment]);
 
 	const handleAdd = (e) => {
-		// Add the new note (Replace with API call)
-		const newNote = { complaint, duration };
-
 		e.preventDefault();
-
-		// Ensure chiefComplaints array is always defined
+		const newNote = { complaint, duration };
 		const updatedChiefComplaints = [
 			...(appointment?.psychodiagnostic?.chiefComplaints || []),
 			newNote,
 		];
-
 		const updatedAppointment = {
 			...appointment,
 			psychodiagnostic: {
@@ -80,7 +73,6 @@ const ClinicalNotes = () => {
 			},
 		};
 
-		// Dispatch action with updated structure
 		dispatch(
 			updateVacApp({
 				_id: appointment._id,
@@ -90,11 +82,9 @@ const ClinicalNotes = () => {
 		dispatch(detailsVacApp(id));
 		clearForm();
 		setShowModal(false);
-		dispatch(detailsVacApp(id));
 	};
 
 	const handleEdit = (note) => {
-		// Open modal with pre-filled data
 		setCurrentNote(note);
 		setComplaint(note.complaint);
 		setDuration(note.duration);
@@ -102,11 +92,11 @@ const ClinicalNotes = () => {
 	};
 
 	const handleUpdate = () => {
-		// Update the note (Replace with API call)
 		const updatedNotes = notes.map((note) =>
 			note === currentNote ? { ...note, complaint, duration } : note
 		);
 		setNotes(updatedNotes);
+
 		const updatedAppointment = {
 			...appointment,
 			psychodiagnostic: {
@@ -127,7 +117,6 @@ const ClinicalNotes = () => {
 	};
 
 	const handleDelete = (noteToDelete) => {
-		// Delete the note (Replace with API call)
 		const updatedNotes = notes.filter((note) => note !== noteToDelete);
 		const updatedAppointment = {
 			...appointment,
@@ -146,6 +135,31 @@ const ClinicalNotes = () => {
 		dispatch(detailsVacApp(id));
 	};
 
+	const handleDragEnd = (result) => {
+		if (!result.destination) return;
+
+		const reorderedNotes = Array.from(notes);
+		const [movedNote] = reorderedNotes.splice(result.source.index, 1);
+		reorderedNotes.splice(result.destination.index, 0, movedNote);
+
+		setNotes(reorderedNotes);
+
+		const updatedAppointment = {
+			...appointment,
+			psychodiagnostic: {
+				...appointment?.psychodiagnostic,
+				chiefComplaints: reorderedNotes,
+			},
+		};
+
+		dispatch(
+			updateVacApp({
+				_id: appointment?._id,
+				psychodiagnostic: updatedAppointment.psychodiagnostic,
+			})
+		);
+	};
+
 	const clearForm = () => {
 		setComplaint("");
 		setDuration("");
@@ -156,43 +170,71 @@ const ClinicalNotes = () => {
 		<div className="container mt-5">
 			<h2 className="mb-5">Clinical Notes (Chief Complaints)</h2>
 
-			{/* Table to display notes */}
-			<Table striped bordered hover>
-				<thead>
-					<tr>
-						<th>Complaint</th>
-						<th>Duration</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					{notes.map((note, index) => (
-						<tr key={index}>
-							<td>{note.complaint}</td>
-							<td>{note.duration}</td>
-							<td>
-								<Button
-									variant="warning"
-									onClick={() => handleEdit(note)}>
-									Edit
-								</Button>{" "}
-								<Button
-									variant="danger"
-									onClick={() => handleDelete(note)}>
-									Delete
-								</Button>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</Table>
+			<DragDropContext onDragEnd={handleDragEnd}>
+				<Droppable droppableId="notes">
+					{(provided) => (
+						<Table
+							striped
+							bordered
+							hover
+							{...provided.droppableProps}
+							ref={provided.innerRef}
+						>
+							<thead>
+								<tr>
+									<th>Complaint</th>
+									<th>Duration</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								{notes.map((note, index) => (
+									<Draggable
+										key={index}
+										draggableId={`note-${index}`}
+										index={index}
+									>
+										{(provided) => (
+											<tr
+												{...provided.draggableProps}
+												{...provided.dragHandleProps}
+												ref={provided.innerRef}
+											>
+												<td>{note.complaint}</td>
+												<td>{note.duration}</td>
+												<td>
+													<Button
+														variant="warning"
+														onClick={() =>
+															handleEdit(note)
+														}
+													>
+														Edit
+													</Button>{" "}
+													<Button
+														variant="danger"
+														onClick={() =>
+															handleDelete(note)
+														}
+													>
+														Delete
+													</Button>
+												</td>
+											</tr>
+										)}
+									</Draggable>
+								))}
+								{provided.placeholder}
+							</tbody>
+						</Table>
+					)}
+				</Droppable>
+			</DragDropContext>
 
-			{/* Button to open the modal for adding new complaint */}
 			<Button variant="primary" onClick={() => setShowModal(true)}>
 				Add New Complaint
 			</Button>
 
-			{/* Modal for Add/Edit Complaint */}
 			<Modal show={showModal} onHide={() => setShowModal(false)}>
 				<Modal.Header closeButton>
 					<Modal.Title>
@@ -209,20 +251,20 @@ const ClinicalNotes = () => {
 									size="lg"
 									onChange={(e) =>
 										setComplaint(e.target.value)
-									}>
+									}
+								>
 									<option selected disabled>
 										Select Complaint
 									</option>
 									{clinicalList &&
-										clinicalList.map(({ title }, index) => {
-											return (
-												<option
-													value={title}
-													key={index}>
-													{title}
-												</option>
-											);
-										})}
+										clinicalList.map(({ title }, index) => (
+											<option
+												value={title}
+												key={index}
+											>
+												{title}
+											</option>
+										))}
 								</select>
 							</div>
 						</Form.Group>
@@ -231,7 +273,9 @@ const ClinicalNotes = () => {
 							<Form.Control
 								type="text"
 								value={duration}
-								onChange={(e) => setDuration(e.target.value)}
+								onChange={(e) =>
+									setDuration(e.target.value)
+								}
 								placeholder="Enter duration"
 							/>
 						</Form.Group>
@@ -240,12 +284,14 @@ const ClinicalNotes = () => {
 				<Modal.Footer>
 					<Button
 						variant="secondary"
-						onClick={() => setShowModal(false)}>
+						onClick={() => setShowModal(false)}
+					>
 						Close
 					</Button>
 					<Button
 						variant="primary"
-						onClick={currentNote ? handleUpdate : handleAdd}>
+						onClick={currentNote ? handleUpdate : handleAdd}
+					>
 						{currentNote ? "Update" : "Add"}
 					</Button>
 				</Modal.Footer>

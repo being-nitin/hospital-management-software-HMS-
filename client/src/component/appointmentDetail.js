@@ -368,10 +368,7 @@ const AppointmentDetail = () => {
 								<strong>Patient ID</strong>{" "}
 								{appointment?.patient?.patientNumber}
 							</p>
-							<p>
-								<strong>Symptoms</strong>{" "}
-								{appointment?.patient?.symptoms}
-							</p>
+							
 						</div>
 					</div>
 

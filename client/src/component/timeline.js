@@ -33,15 +33,18 @@ const TimelineCalendar = () => {
     }
   }, [dispatch, userInfo])
 
-  console.log(appointments)
+
   const setCalendar = () => {
     let listData = []
     if(appointments){
-     listData = appointments?.map((appointment)=> {
-      return {...appointment , date : moment(appointment.date).format("YYYY-MM-DD")}
-    })
-    }
-
+     
+    listData = Array.isArray(appointments)
+      ? appointments.map((appointment) => ({
+          ...appointment,
+          date: moment(appointment.date).format("YYYY-MM-DD"),
+        }))
+      : [];
+  }
     const calendar = new Calendar(calendarRef.current, {
         plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
         initialView: 'dayGridMonth',

@@ -420,8 +420,12 @@ const Psychodiagnostic = () => {
 
   return (
     <>
+    <div style={{ position : 'fixed' , top : 0 , backgroundColor : 'white' , width : '100%' , display : 'flex' , justifyContent : 'space-between' , alignItems :'center' }}>
     <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment?._id}`)} >View </button>
-    <form style={styles.form} onSubmit={handleSubmit}>
+   </div>
+                  
+   
+    <form style={styles.form} onSubmit={handleSubmit} >
       <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
 
         <label style={styles.labels}>
@@ -643,28 +647,50 @@ const Psychodiagnostic = () => {
   <legend>Behavioural Info</legend>
         <div className="mb-4">General Appearance and Behaviour</div>
         {Object.entries({
-  "Physical Appearance": ["Physical Appearance is Kempt", "Physical Appearance is Overly Made Up", "Physical Appearance is Unkempt And Untidy", "Physical Appearance is Sickly", "Physical Appearance is Perplexed"],
-  "Estimate Of Age": ["Estimate Of Age is Appropriate", "Estimate Of Age is Seems Younger", "Estimate Of Age is Seems Older"],
-  "Body Built": ["Body Built is Lean", "Body Built is Average", "Body Built is Muscular", "Body Built is Obese"],
-  "Touch With Surroundings": ["Touch With Surroundings is Interchange", "Touch With Surroundings is Not Interchange"],
+  "Physical Appearance" :
+  [
+    "Patient is Kempt",
+    "Patient is Overly Made-Up",
+    "Patient is Unkempt and Untidy",
+    "Patient appears Sickly",
+    "Patient is Perplexed"
+  ],
+  "Estimate Of Age": ["Patent seems Appropriate of age", "Patient Seems Younger", "Patient Seems Older"],
+  "Body Built": [
+    "Lean  Built",
+    "Average  Built",
+    "Muscular  Built ",
+    "Obese Built"
+  ],
+  "Touch With Surroundings": ["Touch With Surroundings", "Not Touch With Surroundings"],
   "Eye Contact": ["Eye Contact is Maintained", "Eye Contact is Partial", "Eye Contact is Shifting Gaze", "Eye Contact is Absent"],
-  "Dress": ["Dress is Appropriate", "Dress is Shabby", "Dress is Inappropriate"],
-  "Facial Expression": ["Facial Expression shows Anger", "Facial Expression shows Disgust", "Facial Expression shows Frown"],
-  "Posture": ["Posture is Normal", "Posture is Relaxed", "Posture is Stiff", "Posture is Slouched", "Posture is Upright", "Posture is Odd", "Posture is Stooped", "Posture is Tense"],
+  "Dress": ["Dress is Appropriate", "Dress is Inappropriate"],
+  "Facial Expression": ["Facial Expression Appropriate", "Facial Expression shows Anger", "Facial Expression shows Disgust", "Facial Expression shows Frown"],
+  "Posture":[
+    "Normal Posture",
+    "Relaxed Posture",
+    "Stiff Posture",
+    "Slouched Posture",
+    "Upright Posture",
+    "Odd Posture",
+    "Stooped Posture",
+    "Tense Posture",
+      "Mannerism ",
+    "flexibility"
+  ],
   "Attitude Towards Examiner": [
-    "Attitude Towards Examiner is Cooperative",
-    "Attitude Towards Examiner is Attentive",
-    "Attitude Towards Examiner is Frank",
-    "Attitude Towards Examiner is Defensive",
-    "Attitude Towards Examiner is Exhibitionistic",
-    "Attitude Towards Examiner is Seductive",
-    "Attitude Towards Examiner is Hostile",
-    "Attitude Towards Examiner is Playful",
-    "Attitude Towards Examiner is Evasive",
-    "Attitude Towards Examiner is Guarded",
-    "Attitude Towards Examiner is Ingratiating",
-    "Attitude Towards Examiner is Uncooperative",
-    "Attitude Towards Examiner is Suspicious"
+    "Patient is Cooperative",
+    "Patient is Defensive",
+    "Patient is Exhibitionistic",
+    "Patient is Seductive",
+    "Patient is Hostile",
+    "Patient is Playful",
+    "Patient is Evasive",
+    "Patient is Guarded",
+    "Patient is Ingratiating",
+    "Patient is Uncooperative",
+    "Patient is Suspicious",
+
   ]
 },
         ).map(([field, options]) => (
@@ -693,7 +719,7 @@ const Psychodiagnostic = () => {
      time: ["oriented towards time", "partially oriented toward time", "disoriented towards time"],
      place: ["oriented towards place", "partially oriented toward place", "disoriented towards place"],
      person: ["oriented towards person", "partially oriented toward person", "disoriented towards person"],
-     senseOfPassageOfTime: ["oriented towards passage of time", "partially oriented toward passage of time", "disoriented towards passage of time"],     
+     senseOfPassageOfTime: ["oriented has sense of passage of time", "partially oriented has sense of passage of time", "disoriented has sense of passage of time"],     
     }).map(([field, fieldOptions]) => (
           <div key={field} style={{ marginBottom: "1rem" }}>
             <label>
@@ -719,7 +745,7 @@ const Psychodiagnostic = () => {
 
 <div style={styles.categorySection}>
   <h5>Psychomotor Activity</h5>
-  {["Normal Psychomotor Activity", "Agitated Psychomotor Activity", "Retarded Psychomotor Activity"].map((option, index) => (
+  {["Normal Psychomotor Activity", "Agitated Psychomotor Activity", "Retarded Psychomotor Activity", "Increased Psychomotor Activity", "Decrease Psychomotor Activity"].map((option, index) => (
     <div key={index} style={styles.radioContainer}>
       <input
         type="radio"
@@ -739,16 +765,17 @@ const Psychodiagnostic = () => {
 <div style={styles.categorySection}>
   <h5>Disturbances</h5>
   {[
-    "Tics Disturbance",
-    "Mannerisms Disturbance",
-    "Stereotypes Disturbance",
-    "Restlessness Disturbance",
-    "Twitches Disturbance",
-    "Echopraxia Disturbance",
-    "Wavy Flexibility Disturbance",
-    "Silly Smiling Disturbance",
-    "Preseveration Disturbance",
-    "Stupor Disturbance",
+    "Tics Disturbances",
+    "Mannerisms Disturbances",
+    "Stereotypes Disturbances",
+    "Restlessness Disturbances",
+    "Twitches Disturbances",
+    "Echopraxia Disturbances",
+    "Wavy Flexibility Disturbances",
+    "Silly Smiling Disturbances",
+    "Preseveration Disturbances",
+    "Stupor Disturbances",
+    "grimaces Disturbances"
   ].map((option, index) => (
     <div key={index} style={styles.checkboxContainer}>
       <input
@@ -792,7 +819,7 @@ const Psychodiagnostic = () => {
 {[
   {
     label: "Intensity",
-    options: ["Audible speech intensity", "Loud speech intensity", "Soft speech intensity"],
+    options: ["Audible speech intensity", "Loud speech intensity", "Soft speech intensity" , "InAudible speech intensity"],
     key: "intensity",
   },
   {
@@ -808,14 +835,14 @@ const Psychodiagnostic = () => {
   {
     label: "Ease",
     options: [
-      "Spontaneous Ease",
-      "Hesitant Ease",
-      "Mute Ease",
-      "Slurring Ease",
-      "Sluttering Ease",
-      "Whispering Ease",
-      "Muttering Ease",
-      "Speaks Only When Questioned Ease",
+      "Spontaneous",
+      "Hesitant",
+      "Mute",
+      "Slurring",
+      "Sluttering",
+      "Whispering",
+      "Muttering",
+      "Speaks Only When Questioned",
     ],
     key: "ease",
   },
@@ -842,7 +869,7 @@ const Psychodiagnostic = () => {
       "Clang Associations",
       "Stereotype",
       "Preseveration",
-      "no deviatin"
+      "NAD"
     ],
     key: "deviation",
   },
@@ -934,6 +961,34 @@ const Psychodiagnostic = () => {
   </div>
 ))}
 
+<label style={styles.label}>
+    Mood:
+    <select
+      name="mood"
+      style={styles.dropdown}
+      value={formData.mood || ""}
+      onChange={handleChange}
+    >
+      <option value="">Select a mood</option>
+      {[
+  "Anxious",
+  "Depressed",
+  "Dysthymic",
+  "Sad",
+  "Dysphoric",
+  "Euthymic",
+  "Irritable",
+  "Cheerful",
+  "Euphoric",
+  "Elated"
+].map((mood, index) => (
+        <option key={index} value={mood}>
+          {mood}
+        </option>
+      ))}
+    </select>
+  </label>
+
 {/* Judgement Section */}
 <h4>Judgement</h4>
 {[
@@ -1003,7 +1058,7 @@ const Psychodiagnostic = () => {
   {
     label: "Content",
     options: [
-      "Preoccupations (Religious, Somatic, Philosophical, Sexual)",
+      "Preoccupations ",
       "Phobias/Obsessions",
       "Depressive Thoughts",
       "Delusions",
@@ -1030,33 +1085,7 @@ const Psychodiagnostic = () => {
   </div>
 ))}
 
-<label style={styles.label}>
-    Mood:
-    <select
-      name="mood"
-      style={styles.dropdown}
-      value={formData.mood || ""}
-      onChange={handleChange}
-    >
-      <option value="">Select a mood</option>
-      {[
-  "Anxious",
-  "Depressed",
-  "Dysthymic",
-  "Sad",
-  "Dysphoric",
-  "Euthymic",
-  "Irritable",
-  "Cheerful",
-  "Euphoric",
-  "Elated"
-].map((mood, index) => (
-        <option key={index} value={mood}>
-          {mood}
-        </option>
-      ))}
-    </select>
-  </label>
+
 
       </fieldset>
         {/* <label style={styles.labels}>
@@ -1126,8 +1155,76 @@ const Psychodiagnostic = () => {
         </label> */}
 
         <label style={styles.label}>
-          Tools Used:
-       
+          Tools Used: {" "}
+          <select
+											style={styles.dropdown} // Replace with appropriate styles
+											onChange={(e) => {
+												if (
+													e.target.value === "HAM-A"
+												) {
+													navigate(
+														`/HamiltonForm/${appointment._id}`
+													);
+												}
+												if (
+													e.target.value === "HAM-D"
+												) {
+													navigate(
+														`/hamd/${appointment._id}`
+													);
+												}
+												if (e.target.value === "CDRS") {
+													navigate(
+														`/cdrs/${appointment._id}`
+													);
+												}
+												if (e.target.value === "YMRS") {
+													navigate(
+														`/YMRS/${appointment._id}`
+													);
+												}
+												if (
+													e.target.value === "YBOCS"
+												) {
+													navigate(
+														`/ybocs/${appointment._id}`
+													);
+												}
+												if (
+													e.target.value === "PANSS"
+												) {
+													navigate(
+														`/panss/${appointment._id}`
+													);
+												}
+											}}>
+											<option value="" disabled selected>
+												Select Form
+											</option>
+											<option value="HAM-A">
+												Hamilton Anxiety Rating Scale
+												(HAM-A)
+											</option>
+											<option value="HAM-D">
+												Hamilton Depession Rating Scale
+												(HAM-D)
+											</option>
+											<option value="CDRS">
+												Children's Depression Rating
+												Scale (CDRS)
+											</option>
+											<option value="YBOCS">
+												YALE-BROWN OBSESSIVE COMPULSIVE
+												SCALE(YBOCS)
+											</option>
+											<option value="YMRS">
+												Young Mania Rating Scale(YMRS)
+											</option>
+											<option value="PANSS">
+												POSITIVE AND NEGATIVE SYNDROME
+												SCALE(PANSS)
+											</option>
+										</select>
             {toolsOptions.map((tool, index) => (
               <div key={index} value={tool}>
                 {tool.tool}  Score : { tool.score}
@@ -1137,26 +1234,19 @@ const Psychodiagnostic = () => {
         </label>
 
         <label style={styles.label}>
-          Interpretations:
+          Interpretations: 
+
+          <p>Based on the history observation scale, patient was found to have :</p>
           <textarea
             name="interpretations"
             style={styles.textarea}
             rows="5"
-            value={formData.interpretations}
+            value={`${formData.interpretations}`}
             onChange={handleChange}
           ></textarea>
         </label>
 
-        <label style={styles.label}>
-          Impression:
-          <textarea
-            name="impression"
-            style={styles.textarea}
-            rows="5"
-            value={formData.impression}
-            onChange={handleChange}
-          ></textarea>
-        </label>
+       
 
         <label style={styles.label}>
   Suggestions:
@@ -1170,7 +1260,7 @@ const Psychodiagnostic = () => {
           checked={formData.suggestions.  includes(suggestion)}
           onChange={handleSugestion}
         />
-        <label>{suggestion}</label>
+        <label style={{ marginLeft : "10px"}}> {index}. {suggestion}</label>
       </div>
     ))}
   </div>
@@ -1189,7 +1279,7 @@ const styles = {
     display: "grid",
     gap: "20px", // Increased gap for better spacing
     maxWidth: "1000px",
-    margin: "0 auto",
+    margin: "100px auto",
     padding: "25px",
     borderRadius: "8px",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
