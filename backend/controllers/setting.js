@@ -23,10 +23,12 @@ exports.update = asyncHandler(async (req, res) => {
       const { category } = req.query
       const files = req.files; 
       let uploadResults = {};
-      console.log(category)
-      if (files ) {
-  
-    
+      const updateFields = {
+        ...req.body,
+      };
+     
+      if (Object.keys(files).length !== 0) {
+        console.log(files)
       for (const [key, file] of Object.entries(files)) {
         const fileUri = getDataUri(file[0]);
         const result = await cloudinary.v2.uploader.upload(fileUri.content, {
@@ -38,11 +40,6 @@ exports.update = asyncHandler(async (req, res) => {
           url: result.secure_url,
         };
       }
-    }
-  
-      const updateFields = {
-        ...req.body,
-      };
 
       if (!updateFields[category]) {
         updateFields[category] = {}; // Initialize if not already defined
@@ -52,9 +49,7 @@ exports.update = asyncHandler(async (req, res) => {
         updateFields[`${category}`]["header"] = uploadResults.header.url;
       }
 
-      console.log(updateFields)
-  
-      console.log(uploadResults)
+    
       if (uploadResults.footer) {
         updateFields[`${category}`]["footer"] = uploadResults.footer.url;
       }
@@ -62,7 +57,8 @@ exports.update = asyncHandler(async (req, res) => {
       if (uploadResults.logo) {
         updateFields[`${category}`]["logo"] = uploadResults.logo.url;
       }
-  
+    }
+
       const settings = await Setting.findOneAndUpdate(
         { _id : '67625f47264ab73588c001da'}, // Find the document by ID
         { $set: updateFields }, // Update the fields dynamically

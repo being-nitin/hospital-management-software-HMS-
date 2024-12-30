@@ -1,17 +1,52 @@
-import React, { Fragment } from "react";
+import React, { Fragment , useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import { useNavigate } from 'react-router-dom'
+import { listPatients } from "../actions/patientActions";
+
 
 // { history} = props.history
 const Menu = () => {
+	const [searchTerm, setSearchTerm] = useState('');
+	const [selectedPatient, setSelectedPatient] = useState('');
+	const navigate = useNavigate(); 
 	const dispatch = useDispatch();
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	const patientList = useSelector((state) => state.patientList);
+	const {
+		loading,
+		error,
+		patients: { patient } = {},
+	} = patientList;
+
 	const logoutHandler = () => {
 		dispatch(logout());
+	};
+
+	useEffect(() => {
+		if (userInfo) {
+			dispatch(listPatients({}));
+		} else {
+			navigate("/signin");
+		}
+	}, [dispatch, userInfo]);
+  
+	const handleSearchChange = (e) => {
+	  setSearchTerm(e.target.value);
+	};
+  
+
+  
+	const handleSubmit = (e) => {
+	  e.preventDefault();
+	  if (selectedPatient) {
+		// Navigate to the patient's page
+		navigate(`/patient`);
+	  }
 	};
 
 	return (
@@ -46,18 +81,24 @@ const Menu = () => {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <form className="d-flex ms-auto me-3 " style={{ maxWidth: "300px", width: "100%" }}>
-                        <input
-                            className="form-control border rounded mt-2"
-                            type="search"
-                            placeholder="Search for..."
-                            aria-label="Search"
-                            style={{ padding: "0.375rem 0.75rem" }}
-                        />
-                        <button className="btn btn-outline-secondary ms-2 mt-2 ml-2" type="submit">
-                            <i className="fas fa-search"></i>
-                        </button>
-                    </form>
+				<form
+      className="d-flex ms-auto me-3"
+      style={{ maxWidth: '300px', width: '100%' }}
+      onSubmit={handleSubmit}
+    >
+      <input
+        className="form-control border rounded mt-2"
+        type="search"
+        placeholder="Search for..."
+        aria-label="Search"
+        style={{ padding: '0.375rem 0.75rem' }}
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      <button className="btn btn-outline-secondary ms-2 mt-2" type="submit">
+        <i className="fas fa-search"></i>
+      </button>
+    </form>
                     </div>
 					</div>
 			<ul className="navbar-nav ml-auto ml-md-0">

@@ -35,10 +35,11 @@ const PrintDetails = () => {
 
     useEffect(() => {
         if (settings && settings.data && settings.data[selectedCategory]) {
-            setText(settings.data[selectedCategory].printText || "");
+            setText(settings.data.printText );
             setHeaderImage(settings.data[selectedCategory].header || null);
             setLogoImage(settings.data[selectedCategory].logo || null);
             setFooterImage(settings.data[selectedCategory].footer || null);
+          
         } else {
             setText("");
             setHeaderImage(null);
@@ -141,7 +142,19 @@ const PrintDetails = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        dispatch(updateSetting(selectedCategory, {printText : text , header , footer , logo}));
+        let options = {};
+        if(header)
+        {
+            options['header'] = header
+        }
+        if(footer) {
+            options['footer'] = footer
+        }
+        if(logo) {
+            options['logo'] = logo
+        }
+        options['printText' ] = text
+        dispatch(updateSetting(selectedCategory, options));
     };
 
     return (
