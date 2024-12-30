@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Dropdown, Menu, Button } from "antd";
+import { Dropdown, Menu } from "antd";
 import { Link } from "react-router-dom";
 import PrescriptionForm from "../component/prescriptionForm"; // Importing the PrescriptionForm component
 import { useDispatch, useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
 import { updatePatients } from "../actions/patientActions";
 import {
 	listVacApp,
@@ -19,7 +20,7 @@ import { listMedicines, deleteMedicine } from "../actions/medicineActions";
 import dayjs from "dayjs";
 import header from "../assets/header.PNG";
 import PrintLayout from "../core/printLayout";
-import { prescripitation, prescription } from "../utils/printformat";
+import { prescription } from "../utils/printformat";
 
 const AppointmentDetail = () => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -357,6 +358,7 @@ const AppointmentDetail = () => {
 						<div className="card-header bg-primary text-white">
 							<h5>Patient Details</h5>
 						</div>
+						
 						<div className="card-body">
 							<p>
 								<strong>Patient Name:</strong>{" "}
@@ -382,7 +384,7 @@ const AppointmentDetail = () => {
 										overlay={menu}
 										placement="bottomRight"
 										arrow>
-										<Button type="default">
+										<Button type="default" style={{ backgroundColor : 'white' , color : 'black'}}>
 											Add Record
 										</Button>
 									</Dropdown>
@@ -675,7 +677,13 @@ const AppointmentDetail = () => {
 										</tbody>
 									</table>
 								</div>
-								<PrintLayout html={prescription}></PrintLayout>
+								{/* <PrintLayout html={prescription}></PrintLayout> */}
+								
+                               <div className="print-button d-flex justify-content-end mt-3">
+								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>
+                                  view
+                                </Button>
+								</div>
 								{/* Print Button */}
 							</div>
 						</div>
@@ -696,7 +704,7 @@ const AppointmentDetail = () => {
 										overlay={viewMenu}
 										placement="bottomRight"
 										arrow>
-										<Button type="primary">View</Button>
+										<Button type="primary">Form Details</Button>
 									</Dropdown>
 								</div>
 								<h6>
@@ -804,13 +812,10 @@ const AppointmentDetail = () => {
 									</tbody>
 								</table>
 
-								{/* Print Button */}
-								<div className="d-flex justify-content-end mt-3">
-									<Button
-										type="primary"
-										onClick={() => handlePrint(0)}>
-										Print Prescription
-									</Button>
+								<div className="print-button d-flex justify-content-end mt-3">
+								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>
+                                  view
+                                </Button>
 								</div>
 								<hr />
 							</div>

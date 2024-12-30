@@ -81,6 +81,7 @@ import TreatmentList from "./component/Treatment";
 import PrintDetails from "./component/PrintDetails";
 import AddClinicalNotes from "./component/addClinicalNotes";
 import AssignRoles from "./component/AssignRoles";
+import PrintAppointments from "./component/view/printApointment";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -96,6 +97,7 @@ const Routes = () => {
 					<Route path="/profile/:userId" element={<Profile />} />
 					<Route path="/update/users/:id" element={<UpdateUsers />} />
 					<Route path="/test-result" element={<ListTestResult />} />
+					<Route path='/print-prescription/:id' element={<PrintAppointments/>}/>
 					<Route
 						path="/list-prescriptions"
 						element={<ListPrescriptions />}

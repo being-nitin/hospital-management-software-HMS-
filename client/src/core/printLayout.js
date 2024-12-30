@@ -4,10 +4,28 @@ import "./printStyle.css";
 import Header from "../assets/header.PNG";
 import Footer from "../assets/footer.PNG";
 import Logo from "../assets/logo.PNG"
+import { listSetting, updateSetting } from "../actions/settingAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const PrintLayout = ({ children , html , data }) => {
+const PrintLayout = ({ children , html , data , category }) => {
   const printRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const userSetting = useSelector((state) => state.listSetting);
+  const { settings } = userSetting;
+
+  useEffect(() => {
+      if (userInfo) {
+          dispatch(listSetting());
+      } else {
+          navigate("/signin");
+      }
+  }, [dispatch, userInfo, navigate ]);
 
   const printAction = () => {
   
@@ -112,12 +130,12 @@ const PrintLayout = ({ children , html , data }) => {
         </head>
         <body>
           <div class="print-container">
-            <img src="${Header}" alt="Header" class="header" />
+            <img src="${settings.data[`${category}`].header}" alt="Header" class="header" />
            ${html(data)}
             <img src=${Logo} class="backgroundLogo"></img>
             <div class="content">${printContent.innerHTML}</div>
             <div style = "margin-top : 90px; position: fixed;">
-            <img src="${Footer}" alt="Footer" class="footer" />
+            <img src="${settings.data[`${category}`].footer}" alt="Footer" class="footer" />
             </div>
           </div>
         </body>
@@ -125,6 +143,7 @@ const PrintLayout = ({ children , html , data }) => {
     `);
     printWindow.document.close();
     printWindow.onload = () => {
+     
       printWindow.print();
       printWindow.close();
 

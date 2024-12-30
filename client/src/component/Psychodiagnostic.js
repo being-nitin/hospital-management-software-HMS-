@@ -7,6 +7,8 @@ import {
   updateVacApp,
 } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 const suggestionsList = [
   "Psychoeducation",
@@ -23,6 +25,9 @@ const suggestionsList = [
   "Mindfulness",
   "Pharmacotherapy"
 ];
+
+
+
 
 const Psychodiagnostic = () => {
   const [formData, setFormData] = useState({
@@ -150,6 +155,7 @@ const Psychodiagnostic = () => {
   const [existingData, setExistingData] = useState(null);
   const [toolsOptions, setToolOptions] = useState([])
   
+  
   const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -223,15 +229,14 @@ const Psychodiagnostic = () => {
       };
     });
   }
-
-  const handleInputChange = (section, questionKey, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [section]: prevData[section].map((item) =>
-        questionKey in item ? { [questionKey]: value } : item
-      )
-    }));
+  const moveComplaint = (fromIndex, toIndex) => {
+    const updatedComplaints = [...formData.chiefComplaints];
+    const [movedComplaint] = updatedComplaints.splice(fromIndex, 1);
+    updatedComplaints.splice(toIndex, 0, movedComplaint);
+    setFormData({ ...formData, chiefComplaints: updatedComplaints });
   };
+
+
 
   const handleBehaviouralDropdown = (category, field, value) => {
     setFormData((prevState) => ({
@@ -309,6 +314,8 @@ const Psychodiagnostic = () => {
     });
   };
 
+  
+
   const handlePsychomotorActivityChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -385,6 +392,20 @@ const Psychodiagnostic = () => {
     }));
   };
 
+
+  const handleDragEnd = (result) => {
+    const { destination, source } = result;
+
+    if (!destination) return;
+
+    if (destination.index === source.index) return;
+
+    const updatedComplaints = [...formData.chiefComplaints];
+    const [movedComplaint] = updatedComplaints.splice(source.index, 1);
+    updatedComplaints.splice(destination.index, 0, movedComplaint);
+
+    setFormData({ ...formData, chiefComplaints: updatedComplaints });
+  };
   
   const handleBehavouralInfoChange = (section, field, value) => {
     setFormData((prevData) => ({
@@ -416,7 +437,13 @@ const Psychodiagnostic = () => {
     });
   };
 
-  console.log(formData)
+  const calculateAge = (date) => {
+    
+      const birthMoment = moment(date);
+      const today = moment();
+  
+      return today.diff(birthMoment, 'years'); // Calculate the difference in years
+    };
 
   return (
     <>
@@ -427,30 +454,23 @@ const Psychodiagnostic = () => {
    
     <form style={styles.form} onSubmit={handleSubmit} >
       <h3 style={styles.formHeader}>Psychodiagnostic Report</h3>
-
-        <label style={styles.labels}>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </label>
-
-        <label style={styles.labels}>
-          Age:
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </label>
-
-        <label style={styles.labels}>
+      { appointment && appointment.patient && (
+      <div style={{ display : 'flex' , justifyContent: 'space-between' , alignItems: 'center'}}>
+        <p>
+        <p>Name: <span>{appointment.patient.firstName.toUpperCase() + " " + appointment.patient.lastName.toUpperCase()}</span></p>
+      
+          <p> Age: <span>{calculateAge(appointment.patient.birthDate)}</span></p>
+          </p>
+          <p>
+          <p>
+          Date: { moment(Date.now()).format('DD-MM-YYYY')}
+        </p>
+        <p>
+          Address: {appointment.patient.address}
+        </p>
+        </p>
+        </div>)}
+       <label style={styles.labels}>
           Mother Tongue:
           <input
             type="text"
@@ -461,27 +481,9 @@ const Psychodiagnostic = () => {
           />
         </label>
 
-        <label style={styles.labels}>
-          Date:
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </label>
+        
 
-        <label style={styles.labels}>
-          Address:
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            style={styles.input}
-          />
-        </label>
+      
 
         <label style={styles.labels}>
           Refer By Doctor:
@@ -505,46 +507,73 @@ const Psychodiagnostic = () => {
           />
         </label>
 
-        <h4>Chief Complaints</h4>
-        {formData.chiefComplaints.map((complaint, index) => (
-          <div key={index} style={styles.chiefComplaintGroup}>
-            <input
-              type="text"
-              value={complaint.complaint}
-              onChange={(e) =>
-                handleChiefComplaintChange(index, "complaint", e.target.value)
-              }
-              placeholder="Chief Complaint"
-              style={styles.input}
-            />
-            <select
-              value={complaint.duration}
-              onChange={(e) =>
-                handleChiefComplaintChange(index, "duration", e.target.value)
-              }
-              style={styles.select}
+        <div>
+      <h4>Chief Complaints</h4>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="complaints">
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              style={styles.droppableArea}
             >
-              <option value="day">Days</option>
-              <option value="week">Weeks</option>
-              <option value="month">Months</option>
-              <option value="year">Years</option>
-            </select>
-            <button
-              type="button"
-              onClick={() => deleteChiefComplaint(index)}
-              style={styles.deleteButton}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={addChiefComplaint}
-          style={styles.addButton}
-        >
-          Add Complaint
-        </button>
+              {formData.chiefComplaints.map((complaint, index) => (
+                <Draggable key={index} draggableId={`complaint-${index}`} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        ...styles.chiefComplaintGroup,
+                        ...provided.draggableProps.style,
+                      }}
+                    >
+                      <input
+                        type="text"
+                        value={complaint.complaint}
+                        onChange={(e) =>
+                          handleChiefComplaintChange(index, 'complaint', e.target.value)
+                        }
+                        placeholder="Chief Complaint"
+                        style={styles.input}
+                      />
+                      <select
+                        value={complaint.duration}
+                        onChange={(e) =>
+                          handleChiefComplaintChange(index, 'duration', e.target.value)
+                        }
+                        style={styles.select}
+                      >
+                        <option value="day">Days</option>
+                        <option value="week">Weeks</option>
+                        <option value="month">Months</option>
+                        <option value="year">Years</option>
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => deleteChiefComplaint(index)}
+                        style={styles.deleteButton}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <button
+        type="button"
+        onClick={addChiefComplaint}
+        style={styles.addButton}
+      >
+        Add Complaint
+      </button>
+    </div>
 
         <label style={styles.labels}>
           Precipitation:
@@ -980,7 +1009,8 @@ const Psychodiagnostic = () => {
   "Irritable",
   "Cheerful",
   "Euphoric",
-  "Elated"
+  "Elated",
+  "Nil Contributor"
 ].map((mood, index) => (
         <option key={index} value={mood}>
           {mood}
@@ -1024,7 +1054,7 @@ const Psychodiagnostic = () => {
 {[
   {
     label: "Stream",
-    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration"],
+    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration" , "Nil Contributor"],
     key: "stream",
   },
   {
@@ -1042,6 +1072,7 @@ const Psychodiagnostic = () => {
       "Circumstantiality",
       "Tangentiality",
       "Poverty Of Thought",
+      "Nil Contributor"
     ],
     key: "form",
   },
@@ -1052,6 +1083,7 @@ const Psychodiagnostic = () => {
       "Thought Broadcasting",
       "Thought Insertion",
       "Thought Withdrawal",
+      "Nil Contributor"
     ],
     key: "possession",
   },
@@ -1063,6 +1095,7 @@ const Psychodiagnostic = () => {
       "Depressive Thoughts",
       "Delusions",
       "Perceptual Disturbances (Illusions, Hallucination)",
+      "Nil Contributor"
     ],
     key: "content",
   },
@@ -1088,71 +1121,7 @@ const Psychodiagnostic = () => {
 
 
       </fieldset>
-        {/* <label style={styles.labels}>
-          Behavioral Information:
-          <div>
-            {behavioralOptions.map((option, index) => (
-              <div key={index} style={styles.optionContainer}>
-                <label style={styles.label}>{option.label}</label>
-                <select
-                  style={styles.dropdown}
-                  onChange={(e) =>
-                    handleBehaviouralObservation(
-                      option.label,
-                      e.target.value,
-                      null
-                    )
-                  }
-                >
-                  <option value="">Select Subcategory</option>
-                  {option.subCategories.map((sub, subIndex) => (
-                    <option key={subIndex} value={sub.label}>
-                      {sub.label}
-                    </option>
-                  ))}
-                </select>
-
-                {option.subCategories.map((sub, subIndex) => (
-                  <div key={subIndex} style={styles.subOptionContainer}>
-                    {formData.behaviouralInfo.some(
-                      (item) =>
-                        item.category === option.label &&
-                        item.subCategory === sub.label
-                    ) && (
-                      <>
-                        <label style={styles.subLabel}>{sub.label}</label>
-                        <select
-                          style={styles.dropdown}
-                          onChange={(e) =>
-                            handleBehaviouralObservation(
-                              option.label,
-                              sub.label,
-                              e.target.value
-                            )
-                          }
-                        >
-                          <option value="">Select Sub-Subcategory</option>
-                          {sub.subSubCategories.map((subSub, subSubIndex) => (
-                            <option key={subSubIndex} value={subSub}>
-                              {subSub}
-                            </option>
-                          ))}
-                        </select>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
-            <label style={styles.labels}>Additional Information:</label>
-            <textarea
-              style={styles.textarea}
-              placeholder="Enter any other relevant information here..."
-              value={formData.additionalInfo2}
-              onChange={handleAdditionalInfoChange2}
-            ></textarea>
-          </div>
-        </label> */}
+  
 
         <label style={styles.label}>
           Tools Used: {" "}
@@ -1412,8 +1381,8 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
-    marginTop: "10px",
-    marginLeft: "10px",
+    margin: "10px",
+
   },
 };
 export default Psychodiagnostic;

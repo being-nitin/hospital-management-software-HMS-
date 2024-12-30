@@ -6,6 +6,7 @@ import PrintDetails from './PrintDetails';
 import PrintLayout from '../core/printLayout';
 // import { psychodiagnostic } from '../utils/printformat';
 import PatientDetails from './patientHistory';
+import moment from 'moment';
 
 const ViewPDReport = () => {
   const [patientData, setPatientData] = useState(null);
@@ -39,23 +40,25 @@ const ViewPDReport = () => {
   let psychodiagnostic = () => {
 
   return `
-  <div style="background-color: #e0f7fa;  border-radius: 8px; margin: 20px;">
+  <div   border-radius: 8px; margin: 20px;">
+   <div>
+        <div >
+        ${appointment && appointment.patient && `
+        <p>Name: <span>${appointment.patient.firstName.toUpperCase() + " " + appointment.patient.lastName.toUpperCase()}</span></p>
+      
+          <p > Age: <span>${calculateAge(appointment.patient.birthDate)}</span></p>
+          </div>
+          <div>
+          <p >
+          Date: ${ moment(Date.now()).format('DD-MM-YYYY')}
+        </p>
+        <p >
+          Address: ${appointment.patient.address}
+        </p>
+        </div>
+        </div>`}
   <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-  <!-- Row 1 -->
-  <div style="flex: 1 1 calc(33.33% - 1rem);">
-    <strong>Name:</strong> ${patientData.name}
-  </div>
-  <div style="flex: 1 1 calc(33.33% - 1rem);">
-    <strong>Age:</strong> ${patientData.age}
-  </div>
-  <div style="flex: 1 1 calc(33.33% - 1rem);">
-    <strong>Mother Tongue:</strong> ${patientData.motherTongue}
-  </div>
-
-  <!-- Row 2 -->
-  <div style="flex: 1 1 calc(33.33% - 1rem);">
-    <strong>Date:</strong> ${patientData.date}
-  </div>
+  
   <div style="flex: 1 1 calc(33.33% - 1rem);">
     <strong>Referred By Dr.:</strong> ${patientData.refByDr}
   </div>
@@ -101,10 +104,10 @@ const ViewPDReport = () => {
 <h4>Personal History</h4>
 <div>
   ${Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
-    <div >
-     <p style = "margin-bottom : 5px;">${key.replace(/([A-Z])/g, ' $1').toUpperCase()}-  ${value || 'Not Answered'} </p>
-    </div>
-  `).join('')}
+   
+     <span style = "margin-bottom : 5px;"> ${value} </span>
+  
+  `).join(',')}
 </div>
 <h4 style = "page-break-before: always;">Premorbid Personality</h4>
 <div>
@@ -112,22 +115,22 @@ const ViewPDReport = () => {
     <div>
       <p style="margin-bottom: 5px; font-weight: bold;">${category.replace(/([A-Z])/g, ' $1').toUpperCase()}</p>
       ${questions.map((q, idx) => `
-        <p style="margin-bottom: 5px;">${q.question}: ${q.answer || 'N/A'}</p>
-      `).join('')}
+        <span style="margin-bottom: 5px;"> ${q.answer }</span>
+      `).join(',')}
     </div>
   `).join('')}
 </div>
-<h4>Behavioral Information</h4>
+<h4 >Behavioral Information</h4>
 <!-- General Appearance and Behavior -->
 <h4>General Appearance and Behavior</h4>
 <div>
   ${Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => `
-    <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
+    <div style="display: inline-block">
       ${value || 'NAD'} ,
     </div>
   `).join('')}
 </div>
-<h4  style = "page-break-before: always;">Orientation</h4>
+<h4  >Orientation</h4>
 <div>
   ${Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
     <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
@@ -140,7 +143,7 @@ const ViewPDReport = () => {
   <p > ${patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
 </div>
 
-<h4>Level of Consciousness</h4>
+<h4 >Level of Consciousness</h4>
 <div>
   <p >${patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
 </div>
@@ -149,21 +152,21 @@ const ViewPDReport = () => {
 <div>
   ${Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => `
     <span >
-      ${value || 'NAD'},
+      ${value},
     </span>
   `).join('')}
 </div>
 
-<h4>Memory</h4>
+<h4 style = "page-break-before: always;">Memory</h4>
 <div>
   ${Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
     <span style="margin-right: 10px;">
-     ${value || 'NAD'},
+     ${value},
     </span>
   `).join('')}
 </div>
 
-<h4>Thought</h4>
+<h4  >Thought</h4>
 <div>
   ${Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
     <div style="margin-bottom: 10px;">
@@ -175,49 +178,58 @@ const ViewPDReport = () => {
     </div>
   `).join('')}
 
-      <h5>Additional Information</h5>
-          <p>${patientData.additionalInfo1}</p>
-          <p>${patientData.additionalInfo2}</p>
-</div>
 <div>
    Sugession: <p>${patientData.suggestions.join(',')}</p>
 </div>
 </div>
-
   `
   }
 
+    const calculateAge = (date) => {
+      
+        const birthMoment = moment  (date);
+        const today = moment();
+    
+        return today.diff(birthMoment, 'years'); // Calculate the difference in years
+      };
+
   return (
     <div className="container mt-4">
-     <PrintLayout html ={psychodiagnostic} ></PrintLayout>
+     <PrintLayout html ={psychodiagnostic} category={'forms'}></PrintLayout>
       <div className="card">
         <div className="card-body">
           <h4 className="card-title mb-4">Patient Information</h4>
 
           {/* Basic Information */}
-          <div className="row">
-            <div className="col-md-6 mb-3">
-              <strong>Name:</strong> {patientData.name}
-            </div>
-            <div className="col-md-6 mb-3">
-              <strong>Age:</strong> {patientData.age}
-            </div>
+         { appointment && appointment.patient && 
+         (
+          <div style={{ display : 'flex' , justifyContent: 'space-between' , alignItems: 'center'}}>
+        <p>
+        <p>Name: <span>{appointment.patient.firstName.toUpperCase() + " " + appointment.patient.lastName.toUpperCase()}</span></p>
+      
+          <p> Age: <span>{calculateAge(appointment.patient.birthDate)}</span></p>
+          </p>
+          <p>
+          <p>
+          Date: { moment(Date.now()).format('DD-MM-YYYY')}
+        </p>
+        <p>
+          Address: {appointment.patient.address}
+        </p>
+        </p>
+        </div>)
+           }
             <div className="col-md-6 mb-3">
               <strong>Mother Tongue:</strong> {patientData.motherTongue}
             </div>
-            <div className="col-md-6 mb-3">
-              <strong>Date:</strong> {patientData.date}
-            </div>
-            <div className="col-md-12 mb-3">
-              <strong>Address:</strong> {patientData.address}
-            </div>
+           
             <div className="col-md-6 mb-3">
               <strong>Referred By Dr.:</strong> {patientData.refByDr}
             </div>
             <div className="col-md-12 mb-3">
               <strong>Reason for Referral:</strong> {patientData.reasonForReferral}
             </div>
-          </div>
+        
 
           <hr />
 
@@ -345,11 +357,6 @@ const ViewPDReport = () => {
           ))}
 
           <hr />
-
-          {/* Additional Information */}
-          <h5>Additional Information</h5>
-          <p>{patientData.additionalInfo1}</p>
-          <p>{patientData.additionalInfo2}</p>
 
           <h5>Impressions and Suggestions</h5>
           <p>{patientData.impression}</p>

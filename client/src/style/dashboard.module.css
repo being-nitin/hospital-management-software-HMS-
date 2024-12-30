@@ -1,0 +1,96 @@
+/* Sidebar Styles */
+.sidebar {
+    background-color: #f8f9fc;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Roboto", sans-serif;
+    border-right: 1px solid #ddd;
+  }
+  
+  .sidebarHeader {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .appName {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .navLinks {
+    padding: 20px 15px;
+    flex-grow: 1;
+  }
+  
+  .navLink {
+    display: block;
+    color: #555;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .navLink:hover {
+    background-color: #1d2869;
+    color: white;
+  }
+  
+  .sidebarFooter {
+    background-color: #1d2869;
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Main Content Styles */
+  .mainContent {
+    flex: 1;
+    background-color: #f8f9fc;
+    padding: 20px;
+    overflow: auto;
+  }
+  
+  .dashboardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .dashboardTitle {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .userInfo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .userName {
+    font-weight: bold;
+    color: #333;
+  }
+  

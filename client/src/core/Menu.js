@@ -1,62 +1,106 @@
-import React, { Fragment } from "react";
+import React, { Fragment , useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
+import { useNavigate } from 'react-router-dom'
+import { listPatients } from "../actions/patientActions";
+
 
 // { history} = props.history
 const Menu = () => {
+	const [searchTerm, setSearchTerm] = useState('');
+	const [selectedPatient, setSelectedPatient] = useState('');
+	const navigate = useNavigate(); 
 	const dispatch = useDispatch();
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	const patientList = useSelector((state) => state.patientList);
+	const {
+		loading,
+		error,
+		patients: { patient } = {},
+	} = patientList;
+
 	const logoutHandler = () => {
 		dispatch(logout());
 	};
 
+	useEffect(() => {
+		if (userInfo) {
+			dispatch(listPatients({}));
+		} else {
+			navigate("/signin");
+		}
+	}, [dispatch, userInfo]);
+  
+	const handleSearchChange = (e) => {
+	  setSearchTerm(e.target.value);
+	};
+  
+
+  
+	const handleSubmit = (e) => {
+	  e.preventDefault();
+	  if (selectedPatient) {
+		// Navigate to the patient's page
+		navigate(`/patient`);
+	  }
+	};
+
 	return (
 		<nav
-			style={{
-				backgroundColor: "#1d2869",
-			}}
-			className="sb-topnav navbar navbar-expand">
+		className="sb-topnav navbar navbar-expand-lg navbar-light"
+		style={{ backgroundColor: "#f9f9f9", borderBottom: "1px solid #ddd" }}
+			>
 			<Link
 				className="navbar-brand"
 				to="/"
 				style={{
-					color: "white",
+					color: "black",
 					fontFamily: "Roboto sans-serif",
+					fontSize : '16px',
+					fontWeight :700
 				}}
-				// style={{
-				// fontFamily: "Roboto sans-serif",
-				//   }}
+				
 			>
-				Ravi Neuro - Psychiatry Centre{" "}
+				Ravi Neuro - Psychiatry Centre
 			</Link>
-			<button
-				className="btn btn-link btn-sm order-1 order-lg-0"
-				id="sidebarToggle"
-				href="#">
-				{/* <i className="fas fa-bars"></i> */}
-			</button>
+			<div className="container-fluid">
 
-			<form className="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-				<div className="input-group">
-					<input
-						className="invisible"
-						type="text"
-						placeholder="Search for..."
-						aria-label="Search"
-						aria-describedby="basic-addon2"
-					/>
-					<div className="input-group-append">
-						<button className="invisible" type="button">
-							<i className="fas fa-search"></i>
-						</button>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+
+                <div className="collapse navbar-collapse" id="navbarNav">
+				<form
+      className="d-flex ms-auto me-3"
+      style={{ maxWidth: '300px', width: '100%' }}
+      onSubmit={handleSubmit}
+    >
+      <input
+        className="form-control border rounded mt-2"
+        type="search"
+        placeholder="Search for..."
+        aria-label="Search"
+        style={{ padding: '0.375rem 0.75rem' }}
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+      <button className="btn btn-outline-secondary ms-2 mt-2" type="submit">
+        <i className="fas fa-search"></i>
+      </button>
+    </form>
+                    </div>
 					</div>
-				</div>
-			</form>
-
 			<ul className="navbar-nav ml-auto ml-md-0">
 				<li className="nav-item dropdown">
 					<a
@@ -85,6 +129,7 @@ const Menu = () => {
 					</div>
 				</li>
 			</ul>
+			
 		</nav>
 	);
 };

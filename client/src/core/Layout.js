@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import "../styles.css";
+import styles from '../style/dashboard.module.css'
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Menu from "./Menu";
@@ -9,7 +10,7 @@ const isActive = (location, path) => {
 	if (location.pathname === path) {
 		return { color: "#ff9900", fontFamily: "Roboto sans-serif" };
 	} else {
-		return { color: "#ffffff", fontFamily: "Roboto sans-serif" };
+		return { color: "gray", fontFamily: "Roboto sans-serif" };
 	}
 };
 
@@ -263,7 +264,9 @@ const Layout = ({ title, children }) => {
 					className="nav-link"
 					style={isActive(location, "/list/medicine")}
 					to="/list/medicine">
-					<div className="sb-nav-link-icon"></div>
+					<div className="sb-nav-link-icon">
+					   <i class="fa-solid fa-tablets"></i>
+					</div>
 					Medicine
 				</Link>
 
@@ -530,7 +533,9 @@ const Layout = ({ title, children }) => {
 					className="nav-link"
 					style={isActive(location, "/list/medicine")}
 					to="/list/medicine">
-					<div className="sb-nav-link-icon"></div>
+					<div className="sb-nav-link-icon">
+					<i class="fa-solid fa-tablets"></i>
+					</div>
 					Medicine
 				</Link>
 
@@ -722,7 +727,9 @@ const Layout = ({ title, children }) => {
 					className="nav-link"
 					style={isActive(location, "/list/medicine")}
 					to="/list/medicine">
-					<div className="sb-nav-link-icon"></div>
+					<div className="sb-nav-link-icon">
+					<i class="fa-solid fa-tablets"></i>
+					</div>
 					Medicine
 				</Link>
 
@@ -740,9 +747,7 @@ const Layout = ({ title, children }) => {
 	};
 	const loggedIn = () => (
 		<div
-			style={{
-				backgroundColor: "#1d2869",
-			}}
+			
 			className="small">
 			Logged in as:
 		</div>
@@ -750,47 +755,66 @@ const Layout = ({ title, children }) => {
 
 	return (
 		<nav style={{}} className="sb-nav-fixed">
-			<Menu />
-			<div id="layoutSidenav">
-				<div id="layoutSidenav_nav">
-					<nav
-						className="sb-sidenav accordion sb-sidenav-dark"
-						id="sidenavAccordion">
-						<div className="sb-sidenav-menu">
-							<div className="nav">
-								{userInfo.role === 0
-									? adminLinks()
-									: userInfo.role === 1
-									? doctorLinks()
-									: staffLink()}
-							</div>
-						</div>
-						<div
-							style={{
-								backgroundColor: "#1d2869",
-							}}
-							className="sb-sidenav-footer">
-							{loggedIn()}
-							{userInfo && userInfo.name}
-						</div>
-					</nav>
-				</div>
-				<div id="layoutSidenav_content">
-					<main>
-						<div className="container-fluid">
-							<h1
-								className="mt-3"
-								style={{
-									fontFamily: "Roboto sans-serif",
-								}}>
-								{title}
-							</h1>
-							{children}
-						</div>
-					</main>
-				</div>
-			</div>
-		</nav>
+  <Menu />
+  <div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+      <nav
+        className="sb-sidenav"
+        id="sidenavAccordion"
+        style={{
+          background: "linear-gradient(180deg,rgb(253, 253, 253), white)", // Gradient for sidebar background
+          color: "#000", // Black text for contrast
+          fontFamily: "Roboto, sans-serif", // Font style
+        }}
+      >
+        <div className="sb-sidenav-menu">
+          <div className="nav">
+        
+            {/* Render links dynamically */}
+            {userInfo.role === 0
+              ? adminLinks()
+              : userInfo.role === 1
+              ? doctorLinks()
+              : staffLink()}
+          </div>
+        </div>
+        <div
+          style={{
+			background: "#f9f9f9", // Gradient for sidebar background
+			color: "#000",// White text for footer
+            padding: "10px",
+            fontSize: "14px",
+			borderBottom: "1px solid #ddd"	
+          }}
+          className="sb-sidenav-footer"
+        >
+          {loggedIn()}
+          {userInfo && <span>{userInfo.name}</span>}
+        </div>
+      </nav>
+    </div>
+    <div id="layoutSidenav_content">
+      <main>
+        <div className="container-fluid">
+          <h1
+            className=""
+            style={{
+              fontFamily: "Roboto, sans-serif",
+              fontWeight: "bold",
+              background: "linear-gradient(180deg, #eae8f4, white)", // Gradient for sidebar background
+              color: "#000",
+			  paddingLeft : '20px',
+			  paddingTop :'10px'
+            }}
+          >
+            {title}
+          </h1>
+          {children}
+        </div>
+      </main>
+    </div>
+  </div>
+</nav>
 	);
 };
 
