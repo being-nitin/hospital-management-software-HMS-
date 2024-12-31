@@ -335,6 +335,7 @@ const Psychodiagnostic = () => {
       updateVacApp({ _id: appointment?._id, psychodiagnostic: formData })
     );
     dispatch(detailsVacApp(id));
+    alert("form is submittted")
   };
 
   const userLogin = useSelector((state) => state.userLogin);
