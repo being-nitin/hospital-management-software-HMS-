@@ -1,9 +1,12 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import YBOCS_DATA from "./YBOCS_DATA.json";
 import YBOCSSymptomsChecklist from "./YBOCSSymptomsChecklist";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
+import {
+	updateVacApp,
+	detailsVacApp,
+} from "../actions/vaccineAppointmentActions";
 
 const YBOCS = () => {
 	const [form2Data, setForm2Data] = useState({
@@ -12,29 +15,30 @@ const YBOCS = () => {
 	const [totalScore, setTotalScore] = useState(0);
 
 	const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { id } = useParams();
+	const navigate = useNavigate();
+	const { id } = useParams();
 
-  const [existingData, setExistingData] = useState(null);
+	const [existingData, setExistingData] = useState(null);
 
-  const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-  const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
+	const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
+	const { appointment: { appointment, pastAppointments } = {} } =
+		vaccineAppList || {};
 
-  useEffect(() => {
-    dispatch(detailsVacApp(id));
-  }, [dispatch, id]);
+	useEffect(() => {
+		dispatch(detailsVacApp(id));
+	}, [dispatch, id]);
 
-  useEffect(() => {
-    if (appointment && appointment.ybocs) {
-      setExistingData(appointment?.ybocs?.info);
-    }
-  }, [appointment]);
+	useEffect(() => {
+		if (appointment && appointment.ybocs) {
+			setExistingData(appointment?.ybocs?.info);
+		}
+	}, [appointment]);
 
-  useEffect(() => {
-    if (existingData) {
-      setForm2Data(existingData);
-    }
-  }, [existingData]);
+	useEffect(() => {
+		if (existingData) {
+			setForm2Data(existingData);
+		}
+	}, [existingData]);
 
 	const handleRadioChange = (index, value) => {
 		setForm2Data((prevData) => {
@@ -44,23 +48,38 @@ const YBOCS = () => {
 		});
 	};
 
-	console.log(form2Data)
+	console.log(form2Data);
 	const fieldNames = YBOCS_DATA["Obsessive thoughts"]
 		.concat(YBOCS_DATA["Compulsive Behaviors"])
 		.map(({ fieldName }) => fieldName);
 
 	const handeFormSubmit = (e) => {
 		e.preventDefault();
-	
+
 		const submittedData = fieldNames.reduce((result, currField, index) => {
 			result[currField] = form2Data.fields[index];
 			return result;
 		}, {});
-		
-		
-		dispatch(updateVacApp({ _id: appointment._id, ybocs: {info : form2Data , score : Object.values(form2Data).reduce((acc, value) => acc + value, 0)} }));
+
+		dispatch(
+			updateVacApp({
+				_id: appointment._id,
+				ybocs: {
+					info: form2Data,
+					score: Object.values(form2Data).reduce(
+						(acc, value) => acc + value,
+						0
+					),
+				},
+			})
+		);
 		dispatch(detailsVacApp(id));
+		window.alert("You have successfully submitted the form.");
 	};
+
+	// const handleFormSubmit = () => {
+	// 	window.alert("You have successfully submitted the form.");
+	// };
 
 	return (
 		<>
@@ -96,9 +115,10 @@ const YBOCS = () => {
 												type="radio"
 												name={`field-${key}`}
 												value={key}
-													checked={
-													Number(form2Data.fields[key]) ===
-													Number(option.value)
+												checked={
+													Number(
+														form2Data.fields[key]
+													) === Number(option.value)
 												}
 												onChange={() =>
 													handleRadioChange(
@@ -115,7 +135,7 @@ const YBOCS = () => {
 							</div>
 						))}
 				</div>
-				<YBOCSSymptomsChecklist appointment={appointment}/>
+				<YBOCSSymptomsChecklist appointment={appointment} />
 				<button type="submit" style={styles.submitButton}>
 					Submit
 				</button>
