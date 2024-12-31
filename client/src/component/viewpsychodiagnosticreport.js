@@ -179,7 +179,7 @@ const ViewPDReport = () => {
   `).join('')}
 
 <div>
-   Sugession: <p>${patientData.suggestions.map((suggestion, index)=> `${index} ${suggestion}`).join(',')}</p>
+   Sugession: <p>${patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}`).join(' , ')}</p>
 </div>
 </div>
   `
