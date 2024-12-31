@@ -7,6 +7,7 @@ import ReactToPrint from "react-to-print";
 import moment from "moment";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import AddAppVaccineModal from "../component/modal/addAppointment";
 
 const ListPatients = () => {
 	const [searchDetails, setSearchDetails] = useState({
@@ -16,7 +17,9 @@ const ListPatients = () => {
 		patientNumber: "",
 		address: "",
 	});
+	const [showModal , setShowModal] = useState(false)
 	const [page, setPage] = useState(1);
+	const [patientId , setPatientId] = useState(null)
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -74,10 +77,18 @@ const ListPatients = () => {
 			<Menu.Item key="1">
 				<Link to={`/pat-details/${patientId}`}>More Details</Link>
 			</Menu.Item>
-			<Menu.Item key="2">
+			{/* <Menu.Item key="2">
 				<Link to={`/add-appointment/${patientId}`}>
 					Add Appointment
 				</Link>
+			</Menu.Item> */}
+			<Menu.Item key="2" onClick = {() => {
+				setShowModal(true) 
+				setPatientId(patientId)}
+			}>
+				
+					Add Appointment
+			
 			</Menu.Item>
 			<Menu.Item key="3">
 				<Link to={`/update-patient/${patientId}`}>Update Patient</Link>
@@ -89,6 +100,12 @@ const ListPatients = () => {
 	);
 
 	return (
+		<>
+		<AddAppVaccineModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                patientId={patientId}
+            />
 		<Layout title="List Patients" className="container-fluid">
 			<h4>
 				<Link to="/add-patient-details">
@@ -97,14 +114,7 @@ const ListPatients = () => {
 					</Button>
 				</Link>
 			</h4>
-			<ReactToPrint
-				trigger={() => (
-					<Button type="primary" style={buttonStyles}>
-						Click To Print Patients
-					</Button>
-				)}
-				content={() => componentRef.current}
-			/>
+			
 			<h2 className="mb-4">List Patients</h2>
 			{error && (
 				<div
@@ -256,6 +266,7 @@ const ListPatients = () => {
 				</Button>
 			</div>
 		</Layout>
+		</>
 	);
 };
 

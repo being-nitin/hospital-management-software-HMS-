@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 import { useNavigate } from 'react-router-dom'
 import { listPatients } from "../actions/patientActions";
+import { Button } from "antd";
 
 
 // { history} = props.history
@@ -101,6 +102,9 @@ const Menu = () => {
     </form>
                     </div>
 					</div>
+					<Button type="primary">
+				     Appointment
+				</Button>
 			<ul className="navbar-nav ml-auto ml-md-0">
 				<li className="nav-item dropdown">
 					<a
