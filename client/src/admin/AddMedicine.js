@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Layout from "../core/Layout";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -7,7 +8,7 @@ import { listVendors } from "../actions/vendorsActions";
 import { listTypesEnums, createMedicine } from "../actions/medicineActions";
 import { CREATE_MEDICINE_RESET } from "../constants/medicineConstants";
 
-const AddMedicine = ({ history: history1 }) => {
+const AddMedicine = () => {
   const [name, setName] = useState("Panadol");
   const [genericName, setGenericName] = useState("Paracetamol");
   const [batchNo, setBatchNo] = useState(567732435);
@@ -24,7 +25,7 @@ const AddMedicine = ({ history: history1 }) => {
   const [vendor, setVendor] = useState("");
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -45,10 +46,10 @@ const AddMedicine = ({ history: history1 }) => {
 
       if (success) {
         dispatch({ type: CREATE_MEDICINE_RESET });
-        history1.push("/list/medicine");
+        navigate("/list/medicine");
       }
     } else {
-      history1.push("/signin");
+      navigate("/signin");
     }
   }, [dispatch, userInfo, success]);
 
@@ -348,7 +349,7 @@ const AddMedicine = ({ history: history1 }) => {
   );
 
   return (
-    <Layout title="Category treatment Form">
+    <Layout title="Category medicine Form">
       <>
         <h2 className="mb-4" style={centeredHeading}>
           Add Medicine

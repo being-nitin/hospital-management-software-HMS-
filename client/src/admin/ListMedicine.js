@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
-const ListMedicine = ({ history }) => {
+const ListMedicine = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const medicineList = useSelector((state) => state.medicineList);
@@ -23,10 +23,11 @@ const ListMedicine = ({ history }) => {
 	useEffect(() => {
 		if (userInfo) {
 			dispatch(listMedicines());
+
 		} else {
 			navigate("/signin");
 		}
-	}, [dispatch, history, successDelete, userInfo]);
+	}, [dispatch, successDelete, userInfo]);
 
 	const deleteHandler = (id) => {
 		console.log(id);
@@ -110,7 +111,7 @@ const ListMedicine = ({ history }) => {
 
 	return (
 		<Layout
-			title="Profile"
+			title="List Medicine"
 			description="list treatment categories"
 			className="container-fluid">
 			<h4>
@@ -123,9 +124,7 @@ const ListMedicine = ({ history }) => {
 				</Link>
 			</h4>
 
-			<h2 className="mb-4" style={centeredHeading}>
-				List Medicine
-			</h2>
+			
 
 			{loading ? (
 				showLoading()

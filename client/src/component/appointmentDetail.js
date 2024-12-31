@@ -285,7 +285,9 @@ const AppointmentDetail = () => {
 			<Menu.Item
 				key="4"
 				onClick={() => {
-					setPsychologicalForm(!PsychologicalForm);
+					navigate(
+						`/PsychologicalForm/${appointment?._id}`
+					)
 					setVitalSignsForm(false);
 					setPrescriptionForm(false);
 				}}>
