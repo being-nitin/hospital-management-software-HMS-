@@ -10,7 +10,7 @@ const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 require("./db/mongoose");
 const path = require("path");
-const cloudinary =  require("cloudinary");
+const cloudinary = require("cloudinary");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware.js");
 
 //import routes
@@ -35,7 +35,8 @@ const vaccineCatRoutes = require("./routes/vaccineCat");
 const vaccineAppRoutes = require("./routes/vaccineAppointment");
 const consulCatAppRoutes = require("./routes/conslCat");
 const consultationAppRoutes = require("./routes/consultation");
-const settingRoutes = require('./routes/setting.js')
+const settingRoutes = require("./routes/setting.js");
+const nodeMailer = require("./routes/nodeMailer.js");
 require("dotenv").config();
 
 // middleware
@@ -52,16 +53,15 @@ app.use(xss());
 app.use(hpp());
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 mins
-  max: 300,
+	windowMs: 10 * 60 * 1000, // 10 mins
+	max: 300,
 });
 app.use(limiter);
 
-
 cloudinary.v2.config({
-  cloud_name: `${process.env.CLOUD_NAME}`,
-  api_key: `${process.env.API_KEY}`,
-  api_secret: `${process.env.API_SECRET}`,
+	cloud_name: `${process.env.CLOUD_NAME}`,
+	api_key: `${process.env.API_KEY}`,
+	api_secret: `${process.env.API_SECRET}`,
 });
 // app.use(function(req, res, next) { //allow cross origin requests
 //     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -94,7 +94,8 @@ app.use("/api", vaccineAppRoutes);
 app.use("/api", consulCatAppRoutes);
 app.use("/api", consultationAppRoutes);
 app.use("/uploadfile", uploadExelRoutes);
-app.use("/api/setting" , settingRoutes)
+app.use("/api/setting", settingRoutes);
+app.use("/api", nodeMailer);
 //const __dirname = path.resolve()
 app.use("/uploads", express.static(path.join(path.resolve(), "/uploads")));
 
@@ -104,5 +105,5 @@ app.use(errorHandler);
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+	console.log(`Server is running on port ${port}`);
 });

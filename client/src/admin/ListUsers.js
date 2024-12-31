@@ -35,22 +35,28 @@ const ListUsers = ({ history }) => {
 	useEffect(() => {
 		if (userInfo) {
 			dispatch(listUsers());
-			//setData(users)
 		} else {
 			navigate("/login");
 		}
 	}, [dispatch, history, successDelete, userInfo]);
 
+	// useEffect(() => {
+	// 	if (window.location.search !== "") {
+	// 		setData(
+	// 			users?.filter(
+	// 				(user) =>
+	// 					user?.role === Number(window.location.search.slice(-1))
+	// 			)
+	// 		);
+	// 	} else {
+	// 		setData(users);
+	// 	}
+	// }, [users]);
 	useEffect(() => {
-		if (window.location.search !== "") {
-			setData(
-				users?.filter(
-					(user) =>
-						user?.role === Number(window.location.search.slice(-1))
-				)
-			);
+		if (users) {
+			setData(users);
 		}
-	}, []);
+	}, [users]);
 
 	const deleteHandler = (id) => {
 		console.log(id);
@@ -69,10 +75,10 @@ const ListUsers = ({ history }) => {
 				users.filter((user) =>
 					user.name.toString().toLowerCase().includes(target)
 				)),
-			...users?.filter(
-				(user) =>
-					user?.role === Number(window.location.search.slice(-1))
-			),
+			// ...users?.filter(
+			// 	(user) =>
+			// 		user?.role === Number(window.location.search.slice(-1))
+			// ),
 		];
 
 		setData(results);

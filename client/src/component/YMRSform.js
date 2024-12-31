@@ -1,38 +1,42 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import YMRS_DATA from "./YMRS_DATA.json";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateVacApp, detailsVacApp } from "../actions/vaccineAppointmentActions";
+import {
+	updateVacApp,
+	detailsVacApp,
+} from "../actions/vaccineAppointmentActions";
 //YMRS From
 const YMRSform = () => {
 	const [form2Data, setForm2Data] = useState({
 		fields: Array(11).fill(null),
 	});
 
-console.log(form2Data)
+	console.log(form2Data);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { id } = useParams();
-  
+
 	const [existingData, setExistingData] = useState(null);
-  
+
 	const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
-	const { appointment: { appointment, pastAppointments } = {} } = vaccineAppList || {};
-  
+	const { appointment: { appointment, pastAppointments } = {} } =
+		vaccineAppList || {};
+
 	useEffect(() => {
-	  dispatch(detailsVacApp(id));
+		dispatch(detailsVacApp(id));
 	}, [dispatch, id]);
-  
+
 	useEffect(() => {
-	  if (appointment && appointment.ymrs) {
-		setExistingData({ fields : Object.values(appointment?.ymrs?.info) });
-	  }
+		if (appointment && appointment.ymrs) {
+			setExistingData({ fields: Object.values(appointment?.ymrs?.info) });
+		}
 	}, [appointment]);
-  
+
 	useEffect(() => {
-	  if (existingData) {
-		setForm2Data(existingData);
-	  }
+		if (existingData) {
+			setForm2Data(existingData);
+		}
 	}, [existingData]);
 
 	const fieldNames = Object.values(YMRS_DATA).map((item) => {
@@ -46,24 +50,36 @@ console.log(form2Data)
 			return { ...prevData, fields: updatedFields };
 		});
 	};
-	
-	const handeFormSubmit = (e) => {
+
+	const handleFormSubmit = (e) => {
 		e.preventDefault();
-		
-		console.log(fieldNames)
+
+		console.log(fieldNames);
 		const submittedData = fieldNames.reduce((result, currField, index) => {
-			
 			result[currField] = form2Data.fields[index];
 			return result;
 		}, {});
 		console.log(submittedData);
 
-		dispatch(updateVacApp({ _id: appointment._id, ymrs: {info : submittedData, score : Object.values(submittedData).reduce((acc, value) => acc + value, 0)} }));
+		dispatch(
+			updateVacApp({
+				_id: appointment._id,
+				ymrs: {
+					info: submittedData,
+					score: Object.values(submittedData).reduce(
+						(acc, value) => acc + value,
+						0
+					),
+				},
+			})
+		);
 		dispatch(detailsVacApp(id));
+
+		window.alert("You have successfully submitted the form.");
 	};
 	return (
 		<>
-			<form style={styles.form} onSubmit={handeFormSubmit}>
+			<form style={styles.form} onSubmit={handleFormSubmit}>
 				<h3 style={styles.formHeader}>
 					Young Mania Rating Scale (YMRS)
 				</h3>

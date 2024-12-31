@@ -85,13 +85,13 @@ const ListAppVaccine = () => {
 		dispatch(listVacApp(page, pageSize, status, formattedDate)); // Fetch data for the selected page
 	};
 
-	console.log(appointment)
+	console.log(appointment);
 	return (
 		<Layout
 			style={{
 				fontFamily: "Roboto sans-serif",
 			}}
-			title="appointment"
+			title="Appointments"
 			className="container-fluid">
 			<div className="d-flex justify-content-between align-items-center mb-4">
 				<h2
@@ -99,7 +99,7 @@ const ListAppVaccine = () => {
 					style={{
 						fontFamily: "Roboto sans-serif",
 					}}>
-					List of appointment
+					List of appointments
 				</h2>
 				<div
 					className="d-flex"
@@ -178,8 +178,12 @@ const ListAppVaccine = () => {
 													<span className="badge badge-success">
 														{app.status}
 													</span>
-												) : (
+												) : app.status === "closed" ? (
 													<span className="badge badge-danger">
+														{app.status}
+													</span>
+												) : (
+													<span className="badge badge-warning ">
 														{app.status}
 													</span>
 												)}
