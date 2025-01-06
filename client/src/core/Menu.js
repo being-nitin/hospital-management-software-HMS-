@@ -5,12 +5,18 @@ import { logout } from "../actions/userActions";
 import { useNavigate } from 'react-router-dom'
 import { listPatients } from "../actions/patientActions";
 import { Button } from "antd";
+import AddAppVaccineModal from "../component/modal/addAppointment";
 
 
-// { history} = props.history
 const Menu = () => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [selectedPatient, setSelectedPatient] = useState('');
+	const [showModal , setShowModal] = useState(false)
+	const [query, setQuery] = useState('');
+	const [filteredResults, setFilteredResults] = useState([]);
+	const [showList, setShowList] = useState(false);
+	const [patientId , setPatientId] = useState(null)
+
 	const navigate = useNavigate(); 
 	const dispatch = useDispatch();
 
@@ -19,9 +25,7 @@ const Menu = () => {
 
 	const patientList = useSelector((state) => state.patientList);
 	const {
-		loading,
-		error,
-		patients: { patient } = {},
+		patients
 	} = patientList;
 
 	const logoutHandler = () => {
@@ -36,9 +40,27 @@ const Menu = () => {
 		}
 	}, [dispatch, userInfo]);
   
-	const handleSearchChange = (e) => {
-	  setSearchTerm(e.target.value);
-	};
+	
+	  
+		const handleInputChange = (e) => {
+		  const input = e.target.value;
+		  setQuery(input);
+	  
+		   dispatch(listPatients({ firstName : input}))
+		  
+		  setShowList(input.length > 0);
+		};
+	
+		useEffect(()=>{
+			setFilteredResults(patients);
+		},[patients])
+	  
+		const handleItemClick = (item) => {
+		  setQuery(item.firstName); // Fill input with the selected item's name
+		  setShowList(false); // Hide the list
+		  setPatientId(item._id)
+		  setShowModal(true)
+		};
   
 
   
@@ -51,6 +73,13 @@ const Menu = () => {
 	};
 
 	return (
+		<>
+		{ showModal && (
+			<AddAppVaccineModal
+					show={showModal}
+					onClose={() => setShowModal(false)}
+					patientId={patientId}
+				/>)}
 		<nav
 		className="sb-topnav navbar navbar-expand-lg navbar-light"
 		style={{ backgroundColor: "#f9f9f9", borderBottom: "1px solid #ddd" }}
@@ -87,24 +116,75 @@ const Menu = () => {
       style={{ maxWidth: '300px', width: '100%' }}
       onSubmit={handleSubmit}
     >
-      <input
-        className="form-control border rounded mt-2"
-        type="search"
-        placeholder="Search for..."
-        aria-label="Search"
-        style={{ padding: '0.375rem 0.75rem' }}
-        value={searchTerm}
-        onChange={handleSearchChange}
+       <div className="mb-3">
+                                    <label className="form-label" style={{ fontWeight :700}}>Patient</label>
+                                    <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={handleInputChange}
+        style={{
+          width: '100%',
+          padding: '10px',
+          fontSize: '16px',
+          marginBottom: '10px',
+        }}
       />
-      <button className="btn btn-outline-secondary ms-2 mt-2" type="submit">
-        <i className="fas fa-search"></i>
-      </button>
+      {showList && (
+        <ul
+          style={{
+			position: 'fixed',
+			top : "50px",
+            listStyleType: 'none',
+            padding: '0',
+            margin: '0',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            maxHeight: '150px',
+            overflowY: 'auto',
+            backgroundColor: '#fff',
+          }}
+        >
+          {filteredResults && filteredResults.patient.length > 0 ? (
+            filteredResults.patient.map((item) => (
+              <li
+                key={item._id}
+                onClick={() => handleItemClick(item)}
+                style={{
+                  padding: '10px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) =>
+                  (e.target.style.backgroundColor = '#f0f0f0')
+                }
+                onMouseLeave={(e) =>
+                  (e.target.style.backgroundColor = '#fff')
+                }
+              >
+                {item.firstName}
+              </li>
+            ))
+          ) : (
+            <li style={{ padding: '10px', color: '#999' }}>
+              No matching results
+            </li>
+          )}
+        </ul>
+      )}
+    </div>
     </form>
                     </div>
 					</div>
-					<Button type="primary">
+					{window.location.pathname !== '/list-patients' && 
+					<Button type="primary" onClick={(e) => {
+						e.preventDefault()
+						setShowModal(true)
+						setPatientId(null)
+					}
+					}>
 				     Appointment
-				</Button>
+				</Button>}
 			<ul className="navbar-nav ml-auto ml-md-0">
 				<li className="nav-item dropdown">
 					<a
@@ -135,6 +215,9 @@ const Menu = () => {
 			</ul>
 			
 		</nav>
+
+		
+		</>
 	);
 };
 

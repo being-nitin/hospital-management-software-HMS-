@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema;
 const VaccineAppointment = mongoose.Schema(
     {
         patient: {
-            type: String,
+            type: ObjectId,
             required: true,
             ref: 'patientDetails',
         },
@@ -58,7 +58,8 @@ const VaccineAppointment = mongoose.Schema(
         ybocs : {
             type : Object
         },
-    }
+    },
+    { timestamps : true}
 )
 
 module.exports = mongoose.model('VaccineAppointment', VaccineAppointment);

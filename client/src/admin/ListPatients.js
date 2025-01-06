@@ -30,6 +30,7 @@ const ListPatients = () => {
 		patients: { patient, totalPages } = {},
 	} = patientList;
 
+	console.log(patient)
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
@@ -42,7 +43,7 @@ const ListPatients = () => {
 		} else {
 			navigate("/signin");
 		}
-	}, [dispatch, successDelete, userInfo, page]);
+	}, [ successDelete, userInfo, page]);
 
 	const handleSearch = () => {
 		setPage(1); // Reset to the first page on a new search
@@ -101,11 +102,12 @@ const ListPatients = () => {
 
 	return (
 		<>
+		{ showModal &&  (
 		<AddAppVaccineModal
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 patientId={patientId}
-            />
+            />)}
 		<Layout title="List Patients" className="container-fluid">
 			<h4>
 				<Link to="/add-patient-details">

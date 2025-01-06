@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import {
@@ -12,17 +11,24 @@ import {
 } from "../../actions/vaccineAppointmentActions";
 import { listUsers } from "../../actions/userActions";
 import { CREATE_APPOINTMENT_VACCINE_RESET } from "../../constants/vaccineAppointmentConstants";
-import { patientsDetails } from "../../actions/patientActions";
+import { listPatients, patientsDetails } from "../../actions/patientActions"; 
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
-const AddAppVaccineModal = ({ show, onClose, patientId }) => {
+const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const [doctor, setDoctor] = useState("");
     const [vaccine, setVaccine] = useState("");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState("10:00");
     const [status, setStatus] = useState("");
     const [remarks, setRemarks] = useState("fever");
-
+    const [selectedPatient, setSelectedPatient] = useState("")
+    const [firstName , setFirstName] = useState("")
+    const [showModal, setShowModal] = useState(show)
+    const [query, setQuery] = useState('');
+    const [filteredResults, setFilteredResults] = useState([]);
+    const [showList, setShowList] = useState(false);
+    
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const patientDetails = useSelector((state) => state.patientDetails);
@@ -40,38 +46,76 @@ const AddAppVaccineModal = ({ show, onClose, patientId }) => {
     const vaccineAppCreate = useSelector((state) => state.vaccineAppCreate);
     const { loading, success } = vaccineAppCreate;
 
+    const patientList = useSelector((state) => state.patientList )
+    const { patients } = patientList
+
+  
+    const handleInputChange = (e) => {
+      const input = e.target.value;
+      setQuery(input);
+  
+      
+       dispatch(listPatients({ firstName : input}))
+      
+  
+      // Show the list if there's input
+      setShowList(input.length > 0);
+    };
+
+    useEffect(()=>{
+        setFilteredResults(patients);
+    },[patients])
+  
+    const handleItemClick = (item) => {
+      setQuery(item.firstName); // Fill input with the selected item's name
+      setShowList(false); // Hide the list
+      setSelectedPatient(item._id)
+    };
+
     useEffect(() => {
         if (userInfo) {
             dispatch(listUsers());
+            if(!patientId) {
+                dispatch(listPatients())
+            }
+            
             dispatch(listVacTakenEnums());
-            dispatch(listVacDaysEnums());
+            if(patientId){
             dispatch(patientsDetails(patientId));
-            if (success) {
-                dispatch({ type: CREATE_APPOINTMENT_VACCINE_RESET });
-                onClose(); // Close modal on success
             }
         }
-    }, [dispatch, userInfo, success, patientId, onClose]);
+    }, [dispatch, userInfo]);
+
+    useEffect(()=> {
+        console.log(selectedDate)
+      setDate(selectedDate)
+    },[])
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(createVacApp({ patient, doctor, date, time, status, remarks }));
+        try {
+        let patient = patientId ? patientId  : selectedPatient 
+        dispatch(createVacApp({ patient , doctor, date, time, status, remarks }));
         navigate('/list-app-vaccine')
+        onClose();
+        }
+        catch(err) {
+            alert(err)
+        }
     };
 
     return (
         <>
-            {show && (
+            {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Add Vaccine Appointment</h5>
-                                <button
-                                    type="button"
-                                    className="btn-close"
+                                <h5 className="modal-title">Add Appointment</h5>
+                                <p
+                                    style={{ cursor : 'pointer'}}
                                     onClick={onClose}
-                                ></button>
+                                ><i class="fa fa-window-close"></i></p>
                             </div>
                             <div className="modal-body">
                                
@@ -83,10 +127,86 @@ const AddAppVaccineModal = ({ show, onClose, patientId }) => {
                                     </div>
                                 )}
                                 <form onSubmit={submitHandler}>
+                                    { patientId  &&
                                     <div className="mb-3">
                                         <label className="form-label" style={{ fontWeight :700}}>Patient</label>
                                         <span>{`  ${patient?.firstName}-${patient?.patientNumber}`}</span>
-                                    </div>
+                                    </div>}
+                                    {!patientId && (
+                                    //     <div className="mb-3">
+                                    //     <label className="form-label" style={{ fontWeight :700}}>Patient</label>
+                                    //        <select
+                                    //        onChange={(e) => setSelectedPatient(e.target.value)}
+                                    //        className="form-control"
+                                    //    >
+                                    //        <option>Select Patients</option>
+                                    //        {patients &&
+                                    //            patients.patient
+                                    //                .map((c) => (
+                                    //                    <option key={c._id} value={c._id}>
+                                    //                        {c.firstName}-{c.patientNumber}
+                                    //                    </option>
+                                    //                ))}
+                                    //    </select>
+                                    //    </div>
+                                    // )
+                                    
+                                    <div className="mb-3">
+                                    <label className="form-label" style={{ fontWeight :700}}>Patient</label>
+                                    <input
+        type="text"
+        placeholder="Search..."
+        value={query}
+        onChange={handleInputChange}
+        style={{
+          width: '100%',
+          padding: '10px',
+          fontSize: '16px',
+          marginBottom: '10px',
+        }}
+      />
+      {showList && (
+        <ul
+          style={{
+            listStyleType: 'none',
+            padding: '0',
+            margin: '0',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            maxHeight: '150px',
+            overflowY: 'auto',
+            backgroundColor: '#fff',
+          }}
+        >
+          {filteredResults && filteredResults.patient.length > 0 ? (
+            filteredResults.patient.map((item) => (
+              <li
+                key={item._id}
+                onClick={() => handleItemClick(item)}
+                style={{
+                  padding: '10px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) =>
+                  (e.target.style.backgroundColor = '#f0f0f0')
+                }
+                onMouseLeave={(e) =>
+                  (e.target.style.backgroundColor = '#fff')
+                }
+              >
+                {item.firstName}
+              </li>
+            ))
+          ) : (
+            <li style={{ padding: '10px', color: '#999' }}>
+              No matching results
+            </li>
+          )}
+        </ul>
+      )}
+    </div>
+)}
                                     <div className="mb-3">
                                         <label className="form-label" style={{ fontWeight :700}}>Doctor</label>
                                         <select

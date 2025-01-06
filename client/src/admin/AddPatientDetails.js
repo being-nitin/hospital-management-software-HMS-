@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import { PATIENT_CREATE_RESET } from "../constants/patientDetailsConstants";
 import { useNavigate } from "react-router-dom";
+import AddAppVaccineModal from "../component/modal/addAppointment";
 
 const AddPatientDetails = ({ history: history1 }) => {
   const [firstName, setFirstName] = useState("");
@@ -29,8 +30,8 @@ const AddPatientDetails = ({ history: history1 }) => {
   const [gender, setGender] = useState("Male");
   const [symptoms, setSymptoms] = useState("");
   const [doctor, setDoctor] = useState("");
-  // const [statusPatient, setStatusPatient] = useState('Cured')
-  // const [patientType, setPatientType] = useState('In Patient')
+  const [showModal , setShowModal] = useState(false)
+  const [selectedId , setSelectedId] = useState('')
 
   const navigate = useNavigate();
   const [image, setImage] = useState("");
@@ -54,7 +55,7 @@ const AddPatientDetails = ({ history: history1 }) => {
   const { types } = patientTypes;
 
   const patientCreate = useSelector((state) => state.patientCreate);
-  const { error, loading, success } = patientCreate;
+  const { error, loading, success, patient } = patientCreate;
 
   useEffect(() => {
     if (userInfo) {
@@ -180,7 +181,17 @@ const AddPatientDetails = ({ history: history1 }) => {
         symptoms,
       })
     );
+    
+    
   };
+
+
+  useEffect(()=>{
+    if(success){
+      setSelectedId(patient._id)
+      setShowModal(true)
+      }
+  },[patient])
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
@@ -368,6 +379,12 @@ const AddPatientDetails = ({ history: history1 }) => {
         {showError()}
         {showLoading()}
         {patientDetailsForm()}
+        { showModal &&  (
+		<AddAppVaccineModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                patientId={selectedId}
+            />)}
       </>
     </Layout>
   );

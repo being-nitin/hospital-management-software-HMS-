@@ -134,10 +134,10 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    const { firstName, lastName, phoneNo, patientNumber , address , page = 1, limit = 10 } = req.query;
-  
+    const { firstName, lastName, phoneNo, patientNumber, address, page, limit = 10 } = req.query;
+
     const query = {};
-  
+    
     if (firstName) {
       query.firstName = { $regex: firstName, $options: "i" };
     }
@@ -153,24 +153,32 @@ exports.list = asyncHandler(async (req, res) => {
     if (address) {
       query.address = { $regex: address, $options: "i" };
     }
-  
-    console.log(query)
+    
+    if (!page) {
+      // If `page` is not provided, return all patients matching the query
+      console.log("query" ,query)
+      const patients = await patientDetails.find(query).populate("doctor");
+      return res.json({ patient : patients });
+    }
+    
     const pageNumber = parseInt(page, 10);
     const pageSize = parseInt(limit, 10);
-  
-    console.log(pageNumber)
+    
     const totalPatients = await patientDetails.countDocuments(query); // Get total count
-    const patient = await patientDetails.find(query)
+    const patients = await patientDetails
+      .find(query)
       .populate("doctor")
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
-  
+    
+    console.log(patients)
     res.json({
-      patient,
+      patient : patients,
       page: pageNumber,
       totalPages: Math.ceil(totalPatients / pageSize),
       totalPatients,
     });
+    
 
 })
 

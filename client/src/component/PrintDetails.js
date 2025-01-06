@@ -2,19 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../core/Layout";
 import { listSetting, updateSetting } from "../actions/settingAction";
 import { useDispatch, useSelector } from "react-redux";
-import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const PrintDetails = () => {
     const canvasRef = useRef(null);
     const [text, setText] = useState("");
+    const [alignment, setAlignment] = useState("left"); // New state for text alignment
     const [headerImage, setHeaderImage] = useState(null);
     const [footerImage, setFooterImage] = useState(null);
     const [LogoImage, setLogoImage] = useState(null);
     const [header, setHeader] = useState(null);
     const [footer, setFooter] = useState(null);
     const [logo, setLogo] = useState(null);
-    const [selectedCategory , setSelectedCategory ] = useState("prescription")
+    const [selectedCategory, setSelectedCategory] = useState("prescription");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -31,15 +31,14 @@ const PrintDetails = () => {
         } else {
             navigate("/signin");
         }
-    }, [dispatch, userInfo, navigate , selectedCategory]);
+    }, [dispatch, userInfo, navigate, selectedCategory]);
 
     useEffect(() => {
         if (settings && settings.data && settings.data[selectedCategory]) {
-            setText(settings.data.printText );
+            setText(settings.data.printText);
             setHeaderImage(settings.data[selectedCategory].header || null);
             setLogoImage(settings.data[selectedCategory].logo || null);
             setFooterImage(settings.data[selectedCategory].footer || null);
-          
         } else {
             setText("");
             setHeaderImage(null);
@@ -50,13 +49,13 @@ const PrintDetails = () => {
 
     useEffect(() => {
         updateCanvas();
-    }, [text, headerImage, footerImage, LogoImage]);
+    }, [text, headerImage, footerImage, LogoImage, alignment]); // Include alignment in dependencies
 
     const updateCanvas = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext("2d");
-    
+
             // Adjust for high-DPI screens
             const scale = window.devicePixelRatio || 1;
             canvas.width = 600 * scale;
@@ -64,21 +63,21 @@ const PrintDetails = () => {
             canvas.style.width = "600px";
             canvas.style.height = "800px";
             context.scale(scale, scale);
-    
+
             // Clear the canvas
             context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
-    
+
             // Draw header image
             if (headerImage) {
                 const img = new Image();
                 img.onload = () => {
                     const aspectRatio = img.height / img.width;
-                    const headerHeight = 600 * aspectRatio; // Maintain aspect ratio for the resized width
+                    const headerHeight = 600 * aspectRatio;
                     context.drawImage(img, 0, 0, 600, headerHeight);
                 };
                 img.src = headerImage;
             }
-    
+
             // Draw footer image
             if (footerImage) {
                 const img = new Image();
@@ -96,37 +95,38 @@ const PrintDetails = () => {
                 img.src = footerImage;
             }
 
+            // Draw text with alignment
+            context.fillStyle = "#000000";
+            context.font = `16px Roboto, sans-serif`;
+            context.textAlign = alignment; // Use the alignment state
+            const textYPosition = canvas.height / scale - 100;
+
+            // Adjust X position based on alignment
+            const textXPosition =
+                alignment === "left"
+                    ? 50
+                    : alignment === "center"
+                    ? canvas.width / (2 * scale)
+                    : canvas.width / scale - 50;
+
+            context.fillText(text, textXPosition, textYPosition);
+
+            // Draw logo image
             if (LogoImage) {
                 const img = new Image();
                 img.onload = () => {
                     const logoWidth = 200;
-                    const logoHeight = (img.height / img.width) * logoWidth; // Maintain aspect ratio
-                    const xPosition = 10; // Left corner with some padding
-                    const footerHeight = footerImage ? 50* (img.height / img.width) : 0;
-                    const yPosition = canvas.height / scale - footerHeight - logoHeight - 10; // Above footer with padding
+                    const logoHeight = (img.height / img.width) * logoWidth;
+                    const xPosition = 10;
+                    const yPosition = canvas.height / scale - logoHeight - 150;
                     context.drawImage(img, xPosition, yPosition, logoWidth, logoHeight);
-
-                       const textXPosition = xPosition + 20; // Add padding from the left corner of the logo
-        const textYPosition = yPosition + logoHeight / 2; // Place text in the middle of the logo's height
-        context.fillStyle = "#000000";
-        context.font = `16px Roboto, sans-serif`;
-        context.fillText(text, textXPosition, textYPosition);
                 };
                 img.src = LogoImage;
             }
-    
-        // Draw text closer to the footer
-        const footerHeight = footerImage ? 100 : 0; // Approximate footer height
-        context.fillStyle = "#000000";
-        context.font = `16px Roboto, sans-serif`;
-
-        // Position text above the footer
-        const textYPosition = canvas.height / scale - footerHeight - 50;
-        context.fillText(text, 50, textYPosition);
         }
     };
     
-
+    
     const handleImageUpload = (e, setImage, setFile) => {
         const file = e.target.files[0];
         if (file) {
@@ -141,19 +141,18 @@ const PrintDetails = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         let options = {};
-        if(header)
-        {
-            options['header'] = header
+        if (header) {
+            options["header"] = header;
         }
-        if(footer) {
-            options['footer'] = footer
+        if (footer) {
+            options["footer"] = footer;
         }
-        if(logo) {
-            options['logo'] = logo
+        if (logo) {
+            options["logo"] = logo;
         }
-        options['printText' ] = text
+        options["printText"] = text;
         dispatch(updateSetting(selectedCategory, options));
     };
 
@@ -162,24 +161,21 @@ const PrintDetails = () => {
             <h1 style={{ textAlign: "center" }}>Print Details</h1>
             <div style={styles.container}>
                 <form onSubmit={handleSubmit}>
-                <div style={{ width: "100%", marginTop: "20px" }}>
-    <label htmlFor="category">Category:</label>
-    <select
-        id="category"
-        style={styles.input}
-        value = {selectedCategory}
-        onChange={(e) => {
-            console.log(selectedCategory)
-            setSelectedCategory(e.target.value)
-        }} // Replace this with the appropriate state handling logic
-    >
-        <option value="billing">Billing</option>
-        <option value="forms">Forms</option>
-        <option value="prescription">Prescription</option>
-        <option value="patient">Patient</option>
-        <option value="expense">Expense</option>
-    </select>
-</div>
+                    <div style={{ width: "100%", marginTop: "20px" }}>
+                        <label htmlFor="category">Category:</label>
+                        <select
+                            id="category"
+                            style={styles.input}
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="billing">Billing</option>
+                            <option value="forms">Forms</option>
+                            <option value="prescription">Prescription</option>
+                            <option value="patient">Patient</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
                     <label htmlFor="text">Text:</label>
                     <div style={{ width: "100%" }}>
                         <textarea
@@ -192,7 +188,18 @@ const PrintDetails = () => {
                             onChange={(e) => setText(e.target.value)}
                         />
                     </div>
-             
+                    <div>
+                        <label>Alignment:</label>
+                        <select
+                            value={alignment}
+                            onChange={(e) => setAlignment(e.target.value)}
+                            style={styles.input}
+                        >
+                            <option value="left">Left</option>
+                            <option value="center">Center</option>
+                            <option value="right">Right</option>
+                        </select>
+                    </div>
                     <div style={{ width: "100%", marginTop: "20px" }}>
                         <label htmlFor="headerImage">Header Image:</label>
                         <input
@@ -230,7 +237,7 @@ const PrintDetails = () => {
                     width={600}
                     height={800}
                     style={{
-                        border: "1px solid black",   
+                        border: "1px solid black",
                     }}
                 ></canvas>
             </div>
@@ -242,24 +249,22 @@ const styles = {
     container: {
         display: "flex",
         flexDirection: "row",
-        justifyContent:"space-around",
-        gap:"10px",
+        justifyContent: "space-around",
+        gap: "10px",
         width: "100%",
         padding: "20px",
-        
     },
     input: {
         padding: "8px",
-        marginBottom:"10px",
+        marginBottom: "10px",
         width: "100%",
         border: "1px solid #ccc",
         borderRadius: "4px",
     },
-    textarea:{
-        borderRadius:"4px",
-        padding:"8px"
-    }
-
+    textarea: {
+        borderRadius: "4px",
+        padding: "8px",
+    },
 };
 
 export default PrintDetails;

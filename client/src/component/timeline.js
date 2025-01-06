@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction'; // for drag and drop
 import dayGridPlugin from '@fullcalendar/daygrid'; // for the grid view
@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import listPlugin from '@fullcalendar/list';
+import AddAppVaccineModal from './modal/addAppointment';
 
 
 const TimelineCalendar = () => {
@@ -20,8 +21,9 @@ const TimelineCalendar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const vaccineAppList = useSelector((state) => state.vaccineAppList)
+  const [showModal , setShowModal] = useState(false)
   const { loading, error, appointments } = vaccineAppList
-
+  const [date , setDate] = useState(null)
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -61,6 +63,11 @@ const TimelineCalendar = () => {
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
           navLinks: true,
+          dateClick: function(info) {
+            console.log(info)
+            setDate(info.date);
+             setShowModal(true)
+          },
         events: listData.map(data =>{
           return { title: data.patient?.firstName + "-" + data.patient?.patientNumber , start: moment(`${data.date} ${data.time}`, 'YYYY-MM-DD HH:mm').valueOf() , url: `/list-app-vaccine/${data._id}` }
           }),
@@ -75,7 +82,16 @@ const TimelineCalendar = () => {
     setCalendar()
   }, [appointments ,dispatch]);
 
-  return <Layout title="Calendar"><div ref={calendarRef} /></Layout>;
+  return (
+    <>
+    {showModal && <AddAppVaccineModal
+    show={showModal}
+    onClose ={() => setShowModal(false)}
+     selectedDate={date}
+    />}
+  <Layout title="Calendar"><div ref={calendarRef} /></Layout>
+  </>
+  );
 };
 
 export default TimelineCalendar;

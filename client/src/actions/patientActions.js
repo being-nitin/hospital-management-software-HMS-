@@ -80,9 +80,8 @@ export const createPatient = (patient) => async (dispatch, getState) => {
     }
 }
 
-export const listPatients = (searchDetails, page=1) => async (dispatch, getState) => {
+export const listPatients = (searchDetails, page) => async (dispatch, getState) => {
     try {
-        console.log(searchDetails)
         dispatch({
             type: LIST_PATIENT_REQUEST,
         })
