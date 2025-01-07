@@ -269,16 +269,31 @@ const ClinicalNotes = () => {
 							</div>
 						</Form.Group>
 						<Form.Group controlId="formDuration">
-							<Form.Label>Duration</Form.Label>
-							<Form.Control
-								type="text"
-								value={duration}
-								onChange={(e) =>
-									setDuration(e.target.value)
-								}
-								placeholder="Enter duration"
-							/>
-						</Form.Group>
+    <Form.Label>Duration</Form.Label>
+    <div className="d-flex">
+        <Form.Control
+            type="number"
+            value={duration.split(' ')[0] || ""}
+            onChange={(e) =>
+                setDuration(`${e.target.value} ${duration.split(' ')[1] || 'weeks'}`)
+            }
+            placeholder="Enter number"
+            className="me-2"
+        />
+        <Form.Select
+            value={duration.split(' ')[1] || "weeks"}
+            onChange={(e) =>
+                setDuration(`${duration.split(' ')[0] || '1'} ${e.target.value}`)
+            }
+        >
+            <option value="days">Days</option>
+            <option value="weeks">Weeks</option>
+            <option value="months">Months</option>
+            <option value="years">Years</option>
+        </Form.Select>
+    </div>
+</Form.Group>
+
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>

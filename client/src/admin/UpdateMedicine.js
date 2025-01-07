@@ -9,15 +9,6 @@ import {UPDATE_MEDICINE_RESET} from "../constants/medicineConstants";
 import moment from "moment";
 
 
-
-
-
-
-
-
-
-
-
 const  UpdateMedicine = ({ history: history1, match}) => {
 
     const id = match.params.id

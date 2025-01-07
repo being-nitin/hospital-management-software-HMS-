@@ -154,6 +154,7 @@ const PrintDetails = () => {
         }
         options["printText"] = text;
         dispatch(updateSetting(selectedCategory, options));
+        alert("form submitted")
     };
 
     return (

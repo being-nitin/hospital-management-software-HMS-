@@ -214,15 +214,14 @@ const Psychodiagnostic = () => {
             [name]: [...prevFormData[name], value],
           };
         } else {
-          // Remove the suggestion from the array if unchecked
+
           return {
             ...prevFormData,
             [name]: prevFormData[name].filter((item) => item !== value),
           };
         }
       }
-  
-      // Handle text inputs (e.g., name, age, address)
+
       return {
         ...prevFormData,
         [name]: value, // Update text input value
@@ -511,62 +510,93 @@ const Psychodiagnostic = () => {
         <div>
       <h4>Chief Complaints</h4>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Droppable droppableId="complaints">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={styles.droppableArea}
+  <Droppable droppableId="complaints">
+    {(provided) => (
+      <div
+        ref={provided.innerRef}
+        {...provided.droppableProps}
+        style={styles.droppableArea}
+      >
+        {formData.chiefComplaints.map((complaint, index) => {
+          // Split the duration into value and unit
+          const [value, unit] = complaint.duration
+            ? complaint.duration.split(" ")
+            : ["", "days"];
+
+          return (
+            <Draggable
+              key={index}
+              draggableId={`complaint-${index}`}
+              index={index}
             >
-              {formData.chiefComplaints.map((complaint, index) => (
-                <Draggable key={index} draggableId={`complaint-${index}`} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={{
-                        ...styles.chiefComplaintGroup,
-                        ...provided.draggableProps.style,
-                      }}
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  style={{
+                    ...styles.chiefComplaintGroup,
+                    ...provided.draggableProps.style,
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={complaint.complaint}
+                    onChange={(e) =>
+                      handleChiefComplaintChange(index, "complaint", e.target.value)
+                    }
+                    placeholder="Chief Complaint"
+                    style={styles.input}
+                  />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <input
+                      type="number"
+                      value={value}
+                      onChange={(e) =>
+                        handleChiefComplaintChange(
+                          index,
+                          "duration",
+                          `${e.target.value} ${unit}`
+                        )
+                      }
+                      placeholder="Number"
+                      style={styles.inputNumber}
+                    />
+                    <select
+                      value={unit}
+                      onChange={(e) =>
+                        handleChiefComplaintChange(
+                          index,
+                          "duration",
+                          `${value} ${e.target.value}`
+                        )
+                      }
+                      style={styles.select}
                     >
-                      <input
-                        type="text"
-                        value={complaint.complaint}
-                        onChange={(e) =>
-                          handleChiefComplaintChange(index, 'complaint', e.target.value)
-                        }
-                        placeholder="Chief Complaint"
-                        style={styles.input}
-                      />
-                      <select
-                        value={complaint.duration}
-                        onChange={(e) =>
-                          handleChiefComplaintChange(index, 'duration', e.target.value)
-                        }
-                        style={styles.select}
-                      >
-                        <option value="day">Days</option>
-                        <option value="week">Weeks</option>
-                        <option value="month">Months</option>
-                        <option value="year">Years</option>
-                      </select>
-                      <button
-                        type="button"
-                        onClick={() => deleteChiefComplaint(index)}
-                        style={styles.deleteButton}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                      <option value="days">Days</option>
+                      <option value="weeks">Weeks</option>
+                      <option value="months">Months</option>
+                      <option value="years">Years</option>
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => deleteChiefComplaint(index)}
+                    style={styles.deleteButton}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </Draggable>
+          );
+        })}
+        {provided.placeholder}
+      </div>
+    )}
+  </Droppable>
+</DragDropContext>
+
       <button
         type="button"
         onClick={addChiefComplaint}

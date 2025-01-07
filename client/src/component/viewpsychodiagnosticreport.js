@@ -103,7 +103,7 @@ const ViewPDReport = () => {
 <!-- Personal History -->
 <h4>Personal History</h4>
 <div>
-  ${Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
+  ${patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
    
      <span style = "margin-bottom : 5px;"> ${value} </span>
   
@@ -111,7 +111,7 @@ const ViewPDReport = () => {
 </div>
 <h4 style = "page-break-before: always;">Premorbid Personality</h4>
 <div>
-  ${Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => `
+  ${patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => `
     <div>
       <p style="margin-bottom: 5px; font-weight: bold;">${category.replace(/([A-Z])/g, ' $1').toUpperCase()}</p>
       ${questions.map((q, idx) => `
@@ -124,7 +124,7 @@ const ViewPDReport = () => {
 <!-- General Appearance and Behavior -->
 <h4>General Appearance and Behavior</h4>
 <div>
-  ${Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => `
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => `
     <div style="display: inline-block">
       ${value || 'NAD'} ,
     </div>
@@ -132,7 +132,7 @@ const ViewPDReport = () => {
 </div>
 <h4  >Orientation</h4>
 <div>
-  ${Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
     <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
       ${value || 'NAD'},
     </div>
@@ -140,17 +140,17 @@ const ViewPDReport = () => {
 </div>
 <h4>Motor Behaviour</h4>
 <div>
-  <p > ${patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
+  <p > ${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo?.motorBehaviour && patientData.behaviouralInfo?.motorBehaviour?.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
 </div>
 
 <h4 >Level of Consciousness</h4>
 <div>
-  <p >${patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
+  <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
 </div>
 
 <h4>Speech</h4>
 <div>
-  ${Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => `
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => `
     <span >
       ${value},
     </span>
@@ -159,7 +159,7 @@ const ViewPDReport = () => {
 
 <h4 style = "page-break-before: always;">Memory</h4>
 <div>
-  ${Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
     <span style="margin-right: 10px;">
      ${value},
     </span>
@@ -168,7 +168,7 @@ const ViewPDReport = () => {
 
 <h4  >Thought</h4>
 <div>
-  ${Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
     <div style="margin-bottom: 10px;">
       ${category.replace(/([A-Z])/g, ' $1').toUpperCase()}
         ${options.length ? options.map(option => `
@@ -180,7 +180,7 @@ const ViewPDReport = () => {
     <p style="font-weight : 700;">Interpretations</p>
      <div style ="margin-bottom : 5px;"> Based on the history observation scale, patient was found to have : ${patientData.interpretations}</div>
 <div>
-   <b>Sugession:</b> <p>${patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}`).join(' , ')}</p>
+   <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}`).join(' , ')}</p>
 </div>
 </div>
   `
@@ -274,7 +274,7 @@ const ViewPDReport = () => {
           {/* Personal History */}
           <h6>Personal History</h6>
           <ul>
-            {Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => (
+            {patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => (
               <li key={index}>
                 <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
               </li>
@@ -283,7 +283,7 @@ const ViewPDReport = () => {
 
           {/* Premorbid Personality */}
           <h6>Premorbid Personality</h6>
-          {Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => (
+          {patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => (
             <div key={index}>
               <h6>{category.replace(/([A-Z])/g, ' $1').toUpperCase()}</h6>
               <ul>
@@ -303,7 +303,7 @@ const ViewPDReport = () => {
           {/* General Appearance and Behavior */}
           <h6>General Appearance and Behavior</h6>
           <div className="row">
-            {Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => (
+            {patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.generalAppearanceAndBehaviour).map(([key, value], index) => (
               <div key={index} className="col-md-6 mb-3">
                 <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
               </div>
@@ -313,7 +313,7 @@ const ViewPDReport = () => {
           {/* Orientation */}
           <h6>Orientation</h6>
           <div className="row">
-            {Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => (
+            {patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => (
               <div key={index} className="col-md-6 mb-3">
                 <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
               </div>
@@ -322,15 +322,15 @@ const ViewPDReport = () => {
 
           {/* Other Behavioral Information */}
             <h6>Motor Behaviour</h6>
-            <p><strong>Psychomotor Activity:</strong> {patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'N/A'}</p>
-            <p><strong>Disturbances:</strong> {patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'N/A'}</p>
+            <p><strong>Psychomotor Activity:</strong> {patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.psychomotorActivity || 'N/A'}</p>
+            <p><strong>Disturbances:</strong> {patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'N/A'}</p>
 
             <h6>Level of Consciousness</h6>
-            <p><strong>Mediate:</strong> {patientData.behaviouralInfo.levelOfConsciousness.mediate || 'N/A'}</p>
+            <p><strong>Mediate:</strong> {patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate || 'N/A'}</p>
 
             <h6>Speech</h6>
             <div className="row">
-              {Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => (
+              {patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => (
                 <div key={index} className="col-md-6 mb-3">
                   <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
                 </div>
@@ -339,7 +339,7 @@ const ViewPDReport = () => {
 
           <h6>Memory</h6>
           <div className="row">
-            {Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => (
+            {patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => (
               <div key={index} className="col-md-6 mb-3">
                 <strong>{key.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong> {value || 'N/A'}
               </div>
@@ -348,7 +348,7 @@ const ViewPDReport = () => {
 
           {/* Thought Section */}
           <h6>Thought</h6>
-          {Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => (
+          {patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => (
             <div key={index}>
               <strong>{category.replace(/([A-Z])/g, ' $1').toUpperCase()}:</strong>
               <ul>
