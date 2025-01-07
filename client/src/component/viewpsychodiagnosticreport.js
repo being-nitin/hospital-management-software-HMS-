@@ -180,7 +180,7 @@ const ViewPDReport = () => {
     <p style="font-weight : 700;">Interpretations</p>
      <div style ="margin-bottom : 5px;"> Based on the history observation scale, patient was found to have : ${patientData.interpretations}</div>
 <div>
-   <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}`).join(' , ')}</p>
+   <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}</br><br/>`)}</p>
 </div>
 </div>
   `

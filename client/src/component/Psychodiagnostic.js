@@ -45,44 +45,44 @@ const Psychodiagnostic = () => {
     progression: "",
     backgroundInfo:  {
       personalHistory: {
-        birth: "",
-        developmentalHistory: "",
-        childhoodHistory: "",
-        educationalHistory: "",
-        occupationalHistory: "",
-        sexualHistory: "",
-        menstrualHistory: "",
-        maritalHistory: "",
+        birth: "Nil Contribution",
+        developmentalHistory: "Nil Contribution",
+        childhoodHistory: "Nil Contribution",
+        educationalHistory: "Nil Contribution",
+        occupationalHistory: "Nil Contribution",
+        sexualHistory: "Nil Contribution",
+        menstrualHistory: "Nil Contribution",
+        maritalHistory: "Nil Contribution",
       },
       premorbidPersonality: {
         self: [
-          { question: "How does the patient describe himself or herself?", answer: "" },
-          { question: "What are their strengths and ability to plan ahead?", answer: "" },
-          { question: "What is their resilience in the face of adversity?", answer: "" },
-          { question: "What are their hopes and ambitions?", answer: "" }
+          { question: "How does the patient describe himself or herself?", answer: "Nil Contribution" },
+          { question: "What are their strengths and ability to plan ahead?", answer: "Nil Contribution" },
+          { question: "What is their resilience in the face of adversity?", answer: "Nil Contribution" },
+          { question: "What are their hopes and ambitions?", answer: "Nil Contribution" }
         ],
         relations: [
-          { question: "Does he/she prefer company or solitude?", answer: "" },
-          { question: "Is he/she shy or makes friends easily?", answer: "" },
-          { question: "Are the relationships close or lasting?", answer: "" },
-          { question: "How does he/she handle others' mistakes?", answer: "" }
+          { question: "Does he/she prefer company or solitude?", answer: "Nil Contribution" },
+          { question: "Is he/she shy or makes friends easily?", answer: "Nil Contribution" },
+          { question: "Are the relationships close or lasting?", answer: "Nil Contribution" },
+          { question: "How does he/she handle others' mistakes?", answer: "Nil Contribution" }
         ],
         workAndLeisure: [
-          { question: "Relation with workmates or superiors, hobbies, or interests?", answer: "" },
-          { question: "What is their mood like?", answer: "" },
-          { question: "How changeable is it?", answer: "" },
-          { question: "Can he/she express feelings of love, anger, frustration, or sadness?", answer: "" }
+          { question: "Relation with workmates or superiors, hobbies, or interests?", answer: "Nil Contribution" },
+          { question: "What is their mood like?", answer: "Nil Contribution" },
+          { question: "How changeable is it?", answer: "Nil Contribution" },
+          { question: "Can he/she express feelings of love, anger, frustration, or sadness?", answer: "Nil Contribution" }
         ],
         character: [
-          { question: "Is he/she reserved, timid, self-conscious, resentful, or jealous?", answer: "" },
-          { question: "Is he/she irritable, selfish, or self-centered?", answer: "" }
+          { question: "Is he/she reserved, timid, self-conscious, resentful, or jealous?", answer: "Nil Contribution" },
+          { question: "Is he/she irritable, selfish, or self-centered?", answer: "Nil Contribution" }
         ],
         attitudesAndStandards: [
-          { question: "Attitudes to health and illness as well as religious and moral standards.", answer: "" }
+          { question: "Attitudes to health and illness as well as religious and moral standards.", answer: "Nil Contribution" }
         ],
         habits: [
-          { question: "Use of tobacco, alcohol, or drugs?", answer: "" },
-          { question: "Comment on food and sleep patterns.", answer: "" }
+          { question: "Use of tobacco, alcohol, or drugs?", answer: "Nil Contribution" },
+          { question: "Comment on food and sleep patterns.", answer: "Nil Contribution" }
         ]
       }
     },
