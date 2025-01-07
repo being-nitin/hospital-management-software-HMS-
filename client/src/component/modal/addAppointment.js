@@ -67,8 +67,8 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     },[patients])
   
     const handleItemClick = (item) => {
-      setQuery(item.firstName); // Fill input with the selected item's name
-      setShowList(false); // Hide the list
+      setQuery(item.firstName); 
+      setShowList(false); 
       setSelectedPatient(item._id)
     };
 
@@ -132,26 +132,9 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                         <label className="form-label" style={{ fontWeight :700}}>Patient</label>
                                         <span>{`  ${patient?.firstName}-${patient?.patientNumber}`}</span>
                                     </div>}
+                                    <div style={{ display : 'flex ' , justifyContent : 'space-between' , alignItems : "center"}}>
                                     {!patientId && (
-                                    //     <div className="mb-3">
-                                    //     <label className="form-label" style={{ fontWeight :700}}>Patient</label>
-                                    //        <select
-                                    //        onChange={(e) => setSelectedPatient(e.target.value)}
-                                    //        className="form-control"
-                                    //    >
-                                    //        <option>Select Patients</option>
-                                    //        {patients &&
-                                    //            patients.patient
-                                    //                .map((c) => (
-                                    //                    <option key={c._id} value={c._id}>
-                                    //                        {c.firstName}-{c.patientNumber}
-                                    //                    </option>
-                                    //                ))}
-                                    //    </select>
-                                    //    </div>
-                                    // )
-                                    
-                                    <div className="mb-3">
+                                    <div className="">
                                     <label className="form-label" style={{ fontWeight :700}}>Patient</label>
                                     <input
         type="text"
@@ -205,9 +188,13 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
           )}
         </ul>
       )}
+
     </div>
 )}
-                                    <div className="mb-3">
+  <button className="btn-primary" style = {{ borderRadius : '25px', marginTop :"15px" }} onClick={()=> navigate('/add-patient-details')}>
+                                        +
+                                    </button>
+                                    <div className="">
                                         <label className="form-label" style={{ fontWeight :700}}>Doctor</label>
                                         <select
                                             onChange={(e) => setDoctor(e.target.value)}
@@ -224,7 +211,11 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                                     ))}
                                         </select>
                                     </div>
-                                    <div className="mb-3" style = {{ display : 'flex' , justifyContent : 'space-around' , alignItems: 'center', gap : '5px'}}>
+
+                                  
+                                    </div>
+                                    <div style={{ display : 'flex ' , justifyContent : 'space-between' , alignItems : "center"}}>
+                                    <div className="" style = {{ display : 'flex' , justifyContent : 'space-around' , alignItems: 'center', gap : '5px'}}>
                                         <label className="form-label" style={{ fontWeight :700}}>Time</label>
                                         <input
     type="time"
@@ -233,16 +224,17 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     className="form-control"
   />
                                     </div>
-                                    <div className="mb-3">
-                                        <label className="form-label" style={{ fontWeight :700}}>Date</label>
+                                    <div className="">
+                                        <label className="form-label m-3" style={{ fontWeight :700}}>Date</label>
                                         <DatePicker 
                                             selected={date}
                                             onChange={(date) => setDate(date)}
                                             className="form-control"
                                         />
                                     </div>
+                                    </div>
                                     <div className="mb-3">
-                                        <label className="form-label" style={{ fontWeight :700}}>Status</label>
+                                        <label className="form-label m-3" style={{ fontWeight :700}}>Status</label>
                                         <select
                                             onChange={(e) => setStatus(e.target.value)}
                                             className="form-control"
