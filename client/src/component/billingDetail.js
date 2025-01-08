@@ -1,34 +1,33 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { listPaidEnums, createExpenses } from "../actions/expensesActions";
-import { useNavigate , useParams} from "react-router-dom";
-import { useDispatch , useSelector} from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { EXPENSES_CREATE_RESET } from "../constants/expensesConstants";
 import {
   detailsVacApp,
   updateVacApp,
 } from "../actions/vaccineAppointmentActions";
-import moment from "moment"
+import moment from "moment";
 import { listSetting } from "../actions/settingAction";
 
 const InvoiceLayout = () => {
   const [treatments, setTreatments] = useState([]);
-  const [treatmentList, setTreatmentList] = useState([])
-  const [selectedTreatment, setSelectedTreatment] = useState("")
-  const navigate = useNavigate()
-  const dispatch = useDispatch();
-  const {id} = useParams()
+  const [treatmentList, setTreatmentList] = useState([]);
+  const [selectedTreatment, setSelectedTreatment] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [paymentStatus, setPaymentStatus] = useState("Unpaid"); // New state for payment status
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
   // Helper to calculate total cost
   const calculateTotals = () => {
     let totalCost = 0,
       totalDiscount = 0,
       totalTax = 0;
-      treatments.forEach((treatment) => {
-      console.log(treatment.discount)
+    treatments.forEach((treatment) => {
       totalCost += treatment.unit * treatment.cost;
       totalDiscount += (treatment.unit * treatment.cost * treatment.discount) / 100;
-      console.log(totalDiscount)
       totalTax += (treatment.unit * treatment.cost * treatment.tax) / 100;
     });
     return { totalCost, totalDiscount, totalTax };
@@ -37,18 +36,16 @@ const InvoiceLayout = () => {
   const totals = calculateTotals();
 
   const handleTreatmentChange = (id, field, value) => {
- 
-      setTreatments((prev) =>
-        prev.map((t) =>
-          t.id === id
-            ? {
-                ...t,
-                [field]: value
-               
-              }
-            : t
-        ))
-    
+    setTreatments((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              [field]: value,
+            }
+          : t
+      )
+    );
   };
 
   const handleAddTreatment = () => {
@@ -68,9 +65,6 @@ const InvoiceLayout = () => {
   const expenseCreate = useSelector((state) => state.expenseCreate);
   const { error, loading, success } = expenseCreate;
 
-  const expensesPaid = useSelector((state) => state.expensesPaid);
-  const { pays } = expensesPaid;
-
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
   const {
     appointment: { appointment, pastAppointments } = {},
@@ -79,7 +73,7 @@ const InvoiceLayout = () => {
   useEffect(() => {
     if (userInfo) {
       dispatch(detailsVacApp(id));
-      dispatch(listSetting())
+      dispatch(listSetting());
     } else {
       navigate("/signin");
     }
@@ -102,29 +96,32 @@ const InvoiceLayout = () => {
     e.preventDefault();
     dispatch(
       createExpenses({
-        doctor : appointment?.doctor._id,
+        doctor: appointment?.doctor._id,
         patient: appointment?.patient._id,
-        appointment : id,
-        treatment : [...treatments],
-        totalCost : totals.totalCost,
-        totalDiscount : totals.totalDiscount,
-        totalTax : totals.totalTax,
-        grandTotal : (totals.totalCost - totals.totalDiscount + totals.totalTax).toFixed(2),
-        paymentMethod : paymentMethod
+        appointment: id,
+        treatment: [...treatments],
+        totalCost: totals.totalCost,
+        totalDiscount: totals.totalDiscount,
+        totalTax: totals.totalTax,
+        grandTotal: (
+          totals.totalCost -
+          totals.totalDiscount +
+          totals.totalTax
+        ).toFixed(2),
+        paymentMethod: paymentMethod,
+        paid: paymentStatus, // Pass the payment status here
       })
     );
   };
-    
+
   const userSetting = useSelector((state) => state.listSetting);
   const { settings } = userSetting;
-  
+
   useEffect(() => {
     if (settings?.data.treatment) {
-        setTreatmentList(settings.data.treatment);
+      setTreatmentList(settings.data.treatment);
     }
   }, [settings]);
-
-
 
   return (
     <div className="container mt-4">
@@ -153,31 +150,34 @@ const InvoiceLayout = () => {
             {treatments.map((treatment) => (
               <tr key={treatment.id}>
                 <td>
-                  {/* <input
-                    type="text"
-                    className="form-control"
-                    value={treatment.name}
-                    onChange={(e) =>
-                      handleTreatmentChange(treatment.id, "name", e.target.value)
-                    }
-                  /> */}
-                 
-                  <select className="form-select form-control" aria-label="Default select example"  
-                  onChange={(e)=>{
-                    setSelectedTreatment(e.target.value)
-                    console.log(e.target.value)
-                    handleTreatmentChange(treatment.id , "name" , e.target.value.split('-')[0])
-                    handleTreatmentChange(treatment.id , "cost" , e.target.value.split('-')[1])
-                  }}>
-                    <option selected disabled>Select Treatment</option>
-                    {
-                      treatmentList && treatmentList?.map(({name,price},index)=>{
-                        return <option value={`${name}-${price}`} key={name} 
-                      >{name}</option>
-                      })
-                    }
+                  <select
+                    className="form-select"
+                    aria-label="Select Treatment"
+                    style={{ padding : "5px"}}
+                    onChange={(e) => {
+                      setSelectedTreatment(e.target.value);
+                      handleTreatmentChange(
+                        treatment.id,
+                        "name",
+                        e.target.value.split("-")[0]
+                      );
+                      handleTreatmentChange(
+                        treatment.id,
+                        "cost",
+                        e.target.value.split("-")[1]
+                      );
+                    }}
+                  >
+                    <option selected disabled>
+                      Select Treatment
+                    </option>
+                    {treatmentList &&
+                      treatmentList?.map(({ name, price }) => (
+                        <option value={`${name}-${price}`} key={name}>
+                          {name}
+                        </option>
+                      ))}
                   </select>
-              
                 </td>
                 <td>
                   <input
@@ -205,7 +205,11 @@ const InvoiceLayout = () => {
                     className="form-control"
                     value={treatment.discount}
                     onChange={(e) =>
-                      handleTreatmentChange(treatment.id, "discount", e.target.value)
+                      handleTreatmentChange(
+                        treatment.id,
+                        "discount",
+                        e.target.value
+                      )
                     }
                   />
                 </td>
@@ -247,10 +251,13 @@ const InvoiceLayout = () => {
           </div>
           <div className="col-6">
             <p>Total Tax: ₹{totals.totalTax.toFixed(2)}</p>
-            <p>Grand Total: ₹
-              {(totals.totalCost - totals.totalDiscount + totals.totalTax).toFixed(
-                2
-              )}
+            <p>
+              Grand Total: ₹
+              {(
+                totals.totalCost -
+                totals.totalDiscount +
+                totals.totalTax
+              ).toFixed(2)}
             </p>
           </div>
         </div>
@@ -274,9 +281,25 @@ const InvoiceLayout = () => {
             <option value="Cheque">Cheque</option>
           </select>
         </div>
+        <div className="mb-3">
+          <label htmlFor="paymentStatus" className="form-label">
+            Payment Status
+          </label>
+          <select
+            id="paymentStatus"
+            className="form-select"
+            value={paymentStatus}
+            onChange={(e) => setPaymentStatus(e.target.value)}
+          >
+            <option value="Un-paid">Un-paid</option>
+            <option value="Paid">Paid</option>
+          </select>
+        </div>
         <div className="d-flex justify-content-between">
           <button className="btn btn-secondary">Cancel</button>
-          <button className="btn btn-success" onClick={submitHandler}>Accept Payment</button>
+          <button className="btn btn-success" onClick={submitHandler}>
+            Accept Payment
+          </button>
         </div>
       </div>
     </div>
