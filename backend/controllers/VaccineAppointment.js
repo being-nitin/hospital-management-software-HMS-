@@ -134,7 +134,7 @@ exports.list = asyncHandler(async (req, res) => {
        
       console.log(field)
       // Query with pagination and filters
-      const data = await VaccineAppointment.find(field)
+      const data = await VaccineAppointment.find(field).sort({ createdAt : -1 })
         .populate("patient doctor prescription")
         .skip((pageNumber - 1) * pageSize)
         .limit(pageSize)
@@ -150,7 +150,7 @@ exports.list = asyncHandler(async (req, res) => {
     }
 
     // If no pagination, return all results
-    const data = await VaccineAppointment.find(field)
+    const data = await VaccineAppointment.find(field).sort({ createdAt : -1 })
       .populate("patient doctor prescription")
       .exec();
 

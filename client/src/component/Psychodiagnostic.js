@@ -34,6 +34,8 @@ const Psychodiagnostic = () => {
     name: "",
     age: "",
     motherTongue: "",
+    maritalStatus : "",
+    education : "",
     date: "",
     address: "",
     refByDr: "",
@@ -45,44 +47,44 @@ const Psychodiagnostic = () => {
     progression: "",
     backgroundInfo:  {
       personalHistory: {
-        birth: "Nil Contribution",
-        developmentalHistory: "Nil Contribution",
-        childhoodHistory: "Nil Contribution",
-        educationalHistory: "Nil Contribution",
-        occupationalHistory: "Nil Contribution",
-        sexualHistory: "Nil Contribution",
-        menstrualHistory: "Nil Contribution",
-        maritalHistory: "Nil Contribution",
+        birth: "",
+        developmentalHistory: "",
+        childhoodHistory: "",
+        educationalHistory: "",
+        occupationalHistory: "",
+        sexualHistory: "",
+        menstrualHistory: "",
+        maritalHistory: "",
       },
       premorbidPersonality: {
         self: [
-          { question: "How does the patient describe himself or herself?", answer: "Nil Contribution" },
-          { question: "What are their strengths and ability to plan ahead?", answer: "Nil Contribution" },
-          { question: "What is their resilience in the face of adversity?", answer: "Nil Contribution" },
-          { question: "What are their hopes and ambitions?", answer: "Nil Contribution" }
+          { question: "How does the patient describe himself or herself?", answer: "" },
+          { question: "What are their strengths and ability to plan ahead?", answer: "" },
+          { question: "What is their resilience in the face of adversity?", answer: "" },
+          { question: "What are their hopes and ambitions?", answer: "" }
         ],
         relations: [
-          { question: "Does he/she prefer company or solitude?", answer: "Nil Contribution" },
-          { question: "Is he/she shy or makes friends easily?", answer: "Nil Contribution" },
-          { question: "Are the relationships close or lasting?", answer: "Nil Contribution" },
-          { question: "How does he/she handle others' mistakes?", answer: "Nil Contribution" }
+          { question: "Does he/she prefer company or solitude?", answer: "" },
+          { question: "Is he/she shy or makes friends easily?", answer: "" },
+          { question: "Are the relationships close or lasting?", answer: "" },
+          { question: "How does he/she handle others' mistakes?", answer: "" }
         ],
         workAndLeisure: [
-          { question: "Relation with workmates or superiors, hobbies, or interests?", answer: "Nil Contribution" },
-          { question: "What is their mood like?", answer: "Nil Contribution" },
-          { question: "How changeable is it?", answer: "Nil Contribution" },
-          { question: "Can he/she express feelings of love, anger, frustration, or sadness?", answer: "Nil Contribution" }
+          { question: "Relation with workmates or superiors, hobbies, or interests?", answer: "" },
+          { question: "What is their mood like?", answer: "" },
+          { question: "How changeable is it?", answer: "" },
+          { question: "Can he/she express feelings of love, anger, frustration, or sadness?", answer: "" }
         ],
         character: [
-          { question: "Is he/she reserved, timid, self-conscious, resentful, or jealous?", answer: "Nil Contribution" },
+          { question: "Is he/she reserved, timid, self-conscious, resentful, or jealous?", answer: "" },
           { question: "Is he/she irritable, selfish, or self-centered?", answer: "Nil Contribution" }
         ],
         attitudesAndStandards: [
-          { question: "Attitudes to health and illness as well as religious and moral standards.", answer: "Nil Contribution" }
+          { question: "Attitudes to health and illness as well as religious and moral standards.", answer: "" }
         ],
         habits: [
-          { question: "Use of tobacco, alcohol, or drugs?", answer: "Nil Contribution" },
-          { question: "Comment on food and sleep patterns.", answer: "Nil Contribution" }
+          { question: "Use of tobacco, alcohol, or drugs?", answer: "" },
+          { question: "Comment on food and sleep patterns.", answer: "" }
         ]
       }
     },
@@ -480,8 +482,26 @@ const Psychodiagnostic = () => {
             style={styles.input}
           />
         </label>
-
-        
+        <label style={styles.labels}>
+          Marital Status
+          <input
+            type="text"
+            name="motherTongue"
+            value={formData.maritalStatus}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
+        <label style={styles.labels}>
+          Education
+          <input
+            type="text"
+            name="motherTongue"
+            value={formData.education}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
 
       
 
@@ -510,7 +530,7 @@ const Psychodiagnostic = () => {
         <div>
       <h4>Chief Complaints</h4>
       <DragDropContext onDragEnd={handleDragEnd}>
-  <Droppable droppableId="complaints">
+      <Droppable droppableId="complaints">
     {(provided) => (
       <div
         ref={provided.innerRef}
@@ -669,15 +689,39 @@ const Psychodiagnostic = () => {
       {Object.keys(formData.backgroundInfo.personalHistory).map((key) => (
         <label key={key} style={styles.labels}>
           {key.replace(/([A-Z])/g, ' $1').toUpperCase()}:
-          <input
-            type="text"
-            name={key}
-            value={formData.backgroundInfo.personalHistory[key]}
-            onChange={(e) =>
-              handleBackgroundInfoChange('personalHistory', key, e.target.value)
-            }
-            style={styles.input}
-          />
+          
+
+    {formData.backgroundInfo.personalHistory[key] !== "nil" && (
+      <input
+        type="text"
+        name={key}
+        value={formData.backgroundInfo.personalHistory[key]}
+        onChange={(e) =>
+          handleBackgroundInfoChange("personalHistory", key, e.target.value)
+        }
+        placeholder="Enter"
+        style={{
+          flex: 1,
+          padding: "8px",
+          marginLeft : "5px",
+          border: "1px solid #ccc",
+          borderRadius: "4px",
+        }}
+      />
+    )}
+    <input
+      type="checkbox"
+      className="ml-3"
+      checked={formData.backgroundInfo.personalHistory[key] === "Nil contribution"}
+      onChange={(e) =>
+        handleBackgroundInfoChange(
+          "personalHistory",
+          key,
+          e.target.checked ? "Nil contribution" : ""
+        )
+      }
+    />
+    <span className="ml-3">Nil contribution</span>
         </label>
       ))}
 
@@ -687,18 +731,37 @@ const Psychodiagnostic = () => {
         <div key={section}>
           <h5>{section.replace(/([A-Z])/g, ' $1').toUpperCase()}</h5>
           {formData.backgroundInfo.premorbidPersonality[section].map((item, index) => (
-            <div key={index} style={styles.premorbidSection}>
-              <label style={styles.labels}>{item.question}</label>
-              <input
-                type="text"
-                value={item.answer}
-                onChange={(e) =>
-                  handlePremorbidChange(section, index, e.target.value)
-                }
-                style={styles.input}
-              />
-            </div>
-          ))}
+  <div key={index} style={styles.premorbidSection}>
+    <label style={styles.labels}>{item.question}</label>
+
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      {/* Checkbox for "Nil contribution" */}
+    
+        <input
+          type="text"
+          value={item.answer}
+          onChange={(e) =>
+            handlePremorbidChange(section, index, e.target.value)
+          }
+          placeholder="Enter answer"
+          style={styles.input}
+        />
+    <input
+        type="checkbox"
+        checked={item.answer === "Nil contribution"}
+        onChange={(e) =>
+          handlePremorbidChange(
+            section,
+            index,
+            e.target.checked ? "Nil contribution" : ""
+          )
+        }
+      />
+      <span>Nil contribution</span>
+    </div>
+  </div>
+))}
+
         </div>
       ))}
 
@@ -831,7 +894,7 @@ const Psychodiagnostic = () => {
     "Restlessness Disturbances",
     "Twitches Disturbances",
     "Echopraxia Disturbances",
-    "Wavy Flexibility Disturbances",
+    "Waxy Flexibility Disturbances",
     "Silly Smiling Disturbances",
     "Preseveration Disturbances",
     "Stupor Disturbances",

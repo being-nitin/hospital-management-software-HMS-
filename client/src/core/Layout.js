@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import "../styles.css";
 import styles from '../style/dashboard.module.css'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Menu from "./Menu";
 
@@ -17,8 +17,17 @@ const isActive = (location, path) => {
 const Layout = ({ title, children }) => {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
-	const location = useLocation(); // Get current location
+	const location = useLocation(); 
+	const navigate = useNavigate()
 
+	const handleBack = () => {
+        navigate(-1); 
+    };
+
+    // Function to handle forward navigation
+    const handleForward = () => {
+        navigate(1); 
+    };
 	const adminLinks = () => {
 		return (
 			<Fragment
@@ -755,66 +764,102 @@ const Layout = ({ title, children }) => {
 
 	return (
 		<nav style={{}} className="sb-nav-fixed">
-  <Menu />
-  <div id="layoutSidenav">
-    <div id="layoutSidenav_nav">
-      <nav
-        className="sb-sidenav"
-        id="sidenavAccordion"
-        style={{
-          background: "linear-gradient(180deg,rgb(253, 253, 253), white)", // Gradient for sidebar background
-          color: "#000", // Black text for contrast
-          fontFamily: "Roboto, sans-serif", // Font style
-        }}
-      >
-        <div className="sb-sidenav-menu">
-          <div className="nav">
-        
-            {/* Render links dynamically */}
-            {userInfo.role === 0
-              ? adminLinks()
-              : userInfo.role === 1
-              ? doctorLinks()
-              : staffLink()}
-          </div>
-        </div>
-        <div
-          style={{
-			background: "#f9f9f9", // Gradient for sidebar background
-			color: "#000",// White text for footer
-            padding: "10px",
-            fontSize: "14px",
-			borderBottom: "1px solid #ddd"	
-          }}
-          className="sb-sidenav-footer"
-        >
-          {loggedIn()}
-          {userInfo && <span>{userInfo.name}</span>}
-        </div>
-      </nav>
-    </div>
-    <div id="layoutSidenav_content">
-      <main>
-        <div className="container-fluid">
-          <h1
-            className=""
-            style={{
-              fontFamily: "Roboto, sans-serif",
-              fontWeight: "bold",
-              background: "linear-gradient(180deg, #eae8f4, white)", // Gradient for sidebar background
-              color: "#000",
-			  paddingLeft : '20px',
-			  paddingTop :'10px'
-            }}
-          >
-            {title}
-          </h1>
-          {children}
-        </div>
-      </main>
-    </div>
-  </div>
-</nav>
+		<Menu />
+		<div id="layoutSidenav">
+			<div id="layoutSidenav_nav">
+				<nav
+					className="sb-sidenav"
+					id="sidenavAccordion"
+					style={{
+						background: "linear-gradient(180deg, rgb(253, 253, 253), white)", // Gradient for sidebar background
+						color: "#000", // Black text for contrast
+						fontFamily: "Roboto, sans-serif", // Font style
+					}}
+				>
+					<div className="sb-sidenav-menu">
+						<div className="nav">
+							{/* Render links dynamically */}
+							{userInfo.role === 0
+								? adminLinks()
+								: userInfo.role === 1
+								? doctorLinks()
+								: staffLink()}
+						</div>
+					</div>
+					<div
+						style={{
+							background: "#f9f9f9", // Gradient for sidebar background
+							color: "#000", // Black text for footer
+							padding: "10px",
+							fontSize: "14px",
+							borderBottom: "1px solid #ddd",
+						}}
+						className="sb-sidenav-footer"
+					>
+						{loggedIn()}
+						{userInfo && <span>{userInfo.name}</span>}
+					</div>
+				</nav>
+			</div>
+			<div id="layoutSidenav_content">
+				<main>
+					<div className="container-fluid">
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "left",
+								marginBottom: "10px",
+							}}
+						>
+							{/* Back Arrow */}
+							<p
+								
+								style={{
+									cursor: "pointer",
+									color: "#000",
+									margin: "5px",
+								}}
+							>
+								<i className="fas fa-arrow-left" onClick={() => {
+									navigate(-1); // Go back
+								}}></i>
+							</p>
+							{/* Forward Arrow */}
+							<p
+								onClick={() => {
+									navigate(1); // Go forward
+								}}
+								style={{
+									cursor: "pointer",
+									color: "#000",
+									margin: "5px",
+								}}
+								aria-label="Go Forward"
+							>
+								<i className="fas fa-arrow-right"></i>
+							</p>
+						</div>
+						{/* Title */}
+						<h2
+							className=""
+							style={{
+								fontFamily: "Roboto, sans-serif",
+								fontWeight: "bold",
+								background: "linear-gradient(180deg, #eae8f4, white)", // Gradient for sidebar background
+								color: "#000",
+								paddingTop: "10px",
+							}}
+						>
+							{title}
+						</h2>
+						{/* Content */}
+						{children}
+					</div>
+				</main>
+			</div>
+		</div>
+	</nav>
 	);
 };
 

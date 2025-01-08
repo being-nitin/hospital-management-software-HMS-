@@ -13,7 +13,6 @@ const ListAppVaccine = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	// State for filters and pagination
 	const [filters, setFilters] = useState({
 		status: null,
 		date: null,
@@ -150,6 +149,7 @@ const ListAppVaccine = () => {
 									<th scope="col">Patient</th>
 									<th scope="col">Date</th>
 									<th scope="col">Time</th>
+									<th scope="col">Duration</th>
 									<th scope="col">Status</th>
 									<th scope="col">Remarks</th>
 									<th scope="col">Actions</th>
@@ -188,6 +188,7 @@ const ListAppVaccine = () => {
 													</span>
 												)}
 											</td>
+											<td>{app.duration}</td>
 											<td>{app.remarks}</td>
 											<td>
 												<div

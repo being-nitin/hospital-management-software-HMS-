@@ -5,26 +5,23 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import {
-    listVacDaysEnums,
     listVacTakenEnums,
     createVacApp,
 } from "../../actions/vaccineAppointmentActions";
 import { listUsers } from "../../actions/userActions";
-import { CREATE_APPOINTMENT_VACCINE_RESET } from "../../constants/vaccineAppointmentConstants";
 import { listPatients, patientsDetails } from "../../actions/patientActions"; 
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
 
 const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const [doctor, setDoctor] = useState("");
-    const [vaccine, setVaccine] = useState("");
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState("10:00");
     const [status, setStatus] = useState("");
     const [remarks, setRemarks] = useState("fever");
     const [selectedPatient, setSelectedPatient] = useState("")
-    const [firstName , setFirstName] = useState("")
     const [showModal, setShowModal] = useState(show)
+    const [durationValue, setDurationValue] = useState(1); 
+    const [durationUnit, setDurationUnit] = useState("hours"); 
     const [query, setQuery] = useState('');
     const [filteredResults, setFilteredResults] = useState([]);
     const [showList, setShowList] = useState(false);
@@ -91,16 +88,27 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
       setDate(selectedDate)
     },[])
 
+   
     const submitHandler = (e) => {
         e.preventDefault();
         try {
-        let patient = patientId ? patientId  : selectedPatient 
-        dispatch(createVacApp({ patient , doctor, date, time, status, remarks }));
-        navigate('/list-app-vaccine')
-        onClose();
-        }
-        catch(err) {
-            alert(err)
+            const patient = patientId ? patientId : selectedPatient;
+            const duration = `${durationValue} ${durationUnit}`; // Combine value and unit
+            dispatch(
+                createVacApp({
+                    patient,
+                    doctor,
+                    date,
+                    time,
+                    status,
+                    remarks,
+                    duration, // Include duration
+                })
+            );
+            navigate("/list-app-vaccine");
+            onClose();
+        } catch (err) {
+            alert(err);
         }
     };
 
@@ -248,6 +256,28 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                                 ))}
                                         </select>
                                     </div>
+                                    <div className="mb-3">
+                                        <label className="form-label" style={{ fontWeight: 700 }}>Duration</label>
+                                        <div className="d-flex gap-2">
+                                            <input
+                                                type="number"
+                                                value={durationValue}
+                                                onChange={(e) => setDurationValue(e.target.value)}
+                                                min="1"
+                                                className="form-control"
+                                                style={{ maxWidth: "100px" }}
+                                            />
+                                            <select
+                                                value={durationUnit}
+                                                onChange={(e) => setDurationUnit(e.target.value)}
+                                                className="form-control"
+                                                style={{ maxWidth: "150px" }}
+                                            >
+                                                <option value="minutes">Minutes</option>
+                                                <option value="hours">Hours</option>
+                                            </select>
+                                        </div>
+                                        </div>
                                     <div className="mb-3">
                                         <label className="form-label" style={{ fontWeight :700}}>Remarks</label>
                                         <select
