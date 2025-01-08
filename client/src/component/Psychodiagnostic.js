@@ -54,6 +54,7 @@ const Psychodiagnostic = () => {
         occupationalHistory: "",
         sexualHistory: "",
         menstrualHistory: "",
+        substantialHistory : "",
         maritalHistory: "",
       },
       premorbidPersonality: {
@@ -112,6 +113,7 @@ const Psychodiagnostic = () => {
       },
       levelOfConsciousness: {
         mediate: "", // Stores the selected option
+        attention : ""
       },
       speech: {
         intensity: "",
@@ -360,11 +362,13 @@ const Psychodiagnostic = () => {
     setExistingData(
       appointment?.psychodiagnostic ? appointment?.psychodiagnostic : null
     );
-    setToolOptions([{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},
+    let tools = ([{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},
       {tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null},
       {tool : "YMRS", score : appointment?.ymrs ? appointment.ymrs.score : null},
       {tool : "CDRS", score : appointment?.cdrs ? appointment.cdrs.score : null},
       {tool : "PANSS", score : appointment?.panss ? appointment.panss .score : null}]);
+
+    setToolOptions(tools.filter((tool) => tool.score !== null))
 
   }, [appointment]);
 
@@ -837,34 +841,7 @@ const Psychodiagnostic = () => {
             </label>
           </div>
         ))}
-       <div className="my-4">Orientation</div>
-{Object.entries({
-     time: ["oriented towards time", "partially oriented toward time", "disoriented towards time"],
-     place: ["oriented towards place", "partially oriented toward place", "disoriented towards place"],
-     person: ["oriented towards person", "partially oriented toward person", "disoriented towards person"],
-     senseOfPassageOfTime: ["oriented has sense of passage of time", "partially oriented has sense of passage of time", "disoriented has sense of passage of time"],     
-    }).map(([field, fieldOptions]) => (
-          <div key={field} style={{ marginBottom: "1rem" }}>
-            <label>
-              {field.replace(/([A-Z])/g, " $1")} {/* Adds spaces before capital letters */}
-              <select
-                value={formData.behaviouralInfo.orientation[field]}
-                onChange={(e) =>
-                  handleBehaviouralDropdown("orientation", field, e.target.value)
-                }
-                style={{ marginLeft: "1rem" }}
-                required
-              >
-                <option value="">Select...</option>
-                {fieldOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </label>
-         </div>
-))}
+  
 
 <div style={styles.categorySection}>
   <h5>Psychomotor Activity</h5>
@@ -914,7 +891,118 @@ const Psychodiagnostic = () => {
   ))}
 </div>
 
-<h4>Level of Consciousness</h4>
+
+
+
+
+<label style={styles.label}>
+    Mood:
+    <select
+      name="mood"
+      style={styles.dropdown}
+      value={formData.mood || ""}
+      onChange={handleChange}
+    >
+      <option value="">Select a mood</option>
+      {[
+  "Anxious",
+  "Depressed",
+  "Dysthymic",
+  "Sad",
+  "Dysphoric",
+  "Euthymic",
+  "Irritable",
+  "Cheerful",
+  "Euphoric",
+  "Elated",
+  "Nil Contributor"
+].map((mood, index) => (
+        <option key={index} value={mood}>
+          {mood}
+        </option>
+      ))}
+    </select>
+  </label>
+
+{/* Judgement Section */}
+
+
+{/* Thought Section */}
+<h4>Thought</h4>
+{[
+  {
+    label: "Stream",
+    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration" , "Nil Contributor"],
+    key: "stream",
+  },
+  {
+    label: "Form",
+    options: [
+      "Loosening Of Associations",
+      "Illogical Thinking",
+      "Derailment",
+      "Desultory",
+      "Drivelling",
+      "Neologism",
+      "Word-Salad",
+      "Overinclusion",
+      "Condensation",
+      "Circumstantiality",
+      "Tangentiality",
+      "Poverty Of Thought",
+      "Nil Contributor"
+    ],
+    key: "form",
+  },
+  {
+    label: "Possession",
+    options: [
+      "Obsession",
+      "Thought Broadcasting",
+      "Thought Insertion",
+      "Thought Withdrawal",
+      "Nil Contributor"
+    ],
+    key: "possession",
+  },
+  {
+    label: "Content",
+    options: [
+      "Preoccupations ",
+      "Phobias/Obsessions",
+      "Depressive Thoughts",
+      "Delusions",
+      "Perceptual Disturbances (Illusions, Hallucination)",
+      "Nil Contributor"
+    ],
+    key: "content",
+  },
+].map((item, index) => (
+  <div key={index} style={styles.dropdownContainer}>
+    <label style={styles.labels}>{item.label}</label>
+    {item.options.map((option, idx) => (
+      <div key={idx} style={styles.checkboxContainer}>
+        <input
+          type="checkbox"
+          value={option}
+          checked={formData.behaviouralInfo.thought[item.key].includes(option)}
+          onChange={(e) => handleThoughtChange(item.key, option, e.target.checked)}
+          style={styles.checkbox}
+        />
+        <label>{option}</label>
+      </div>
+    ))}
+
+  </div>
+))}
+
+
+
+      </fieldset>
+  
+      <fieldset style={{ border: "1px solid #ccc", padding: "1rem", margin: "1rem 0" }}>
+      <legend>Cognitive Thinking</legend>
+      <h4>Level of Consciousness</h4>
 <div style={styles.categorySection}>
   <h5>Mediate</h5>
   <select
@@ -928,6 +1016,28 @@ const Psychodiagnostic = () => {
       "Lethargic/Somnolent Mediate",
       "Obtundation Mediate",
       "Stupor/Semi Coma Mediate",
+      "Coma Mediate",
+    ].map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+</div>
+
+<div style={styles.categorySection}>
+  <h5>Attention and Concentration</h5>
+  <select
+    value={formData.behaviouralInfo.levelOfConsciousness.attention}
+    onChange={(e) => handleBehavouralInfoChange("levelOfConsciousness", "attention", e.target.value)}
+    style={styles.dropdown}
+  >
+    <option value="">Select...</option>
+    {[
+      "Easily Aroused and sustained",
+      "Easily aroused but not sustained",
+      "Difficult to arouse and sustained",
+      "Difficult to arouse and not sustained",
       "Coma Mediate",
     ].map((option, index) => (
       <option key={index} value={option}>
@@ -1014,6 +1124,35 @@ const Psychodiagnostic = () => {
   </div>
 ))}
 
+<div className="my-4">Orientation</div>
+{Object.entries({
+     time: ["oriented towards time", "partially oriented toward time", "disoriented towards time"],
+     place: ["oriented towards place", "partially oriented toward place", "disoriented towards place"],
+     person: ["oriented towards person", "partially oriented toward person", "disoriented towards person"],
+     senseOfPassageOfTime: ["oriented has sense of passage of time", "partially oriented has sense of passage of time", "disoriented has sense of passage of time"],     
+    }).map(([field, fieldOptions]) => (
+          <div key={field} style={{ marginBottom: "1rem" }}>
+            <label>
+              {field.replace(/([A-Z])/g, " $1")} {/* Adds spaces before capital letters */}
+              <select
+                value={formData.behaviouralInfo.orientation[field]}
+                onChange={(e) =>
+                  handleBehaviouralDropdown("orientation", field, e.target.value)
+                }
+                style={{ marginLeft: "1rem" }}
+                required
+              >
+                <option value="">Select...</option>
+                {fieldOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </label>
+         </div>
+))}
+
 <h4>Memory</h4>
 {[
   {
@@ -1063,7 +1202,7 @@ const Psychodiagnostic = () => {
   },
   {
     label: "Abstract Reasoning",
-    options: ["impaired" , "intact"],
+    options: ["impaired" , "poor" , "intact"],
     key: "abstractReasoning",
   },
 ].map((item, index) => (
@@ -1082,38 +1221,8 @@ const Psychodiagnostic = () => {
       ))}
     </select>
   </div>
-))}
+))} 
 
-<label style={styles.label}>
-    Mood:
-    <select
-      name="mood"
-      style={styles.dropdown}
-      value={formData.mood || ""}
-      onChange={handleChange}
-    >
-      <option value="">Select a mood</option>
-      {[
-  "Anxious",
-  "Depressed",
-  "Dysthymic",
-  "Sad",
-  "Dysphoric",
-  "Euthymic",
-  "Irritable",
-  "Cheerful",
-  "Euphoric",
-  "Elated",
-  "Nil Contributor"
-].map((mood, index) => (
-        <option key={index} value={mood}>
-          {mood}
-        </option>
-      ))}
-    </select>
-  </label>
-
-{/* Judgement Section */}
 <h4>Judgement</h4>
 {[
   {
@@ -1139,84 +1248,11 @@ const Psychodiagnostic = () => {
       <option value="">Select...</option>
       <option value="Impaired">Impaired</option>
       <option value="Intact">Intact</option>
+      <option value="Poor">poor</option>
     </select>
   </div>
 ))}
-
-{/* Thought Section */}
-<h4>Thought</h4>
-{[
-  {
-    label: "Stream",
-    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration" , "Nil Contributor"],
-    key: "stream",
-  },
-  {
-    label: "Form",
-    options: [
-      "Loosening Of Associations",
-      "Illogical Thinking",
-      "Derailment",
-      "Desultory",
-      "Drivelling",
-      "Neologism",
-      "Word-Salad",
-      "Overinclusion",
-      "Condensation",
-      "Circumstantiality",
-      "Tangentiality",
-      "Poverty Of Thought",
-      "Nil Contributor"
-    ],
-    key: "form",
-  },
-  {
-    label: "Possession",
-    options: [
-      "Obsession",
-      "Thought Broadcasting",
-      "Thought Insertion",
-      "Thought Withdrawal",
-      "Nil Contributor"
-    ],
-    key: "possession",
-  },
-  {
-    label: "Content",
-    options: [
-      "Preoccupations ",
-      "Phobias/Obsessions",
-      "Depressive Thoughts",
-      "Delusions",
-      "Perceptual Disturbances (Illusions, Hallucination)",
-      "Nil Contributor"
-    ],
-    key: "content",
-  },
-].map((item, index) => (
-  <div key={index} style={styles.dropdownContainer}>
-    <label style={styles.labels}>{item.label}</label>
-    {item.options.map((option, idx) => (
-      <div key={idx} style={styles.checkboxContainer}>
-        <input
-          type="checkbox"
-          value={option}
-          checked={formData.behaviouralInfo.thought[item.key].includes(option)}
-          onChange={(e) => handleThoughtChange(item.key, option, e.target.checked)}
-          style={styles.checkbox}
-        />
-        <label>{option}</label>
-      </div>
-    ))}
-
-  </div>
-))}
-
-
-
       </fieldset>
-  
-
         <label style={styles.label}>
           Tools Used: {" "}
           <select
