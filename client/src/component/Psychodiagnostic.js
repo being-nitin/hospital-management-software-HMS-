@@ -892,11 +892,87 @@ const Psychodiagnostic = () => {
 </div>
 
 
+<h4>Speech</h4>
+{[
+  {
+    label: "Intensity",
+    options: ["Audible speech intensity", "Loud speech intensity", "Soft speech intensity" , "InAudible speech intensity"],
+    key: "intensity",
+  },
+  {
+    label: "Reaction Time",
+    options: ["Normal Reaction Time", "Shortened Reaction Time", "Delayed Reaction Time"],
+    key: "reactionTime",
+  },
+  { 
+    label: "Speed",
+    options: ["Normal speed", "Very Slow speed", "Rapid speed", "Pressure Of Speech speed"],
+    key: "speed",
+  },
+  {
+    label: "Ease",
+    options: [
+      "Spontaneous",
+      "Hesitant",
+      "Mute",
+      "Slurring",
+      "Sluttering",
+      "Whispering",
+      "Muttering",
+      "Speaks Only When Questioned",
+    ],
+    key: "ease",
+  },
+  {
+    label: "Relevance",
+    options: ["Relevant", "Irrelevant"],
+    key: "relevance",
+  },
+  {
+    label: "Coherant",
+    options: ["Coherant", "Incoherant"],
+    key: "coherant",
+  },
+  {
+    label: "Goal Directed",
+    options: ["Goal-Directed", "Circumstantial", "Tangential"],
+    key: "goalDirected",
+  },
+  {
+    label: "Deviation",
+    options: [
+      "Rhyming",
+      "Talking Past The Point",
+      "Clang Associations",
+      "Stereotype",
+      "Preseveration",
+      "NAD"
+    ],
+    key: "deviation",
+  },
+].map((item, index) => (
+  <div key={index} style={styles.dropdownContainer}>
+    <label style={styles.labels}>{item.label}</label>
+    <select
+      value={formData.behaviouralInfo.speech[item.key]}
+      onChange={(e) => handleBehaviouralDropdown("speech" ,item.key, e.target.value)}
+      style={styles.dropdown}
+    >
+      <option value="">Select...</option>
+      {item.options.map((option, idx) => (
+        <option key={idx} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  </div>
+))}
+
 
 
 
 <label style={styles.label}>
-    Mood:
+    <p stylel = "font-size: 18px">Mood and Affect </p>
     <select
       name="mood"
       style={styles.dropdown}
@@ -1024,107 +1100,7 @@ const Psychodiagnostic = () => {
     ))}
   </select>
 </div>
-
-<div style={styles.categorySection}>
-  <h5>Attention and Concentration</h5>
-  <select
-    value={formData.behaviouralInfo.levelOfConsciousness.attention}
-    onChange={(e) => handleBehavouralInfoChange("levelOfConsciousness", "attention", e.target.value)}
-    style={styles.dropdown}
-  >
-    <option value="">Select...</option>
-    {[
-      "Easily Aroused and sustained",
-      "Easily aroused but not sustained",
-      "Difficult to arouse and sustained",
-      "Difficult to arouse and not sustained",
-      "Coma Mediate",
-    ].map((option, index) => (
-      <option key={index} value={option}>
-        {option}
-      </option>
-    ))}
-  </select>
-</div>
-
-{/* Speech Section */}
-<h4>Speech</h4>
-{[
-  {
-    label: "Intensity",
-    options: ["Audible speech intensity", "Loud speech intensity", "Soft speech intensity" , "InAudible speech intensity"],
-    key: "intensity",
-  },
-  {
-    label: "Reaction Time",
-    options: ["Normal Reaction Time", "Shortened Reaction Time", "Delayed Reaction Time"],
-    key: "reactionTime",
-  },
-  { 
-    label: "Speed",
-    options: ["Normal speed", "Very Slow speed", "Rapid speed", "Pressure Of Speech speed"],
-    key: "speed",
-  },
-  {
-    label: "Ease",
-    options: [
-      "Spontaneous",
-      "Hesitant",
-      "Mute",
-      "Slurring",
-      "Sluttering",
-      "Whispering",
-      "Muttering",
-      "Speaks Only When Questioned",
-    ],
-    key: "ease",
-  },
-  {
-    label: "Relevance",
-    options: ["Relevant", "Irrelevant"],
-    key: "relevance",
-  },
-  {
-    label: "Coherant",
-    options: ["Coherant", "Incoherant"],
-    key: "coherant",
-  },
-  {
-    label: "Goal Directed",
-    options: ["Goal-Directed", "Circumstantial", "Tangential"],
-    key: "goalDirected",
-  },
-  {
-    label: "Deviation",
-    options: [
-      "Rhyming",
-      "Talking Past The Point",
-      "Clang Associations",
-      "Stereotype",
-      "Preseveration",
-      "NAD"
-    ],
-    key: "deviation",
-  },
-].map((item, index) => (
-  <div key={index} style={styles.dropdownContainer}>
-    <label style={styles.labels}>{item.label}</label>
-    <select
-      value={formData.behaviouralInfo.speech[item.key]}
-      onChange={(e) => handleBehaviouralDropdown("speech" ,item.key, e.target.value)}
-      style={styles.dropdown}
-    >
-      <option value="">Select...</option>
-      {item.options.map((option, idx) => (
-        <option key={idx} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  </div>
-))}
-
-<div className="my-4">Orientation</div>
+<div className="my-4"><h5>Orientation</h5></div>
 {Object.entries({
      time: ["oriented towards time", "partially oriented toward time", "disoriented towards time"],
      place: ["oriented towards place", "partially oriented toward place", "disoriented towards place"],
@@ -1152,6 +1128,32 @@ const Psychodiagnostic = () => {
             </label>
          </div>
 ))}
+
+<div style={styles.categorySection}>
+  <h5 >Attention and Concentration</h5>
+  <select
+    className="mb-3"
+    value={formData.behaviouralInfo.levelOfConsciousness.attention}
+    onChange={(e) => handleBehavouralInfoChange("levelOfConsciousness", "attention", e.target.value)}
+    style={styles.dropdown}
+  >
+    <option value="">Select...</option>
+    {[
+      "Easily Aroused and sustained",
+      "Easily aroused but not sustained",
+      "Difficult to arouse and sustained",
+      "Difficult to arouse and not sustained",
+      "Coma Mediate",
+    ].map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+</div>
+
+
+
 
 <h4>Memory</h4>
 {[

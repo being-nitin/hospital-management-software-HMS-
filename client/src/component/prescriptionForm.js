@@ -18,7 +18,7 @@ const PrescriptionForm = ({
   const dispatch = useDispatch();
 
   const dosageValues = ['0' ,'½', '1'];
-  const instructions = ['before food', 'after food'];
+  const instructions = ['before food', 'after food', "with food"];
   
   useEffect(() => {
     if (existingPrescriptions) {
