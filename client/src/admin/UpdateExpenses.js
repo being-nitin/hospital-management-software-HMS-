@@ -44,7 +44,7 @@ const UpdateExpenses = ({ history: history1, match }) => {
     const expenseDetail = useSelector((state) => state.expenseDetail)
     const { loading, error, expense } = expenseDetail
 
-    console.log(expense)
+    
 
     useEffect(() => {
         if (successUpdate) {

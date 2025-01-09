@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import header from "../assets/header.PNG";
 import PrintLayout from "../core/printLayout";
 import { prescription } from "../utils/printformat";
+import InvoiceModal from "./modal/invoiceLayout";
 
 const AppointmentDetail = () => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -31,11 +32,12 @@ const AppointmentDetail = () => {
 	const [medicalHistory, setMedicalHistory] = useState([]);
 	const [formType, setFormType] = useState(null);
 	const [showModal, setShowModal] = useState(false);
-	const { id } = useParams();
+	const [showBilling , setShowBilling] = useState(false)
+	const { id } = useParams(); 
 	const appointmentRefs = useRef([]);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
+	
 	const [form1Data, setForm1Data] = useState({
 		name: "",
 		age: "",
@@ -293,7 +295,8 @@ const AppointmentDetail = () => {
 				}}>
 				Psychological Form
 			</Menu.Item>
-			<Menu.Item key="5" onClick={() => navigate(`/billing/${id}`)}>
+			<Menu.Item key="5" onClick={() =>{  
+			setShowBilling(true)}}>
 				Billing
 			</Menu.Item>
 			<Menu.SubMenu key="6" title="More">
@@ -346,6 +349,8 @@ const AppointmentDetail = () => {
 	);
 
 	return (
+	<>
+	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} />
 		<div className="container mt-4">
 			<Button
 				className="my-4"
@@ -353,6 +358,7 @@ const AppointmentDetail = () => {
 				onClick={() => navigate("/list-app-vaccine")}>
 				Back
 			</Button>
+			
 			<div className="row">
 				{/* Appointment and Patient Info Section */}
 				<div className="col-lg-8">
@@ -833,6 +839,7 @@ const AppointmentDetail = () => {
 				/>
 			</div>
 		</div>
+		</>
 	);
 };
 

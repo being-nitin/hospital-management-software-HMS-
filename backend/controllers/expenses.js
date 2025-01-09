@@ -55,8 +55,8 @@ exports.update = asyncHandler(async (req, res) => {
 
 
 exports.getExpenseDetail = asyncHandler(async (req, res) => {
-
-    const expense = await expenses.findById(req.params.id).populate("appointment")
+    console.log(req.params.id)
+    const expense = await expenses.findOne({appointment : req.params.id}).populate("appointment")
 
     if (expense) {
         res.json({
