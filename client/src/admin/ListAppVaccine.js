@@ -47,6 +47,8 @@ const ListAppVaccine = () => {
 			const formattedDate = date
 				? moment(date).format("YYYY-MM-DD")
 				: null;
+
+				console.log(formattedDate)
 			dispatch(
 				listVacApp(
 					pagination.currentPage,
@@ -67,13 +69,14 @@ const ListAppVaccine = () => {
 	};
 
 	const handleFilterChange = (field, value) => {
+		console.log(value)
 		setFilters((prev) => ({ ...prev, [field]: value }));
 	};
 
 	const applyFilters = () => {
 		const { status, date } = filters;
-		const formattedDate = date ? moment(date).format("YYYY-MM-DD") : null;
-		dispatch(listVacApp(1, pagination.pageSize, status, formattedDate)); // Apply filters and reset to first page
+		const formattedDate = date ? date.format("YYYY-MM-DD") : null;
+		dispatch(listVacApp(1, pagination.pageSize, status, formattedDate)); 
 		setPagination({ currentPage: 1, pageSize: pagination.pageSize });
 	};
 
@@ -119,7 +122,9 @@ const ListAppVaccine = () => {
 					</Select>
 					<DatePicker
 						placeholder="Filter by Date"
-						onChange={(date) => handleFilterChange("date", date)}
+						onChange={(date, dateString) => {
+							handleFilterChange("date", dateString)
+						}}
 						allowClear
 					/>
 					<Button type="primary" onClick={applyFilters}>
@@ -168,9 +173,7 @@ const ListAppVaccine = () => {
 													app?.patient?.patientNumber}
 											</td>
 											<td>
-												{moment(app.date).format(
-													"YYYY-MM-DD"
-												)}
+												{moment.utc(app.date).format("YYYY-MM-DD")}
 											</td>
 											<td>{app.time}</td>
 											<td>
@@ -231,9 +234,10 @@ const ListAppVaccine = () => {
 							</tbody>
 						</table>
 					</div>
-
-					{/* Pagination */}
-					<div className="my-4">
+					
+				</Fragment>
+			)}
+			<div className="my-4">
 						<Pagination
 							current={currentPage}
 							total={totalAppointments}
@@ -244,8 +248,6 @@ const ListAppVaccine = () => {
 							onShowSizeChange={handlePaginationChange}
 						/>
 					</div>
-				</Fragment>
-			)}
 		</Layout>
 	);
 };

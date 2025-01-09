@@ -115,14 +115,19 @@ exports.list = asyncHandler(async (req, res) => {
     }
 
     if (date) {
+        // Convert the provided date to the start and end of the day in UTC
         const startDate = moment(date).startOf('day').utc().toDate(); // Start of the day in UTC
         const endDate = moment(date).endOf('day').utc().toDate(); // End of the day in UTC
-      
-        field["date"] = {
-          $gte: startDate, // Start of the day in UTC
-          $lte: endDate, // End of the day in UTC
+    
+        // Match documents where createdAt is within the day's range
+        field["createdAt"] = {
+            $gte: startDate, // Start of the day
+            $lte: endDate,   // End of the day
         };
+    
+        console.log(field["createdAt"]); // Logs the query object
     }
+    
 
     // If pagination parameters are provided, apply pagination
     if (page && limit) {
