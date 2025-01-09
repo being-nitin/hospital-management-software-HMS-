@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, DatePicker, Pagination, Select } from "antd";
 import Layout from "../core/Layout";
-import { listExpenses, deleteExpenses } from "../actions/expensesActions";
+import { listExpenses, deleteExpenses, updateExpense } from "../actions/expensesActions";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
@@ -174,6 +174,26 @@ const ListExpenses = () => {
 		chartData.datasets[0].data = Object.values(earningsByDay).reverse();
 	}
 
+	const handlePaidStatusChange = (expenseId, value) => {
+	  
+		// Dispatch the update action
+		dispatch(updateExpense({_id : expenseId, paid : value}));
+		const { startDate, endDate, doctor } = filters;
+		const formattedStartDate = startDate
+			? moment(startDate).format("YYYY-MM-DD")
+			: null;
+		const formattedEndDate = endDate
+			? moment(endDate).format("YYYY-MM-DD")
+			: null;
+		dispatch(listExpenses(
+			pagination.currentPage,
+					pagination.pageSize,
+					doctor,
+					formattedStartDate,
+					formattedEndDate
+		))
+	  };
+
 	return (
 		<Layout title="Report" className="container-fluid">
 			<div className="d-flex justify-content-between align-items-center mb-4">
@@ -262,7 +282,17 @@ const ListExpenses = () => {
 											)}
 										</td>
 										<td>₹ {exp.grandTotal}</td>
-										<td>{exp.paid}</td>
+										<td>
+  <Select
+    value={exp.paid} // Display the current value: "Paid" or "Un-paid"
+    onChange={(value) => handlePaidStatusChange(exp._id, value)} // Handle dropdown change
+    style={{ width: 120 }}
+  >
+    <Option value="Paid">Paid</Option>
+    <Option value="Un-paid">Un-paid</Option>
+  </Select>
+</td>
+
 										<td>{exp.paymentMethod}</td>
 										<td>₹ {exp.totalCost}</td>
 										<td>
