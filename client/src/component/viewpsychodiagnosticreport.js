@@ -138,22 +138,10 @@ ${selectedOptions.includes('behavioural info') ?`
     </div>
   `).join('')}
 </div>
-<h4  >Orientation</h4>
-<div>
-  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
-    <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
-      ${value || 'NAD'},
-    </div>
-  `).join('')}
-</div>
+
 <h4>Motor Behaviour</h4>
 <div>
   <p > ${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo?.motorBehaviour && patientData.behaviouralInfo?.motorBehaviour?.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
-</div>
-
-<h4 >Level of Consciousness</h4>
-<div>
-  <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
 </div>
 
 <h4>Speech</h4>
@@ -177,7 +165,7 @@ ${selectedOptions.includes('behavioural info') ?`
 <h4  >Thought</h4>
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px; font-size: 14px;">
       ${category.replace(/([A-Z])/g, ' $1').toUpperCase()}
         ${options.length ? options.map(option => `
           <span>${option},</span>
@@ -185,6 +173,35 @@ ${selectedOptions.includes('behavioural info') ?`
       
     </div>
   `).join('')}` :""}
+   ${selectedOptions.includes("cognitive thinking") ? `
+    <h4 >Level of Consciousness</h4>
+<div>
+  <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
+</div>
+<h4  >Orientation</h4>
+<div>
+  ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
+    <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
+      ${value || 'NAD'},
+    </div>
+  `).join('')}
+</div>
+     <h5> Attention and concentration : <span style="font-weight:300;">${patientData.behaviouralInfo.levelOfConsciousness?.attention && patientData.behaviouralInfo.levelOfConsciousness?.attention} </span></h6>
+          
+          <h5>Memory</h5>
+          <p>
+            ${patientData.behaviouralInfo.memory &&
+              Object.values(patientData.behaviouralInfo.memory).join(", ") || "NAD"}
+          </p>
+
+          <h5>Intelligences</h5>
+          ${patientData.behaviouralInfo.intelligences &&
+              Object.values(patientData.behaviouralInfo.intelligences).join(", ") || "NAD"}
+          <h5>Judgement</h5>
+          ${patientData.behaviouralInfo.judgement &&
+              Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
+
+              ` : ''}
     <p style="font-weight : 700;">Interpretations</p>
      <div style ="margin-bottom : 5px;"> Based on the history observation scale, patient was found to have : ${patientData.interpretations}</div>
 <div>
@@ -214,53 +231,44 @@ ${selectedOptions.includes('behavioural info') ?`
     <div className="container mt-4">
      <PrintLayout html ={psychodiagnostic} category={'forms'}></PrintLayout>
      <div style={{ display : "flex" , justifyContent : "space-between" , alignContent : "flex-start"}} >
-      <div className="card">
-        <div className="card-body" >
-          <h4 className="card-title mb-4">Patient Information</h4>
+     <div className="card">
+  <div className="card-body">
+    <h4 className="card-title mb-4">Patient Information</h4>
 
-          <div style={{ borderRadius: "8px", margin: "20px" }}>
-        {appointment && appointment.patient && (
-        <div style={{ display : 'flex' , justifyContent: "space-between" , alignItems : "center"}}>
+    <div className="patient-info-section" style={{ borderRadius: "8px", margin: "20px" }}>
+      {appointment && appointment.patient && (
+        <div className="patient-basic-info d-flex justify-content-between align-items-center">
           <div>
             <p>
-              Name:{" "}
+              <strong>Name:</strong>{" "}
               <span>
                 {`${appointment.patient.firstName.toUpperCase()} ${appointment.patient.lastName.toUpperCase()}`}
               </span>
             </p>
             <p>
-              Age: <span>{calculateAge(appointment.patient.birthDate)}</span>
+              <strong>Age:</strong> <span>{calculateAge(appointment.patient.birthDate)}</span>
             </p>
           </div>
           <div>
-            <p>Date: {moment(Date.now()).format("DD-MM-YYYY")}</p>
-            <p>Address: {appointment.patient.address}</p>
+            <p><strong>Date:</strong> {moment(Date.now()).format("DD-MM-YYYY")}</p>
+            <p><strong>Address:</strong> {appointment.patient.address}</p>
           </div>
         </div>
       )}
 
       {/* Patient Details */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-        <div >
-          <strong>Referred By Dr.:</strong> {patientData.refByDr}
-        </div>
-        <div >
-          <strong>Reason for Referral:</strong> {patientData.reasonForReferral}
-        </div>
-        <div style={{ flex: "1 1 100%" }}>
-          <strong>Address:</strong> {patientData.address}
-        </div>
-        <div style={{ flex: "1 1 100%" }}>
-          <strong>Marital Status:</strong> {patientData.maritalStatus}
-        </div>
-        <div style={{ flex: "1 1 100%" }}>
-          <strong>Education:</strong> {patientData.Education}
-        </div>
-      </div>
+      <div className="row" style ={{ marginBottom : '10px'}}>
+  <div className="col-lg-4 col-md-6"><strong>Referred By Dr.:</strong> {patientData.refByDr}</div>
+  <div className="col-lg-4 col-md-6"><strong>Reason for Referral:</strong> {patientData.reasonForReferral}</div>
+  
+  <div className="col-lg-4 col-md-6"><strong>Marital Status:</strong> {patientData.maritalStatus}</div>
+  <div className="col-lg-4 col-md-6"><strong>Education:</strong> {patientData.Education}</div>
+  <div className="col-lg-4 col-md-6"><strong>Address:</strong> {patientData.address}</div>
+</div>
 
       {/* Chief Complaints */}
       <h5>Chief Complaints</h5>
-      <table className="chief-complaints-table">
+      <table className="chief-complaints-table table table-bordered">
         <thead>
           <tr>
             <th>Complaint</th>
@@ -278,166 +286,123 @@ ${selectedOptions.includes('behavioural info') ?`
       </table>
 
       {/* Medical Details */}
-      <h5 style={{ marginBottom: "10px" }}>Medical Details</h5>
-      <div>
+      <h5>Medical Details</h5>
+      <p>
         {patientData.precipitation || "NAD"} Precipitation,{" "}
         {patientData.onset || "NAD"} Onset, {patientData.course || "NAD"} Course,
         {patientData.progression || "NAD"} Progression
-      </div>
+      </p>
 
       {/* Background Information */}
-      {selectedOptions.includes('personal history') && (<>
-      <h4 style={{ marginBottom: "10px" }}>Background Information</h4>
-      <h4>Personal History</h4>
-      <div>
-        {patientData.backgroundInfo.personalHistory &&
-          Object.entries(patientData.backgroundInfo.personalHistory).map(
-            ([key, value], index) => (
-              <span key={index} style={{ marginBottom: "5px" }}>
-                {value}
-              </span>
-            )
-          )}
-      </div>
-      </>)}
-
-      {selectedOptions.includes('premorbid personality') && (<>
-      <h4>Premorbid Personality</h4>
-      <div>
-        {patientData.backgroundInfo.premorbidPersonality &&
-          Object.entries(patientData.backgroundInfo.premorbidPersonality).map(
-            ([category, questions], index) => (
-              <div key={index}>
-                <p
-                  style={{
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {category.replace(/([A-Z])/g, " $1").toUpperCase()}
-                </p>
-                {questions.map((q, idx) => (
-                  <span key={idx} style={{ marginBottom: "5px" }}>
-                    {q.answer}
-                  </span>
-                ))}
-              </div>
-            )
-          )}
-      </div>
-    </>)}
-    
-      
-        {selectedOptions.includes('behavioural info') && (
-          <>
-      <h4>Behavioral Information</h4>
-      <h4>General Appearance and Behavior</h4>
-      <div>
-        {patientData.behaviouralInfo.generalAppearanceAndBehaviour &&
-          Object.entries(
-            patientData.behaviouralInfo.generalAppearanceAndBehaviour
-          ).map(([key, value], index) => (
-            <div key={index} style={{ display: "inline-block" }}>
-              {value || "NAD"},
-            </div>
-          ))}
-      </div>
-
-      <h4>Orientation</h4>
-      <div>
-        {patientData.behaviouralInfo.orientation &&
-          Object.entries(patientData.behaviouralInfo.orientation).map(
-            ([key, value], index) => (
-              <div
-                key={index}
-                style={{
-                  display: "inline-block",
-                  width: "48%",
-                  marginBottom: "15px",
-                }}
-              >
-                {value || "NAD"},
-              </div>
-            )
-          )}
-      </div>
-
-      <h4>Motor Behaviour</h4>
-      <div>
-        <p>
-          {patientData.behaviouralInfo.motorBehaviour?.psychomotorActivity ||
-            "NAD"}
-          ,{" "}
-          {patientData.behaviouralInfo.motorBehaviour?.disturbances.join(", ") ||
-            "NAD"}
-        </p>
-      </div>
-
-      <h4>Level of Consciousness</h4>
-      <div>
-        <p>
-          {patientData.behaviouralInfo.levelOfConsciousness?.mediate || "NAD"}
-        </p>
-      </div>
-
-      <h4>Speech</h4>
-      <div>
-        {patientData.behaviouralInfo.speech &&
-          Object.entries(patientData.behaviouralInfo.speech).map(
-            ([key, value], index) => (
-              <span key={index}>
-                {value},
-              </span>
-            )
-          )}
-      </div>
-
-      <h4 style={{ pageBreakBefore: "always" }}>Memory</h4>
-      <div>
-        {patientData.behaviouralInfo.memory &&
-          Object.entries(patientData.behaviouralInfo.memory).map(
-            ([key, value], index) => (
-              <span key={index} style={{ marginRight: "10px" }}>
-                {value},
-              </span>
-            )
-          )}
-      </div>
-
-      <h4>Thought</h4>
-      <div>
-        {patientData.behaviouralInfo.thought &&
-          Object.entries(patientData.behaviouralInfo.thought).map(
-            ([category, options], index) => (
-              <div key={index} style={{ marginBottom: "10px" }}>
-                {category.replace(/([A-Z])/g, " $1").toUpperCase()} : 
-                {options.length
-                  ? options.map((option, i) => (
-                      <span key={i}>{option},</span>
-                    ))
-                  : "NAD"}
-              </div>
-            )
-          )} 
+      {selectedOptions.includes("personal history") && (
+        <>
+          <h4>Background Information</h4>
+          <h5>Personal History</h5>
+          <div>
+            {patientData.backgroundInfo.personalHistory &&
+              Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => (
+                <span key={index} className="d-block mb-2">{value}</span>
+              ))}
           </div>
+        </>
+      )}
+
+      {selectedOptions.includes("premorbid personality") && (
+        <>
+          <h5>Premorbid Personality</h5>
+          <div>
+            {patientData.backgroundInfo.premorbidPersonality &&
+              Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => (
+                <div key={index} className="mb-3">
+                  <p className="fw-bold mb-1">{category.replace(/([A-Z])/g, " $1").toUpperCase()}</p>
+                  {questions.map((q, idx) => (
+                    <span key={idx} className="d-block">{q.answer}</span>
+                  ))}
+                </div>
+              ))}
+          </div>
+        </>
+      )}
+
+      {selectedOptions.includes("behavioural info") && (
+        <>
+          <h5>Behavioral Information</h5>
+          <h6>General Appearance and Behavior</h6>
+          <p>
+            {patientData.behaviouralInfo.generalAppearanceAndBehaviour &&
+              Object.values(patientData.behaviouralInfo.generalAppearanceAndBehaviour).join(", ") || "NAD"}
+          </p>
+
+          <h6>Motor Behaviour</h6>
+          <p>
+            {patientData.behaviouralInfo.motorBehaviour?.psychomotorActivity || "NAD"},{" "}
+            {patientData.behaviouralInfo.motorBehaviour?.disturbances.join(", ") || "NAD"}
+          </p>
+
+    
+
+          <h6>Speech</h6>
+          <p>
+            {patientData.behaviouralInfo.speech &&
+              Object.values(patientData.behaviouralInfo.speech).join(", ") || "NAD"}
+          </p>
+
+
+          <h6>Thought</h6>
+          <p>
+            {patientData.behaviouralInfo.thought &&
+              Object.entries(patientData.behaviouralInfo.thought).map(([category, options]) => (
+                <span key={category}>{category}: {options.join(", ") || "NAD"} </span>
+              ))}
+          </p>
+        </>
+      )}
+
+      {selectedOptions.includes("cognitive thinking") && (
+        <>
+        <h4>cognitive thinking</h4>
+
+        <h5>Level of Consciousness</h5>
+        <p>{patientData.behaviouralInfo.levelOfConsciousness?.mediate || "NAD"}</p>
+        <h5>Orientation</h5>
+          <p>
+            {patientData.behaviouralInfo.orientation &&
+              Object.values(patientData.behaviouralInfo.orientation).join(", ") || "NAD"}
+          </p>
+          <h6> Attention and concentration : {patientData.behaviouralInfo.levelOfConsciousness?.attention && patientData.behaviouralInfo.levelOfConsciousness?.attention} </h6>
           
-          </>)}
-        <p style={{ fontWeight: "700" }}>Interpretations</p>
-        <div style={{ marginBottom: "5px" }}>
-          Based on the history observation scale, patient was found to have:{" "}
-          {patientData.interpretations}
-        </div>
-        
-          <b>Suggestions:</b>
-          {patientData.suggestions &&
-            patientData.suggestions.map((suggestion, index) => (
-              <p key={index}>
-                {index + 1}. {suggestion}
-              </p>
-            ))}
-            </div>
-        </div>
-      </div>
+          <h5>Memory</h5>
+          <p>
+            {patientData.behaviouralInfo.memory &&
+              Object.values(patientData.behaviouralInfo.memory).join(", ") || "NAD"}
+          </p>
+
+          <h5>Intelligences</h5>
+          {patientData.behaviouralInfo.intelligences &&
+              Object.values(patientData.behaviouralInfo.intelligences).join(", ") || "NAD"}
+          <h5>Judgement</h5>
+          {patientData.behaviouralInfo.judgement &&
+              Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
+          </>
+          
+      )}
+
+      
+
+      <h5>Interpretations</h5>
+      <p>Based on the history observation scale, patient was found to have : {patientData.interpretations || "N/A"}</p>
+
+      <h5>Suggestions</h5>
+      <ul>
+        {patientData.suggestions &&
+          patientData.suggestions.map((suggestion, index) => (
+            <li key={index}>{suggestion}</li>
+          ))}
+      </ul>
+    </div>
+  </div>
+</div>
+
     
         
         
