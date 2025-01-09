@@ -66,7 +66,6 @@ const InvoiceModal = ({ show, onClose }) => {
       setTreatmentList(settings.data.treatment);
     }
   }, [settings]);
-   console.log(expense)
   // Populate data for editing if expense exists
   useEffect(() => {
     if (expense) {
@@ -125,7 +124,7 @@ const InvoiceModal = ({ show, onClose }) => {
     };
 
     if (expense) {
-      dispatch(updateExpense({ ...expense, ...expenseData }));
+      dispatch(updateExpense({ _id : expense._id , ...expenseData }));
     } else {
       dispatch(createExpenses(expenseData));
     }

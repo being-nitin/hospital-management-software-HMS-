@@ -59,16 +59,7 @@ exports.getExpenseDetail = asyncHandler(async (req, res) => {
     const expense = await expenses.findOne({appointment : req.params.id}).populate("appointment")
 
     if (expense) {
-        res.json({
-            _id: expense._id,
-            name: expense.name,
-            department: expense.department._id,
-            amount: expense.amount,
-            description: expense.description,
-            fromDate: expense.fromDate,
-            to: expense.to,
-            paid: expense.paid
-        })
+        res.json(expense)
     } else {
         res.status(404)
         throw new Error('Expense not found')

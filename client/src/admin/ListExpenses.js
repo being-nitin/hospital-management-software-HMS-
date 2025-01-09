@@ -299,7 +299,7 @@ const ListExpenses = () => {
 											<div
 												className="btn-group"
 												role="group">
-												<Button
+												{/* <Button
 													type="primary"
 													size="small"
 													onClick={() =>
@@ -308,7 +308,7 @@ const ListExpenses = () => {
 														)
 													}>
 													Edit
-												</Button>
+												</Button> */}
 												<Button
 													type="danger"
 													size="small"
