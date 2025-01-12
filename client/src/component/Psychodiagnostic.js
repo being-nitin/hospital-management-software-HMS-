@@ -78,7 +78,7 @@ const Psychodiagnostic = () => {
         ],
         character: [
           { question: "Is he/she reserved, timid, self-conscious, resentful, or jealous?", answer: "" },
-          { question: "Is he/she irritable, selfish, or self-centered?", answer: "Nil Contribution" }
+          { question: "Is he/she irritable, selfish, or self-centered?", answer: "" }
         ],
         attitudesAndStandards: [
           { question: "Attitudes to health and illness as well as religious and moral standards.", answer: "" }
@@ -149,6 +149,7 @@ const Psychodiagnostic = () => {
       
     },
     mood : "",
+    moodInput : "",
     additionalInfo1: "",
     additionalInfo2: "",
     toolsUsed: "",
@@ -695,7 +696,7 @@ const Psychodiagnostic = () => {
           {key.replace(/([A-Z])/g, ' $1').toUpperCase()}:
           
 
-    {formData.backgroundInfo.personalHistory[key] !== "nil" && (
+    {formData.backgroundInfo.personalHistory[key] !== "Nil contributory" && (
       <input
         type="text"
         name={key}
@@ -716,16 +717,16 @@ const Psychodiagnostic = () => {
     <input
       type="checkbox"
       className="ml-3"
-      checked={formData.backgroundInfo.personalHistory[key] === "Nil contribution"}
+      checked={formData.backgroundInfo.personalHistory[key] === "Nil contributory"}
       onChange={(e) =>
         handleBackgroundInfoChange(
           "personalHistory",
           key,
-          e.target.checked ? "Nil contribution" : ""
+          e.target.checked ? "Nil contributory" : ""
         )
       }
     />
-    <span className="ml-3">Nil contribution</span>
+    <span className="ml-3">Nil contributory</span>
         </label>
       ))}
 
@@ -739,7 +740,7 @@ const Psychodiagnostic = () => {
     <label style={styles.labels}>{item.question}</label>
 
     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      {/* Checkbox for "Nil contribution" */}
+      {/* Checkbox for "Nil contributory" */}
     
         <input
           type="text"
@@ -752,16 +753,16 @@ const Psychodiagnostic = () => {
         />
     <input
         type="checkbox"
-        checked={item.answer === "Nil contribution"}
+        checked={item.answer === "Nil contributory"}
         onChange={(e) =>
           handlePremorbidChange(
             section,
             index,
-            e.target.checked ? "Nil contribution" : ""
+            e.target.checked ? "Nil contributory" : ""
           )
         }
       />
-      <span>Nil contribution</span>
+      <span>Nil contributory</span>
     </div>
   </div>
 ))}
@@ -991,7 +992,7 @@ const Psychodiagnostic = () => {
   "Cheerful",
   "Euphoric",
   "Elated",
-  "Nil Contributor"
+  "Nil contributory"
 ].map((mood, index) => (
         <option key={index} value={mood}>
           {mood}
@@ -1000,6 +1001,15 @@ const Psychodiagnostic = () => {
     </select>
   </label>
 
+          <input
+            type="text"
+            placeholder={"additional info"}
+            name="moodInput"
+            value={formData.moodInput}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        
 {/* Judgement Section */}
 
 
@@ -1008,7 +1018,7 @@ const Psychodiagnostic = () => {
 {[
   {
     label: "Stream",
-    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration" , "Nil Contributor"],
+    options: ["Flight Of Ideas", "Prolixity", "Retardation", "Preseveration" , "Nil contributory"],
     key: "stream",
   },
   {
@@ -1026,7 +1036,7 @@ const Psychodiagnostic = () => {
       "Circumstantiality",
       "Tangentiality",
       "Poverty Of Thought",
-      "Nil Contributor"
+      "Nil contributory"
     ],
     key: "form",
   },
@@ -1037,7 +1047,7 @@ const Psychodiagnostic = () => {
       "Thought Broadcasting",
       "Thought Insertion",
       "Thought Withdrawal",
-      "Nil Contributor"
+      "Nil contributory"
     ],
     key: "possession",
   },
@@ -1049,7 +1059,7 @@ const Psychodiagnostic = () => {
       "Depressive Thoughts",
       "Delusions",
       "Perceptual Disturbances (Illusions, Hallucination)",
-      "Nil Contributor"
+      "Nil contributory"
     ],
     key: "content",
   },
@@ -1078,9 +1088,8 @@ const Psychodiagnostic = () => {
   
       <fieldset style={{ border: "1px solid #ccc", padding: "1rem", margin: "1rem 0" }}>
       <legend>Cognitive Thinking</legend>
-      <h4>Level of Consciousness</h4>
+      <h5>Level of Consciousness</h5>
 <div style={styles.categorySection}>
-  <h5>Mediate</h5>
   <select
     value={formData.behaviouralInfo.levelOfConsciousness.mediate}
     onChange={(e) => handleBehavouralInfoChange("levelOfConsciousness", "mediate", e.target.value)}
@@ -1203,7 +1212,7 @@ const Psychodiagnostic = () => {
     key: "calculations",
   },
   {
-    label: "Abstract Reasoning",
+    label: "Abstract Thinking",
     options: ["impaired" , "poor" , "intact"],
     key: "abstractReasoning",
   },
@@ -1254,6 +1263,29 @@ const Psychodiagnostic = () => {
     </select>
   </div>
 ))}
+
+<h5 style={{ marginTop : '5px'}}>Insight</h5>
+<div style={styles.categorySection}>
+  <select
+    value={formData.behaviouralInfo.insight}
+    onChange={(e) => handleBehavouralInfoChange("", "insight", e.target.value)}
+    style={styles.dropdown}
+  >
+    <option value="">Select...</option>
+    {[
+      "great 1",
+      "great 2",
+      "great 3",
+      "great 4",
+      "great 5",
+      "great 6"
+    ].map((option, index) => (
+      <option key={index} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+</div>
       </fieldset>
         <label style={styles.label}>
           Tools Used: {" "}
@@ -1361,7 +1393,7 @@ const Psychodiagnostic = () => {
           checked={formData.suggestions.  includes(suggestion)}
           onChange={handleSugestion}
         />
-        <label style={{ marginLeft : "10px"}}> {index}. {suggestion}</label>
+        <label style={{ marginLeft : "10px"}}> {suggestion}</label>
       </div>
     ))}
   </div>

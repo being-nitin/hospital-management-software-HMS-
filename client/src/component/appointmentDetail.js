@@ -238,6 +238,7 @@ const AppointmentDetail = () => {
 				: []
 		);
 	}, []);
+
 	const fieldNames = [
 		"Anxious Mood",
 		"Tension",
@@ -515,58 +516,6 @@ const AppointmentDetail = () => {
 											<strong>Vital Signs</strong>
 										</div>
 										<div>
-											{/* <table className="table table-bordered">
-												<thead>
-													<tr>
-														<th>Weight (kg)</th>
-														<th>B.P. (mmHg)</th>
-														<th>
-															Pulse
-															(Heartbeats/min)
-														</th>
-														<th>
-															Temperature (°C)
-														</th>
-														<th>
-															Resp. Rate
-															(breaths/min)
-														</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>
-															{appointment
-																?.vitalSigns
-																?.weight ||
-																"N/A"}
-														</td>
-														<td>
-															{appointment
-																?.vitalSigns
-																?.bp || "N/A"}
-														</td>
-														<td>
-															{appointment
-																?.vitalSigns
-																?.pulse ||
-																"N/A"}
-														</td>
-														<td>
-															{appointment
-																?.vitalSigns
-																?.temperature ||
-																"N/A"}
-														</td>
-														<td>
-															{appointment
-																?.vitalSigns
-																?.respRate ||
-																"N/A"}
-														</td>
-													</tr>
-												</tbody>
-											</table> */}
 											
 								<VitalSignsForm
 									onSubmit={handleVitalSignsSubmit}
@@ -644,7 +593,7 @@ const AppointmentDetail = () => {
 																			24
 																		}
 																		style={{
-																			cursor: "pointer",
+													 						cursor: "pointer",
 																			color: "red",
 																		}}
 																		onClick={() =>
@@ -654,7 +603,7 @@ const AppointmentDetail = () => {
 																		} // Delete prescription
 																	/>
 																</td>
-															)}
+															)} 
 														</tr>
 													)
 												)}
