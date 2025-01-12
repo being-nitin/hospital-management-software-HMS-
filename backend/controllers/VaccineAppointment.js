@@ -21,7 +21,7 @@ exports.getVaccineApp = asyncHandler(async (req, res) => {
     try{
     const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor prescription")
     
-    const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}]}).populate("patient doctor prescription")
+    const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}, { doctor : appointment.doctor}]}).populate("patient doctor prescription")
     
     if (appointment) {
         res.json({ pastAppointments ,appointment})

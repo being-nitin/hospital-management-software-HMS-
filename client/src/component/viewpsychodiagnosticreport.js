@@ -251,7 +251,6 @@ ${selectedOptions.includes('behavioural info') ?`
           </div>
           <div>
             <p><strong>Date:</strong> {moment(Date.now()).format("DD-MM-YYYY")}</p>
-            <p><strong>Address:</strong> {appointment.patient.address}</p>
           </div>
         </div>
       )}

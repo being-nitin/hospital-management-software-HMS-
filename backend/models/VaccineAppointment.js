@@ -31,7 +31,6 @@ const VaccineAppointment = mongoose.Schema(
         },
         duration: {
             type : String,
-            required : true
         },
         prescription :[{
             type : mongoose.ObjectId,

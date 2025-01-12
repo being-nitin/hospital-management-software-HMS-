@@ -1,8 +1,5 @@
 const mongoose =  require('mongoose')
 
-
-
-
 const building = mongoose.Schema(
     {
         name: {
@@ -21,9 +18,5 @@ const building = mongoose.Schema(
         }
     }
 )
-
-
-
-
 
 module.exports = mongoose.model('building', building);

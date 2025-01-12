@@ -226,11 +226,11 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                     <div className="" style = {{ display : 'flex' , justifyContent : 'space-around' , alignItems: 'center', gap : '5px'}}>
                                         <label className="form-label" style={{ fontWeight :700}}>Time</label>
                                         <input
-    type="time"
-    value={time}
-    onChange={(e) => setTime(e.target.value)}
-    className="form-control"
-  />
+                                         type="time"
+                                         value={time}
+                                         onChange={(e) => setTime(e.target.value)}
+                                         className="form-control"
+                                       />
                                     </div>
                                     <div className="">
                                         <label className="form-label m-3" style={{ fontWeight :700}}>Date</label>
@@ -248,12 +248,12 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                             className="form-control"
                                         >
                                             <option>Select Status</option>
-                                            {takes &&
-                                                takes.map((status, i) => (
+                                               {takes && 
+                                                takes.map((status, i) =>  status !== 'closed' ? (
                                                     <option key={i} value={status}>
                                                         {status}
-                                                    </option>
-                                                ))}
+                                                    </option> 
+                                                ) : <></>)}
                                         </select>
                                     </div>
                                     <div className="mb-3">

@@ -359,9 +359,9 @@ const AppointmentDetail = () => {
 				Back
 			</Button>
 			
-			<div className="row">
+			<div style = {{ display : 'flex' , justifyContent : 'center' , alignContent: 'flex-start'}}>
 				{/* Appointment and Patient Info Section */}
-				<div className="col-lg-8">
+				<div className="col-lg-9">
 					<div className="card mb-4">
 						<div className="card-header bg-primary text-white">
 							<h5>Patient Details</h5>
@@ -383,7 +383,7 @@ const AppointmentDetail = () => {
 					</div>
 
 					{/* Treatment and Prescription History */}
-					<div className="card mb-4">
+					<div className="card mb-4 ">
 						<div className="card-header bg-success text-white d-flex justify-content-between">
 							<h5>Treatment and Prescription History</h5>
 							{appointment?.status !== "closed" && (
@@ -400,27 +400,9 @@ const AppointmentDetail = () => {
 							)}
 						</div>
 						<div className="card-body">
-							{prescriptionForm && (
-								<PrescriptionForm
-									onSubmit={handleFormSubmit}
-									existingPrescriptions={selectedPrescription} // Pass the selected prescription for editing
-									onCancel={handleCancel}
-									appId={appointment?._id}
-									patient={appointment?.patient._id}
-									doctor={appointment?.doctor._id}
-									medicines={medicines}
-									detailsVacApp={detailsVacApp}
-								/>
-							)}
+							
 
-							{vitalSignsForm && (
-								<VitalSignsForm
-									onSubmit={handleVitalSignsSubmit}
-									existingVitals={selectedVitalSign}
-									handleCancel={handleVitalCancel}
-									appId={appointment._id}
-								/>
-							)}
+							
 							{PsychologicalForm && (
 								<div style={styles.container}>
 									<h2 style={styles.header}>
@@ -533,7 +515,7 @@ const AppointmentDetail = () => {
 											<strong>Vital Signs</strong>
 										</div>
 										<div>
-											<table className="table table-bordered">
+											{/* <table className="table table-bordered">
 												<thead>
 													<tr>
 														<th>Weight (kg)</th>
@@ -584,29 +566,23 @@ const AppointmentDetail = () => {
 														</td>
 													</tr>
 												</tbody>
-											</table>
-											{appointment?.status !==
-												"closed" && (
-												<div>
-													<PencilSquare
-														size={24}
-														className="me-2"
-														style={{
-															cursor: "pointer",
-															color: "blue",
-														}}
-														onClick={() =>
-															handleEditVitalSigns()
-														} // Trigger edit form
-													/>
-												</div>
-											)}
+											</table> */}
+											
+								<VitalSignsForm
+									onSubmit={handleVitalSignsSubmit}
+									existingVitals={appointment?.vitalSigns}
+									handleCancel={handleVitalCancel}
+									appId={appointment?._id}
+									status={appointment?.status}
+									
+								/>
+							
 										</div>
 									</div>
 
 									{/* Prescriptions Section */}
 									<h6 className="mt-3">
-										<strong>Prescriptions:</strong>
+										<strong>Prescriptions: <button  style={{ padding : '5px' , border : 'none'}} onClick={() => setPrescriptionForm(true)}><i className="fa fa-plus"/></button></strong>
 									</h6>
 									<table className="table table-bordered">
 										<thead>
@@ -661,7 +637,7 @@ const AppointmentDetail = () => {
 																			handleEditPrescription(
 																				idx
 																			)
-																		} // Trigger edit form
+																		} 
 																	/>
 																	<Trash
 																		size={
@@ -685,6 +661,19 @@ const AppointmentDetail = () => {
 										</tbody>
 									</table>
 								</div>
+
+								{prescriptionForm && (
+								<PrescriptionForm
+									onSubmit={handleFormSubmit}
+									existingPrescriptions={selectedPrescription} // Pass the selected prescription for editing
+									onCancel={handleCancel}
+									appId={appointment?._id}
+									patient={appointment?.patient._id}
+									doctor={appointment?.doctor._id}
+									medicines={medicines}
+									detailsVacApp={detailsVacApp}
+								/>
+							)}
 								{/* <PrintLayout html={prescription}></PrintLayout> */}
 								
                                <div className="print-button d-flex justify-content-end mt-3">

@@ -44,7 +44,7 @@ const InvoiceModal = ({ show, onClose }) => {
     let totalCost = 0, totalDiscount = 0, totalTax = 0;
     treatments.forEach((treatment) => {
       totalCost += treatment.unit * treatment.cost;
-      totalDiscount += (treatment.unit * treatment.cost * treatment.discount) / 100;
+      totalDiscount += treatment.discount;
       totalTax += (treatment.unit * treatment.cost * treatment.tax) / 100;
     });
     return { totalCost, totalDiscount, totalTax };
@@ -154,7 +154,7 @@ const InvoiceModal = ({ show, onClose }) => {
                         <th>Treatment</th>
                         <th>Unit</th>
                         <th>Cost (₹)</th>
-                        <th>Discount (%)</th>
+                        <th>Deduct (₹)</th>
                         <th>Tax (%)</th>
                         <th>Total (₹)</th>
                         <th>Actions</th>
