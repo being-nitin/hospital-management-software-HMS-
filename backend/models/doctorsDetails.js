@@ -2,10 +2,6 @@ const mongoose =  require('mongoose')
 const { ObjectId } = mongoose.Schema;
 
 
-
-
-
-
 const doctorsDetails = mongoose.Schema(
     {
         user: {

@@ -22,6 +22,7 @@ import header from "../assets/header.PNG";
 import PrintLayout from "../core/printLayout";
 import { prescription } from "../utils/printformat";
 import InvoiceModal from "./modal/invoiceLayout";
+import { expensesDetails} from "../actions/expensesActions";
 
 const AppointmentDetail = () => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -60,7 +61,7 @@ const AppointmentDetail = () => {
 		impression: "",
 		suggestion: "",
 	});
-
+	const [activeTab, setActiveTab] = useState("appointment"); 
 	const dosageValue = ["½", "1"];
 	const instruction = ["before food", "after food"];
 
@@ -74,6 +75,10 @@ const AppointmentDetail = () => {
 		setFormType(type);
 		setShowModal(true);
 	};
+
+	
+	const expenseDetail = useSelector((state) => state.expenseDetail);
+	const { expense } = expenseDetail;
 
 	const closeModal = () => {
 		setShowModal(false);
@@ -136,6 +141,7 @@ const AppointmentDetail = () => {
 				},
 			})
 		);
+		dispatch(expensesDetails(id));
 		dispatch(detailsVacApp(id));
 		closeModal(); // Close modal after submit
 	};
@@ -154,6 +160,7 @@ const AppointmentDetail = () => {
 
 	useEffect(() => {
 		if (userInfo) {
+			dispatch(expensesDetails(id));
 			dispatch(detailsVacApp(id));
 			dispatch(listMedicines());
 		} else {
@@ -382,9 +389,27 @@ const AppointmentDetail = () => {
 							
 						</div>
 					</div>
-
+	
 					{/* Treatment and Prescription History */}
 					<div className="card mb-4 ">
+					<div className="container mt-4">
+      {/* Navigation Tabs */}
+      <div className="mb-4 text-right">
+        <button
+          className={`btn m-2  ${activeTab === "appointment" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setActiveTab("appointment")}>
+          Appointment
+        </button>
+        <button
+          className={`btn ${activeTab === "history" ? "btn-primary" : "btn-outline-primary"}`}
+          onClick={() => setActiveTab("history")}>
+          History
+        </button>
+      </div>
+	  </div>
+
+	  { activeTab === 'appointment' && (
+		<>
 						<div className="card-header bg-success text-white d-flex justify-content-between">
 							<h5>Treatment and Prescription History</h5>
 							{appointment?.status !== "closed" && (
@@ -400,10 +425,9 @@ const AppointmentDetail = () => {
 								</>
 							)}
 						</div>
+	 
 						<div className="card-body">
-							
-
-							
+				
 							{PsychologicalForm && (
 								<div style={styles.container}>
 									<h2 style={styles.header}>
@@ -624,7 +648,27 @@ const AppointmentDetail = () => {
 								/>
 							)}
 								{/* <PrintLayout html={prescription}></PrintLayout> */}
-								
+								<div className="container mt-4">
+      <h3 className="mb-4">Billing details</h3>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+			<th></th>
+            <th>Treatment Name</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expense.treatment && expense.treatment.length !== 0 && expense.treatment.map((treatment, index) => (
+            <tr key={treatment.id}>
+              <td>{index + 1}</td>
+              <td>{treatment.name}</td>
+              <td>₹{treatment.cost}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
                                <div className="print-button d-flex justify-content-end mt-3">
 								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>
                                   view
@@ -633,8 +677,12 @@ const AppointmentDetail = () => {
 								{/* Print Button */}
 							</div>
 						</div>
-					</div>
+						</>
+						 )}
 
+					</div>
+             {activeTab === 'history' && (
+				<>
 					{pastAppointments &&
 						pastAppointments.length !== 0 &&
 						pastAppointments.map((appointment, index) => (
@@ -766,6 +814,9 @@ const AppointmentDetail = () => {
 								<hr />
 							</div>
 						))}
+							</>
+						)}
+					
 				</div>
 
 				<MedicalHistoryForm

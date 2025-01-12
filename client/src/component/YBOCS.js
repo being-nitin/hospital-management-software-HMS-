@@ -72,6 +72,7 @@ const YBOCS = () => {
 			updateVacApp({
 				_id: appointment._id,
 				ybocs: {
+					...appointment?.ybocs,
 					info: form2Data,
 					score: calculateSum(),
 				},
