@@ -12,7 +12,6 @@ const YBOCS = () => {
 	const [form2Data, setForm2Data] = useState({
 		fields: Array(10).fill(null),
 	});
-	const [totalScore, setTotalScore] = useState(0);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -34,12 +33,18 @@ const YBOCS = () => {
 		}
 	}, [appointment]);
 
-	useEffect(() => {
-		if (existingData) {
-			setForm2Data(existingData);
-		}
-	}, [existingData]);
-
+	
+			useEffect(() => {
+				if (existingData) {
+					// Populate form2Data.fields with existing YBOCS data
+					setForm2Data((prevData) => ({
+						...prevData,
+						fields: existingData.fields || Array(10).fill(null), // Default to null if no existing data
+					}));
+				}
+			}, [existingData]);
+			
+	 
 	const handleRadioChange = (index, value) => {
 		setForm2Data((prevData) => {
 			const updatedFields = [...prevData.fields];
@@ -48,10 +53,12 @@ const YBOCS = () => {
 		});
 	};
 
-	console.log(form2Data);
-	const fieldNames = YBOCS_DATA["Obsessive thoughts"]
-		.concat(YBOCS_DATA["Compulsive Behaviors"])
-		.map(({ fieldName }) => fieldName);
+	const calculateSum = () => {
+		return form2Data.fields.reduce(
+			(acc, value) => acc + (Number(value) || 0),
+			0
+		);
+	};
 
 	const handeFormSubmit = (e) => {
 		e.preventDefault();
@@ -66,10 +73,7 @@ const YBOCS = () => {
 				_id: appointment._id,
 				ybocs: {
 					info: form2Data,
-					score: Object.values(form2Data).reduce(
-						(acc, value) => acc + value,
-						0
-					),
+					score: calculateSum(),
 				},
 			})
 		);
@@ -77,9 +81,10 @@ const YBOCS = () => {
 		window.alert("You have successfully submitted the form.");
 	};
 
-	// const handleFormSubmit = () => {
-	// 	window.alert("You have successfully submitted the form.");
-	// };
+	const fieldNames = YBOCS_DATA["Obsessive thoughts"]
+		.concat(YBOCS_DATA["Compulsive Behaviors"])
+		.map(({ fieldName }) => fieldName);
+
 
 	return (
 		<>

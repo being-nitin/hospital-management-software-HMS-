@@ -367,7 +367,8 @@ const Psychodiagnostic = () => {
       {tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null},
       {tool : "YMRS", score : appointment?.ymrs ? appointment.ymrs.score : null},
       {tool : "CDRS", score : appointment?.cdrs ? appointment.cdrs.score : null},
-      {tool : "PANSS", score : appointment?.panss ? appointment.panss .score : null}]);
+      {tool : "PANSS", score : appointment?.panss ? appointment.panss.score : null},
+       {tool : "YBOCS",score : appointment?.ybocs ? appointment?.ybocs.score : null}])
 
     setToolOptions(tools.filter((tool) => tool.score !== null))
 
