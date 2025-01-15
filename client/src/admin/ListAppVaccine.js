@@ -173,7 +173,7 @@ const ListAppVaccine = () => {
 													app?.patient?.patientNumber}
 											</td>
 											<td>
-												{moment.utc(app.date).format("YYYY-MM-DD")}
+												{moment(app.date).format("YYYY-MM-DD")}
 											</td>
 											<td>{app.time}</td>
 											<td>

@@ -261,7 +261,11 @@ const InvoiceModal = ({ show, onClose }) => {
                   </select>
                 </div>
               </div>
+              
               <div className="modal-footer">
+              <button  className="btn btn-primary" onClick={()=>{ navigate(`/print-billing/${id}`)}}>
+                                        Print
+              </button>
                 <button className="btn btn-secondary" onClick={onClose}>
                   Close
                 </button>

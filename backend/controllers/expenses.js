@@ -1,6 +1,7 @@
 const expenses = require('../models/expenses')
 const asyncHandler  = require( 'express-async-handler')
 const User = require ('../models/user.js')
+const Appointment = require('../models/VaccineAppointment.js')
 
 exports.expenseById = asyncHandler (async (req, res, next, id) => {
 
@@ -17,18 +18,46 @@ exports.expenseById = asyncHandler (async (req, res, next, id) => {
 
 
 
+
 exports.creatExpense = asyncHandler(async (req, res) => {
-    //console.log(req.body)
-    const expense = new expenses(req.body);
-    await expense.save((err, data) => {
-        if (err) {
+    try {
+        // Create and save the expense
+        const expense = new expenses(req.body);
+        const savedExpense = await expense.save();
+
+        console.log(savedExpense)
+        // Check if the appointment ID is provided in the request
+        if (!req.body.appointment) {
             return res.status(400).json({
-                error: err
+                message: "Appointment ID is required to associate the expense."
             });
         }
-        res.json({ data });
-    });
-})
+
+        // Find the appointment and push the expense ID to its billing array
+        const appointment = await Appointment.findById(req.body.appointment);
+        if (!appointment) {
+            return res.status(404).json({
+                message: "Appointment not found."
+            });
+        }
+
+        appointment.billing = savedExpense._id; // Push the expense ID to billing
+        await appointment.save(); // Save the updated appointment
+
+        // Respond with the newly created expense
+        res.status(201).json({ 
+            message: "Expense created and added to appointment billing successfully.",
+            expense: savedExpense,
+            appointment
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while creating the expense.",
+            error: error.message
+        });
+    }
+});
 
 
 exports.update = asyncHandler(async (req, res) => {

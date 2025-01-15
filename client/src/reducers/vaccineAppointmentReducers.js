@@ -44,7 +44,7 @@ export const vaccineAppCreateReducer = (state = {}, action) => {
         case CREATE_APPOINTMENT_VACCINE_FAIL:
             return { loading: false, error: action.payload }
         case CREATE_APPOINTMENT_VACCINE_RESET:
-            return {}
+            return { loading:  false , success : false , error : false }
         default:
             return state
     }

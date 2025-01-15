@@ -82,6 +82,7 @@ import PrintDetails from "./component/PrintDetails";
 import AddClinicalNotes from "./component/addClinicalNotes";
 import AssignRoles from "./component/AssignRoles";
 import PrintAppointments from "./component/view/printApointment";
+import ExpenseDetail from "./component/view/billing";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -106,7 +107,10 @@ const Routes = () => {
 						path="/update-cat-test/:catTestId"
 						element={<CatTestUpdate />}
 					/>
-
+                    <Route 
+					    path="/print-billing/:id"
+						element={<ExpenseDetail/>}
+						/>
 					<Route path="/billing/:id" element={<InvoiceLayout />} />
 					<Route
 						path="/update-test/:testId"

@@ -20,8 +20,8 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const [remarks, setRemarks] = useState("fever");
     const [selectedPatient, setSelectedPatient] = useState("")
     const [showModal, setShowModal] = useState(show)
-    const [durationValue, setDurationValue] = useState(1); 
-    const [durationUnit, setDurationUnit] = useState("hours"); 
+    
+    const [durationUnit, setDurationUnit] = useState("5 min"); 
     const [query, setQuery] = useState('');
     const [filteredResults, setFilteredResults] = useState([]);
     const [showList, setShowList] = useState(false);
@@ -40,8 +40,9 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const vaccineAppTaken = useSelector((state) => state.vaccineAppTaken);
     const { takes } = vaccineAppTaken;
 
+
     const vaccineAppCreate = useSelector((state) => state.vaccineAppCreate);
-    const { loading, success } = vaccineAppCreate;
+    const { loading, success , error} = vaccineAppCreate;
 
     const patientList = useSelector((state) => state.patientList )
     const { patients } = patientList
@@ -50,12 +51,9 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const handleInputChange = (e) => {
       const input = e.target.value;
       setQuery(input);
+
+      dispatch(listPatients({ firstName : input}))
   
-      
-       dispatch(listPatients({ firstName : input}))
-      
-  
-      // Show the list if there's input
       setShowList(input.length > 0);
     };
 
@@ -84,16 +82,15 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     }, [dispatch, userInfo]);
 
     useEffect(()=> {
-        console.log(selectedDate)
       setDate(selectedDate)
     },[])
 
    
     const submitHandler = (e) => {
         e.preventDefault();
-        try {
+        
             const patient = patientId ? patientId : selectedPatient;
-            const duration = `${durationValue} ${durationUnit}`; // Combine value and unit
+            const duration = `${durationUnit}`; // Combine value and unit
             dispatch(
                 createVacApp({
                     patient,
@@ -105,13 +102,25 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                     duration, // Include duration
                 })
             );
-            navigate("/list-app-vaccine");
-            onClose();
-        } catch (err) {
-            alert(err);
-        }
-    };
+    }; 
 
+
+
+    useEffect(() => {
+        if (success) {
+          dispatch({ type: "CREATE_APPOINTMENT_VACCINE_RESET" }); 
+          alert("appointment created successfully ")
+          onClose();
+        }
+    
+        if (error) {
+            alert(error)
+            dispatch({ type: "CREATE_APPOINTMENT_VACCINE_RESET" });
+        }
+       
+      }, [success, error]);
+
+    
     return (
         <>
             {showModal && (
@@ -134,6 +143,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                         </div>
                                     </div>
                                 )}
+                               
                                 <form onSubmit={submitHandler}>
                                     { patientId  &&
                                     <div className="mb-3">
@@ -259,23 +269,31 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                     <div className="mb-3">
                                         <label className="form-label" style={{ fontWeight: 700 }}>Duration</label>
                                         <div className="d-flex gap-2">
-                                            <input
-                                                type="number"
-                                                value={durationValue}
-                                                onChange={(e) => setDurationValue(e.target.value)}
-                                                min="1"
-                                                className="form-control"
-                                                style={{ maxWidth: "100px" }}
-                                            />
-                                            <select
-                                                value={durationUnit}
-                                                onChange={(e) => setDurationUnit(e.target.value)}
-                                                className="form-control"
-                                                style={{ maxWidth: "150px" }}
-                                            >
-                                                <option value="minutes">Minutes</option>
-                                                <option value="hours">Hours</option>
-                                            </select>
+                                        <select
+  value={durationUnit}
+  onChange={(e) => setDurationUnit(e.target.value)}
+  className="form-control"
+  style={{ maxWidth: "150px" }}
+>
+  <option value="5 min">5 min</option>
+  <option value="10 min">10 min</option>
+  <option value="15 min">15 min</option>
+  <option value="30 min">30 min</option>
+  <option value="45 min">45 min</option>
+  <option value="1 hr">1 hr</option>
+  <option value="1 hr 30 min">1 hr 30 min</option>
+  <option value="1 hr 45 min">1 hr 45 min</option>
+  <option value="2 hr">2 hr</option>
+  <option value="2 hr 30 min">2 hr 30 min</option>
+  <option value="2 hr 45 min">2 hr 45 min</option>
+  <option value="3 hr">3 hr</option>
+  <option value="3 hr 30 min">3 hr 30 min</option>
+  <option value="3 hr 45 min">3 hr 45 min</option>
+  <option value="4 hr">4 hr</option>
+  <option value="4 hr 30 min">4 hr 30 min</option>
+  <option value="4 hr 45 min">4 hr 45 min</option>
+</select>
+
                                         </div>
                                         </div>
                                     <div className="mb-3">

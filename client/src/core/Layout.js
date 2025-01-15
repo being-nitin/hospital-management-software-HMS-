@@ -812,7 +812,7 @@ const Layout = ({ title, children }) => {
 								marginBottom: "10px",
 							}}
 						>
-							{/* Back Arrow */}
+							{/* Back Arrow
 							<p
 								
 								style={{
@@ -825,7 +825,7 @@ const Layout = ({ title, children }) => {
 									navigate(-1); // Go back
 								}}></i>
 							</p>
-							{/* Forward Arrow */}
+							{/* Forward Arrow 
 							<p
 								onClick={() => {
 									navigate(1); // Go forward
@@ -838,7 +838,7 @@ const Layout = ({ title, children }) => {
 								aria-label="Go Forward"
 							>
 								<i className="fas fa-arrow-right"></i>
-							</p>
+							</p> */}
 						</div>
 						{/* Title */}
 						<h2

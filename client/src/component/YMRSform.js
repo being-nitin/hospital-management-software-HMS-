@@ -76,6 +76,7 @@ const YMRSform = () => {
 		dispatch(detailsVacApp(id));
 
 		window.alert("You have successfully submitted the form.");
+		navigate(`/PsychologicalForm/${id}`)
 	};
 	return (
 		<>

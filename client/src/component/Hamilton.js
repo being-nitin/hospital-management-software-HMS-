@@ -126,6 +126,7 @@ const Hamilton = () => {
 			})
 		);
 		dispatch(detailsVacApp(id));
+		navigate(`/PsychologicalForm/${id}`)
 	};
 
 	const handleFormSubmit = () => {

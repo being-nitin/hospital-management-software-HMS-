@@ -19,9 +19,9 @@ exports.vaccineAppointById = async (req, res, next, id) => {
 
 exports.getVaccineApp = asyncHandler(async (req, res) => {
     try{
-    const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor prescription")
+    const appointment = await VaccineAppointment.findById(req.params.id).populate("patient doctor prescription billing")
     
-    const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}, { doctor : appointment.doctor}]}).populate("patient doctor prescription")
+    const pastAppointments = await VaccineAppointment.find({$and :[{ patient : appointment.patient._id}, { _id : { $ne : appointment._id}}, { doctor : appointment.doctor}]}).populate("patient doctor prescription billing")
     
     if (appointment) {
         res.json({ pastAppointments ,appointment})
@@ -36,18 +36,79 @@ catch(err){
 })
 
 
+// Utility function to convert duration into minutes
+function convertDurationToMinutes(duration) {
+    const [hours, minutes] = duration.split(' ').reduce((acc, val) => {
+        if (val.includes('hr')) acc[0] += parseInt(val);
+        if (val.includes('min')) acc[1] += parseInt(val);
+        return acc;
+    }, [0, 0]);
+
+    return hours * 60 + minutes;
+}
+
+// Utility function to calculate the end time
+function calculateEndTime(startTime, durationInMinutes) {
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const startMinutes = hours * 60 + minutes;
+    const endMinutes = startMinutes + durationInMinutes;
+
+    const endHours = Math.floor(endMinutes / 60);
+    const endRemainingMinutes = endMinutes % 60;
+
+    return `${String(endHours).padStart(2, '0')}:${String(endRemainingMinutes).padStart(2, '0')}`;
+}
+
+
 
 exports.createVaccineApp = asyncHandler(async (req, res) => {
-    const appointment = new VaccineAppointment(req.body);
-    await appointment.save((err, data) => {
-        if (err) {
-            return res.status(400).json({
-                error: err
-            });
+    const { patient, doctor, date, time,status, duration, remarks } = req.body;
+
+    // Convert duration to minutes
+    const durationInMinutes = convertDurationToMinutes(duration);
+
+    // Calculate new appointment's end time
+    const newEndTime = calculateEndTime(time, durationInMinutes);
+
+    try {
+        // Fetch all appointments for the doctor on the same date
+        const existingAppointments = await VaccineAppointment.find({ doctor, date });
+
+        // Check for time conflicts
+        const conflict = existingAppointments.some((appointment) => {
+            const existingStartTime = appointment.time;
+            const existingDurationInMinutes = convertDurationToMinutes(appointment.duration);
+            const existingEndTime = calculateEndTime(existingStartTime, existingDurationInMinutes);
+
+            return (
+                (time >= existingStartTime && time < existingEndTime) || // New start time overlaps existing
+                (newEndTime > existingStartTime && newEndTime <= existingEndTime) || // New end time overlaps existing
+                (time <= existingStartTime && newEndTime >= existingEndTime) // New appointment fully overlaps existing
+            );
+        });
+
+        if (conflict) {
+            console.log(conflict)
+            return res.status(400).json({ error: 'Doctor already has an appointment during this time.' });
         }
-        res.json({ data });
-    });
-})
+
+        // Save the new appointment
+        const appointment = new VaccineAppointment({
+            patient,
+            doctor,
+            date,
+            time,
+            status,
+            duration,
+            remarks,
+        });
+
+        const savedAppointment = await appointment.save();
+        res.status(201).json({ data: savedAppointment });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error. Please try again later.' });
+    }
+});
 
 
 exports.read = (req, res) => {
@@ -61,7 +122,7 @@ exports.update = asyncHandler(async (req, res) => {
         const appointment = await VaccineAppointment.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
-        },).populate('doctor patient prescription')
+        },).populate('doctor patient prescription billing')
 
         if (!appointment) {
             return res.status(404).send()
@@ -109,23 +170,22 @@ exports.list = asyncHandler(async (req, res) => {
       }
     }
 
-    // Add filters for status and date if provided
     if (status) {
       field["status"] = status;
     }
 
     if (date) {
-        // Convert the provided date to the start and end of the day in UTC
-        const startDate = moment(date).startOf('day').utc().toDate(); // Start of the day in UTC
-        const endDate = moment(date).endOf('day').utc().toDate(); // End of the day in UTC
-    
+       
+        const startDate = moment(date).startOf('day').utc().toDate(); 
+        const endDate = moment(date).endOf('day').utc().toDate(); 
+        console.log(date)
         // Match documents where createdAt is within the day's range
-        field["createdAt"] = {
+        field["date"] = {
             $gte: startDate, // Start of the day
             $lte: endDate,   // End of the day
         };
     
-        console.log(field["createdAt"]); // Logs the query object
+        console.log(field["date"]); // Logs the query object
     }
     
 
@@ -139,8 +199,8 @@ exports.list = asyncHandler(async (req, res) => {
        
       console.log(field)
       // Query with pagination and filters
-      const data = await VaccineAppointment.find(field).sort({ createdAt : -1 })
-        .populate("patient doctor prescription")
+      const data = await VaccineAppointment.find(field).sort({ date : -1 })
+        .populate("patient doctor prescription  billing")
         .skip((pageNumber - 1) * pageSize)
         .limit(pageSize)
         .exec();

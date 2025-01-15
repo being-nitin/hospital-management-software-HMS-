@@ -247,6 +247,7 @@ const PANSSForm = () => {
 		);
 		dispatch(detailsVacApp(id));
 		alert("You have successfully submitted the form.");
+		navigate(`/PsychologicalForm/${id}`)
 	};
 
 	return (

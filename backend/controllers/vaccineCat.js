@@ -3,9 +3,6 @@ const asyncHandler  = require( 'express-async-handler')
 
 
 
-
-
-
 exports.vaccineCatById = async (req, res, next, id) => {
 
     await Vaccine.findById(id).exec((err, vaccine) => {

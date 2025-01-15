@@ -24,7 +24,7 @@ const VaccineAppointment = mongoose.Schema(
         status: {
             type: String,
             default: "pending",
-            enum: ["Scheduled", "pending", "closed"] // enum means string objects
+            enum: ["Scheduled", "pending", "closed"] 
         },
         remarks: {
             type: String,
@@ -38,6 +38,10 @@ const VaccineAppointment = mongoose.Schema(
         }], 
         psychodiagnostic :{
              type : Object
+        },
+        billing : {
+            type : mongoose.ObjectId,
+            ref : 'expenses'
         },
         hamA : {
             type : Object

@@ -659,7 +659,7 @@ const AppointmentDetail = () => {
           </tr>
         </thead>
         <tbody>
-          {expense.treatment && expense.treatment.length !== 0 && expense.treatment.map((treatment, index) => (
+          {expense && expense.treatment && expense.treatment.length !== 0 && expense.treatment.map((treatment, index) => (
             <tr key={treatment.id}>
               <td>{index + 1}</td>
               <td>{treatment.name}</td>
@@ -675,7 +675,7 @@ const AppointmentDetail = () => {
                                 </Button>
 								</div>
 								{/* Print Button */}
-							</div>
+							</div>	
 						</div>
 						</>
 						 )}
@@ -806,6 +806,27 @@ const AppointmentDetail = () => {
 									</tbody>
 								</table>
 
+								<div className="container mt-4">
+      <h3 className="mb-4">Billing details</h3>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+			<th></th>
+            <th>Treatment Name</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointment.billing && appointment.billing.treatment && appointment.billing.treatment.length !== 0 && appointment.billing.treatment.map((treatment, index) => (
+            <tr key={treatment.id}>
+              <td>{index + 1}</td>
+              <td>{treatment.name}</td>
+              <td>₹{treatment.cost}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
 								<div className="print-button d-flex justify-content-end mt-3">
 								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>
                                   view

@@ -121,6 +121,7 @@ const InvoiceLayout = () => {
     if (settings?.data.treatment) {
       setTreatmentList(settings.data.treatment);
     }
+
   }, [settings]);
 
   return (
@@ -295,6 +296,9 @@ const InvoiceLayout = () => {
             <option value="Paid">Paid</option>
           </select>
         </div>
+        <button className="btn btn-success" onClick={() => navigate(`/print-billing/${id}`)}>
+            print
+          </button>
         <div className="d-flex justify-content-between">
           <button className="btn btn-secondary">Cancel</button>
           <button className="btn btn-success" onClick={submitHandler}>

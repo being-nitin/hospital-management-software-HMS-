@@ -61,8 +61,8 @@ export const createVacApp = (app) => async (dispatch, getState) => {
         })
     } catch (error) {
         console.log(error.response)
-        console.log(error.response.data.error.message)
-        const message = error.response.data.error.message
+        console.log(error.response.data.error)
+        const message = error.response.data.error
         if (message === 'Not authorized, token failed') {
             dispatch(logout())
         }

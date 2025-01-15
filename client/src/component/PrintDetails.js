@@ -7,14 +7,15 @@ import { useNavigate } from "react-router-dom";
 const PrintDetails = () => {
     const canvasRef = useRef(null);
     const [text, setText] = useState("");
-    const [alignment, setAlignment] = useState("left"); // New state for text alignment
+    const [alignment, setAlignment] = useState("left");
     const [headerImage, setHeaderImage] = useState(null);
     const [footerImage, setFooterImage] = useState(null);
-    const [LogoImage, setLogoImage] = useState(null);
-    const [header, setHeader] = useState(null);
-    const [footer, setFooter] = useState(null);
-    const [logo, setLogo] = useState(null);
+    const [logoImage, setLogoImage] = useState(null);
+    const [headerFile, setHeaderFile] = useState(null);
+    const [footerFile, setFooterFile] = useState(null);
+    const [logoFile, setLogoFile] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("prescription");
+    const ref = useRef();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -31,43 +32,48 @@ const PrintDetails = () => {
         } else {
             navigate("/signin");
         }
-    }, [dispatch, userInfo, navigate, selectedCategory]);
+    }, [dispatch, userInfo, navigate]);
 
-    useEffect(() => {
-        if (settings && settings.data && settings.data[selectedCategory]) {
-            setText(settings.data.printText);
-            setHeaderImage(settings.data[selectedCategory].header || null);
-            setLogoImage(settings.data[selectedCategory].logo || null);
-            setFooterImage(settings.data[selectedCategory].footer || null);
-        } else {
-            setText("");
-            setHeaderImage(null);
-            setLogoImage(null);
-            setFooterImage(null);
-        }
-    }, [settings]);
+    const reset = () => {
+        ref.current.value = "";
+      };
+useEffect(() => {
+    if (settings?.data?.[selectedCategory]) {
+        const categorySettings = settings.data[selectedCategory];
+        setText(settings.data.printText || "");
+        setHeaderImage(categorySettings.header || null);
+        setFooterImage(categorySettings.footer || null);
+        setLogoImage(categorySettings.logo || null);
+    } else {
+        setText("");
+        setHeaderImage(null);
+        setFooterImage(null);
+        setLogoImage(null);
+    }
+
+    // Clear file inputs on category change
+    setHeaderFile(null);
+    setFooterFile(null);
+    setLogoFile(null);
+    ref.current.value = ""
+}, [selectedCategory]);
 
     useEffect(() => {
         updateCanvas();
-    }, [text, headerImage, footerImage, LogoImage, alignment]); // Include alignment in dependencies
+    }, [text, headerImage, footerImage, logoImage, alignment]);
 
     const updateCanvas = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const context = canvas.getContext("2d");
-
-            // Adjust for high-DPI screens
             const scale = window.devicePixelRatio || 1;
             canvas.width = 600 * scale;
             canvas.height = 800 * scale;
             canvas.style.width = "600px";
             canvas.style.height = "800px";
             context.scale(scale, scale);
-
-            // Clear the canvas
             context.clearRect(0, 0, canvas.width / scale, canvas.height / scale);
 
-            // Draw header image
             if (headerImage) {
                 const img = new Image();
                 img.onload = () => {
@@ -78,7 +84,6 @@ const PrintDetails = () => {
                 img.src = headerImage;
             }
 
-            // Draw footer image
             if (footerImage) {
                 const img = new Image();
                 img.onload = () => {
@@ -95,13 +100,11 @@ const PrintDetails = () => {
                 img.src = footerImage;
             }
 
-            // Draw text with alignment
             context.fillStyle = "#000000";
             context.font = `16px Roboto, sans-serif`;
-            context.textAlign = alignment; // Use the alignment state
+            context.textAlign = alignment;
             const textYPosition = canvas.height / scale - 100;
 
-            // Adjust X position based on alignment
             const textXPosition =
                 alignment === "left"
                     ? 50
@@ -111,8 +114,7 @@ const PrintDetails = () => {
 
             context.fillText(text, textXPosition, textYPosition);
 
-            // Draw logo image
-            if (LogoImage) {
+            if (logoImage) {
                 const img = new Image();
                 img.onload = () => {
                     const logoWidth = 200;
@@ -121,12 +123,11 @@ const PrintDetails = () => {
                     const yPosition = canvas.height / scale - logoHeight - 150;
                     context.drawImage(img, xPosition, yPosition, logoWidth, logoHeight);
                 };
-                img.src = LogoImage;
+                img.src = logoImage;
             }
         }
     };
-    
-    
+
     const handleImageUpload = (e, setImage, setFile) => {
         const file = e.target.files[0];
         if (file) {
@@ -141,20 +142,15 @@ const PrintDetails = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        let options = {};
-        if (header) {
-            options["header"] = header;
-        }
-        if (footer) {
-            options["footer"] = footer;
-        }
-        if (logo) {
-            options["logo"] = logo;
-        }
-        options["printText"] = text;
+        const options = {
+            header: headerFile,
+            footer: footerFile,
+            logo: logoFile,
+            printText: text,
+        };
         dispatch(updateSetting(selectedCategory, options));
-        alert("form submitted")
+        alert("Form submitted successfully");
+        reset()
     };
 
     return (
@@ -162,7 +158,7 @@ const PrintDetails = () => {
             <h1 style={{ textAlign: "center" }}>Print Details</h1>
             <div style={styles.container}>
                 <form onSubmit={handleSubmit}>
-                    <div style={{ width: "100%", marginTop: "20px" }}>
+                    <div>
                         <label htmlFor="category">Category:</label>
                         <select
                             id="category"
@@ -177,8 +173,8 @@ const PrintDetails = () => {
                             <option value="expense">Expense</option>
                         </select>
                     </div>
-                    <label htmlFor="text">Text:</label>
-                    <div style={{ width: "100%" }}>
+                    <div>
+                        <label htmlFor="text">Text:</label>
                         <textarea
                             id="text"
                             value={text}
@@ -201,34 +197,39 @@ const PrintDetails = () => {
                             <option value="right">Right</option>
                         </select>
                     </div>
-                    <div style={{ width: "100%", marginTop: "20px" }}>
+                    <div>
                         <label htmlFor="headerImage">Header Image:</label>
                         <input
                             id="headerImage"
                             type="file"
+                            ref={ref}
                             style={styles.input}
                             accept="image/*"
-                            onChange={(e) => handleImageUpload(e, setHeaderImage, setHeader)}
+                            onChange={(e) => handleImageUpload(e, setHeaderImage, setHeaderFile)}
                         />
                     </div>
-                    <div style={{ width: "100%", marginTop: "20px" }}>
-                        <label htmlFor="LogoImage">Logo Image:</label>
+                    <div>
+                        <label htmlFor="logoImage">Logo Image:</label>
                         <input
-                            id="LogoImage"
+                            id="logoImage"
                             type="file"
                             style={styles.input}
                             accept="image/*"
-                            onChange={(e) => handleImageUpload(e, setLogoImage, setLogo)}
+                            onChange={(e) => handleImageUpload(e, setLogoImage, setLogoFile)}
                         />
                     </div>
-                    <div style={{ width: "100%", marginTop: "20px" }}>
+                    <div>
                         <label htmlFor="footerImage">Footer Image:</label>
                         <input
                             id="footerImage"
                             type="file"
                             style={styles.input}
                             accept="image/*"
-                            onChange={(e) => handleImageUpload(e, setFooterImage, setFooter)}
+                            ref ={ref}
+                            onChange={(e) => {
+                                setFooterFile(null)
+                                handleImageUpload(e, setFooterImage, setFooterFile)
+                            }}
                         />
                     </div>
                     <button className="btn btn-primary mt-4 w-25">Submit</button>

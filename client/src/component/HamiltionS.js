@@ -251,6 +251,7 @@ const HamiltonDepressionForm = () => {
 			})
 		);
 		dispatch(detailsVacApp(id));
+		navigate(`/PsychologicalForm/${id}`)
 	};
 	const handleFormSubmit = () => {
 		window.alert("You have successfully submitted the form.");
