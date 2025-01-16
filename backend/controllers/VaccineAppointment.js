@@ -75,22 +75,22 @@ exports.createVaccineApp = asyncHandler(async (req, res) => {
         const existingAppointments = await VaccineAppointment.find({ doctor, date });
 
         // Check for time conflicts
-        const conflict = existingAppointments.some((appointment) => {
-            const existingStartTime = appointment.time;
-            const existingDurationInMinutes = convertDurationToMinutes(appointment.duration);
-            const existingEndTime = calculateEndTime(existingStartTime, existingDurationInMinutes);
+        // const conflict = existingAppointments.some((appointment) => {
+        //     const existingStartTime = appointment.time;
+        //     const existingDurationInMinutes = convertDurationToMinutes(appointment.duration);
+        //     const existingEndTime = calculateEndTime(existingStartTime, existingDurationInMinutes);
 
-            return (
-                (time >= existingStartTime && time < existingEndTime) || // New start time overlaps existing
-                (newEndTime > existingStartTime && newEndTime <= existingEndTime) || // New end time overlaps existing
-                (time <= existingStartTime && newEndTime >= existingEndTime) // New appointment fully overlaps existing
-            );
-        });
+        //     return (
+        //         (time >= existingStartTime && time < existingEndTime) || // New start time overlaps existing
+        //         (newEndTime > existingStartTime && newEndTime <= existingEndTime) || // New end time overlaps existing
+        //         (time <= existingStartTime && newEndTime >= existingEndTime) // New appointment fully overlaps existing
+        //     );
+        // });
 
-        if (conflict) {
-            console.log(conflict)
-            return res.status(400).json({ error: 'Doctor already has an appointment during this time.' });
-        }
+        // if (conflict) {
+        //     console.log(conflict)
+        //     return res.status(400).json({ error: 'Doctor already has an appointment during this time.' });
+        // }
 
         // Save the new appointment
         const appointment = new VaccineAppointment({

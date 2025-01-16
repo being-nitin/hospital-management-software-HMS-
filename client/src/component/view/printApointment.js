@@ -12,6 +12,7 @@ const options = [
   { id: 2, label: 'Prescription' },
   { id: 3, label: 'Vital Signs' },
   { id: 4, label: 'Additional Notes' },
+  {id : 5 , label : 'billing'}
 ];
 
 const PrintAppointments = () => {
@@ -145,6 +146,36 @@ const PrintAppointments = () => {
   </div>
   `: ' ' }
 
+  ${selectedOptions.includes('billing') ?`
+  <div style="margin-top: 16px; padding: 16px; border-radius: 4px; width: 100%; max-width: 800px;">
+  <h3 style="margin-bottom: 16px;">Billing details</h3>
+  <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+    <thead>
+      <tr style="background-color: #f9f9f9; border-bottom: 2px solid #ddd;">
+        <th style="padding: 8px; text-align: left; border-right: 1px solid #ddd;"></th>
+        <th style="padding: 8px; text-align: left; border-right: 1px solid #ddd;">Treatment Name</th>
+        <th style="padding: 8px; text-align: left;">Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${appointment.billing &&
+        appointment.billing.treatment &&
+        appointment.billing.treatment.length !== 0 &&
+        appointment.billing.treatment.map((treatment, index) => {
+          return (`
+          <tr key=${treatment.id} style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px; text-align: center; border-right: 1px solid #ddd;">
+              ${index + 1}
+            </td>
+            <td style="padding: 8px; text-align: left; border-right: 1px solid #ddd;">
+              ${treatment.name}
+            </td>
+            <td style="padding: 8px; text-align: left;">₹${treatment.cost}</td>
+          </tr>
+        `)})}
+    </tbody>
+  </table>
+</div>` : '' }
 
    ${selectedOptions.includes('Additional Notes') ? `
   <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Additional Notes:</h4>
@@ -155,6 +186,8 @@ const PrintAppointments = () => {
 
 `
 }
+
+console.log(appointment)
   return (
     <main style = {{ display : 'flex' , justifyContent : 'space-around' , alignContent : 'center'}}>
     <div>
@@ -244,6 +277,104 @@ const PrintAppointments = () => {
           </li>
         ))}
       </ul>
+
+      
+    <div
+      style={{
+        marginTop: "16px",
+        padding: "16px",
+        border: "1px solid #ddd",
+        borderRadius: "4px",
+        width: "100%",
+        maxWidth: "800px",
+      }}
+    >
+      { selectedOptions.includes('billing') ?  <>
+      <h3 style={{ marginBottom: "16px" }}>Billing details</h3>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          border: "1px solid #ddd",
+        }}
+      >
+        <thead>
+          <tr
+            style={{
+              backgroundColor: "#f9f9f9",
+              borderBottom: "2px solid #ddd",
+            }}
+          >
+            <th
+              style={{
+                padding: "8px",
+                textAlign: "left",
+                borderRight: "1px solid #ddd",
+              }}
+            ></th>
+            <th
+              style={{
+                padding: "8px",
+                textAlign: "left",
+                borderRight: "1px solid #ddd",
+              }}
+            >
+              Treatment Name
+            </th>
+            <th
+              style={{
+                padding: "8px",
+                textAlign: "left",
+              }}
+            >
+              Cost
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointment.billing &&
+            appointment.billing.treatment &&
+            appointment.billing.treatment.length > 0 &&
+            appointment.billing.treatment.map((treatment, index) => (
+              <tr
+                key={treatment.id}
+                style={{
+                  borderBottom: "1px solid #ddd",
+                }}
+              >
+                <td
+                  style={{
+                    padding: "8px",
+                    textAlign: "center",
+                    borderRight: "1px solid #ddd",
+                  }}
+                >
+                  {index + 1}
+                </td>
+                <td
+                  style={{
+                    padding: "8px",
+                    textAlign: "left",
+                    borderRight: "1px solid #ddd",
+                  }}
+                >
+                  {treatment.name}
+                </td>
+                <td
+                  style={{
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  ₹{treatment.cost}
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </>
+   : ''}
+   </div>
       <h4 style={{ color: '#424242', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Additional Notes:</h4>
       <p style={{ color: '#616161', fontSize: '14px', lineHeight: '1.6' }}>
         The patient is advised to rest for 5 days and report back for a follow-up checkup.

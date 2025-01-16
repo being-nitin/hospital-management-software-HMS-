@@ -2,10 +2,6 @@ const TestCat = require('../models/testCategory')
 const asyncHandler  = require( 'express-async-handler')
 
 
-
-
-
-
 exports.testcategoryById = (req, res, next, id) => {
     
     TestCat.findById(id).exec((err, category) => {

@@ -47,6 +47,7 @@ const ViewPDReport = () => {
   let psychodiagnostic = () => {
 
   return `
+  <div style= "padding : 16px;">
   <div className="border-radius: 8px; margin: 20px;">
    <div>
         <div >
@@ -208,6 +209,7 @@ ${selectedOptions.includes('behavioural info') ?`
    <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}</br><br/>`)}</p>
 </div>
 </div>
+<,/div>
   `
   }
 

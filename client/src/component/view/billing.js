@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { expensesDetails } from "../../actions/expensesActions"
 import { detailsVacApp } from "../../actions/vaccineAppointmentActions";
- import moment from "moment";
+import moment from "moment";
 import PrintLayout from "../../core/printLayout";
 
 const ExpenseDetail = () => {
@@ -11,7 +11,7 @@ const ExpenseDetail = () => {
   const { id } = useParams(); // Extract the expense ID from the route
 
   // Access expense details from the Redux store
-const expenseDetail = useSelector((state) => state.expenseDetail);
+  const expenseDetail = useSelector((state) => state.expenseDetail);
   const { expense } = expenseDetail;
 
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
@@ -27,13 +27,14 @@ const expenseDetail = useSelector((state) => state.expenseDetail);
 
  
   const expenseview = () =>{
-       return `<div style="border-bottom: 1px solid #ccc; padding-bottom: 16px;">
+       return `<div style = "padding : 24px;">
+       <div style="border-bottom: 1px solid #ccc; padding-bottom: 16px;">
   <h5>Appointment with ${appointment?.doctor.name}</h5>
   <p>${moment(appointment?.created_at).format("Do MMMM, hh:mm A")}</p>
 </div>
 
 <div style="margin-top: 24px;">
-  <h6>Invoice</h6>
+  <h4>Invoice</h4>
   <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
     <thead>
       <tr style="background-color: #f9f9f9;">
@@ -67,7 +68,7 @@ const expenseDetail = useSelector((state) => state.expenseDetail);
 </div>
 
 <div style="margin-top: 24px; border-top: 1px solid #ccc; padding-top: 16px;">
-  <h6>Summary</h6>
+  <h4>Summary</h4>
   <div style="display: flex; justify-content: space-between;">
     <div>
       <p>Total Cost: ₹${expense?.totalCost}</p>
@@ -81,9 +82,10 @@ const expenseDetail = useSelector((state) => state.expenseDetail);
 </div>
 
 <div style="margin-top: 24px; border-top: 1px solid #ccc; padding-top: 16px;">
-  <h6>Payment</h6>
+  <h4>Payment</h4>
   <p>Payment Method: ${expense?.paymentMethod}</p>
   <p>Status: ${expense?.paid}</p>
+</div>
 </div>
 `
   }

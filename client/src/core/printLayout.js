@@ -49,18 +49,18 @@ const PrintLayout = ({ children , html , data , category }) => {
               flex-direction: column;
               min-height: 100vh;
               z-index: 1;
-            
+              width : 100%;
             }
             .header, .footer {
               width: 100%;
               text-align: center;
-      
+              object-fit : fill;
             }
  .content {
     flex: 1;
     padding: 20px;
     margin: 0 auto;
-    width: 90%;
+    width: 70%;
     height: 500px; 
     z-index: 1;
     overflow: auto; 
@@ -97,7 +97,9 @@ const PrintLayout = ({ children , html , data , category }) => {
             }
             
             @media print {
+              @page { margin: 0;  }
              body {
+             width : 1230px;
             background-image: url(${Logo}); /* Inline base64 image for print */
             background-repeat: no-repeat;
             background-position: center;
@@ -109,14 +111,13 @@ const PrintLayout = ({ children , html , data , category }) => {
              
               .content {
          
-        width: 100%;
-        padding: 20px;
-        margin: 0 auto;
-        z-index: 1;
-        overflow: hidden;
-        
-
-    }
+               width: 100%;
+               margin: 0 auto;
+               padding-left : 20px;
+               z-index: 1;
+               overflow: hidden;
+               margin : 1.4 cm;
+              }
               .footer {
                position:fixed;
                 display: block;
@@ -133,7 +134,8 @@ const PrintLayout = ({ children , html , data , category }) => {
             <img src="${settings.data[`${category}`].header}" alt="Header" class="header" />
            ${html(data)}
             <img src=${Logo} class="backgroundLogo"></img>
-            <div class="content">${printContent.innerHTML}</div>
+            <div class="content">
+            ${printContent.innerHTML}<div>
             <div style = "margin-top : 90px; position: fixed;">
             <img src="${settings.data[`${category}`].footer}" alt="Footer" class="footer" />
             </div>
