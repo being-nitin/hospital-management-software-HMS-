@@ -86,7 +86,7 @@ const ExpenseDetail = () => {
   <p>Payment Method: ${expense?.paymentMethod}</p>
   <p>Status: ${expense?.paid}</p>
 </div>
-</div>
+
 `
   }
 

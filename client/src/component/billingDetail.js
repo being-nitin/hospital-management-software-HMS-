@@ -121,9 +121,20 @@ const InvoiceLayout = () => {
     if (settings?.data.treatment) {
       setTreatmentList(settings.data.treatment);
     }
-
+    else {
+      setTreatmentList([])
+    }
   }, [settings]);
 
+  useEffect(() => {
+    if (settings?.data.treatment) {
+      setTreatmentList(settings.data.treatment);
+    }
+    else {
+      setTreatmentList([])
+    }
+
+  },[])
   return (
     <div className="container mt-4">
       {/* Header Section */}

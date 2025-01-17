@@ -52,10 +52,14 @@ const PrintLayout = ({ children , html , data , category }) => {
               width : 100%;
             }
             .header, .footer {
+              position :fixed;
               width: 100%;
               text-align: center;
               object-fit : fill;
             }
+              .header {
+                top : 0px;
+              }
  .content {
     flex: 1;
     padding: 20px;
@@ -132,7 +136,9 @@ const PrintLayout = ({ children , html , data , category }) => {
         <body>
           <div class="print-container">
             <img src="${settings.data[`${category}`].header}" alt="Header" class="header" />
+            <div style= "margin-top: 400px;" >
            ${html(data)}
+           </div>
             <img src=${Logo} class="backgroundLogo"></img>
             <div class="content">
             ${printContent.innerHTML}<div>

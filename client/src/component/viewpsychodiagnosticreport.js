@@ -118,7 +118,7 @@ ${selectedOptions.includes('personal history') ? `
   `).join(',')}
 </div>`: ''}
 ${selectedOptions.includes('premorbid personality') ?`
-<h4 style = "page-break-before: always;">Premorbid Personality</h4>
+<h4 style = "page-break-before: always; margin-top : 400px;">Premorbid Personality</h4>
 <div>
   ${patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => `
     <div>
@@ -154,7 +154,7 @@ ${selectedOptions.includes('behavioural info') ?`
   `).join('')}
 </div>
 
-<h4 style = "page-break-before: always;">Memory</h4>
+<h4 style = "page-break-before: always;margin-top : 400px;">Memory</h4>
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
     <span style="margin-right: 10px;">
@@ -209,7 +209,7 @@ ${selectedOptions.includes('behavioural info') ?`
    <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}</br><br/>`)}</p>
 </div>
 </div>
-<,/div>
+</div>
   `
   }
 

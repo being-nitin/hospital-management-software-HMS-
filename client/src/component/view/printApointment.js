@@ -5,6 +5,7 @@ import {
 	detailsVacApp,
 	
 } from "../../actions/vaccineAppointmentActions";
+import moment from 'moment';
 import { useDispatch , useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 const options = [
@@ -146,36 +147,7 @@ const PrintAppointments = () => {
   </div>
   `: ' ' }
 
-  ${selectedOptions.includes('billing') ?`
-  <div style="margin-top: 16px; padding: 16px; border-radius: 4px; width: 100%; max-width: 800px;">
-  <h3 style="margin-bottom: 16px;">Billing details</h3>
-  <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
-    <thead>
-      <tr style="background-color: #f9f9f9; border-bottom: 2px solid #ddd;">
-        <th style="padding: 8px; text-align: left; border-right: 1px solid #ddd;"></th>
-        <th style="padding: 8px; text-align: left; border-right: 1px solid #ddd;">Treatment Name</th>
-        <th style="padding: 8px; text-align: left;">Cost</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${appointment.billing &&
-        appointment.billing.treatment &&
-        appointment.billing.treatment.length !== 0 &&
-        appointment.billing.treatment.map((treatment, index) => {
-          return (`
-          <tr key=${treatment.id} style="border-bottom: 1px solid #ddd;">
-            <td style="padding: 8px; text-align: center; border-right: 1px solid #ddd;">
-              ${index + 1}
-            </td>
-            <td style="padding: 8px; text-align: left; border-right: 1px solid #ddd;">
-              ${treatment.name}
-            </td>
-            <td style="padding: 8px; text-align: left;">₹${treatment.cost}</td>
-          </tr>
-        `)})}
-    </tbody>
-  </table>
-</div>` : '' }
+ 
 
    ${selectedOptions.includes('Additional Notes') ? `
   <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Additional Notes:</h4>
@@ -184,6 +156,67 @@ const PrintAppointments = () => {
   </p>` : ''}
 </div>
 
+ ${selectedOptions.includes('billing') ?`
+  <div style = "padding : 24px; page-break-before: always; margin-top : 400px;">
+       <div style="border-bottom: 1px solid #ccc; padding-bottom: 16px;">
+  <h5>Appointment with ${appointment?.doctor.name}</h5>
+  <p>${moment(appointment?.created_at).format("Do MMMM, hh:mm A")}</p>
+</div>
+
+<div style="margin-top: 24px; ">
+  <h4>Invoice</h4>
+  <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+    <thead>
+      <tr style="background-color: #f9f9f9;">
+        <th style="border: 1px solid #ddd; padding: 8px;">Treatment</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Unit</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Cost (₹)</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Discount (%)</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Tax (%)</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Total (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${appointment && appointment?.billing?.treatment
+        ?.map(
+          (item) => `
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.name}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.unit}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.cost}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.discount}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.tax}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${
+            item.unit * item.cost
+          }</td>
+        </tr>
+      `
+        )
+        .join("")}
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top: 24px; border-top: 1px solid #ccc; padding-top: 16px;">
+  <h4>Summary</h4>
+  <div style="display: flex; justify-content: space-between;">
+    <div>
+      <p>Total Cost: ₹${appointment && appointment?.billing?.totalCost}</p>
+      <p>Total Discount: ₹${appointment && appointment?.billing?.totalDiscount}</p>
+    </div>
+    <div>
+      <p>Total Tax: ₹${appointment && appointment?.billing?.totalTax}</p>
+      <p>Grand Total: ₹${appointment && appointment?.billing?.grandTotal}</p>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 24px; border-top: 1px solid #ccc; padding-top: 16px;">
+  <h4>Payment</h4>
+  <p>Payment Method: ${appointment && appointment?.billing?.paymentMethod}</p>
+  <p>Status: ${appointment && appointment?.billing?.paid}</p>
+</div>
+</div>` : '' }
 `
 }
 
@@ -289,97 +322,72 @@ console.log(appointment)
         maxWidth: "800px",
       }}
     >
-      { selectedOptions.includes('billing') ?  <>
-      <h3 style={{ marginBottom: "16px" }}>Billing details</h3>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          border: "1px solid #ddd",
-        }}
-      >
-        <thead>
-          <tr
-            style={{
-              backgroundColor: "#f9f9f9",
-              borderBottom: "2px solid #ddd",
-            }}
-          >
-            <th
-              style={{
-                padding: "8px",
-                textAlign: "left",
-                borderRight: "1px solid #ddd",
-              }}
-            ></th>
-            <th
-              style={{
-                padding: "8px",
-                textAlign: "left",
-                borderRight: "1px solid #ddd",
-              }}
-            >
-              Treatment Name
-            </th>
-            <th
-              style={{
-                padding: "8px",
-                textAlign: "left",
-              }}
-            >
-              Cost
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {appointment.billing &&
-            appointment.billing.treatment &&
-            appointment.billing.treatment.length > 0 &&
-            appointment.billing.treatment.map((treatment, index) => (
-              <tr
-                key={treatment.id}
-                style={{
-                  borderBottom: "1px solid #ddd",
-                }}
-              >
-                <td
-                  style={{
-                    padding: "8px",
-                    textAlign: "center",
-                    borderRight: "1px solid #ddd",
-                  }}
-                >
-                  {index + 1}
-                </td>
-                <td
-                  style={{
-                    padding: "8px",
-                    textAlign: "left",
-                    borderRight: "1px solid #ddd",
-                  }}
-                >
-                  {treatment.name}
-                </td>
-                <td
-                  style={{
-                    padding: "8px",
-                    textAlign: "left",
-                  }}
-                >
-                  ₹{treatment.cost}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </>
-   : ''}
+ 
+
    </div>
       <h4 style={{ color: '#424242', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Additional Notes:</h4>
       <p style={{ color: '#616161', fontSize: '14px', lineHeight: '1.6' }}>
         The patient is advised to rest for 5 days and report back for a follow-up checkup.
       </p>
     </div>
+    {selectedOptions.includes('billing') && (
+  <div style={{ padding: '24px', pageBreakBefore: 'always' }}>
+    <div style={{ borderBottom: '1px solid #ccc', paddingBottom: '16px' }}>
+      <h5>Appointment with {appointment?.doctor.name}</h5>
+      <p>{moment(appointment?.created_at).format('Do MMMM, hh:mm A')}</p>
+    </div>
+
+    <div style={{ marginTop: '24px' }}>
+      <h4>Invoice</h4>
+      <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ddd' }}>
+        <thead>
+          <tr style={{ backgroundColor: '#f9f9f9' }}>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Treatment</th>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Unit</th>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Cost (₹)</th>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Discount (%)</th>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Tax (%)</th>
+            <th style={{ border: '1px solid #ddd', padding: '8px' }}>Total (₹)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointment && appointment?.billing?.treatment?.map((item) => (
+            <tr key={item.id}>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.name}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.unit}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.cost}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.discount}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.tax}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                {item.unit * item.cost}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div style={{ marginTop: '24px', borderTop: '1px solid #ccc', paddingTop: '16px' }}>
+      <h4>Summary</h4>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <p>Total Cost: ₹{appointment && appointment?.billing?.totalCost}</p>
+          <p>Total Discount: ₹{appointment && appointment?.billing?.totalDiscount}</p>
+        </div>
+        <div>
+          <p>Total Tax: ₹{appointment && appointment?.billing?.totalTax}</p>
+          <p>Grand Total: ₹{appointment && appointment?.billing?.grandTotal}</p>
+        </div>
+      </div>
+    </div>
+
+    <div style={{ marginTop: '24px', borderTop: '1px solid #ccc', paddingTop: '16px' }}>
+      <h4>Payment</h4>
+      <p>Payment Method: {appointment && appointment?.billing?.paymentMethod}</p>
+      <p>Status: {appointment && appointment?.billing?.paid}</p>
+    </div>
+  </div>
+)}
     </div>
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h3 style={{ color: '#0288d1' }}>Select Sections:</h3>
@@ -412,7 +420,11 @@ console.log(appointment)
           <p style={{ color: '#616161', fontSize: '14px' }}>No options selected.</p>
         )}
       </div>
+
+
     </div>
+
+    
     </main>
   )
 }
