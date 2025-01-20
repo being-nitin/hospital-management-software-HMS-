@@ -23,7 +23,7 @@ const VaccineAppointment = mongoose.Schema(
         },
         status: {
             type: String,
-            default: "pending",
+            default: "Scheduled",
             enum: ["Scheduled", "pending", "closed"] 
         },
         remarks: {
@@ -64,6 +64,9 @@ const VaccineAppointment = mongoose.Schema(
         ybocs : {
             type : Object
         },
+        notes : {
+            type : String
+        }
     },
     { timestamps : true}
 )

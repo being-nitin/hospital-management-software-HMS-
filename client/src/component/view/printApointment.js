@@ -152,7 +152,7 @@ const PrintAppointments = () => {
    ${selectedOptions.includes('Additional Notes') ? `
   <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Additional Notes:</h4>
   <p style="color: #616161; font-size: 14px; line-height: 1.6;">
-    The patient is advised to rest for 5 days and report back for a follow-up checkup.
+    ${appointment && appointment.notes}
   </p>` : ''}
 </div>
 
@@ -327,7 +327,7 @@ console.log(appointment)
    </div>
       <h4 style={{ color: '#424242', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Additional Notes:</h4>
       <p style={{ color: '#616161', fontSize: '14px', lineHeight: '1.6' }}>
-        The patient is advised to rest for 5 days and report back for a follow-up checkup.
+        {appointment && appointment.notes}
       </p>
     </div>
     {selectedOptions.includes('billing') && (

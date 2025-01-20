@@ -117,7 +117,7 @@ const Menu = () => {
       onSubmit={handleSubmit}
     >
        <div className="mb-3">
-                                    <label className="form-label" style={{ fontWeight :700}}>Patient</label>
+       <label className="form-label" style={{ fontWeight :700}}>Patient</label>
                                     <input
         type="text"
         placeholder="Search..."
@@ -176,6 +176,11 @@ const Menu = () => {
     </form>
                     </div>
 					</div>
+					<Button type="primary m-3" onClick={() => {
+						   navigate('/add-patient-details')
+					}}>
+                      Add patient
+					</Button>
 					{window.location.pathname !== '/list-patients' && 
 					<Button type="primary" onClick={(e) => {
 						e.preventDefault()

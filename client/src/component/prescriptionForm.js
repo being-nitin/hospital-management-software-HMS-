@@ -17,7 +17,7 @@ const PrescriptionForm = ({
   const [prescriptions, setPrescriptions] = useState([]);
   const dispatch = useDispatch();
 
-  const dosageValues = ['0', '½', '1'];
+  const dosageValues = ['0', '½', '1' , '1½'];
   const instructions = ['Before Food', 'After Food', 'With Food'];
   
   useEffect(() => {
@@ -63,6 +63,11 @@ const PrescriptionForm = ({
     setPrescriptions([]);
   };
 
+  useEffect(() => {
+    if(!existingPrescriptions){
+     addPrescription()
+    }
+  },[])
   return (
     <Form onSubmit={savePrescriptions}>
       <Table bordered hover responsive>
@@ -144,6 +149,7 @@ const PrescriptionForm = ({
                   >
                     <option value="">Unit</option>
                     <option value="days">Days</option>
+                    <option value="weeks">Weeks</option>
                     <option value="months">Months</option>
                   </Form.Select>
                 </div>
@@ -180,7 +186,7 @@ const PrescriptionForm = ({
       <div className="d-flex justify-content-between">
         {!existingPrescriptions && (
         <Button variant="secondary" onClick={addPrescription}>
-          <Plus size={16} /> Add Prescription
+          <Plus size={16} /> Add Medicine
         </Button>)
 }
         <div>

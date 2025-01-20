@@ -62,6 +62,7 @@ const AppointmentDetail = () => {
 		suggestion: "",
 	});
 	const [activeTab, setActiveTab] = useState("appointment"); 
+	const [notes, setNotes] = useState("") 
 	const dosageValue = ["½", "1"];
 	const instruction = ["before food", "after food"];
 
@@ -204,6 +205,11 @@ const AppointmentDetail = () => {
 		dispatch(detailsVacApp(id));
 	};
 
+	const handleAddNote = () => {
+		dispatch(updateVacApp({_id : appointment._id , notes}))
+		dispatch(detailsVacApp(id));
+	}
+
 	// Handle printing the prescription
 	const appointmentRef = useRef();
 
@@ -244,6 +250,7 @@ const AppointmentDetail = () => {
 				? [...appointment?.patient?.medicalhistory]
 				: []
 		);
+		setNotes(appointment?.notes)
 	}, []);
 
 	const fieldNames = [
@@ -555,7 +562,7 @@ const AppointmentDetail = () => {
 
 									{/* Prescriptions Section */}
 									<h6 className="mt-3">
-										<strong>Prescriptions: <button  style={{ padding : '5px' , border : 'none'}} onClick={() => setPrescriptionForm(true)}><i className="fa fa-plus"/></button></strong>
+										<strong>Medicines: <button  style={{ padding : '5px' , border : 'none'}} onClick={() => setPrescriptionForm(true)}><i className="fa fa-plus"/></button></strong>
 									</h6>
 									<table className="table table-bordered">
 										<thead>
@@ -648,8 +655,8 @@ const AppointmentDetail = () => {
 								/>
 							)}
 								{/* <PrintLayout html={prescription}></PrintLayout> */}
-								<div className="container mt-4">
-      <h3 className="mb-4">Billing details</h3>
+								<div className="mt-4">
+      <h5 className="mb-4">Billing details</h5>
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -668,7 +675,20 @@ const AppointmentDetail = () => {
           ))}
         </tbody>
       </table>
+	  <h5>Additional Notes</h5>
+	  <textarea
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        placeholder="Write your notes here..."
+        style={{ width: '100%', height: '100px' }}
+      />
+      <br />
+      <button onClick={handleAddNote} style={{ padding: "5px", cursor: 'pointer' , marginTop : "10px"}}>
+        Add Note
+      </button>
     </div>
+
+	
                                <div className="print-button d-flex justify-content-end mt-3">
 								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>
                                   view
@@ -767,7 +787,7 @@ const AppointmentDetail = () => {
 
 								{/* Prescriptions Section as Table */}
 								<h6 className="mt-3">
-									<strong>Prescriptions:</strong>
+									<strong>Medicines:</strong>
 								</h6>
 								<table className="table table-bordered">
 									<thead>
@@ -806,8 +826,8 @@ const AppointmentDetail = () => {
 									</tbody>
 								</table>
 
-								<div className="container mt-4">
-      <h3 className="mb-4">Billing details</h3>
+								<div className="mt-4">
+      <h6 className="mb-4"><b>Billing details</b></h6>
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -826,6 +846,9 @@ const AppointmentDetail = () => {
           ))}
         </tbody>
       </table>
+
+	  <h6><b>Additional Notes</b></h6>
+	  <div> {appointment && appointment?.notes}</div>
     </div>
 								<div className="print-button d-flex justify-content-end mt-3">
 								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${appointment?._id}`)}>

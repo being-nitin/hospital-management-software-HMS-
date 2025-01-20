@@ -62,7 +62,7 @@ function calculateEndTime(startTime, durationInMinutes) {
 
 
 exports.createVaccineApp = asyncHandler(async (req, res) => {
-    const { patient, doctor, date, time,status, duration, remarks } = req.body;
+    const { patient, doctor, date, time, duration } = req.body;
 
     // Convert duration to minutes
     const durationInMinutes = convertDurationToMinutes(duration);
@@ -97,10 +97,8 @@ exports.createVaccineApp = asyncHandler(async (req, res) => {
             patient,
             doctor,
             date,
-            time,
-            status,
+            time,            
             duration,
-            remarks,
         });
 
         const savedAppointment = await appointment.save();

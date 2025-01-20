@@ -251,7 +251,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                         />
                                     </div>
                                     </div>
-                                    <div className="mb-3">
+                                    {/* <div className="mb-3">
                                         <label className="form-label m-3" style={{ fontWeight :700}}>Status</label>
                                         <select
                                             onChange={(e) => setStatus(e.target.value)}
@@ -265,7 +265,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                                     </option> 
                                                 ) : <></>)}
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div className="mb-3">
                                         <label className="form-label" style={{ fontWeight: 700 }}>Duration</label>
                                         <div className="d-flex gap-2">
@@ -296,16 +296,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
 
                                         </div>
                                         </div>
-                                    <div className="mb-3">
-                                        <label className="form-label" style={{ fontWeight :700}}>Remarks</label>
-                                        <select
-                                            className="form-control"
-                                            onChange={(e) => setRemarks(e.target.value)}
-                                        >
-                                            <option value="fever">Suffering from Fever</option>
-                                            <option value="flu">Suffering from Flu</option>
-                                        </select>
-                                    </div>
+                                 
                                     <button type="submit" className="btn btn-primary">
                                         Save
                                     </button>
