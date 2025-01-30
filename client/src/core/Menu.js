@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 import { useNavigate } from 'react-router-dom'
 import { listPatients } from "../actions/patientActions";
-import { Button } from "antd";
+import { Button , Dropdown} from "antd";
 import AddAppVaccineModal from "../component/modal/addAppointment";
 
 
@@ -46,7 +46,7 @@ const Menu = () => {
 		  const input = e.target.value;
 		  setQuery(input);
 	  
-		   dispatch(listPatients({ firstName : input}))
+		   dispatch(listPatients({ firstName : input , patientNumber : input}))
 		  
 		  setShowList(input.length > 0);
 		};
@@ -72,6 +72,17 @@ const Menu = () => {
 	  }
 	};
 
+	const items = [
+        {
+            key: 'add-appointment',
+            label: 'Add Appointment',
+            onClick: (e) => {
+                setShowModal(true);
+                setPatientId(null);
+            },
+        },
+    ];
+
 	return (
 		<>
 		{ showModal && (
@@ -90,7 +101,7 @@ const Menu = () => {
 				style={{
 					color: "black",
 					fontFamily: "Roboto sans-serif",
-					fontSize : '16px',
+					fontSize : '14px',
 					fontWeight :700
 				}}
 				
@@ -98,7 +109,6 @@ const Menu = () => {
 				Ravi Neuro - Psychiatry Centre
 			</Link>
 			<div className="container-fluid">
-
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -112,22 +122,22 @@ const Menu = () => {
 
                 <div className="collapse navbar-collapse" id="navbarNav">
 				<form
-      className="d-flex ms-auto me-3"
-      style={{ maxWidth: '300px', width: '100%' }}
-      onSubmit={handleSubmit}
-    >
+                   className="d-flex ms-auto me-3"
+                   style={{ maxWidth: '300px', width: '100%' }}
+                   onSubmit={handleSubmit}
+                >
        <div className="mb-3">
-       <label className="form-label" style={{ fontWeight :700}}>Patient</label>
-                                    <input
+        <input
         type="text"
-        placeholder="Search..."
+        placeholder=" Search..."
         value={query}
         onChange={handleInputChange}
         style={{
           width: '100%',
-          padding: '10px',
+          padding: '3px',
+		  marginTop : '25px',
           fontSize: '16px',
-          marginBottom: '10px',
+		  borderRadius : '10px'
         }}
       />
       {showList && (
@@ -162,7 +172,7 @@ const Menu = () => {
                   (e.target.style.backgroundColor = '#fff')
                 }
               >
-                {item.firstName}
+                {item.firstName + "-" + item.patientNumber}
               </li>
             ))
           ) : (
@@ -172,24 +182,19 @@ const Menu = () => {
           )}
         </ul>
       )}
-    </div>
+    </div> 
     </form>
                     </div>
+		<Dropdown.Button 
+            menu={{ items }} 
+            onClick={() => navigate('/add-patient-details')} 
+            type="primary" 
+            className="m-2 mb-3"
+        >
+            Add Patient
+        </Dropdown.Button>
 					</div>
-					<Button type="primary m-3" onClick={() => {
-						   navigate('/add-patient-details')
-					}}>
-                      Add patient
-					</Button>
-					{window.location.pathname !== '/list-patients' && 
-					<Button type="primary" onClick={(e) => {
-						e.preventDefault()
-						setShowModal(true)
-						setPatientId(null)
-					}
-					}>
-				     Appointment
-				</Button>}
+			
 			<ul className="navbar-nav ml-auto ml-md-0">
 				<li className="nav-item dropdown">
 					<a

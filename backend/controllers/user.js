@@ -191,15 +191,20 @@ exports.getUserDetails = asyncHandler(async (req, res) => {
 	try {
 		const users = await User.find().select("name email");
 		const doctors = await User.find({role : 1});
+		const staff = await User.find({ role : 2 })
 		const patients = await Patient.find().select("firstName ");
 		const expenses = await Expenses.find();
-		const appointments = await VaccineAppointment.find();
+		const appointmentlength = await VaccineAppointment.find().countDocuments();
+		const appointments = await VaccineAppointment.find({ doctor : req.user.role === 1 ? req.user._id :  null}).sort({ date : -1}).populate('patient').limit(3)
+
 		res.status(200).json({
 			users: users,
 			doctors: doctors,
 			patients: patients,
+			staff,
 			expenses: expenses,
-			appointments: appointments,
+			totalappointment: appointmentlength,
+			appointments
 		});
 	} catch (error) {
 		res.json({

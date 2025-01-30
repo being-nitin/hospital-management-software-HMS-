@@ -15,7 +15,7 @@ const {
 } = require("../controllers/user.js");
 const { protect, admin } = require("../middleware/authMiddleware.js");
 
-router.get("/details", getUserDetails);
+router.get("/details", protect, getUserDetails);
 
 router.get("/user/:userId", protect, getUserProfile);
 

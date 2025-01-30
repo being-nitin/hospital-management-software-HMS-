@@ -12,17 +12,18 @@ export const getDashboardData = () => async (dispatch, getState) => {
 		dispatch({
 			type: LIST_DASHBOARD_DATA_REQUEST,
 		});
-
+		
 		const {
 			userLogin: { userInfo },
 		} = getState();
 
+		
 		const config = {
 			headers: {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		};
-		const { data } = await axios.get(`${API}/details`, { config });
+		const { data } = await axios.get(`${API}/details`,  config );
 
 		dispatch({
 			type: LIST_DASHBOARD_DATA_SUCCESS,

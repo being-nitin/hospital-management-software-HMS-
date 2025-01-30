@@ -804,57 +804,21 @@ const Layout = ({ title, children }) => {
 			<div id="layoutSidenav_content">
 				<main>
 					<div className="container-fluid">
-						<div
-							style={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "left",
-								marginBottom: "10px",
-							}}
-						>
-							{/* Back Arrow
-							<p
-								
-								style={{
-									cursor: "pointer",
-									color: "#000",
-									margin: "5px",
-								}}
-							>
-								<i className="fas fa-arrow-left" onClick={() => {
-									navigate(-1); // Go back
-								}}></i>
-							</p>
-							{/* Forward Arrow 
-							<p
-								onClick={() => {
-									navigate(1); // Go forward
-								}}
-								style={{
-									cursor: "pointer",
-									color: "#000",
-									margin: "5px",
-								}}
-								aria-label="Go Forward"
-							>
-								<i className="fas fa-arrow-right"></i>
-							</p> */}
-						</div>
-						{/* Title */}
-						<h2
-							className=""
+						<h4
 							style={{
 								fontFamily: "Roboto, sans-serif",
 								fontWeight: "bold",
-								background: "linear-gradient(180deg, #eae8f4, white)", // Gradient for sidebar background
 								color: "#000",
 								paddingTop: "10px",
+								
 							}}
 						>
 							{title}
-						</h2>
+						</h4>
 						{/* Content */}
+						<div>
 						{children}
+						</div>
 					</div>
 				</main>
 			</div>

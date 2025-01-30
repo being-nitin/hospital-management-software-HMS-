@@ -83,6 +83,7 @@ import AddClinicalNotes from "./component/addClinicalNotes";
 import AssignRoles from "./component/AssignRoles";
 import PrintAppointments from "./component/view/printApointment";
 import ExpenseDetail from "./component/view/billing";
+import PatAppDetail from "./component/patientappdetails";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -191,6 +192,11 @@ const Routes = () => {
 					<Route
 						path="/list-app-vaccine/:id"
 						element={<AppointmentDetail />}
+					/>
+
+					<Route 
+					    path="/patient-app-details/:id"
+						element={<PatAppDetail />}
 					/>
 
 					<Route

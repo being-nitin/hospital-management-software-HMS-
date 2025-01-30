@@ -155,7 +155,7 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    const { status, date, page, limit } = req.query; // Pagination and filters
+    const { status, startDate , endDate , page, limit } = req.query; // Pagination and filters
 
     let field = {};
 
@@ -172,18 +172,11 @@ exports.list = asyncHandler(async (req, res) => {
       field["status"] = status;
     }
 
-    if (date) {
-       
-        const startDate = moment(date).startOf('day').utc().toDate(); 
-        const endDate = moment(date).endOf('day').utc().toDate(); 
-        console.log(date)
-        // Match documents where createdAt is within the day's range
+    if (startDate || endDate) {
         field["date"] = {
             $gte: startDate, // Start of the day
-            $lte: endDate,   // End of the day
+            $lte: endDate  // End of the day
         };
-    
-        console.log(field["date"]); // Logs the query object
     }
     
 
@@ -203,6 +196,7 @@ exports.list = asyncHandler(async (req, res) => {
         .limit(pageSize)
         .exec();
 
+        console.log(data)
       // Send paginated response
       return res.json({
         appointment: data,

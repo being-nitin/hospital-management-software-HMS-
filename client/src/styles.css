@@ -10046,7 +10046,7 @@ body {
     min-width: 0;
     flex-grow: 1;
     min-height: calc(100vh - 56px);
-    margin-left: -225px;
+    margin-left: -277px;
 }
 
 .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
@@ -10079,7 +10079,7 @@ body {
         transform: translateX(-225px);
     }
     .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
-        margin-left: -225px;
+        margin-left: -200px;
     }
     .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
         display: none;
