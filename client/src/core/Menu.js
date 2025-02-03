@@ -46,7 +46,7 @@ const Menu = () => {
 		  const input = e.target.value;
 		  setQuery(input);
 	  
-		   dispatch(listPatients({ firstName : input , patientNumber : input}))
+		   dispatch(listPatients({ firstName : input }))
 		  
 		  setShowList(input.length > 0);
 		};
@@ -73,14 +73,14 @@ const Menu = () => {
 	};
 
 	const items = [
-        {
-            key: 'add-appointment',
-            label: 'Add Appointment',
-            onClick: (e) => {
-                setShowModal(true);
-                setPatientId(null);
-            },
-        },
+       
+		{
+			key : ' add-patient',
+			label: ' Add Patient',
+			onClick: (e) =>{
+				navigate('/add-patient-details')
+			}
+		}
     ];
 
 	return (
@@ -187,11 +187,14 @@ const Menu = () => {
                     </div>
 		<Dropdown.Button 
             menu={{ items }} 
-            onClick={() => navigate('/add-patient-details')} 
+            onClick={() => {
+				setShowModal(true);
+                setPatientId(null);
+			}} 
             type="primary" 
             className="m-2 mb-3"
         >
-            Add Patient
+         Add Appointment
         </Dropdown.Button>
 					</div>
 			

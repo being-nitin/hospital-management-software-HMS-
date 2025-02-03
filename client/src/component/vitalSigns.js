@@ -26,7 +26,7 @@ const VitalSignsForm = ({ onSubmit, appId, existingVitals, handleCancel, status 
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit(vitalSigns);
+    onSubmit(vitalSigns, appId);
   };
 
   return (

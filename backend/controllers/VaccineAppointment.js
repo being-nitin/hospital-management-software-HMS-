@@ -155,8 +155,8 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    const { status, startDate , endDate , page, limit } = req.query; // Pagination and filters
-
+    const { status, startDate , endDate , page, limit , patient } = req.query; // Pagination and filters
+    console.log(patient)
     let field = {};
 
     // Check if userId is provided and find the user
@@ -172,6 +172,11 @@ exports.list = asyncHandler(async (req, res) => {
       field["status"] = status;
     }
 
+    if(patient) {
+        field["patient"] = patient
+    }
+
+    console.log("field" , field)
     if (startDate || endDate) {
         field["date"] = {
             $gte: startDate, // Start of the day

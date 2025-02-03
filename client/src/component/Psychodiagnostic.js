@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Layout from "../core/Layout";
 
 const suggestionsList = [
   "Psychoeducation",
@@ -454,6 +455,7 @@ const Psychodiagnostic = () => {
     };
 
   return (
+    < Layout>
     <>
     <div style={{ position : 'fixed' , top : 0 , backgroundColor : 'white' , width : '100%' , display : 'flex' , justifyContent : 'space-between' , alignItems :'center' }}>
     <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment?._id}`)} >View </button>
@@ -1405,6 +1407,7 @@ const Psychodiagnostic = () => {
         </button>
       </form>
     </>
+    </Layout>
   );
 };
 

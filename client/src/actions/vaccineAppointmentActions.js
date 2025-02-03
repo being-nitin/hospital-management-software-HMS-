@@ -74,8 +74,9 @@ export const createVacApp = (app) => async (dispatch, getState) => {
 }
 
 
-export const listVacApp = (page = null, limit = null, status = null, startDate = null , endDate = null) => async (dispatch, getState) => {
+export const listVacApp = (page = null, limit = null, status = null, startDate = null , endDate = null, patient=null) => async (dispatch, getState) => {
     try {
+
             dispatch({
                 type: LIST_APPOINTMENT_VACCINE_REQUEST,
             });
@@ -97,6 +98,7 @@ export const listVacApp = (page = null, limit = null, status = null, startDate =
             if (status) queryParams.append("status", status);
             if(startDate) queryParams.append("startDate" , startDate);
             if (endDate) queryParams.append("endDate", endDate);
+            if (patient) queryParams.append("patient", patient);
 
             // Make API request
             const { data } = await axios.get(

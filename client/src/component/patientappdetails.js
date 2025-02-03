@@ -19,6 +19,7 @@ import { PencilSquare, Trash } from "react-bootstrap-icons";
 import VitalSignsForm from "./vitalSigns";
 import MedicalHistoryForm from "./medicalHistoryForm";
 import { listMedicines } from "../actions/medicineActions";
+import { listPatients } from "../actions/patientActions";
 import dayjs from "dayjs";
 import InvoiceModal from "./modal/invoiceLayout";
 import Layout from "../core/Layout";
@@ -37,28 +38,29 @@ const PatAppDetail = () => {
 	const [allAppointments , setAllAppointments] = useState([])
 	const [medicalHistory, setMedicalHistory] = useState([]);
 	const [showBilling , setShowBilling] = useState(false)
-	const [total , setTotal] = useState(0)
-	const { id } = useParams(); 
+	const [total , setTotal] = useState(0) 
 	const [notes, setNotes] = useState("") 
 	const [filters, setFilters] = useState({
 		status: null,
 		date: null,
 	});
+	const [selectedPatient , setSelectedPatients] = useState(null)
+	const [content, setContent] = useState("Today");
 	const [startDate, setStartDate] = useState("")
 	const [endDate , setEndDate] = useState("")
 	const [pagination, setPagination] = useState({
 		currentPage: 1,
 		pageSize: 2,
 	});
-
+    
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
-
+	const { id } = useParams();
 
 	const vaccineAppList = useSelector((state) => state.vaccineAppList);
-	console.log(vaccineAppList)
+	
 	const {
 		loading,
 		error,
@@ -66,7 +68,7 @@ const PatAppDetail = () => {
 			appointment=[],
 			currentPage,
 			totalPages,
-			totalAppointments,
+			totalAppointments
 		} = {},
 	} = vaccineAppList;
 
@@ -79,7 +81,8 @@ const PatAppDetail = () => {
 				pagination.pageSize,
 			    null,
 				startDate,
-				endDate));
+				endDate,
+			  selectedPatient ? selectedPatient._id :  null))
              
 			
 			dispatch(listMedicines());
@@ -94,7 +97,8 @@ const PatAppDetail = () => {
 					pagination.pageSize,
 					null,
 					startDate,
-					endDate));
+					endDate,
+				));
 	}
 
 	// Handle form submission for creating or updating a prescription
@@ -129,8 +133,8 @@ const PatAppDetail = () => {
 		}
 	};
 	
-	const handleVitalSignsSubmit = (vitalSigns) => {
-		dispatch(updateVacApp({ _id: appointment._id, vitalSigns }));
+	const handleVitalSignsSubmit = (vitalSigns, appId) => {
+		dispatch(updateVacApp({ _id: appId, vitalSigns }));
 		dispatch(listVacApp(pagination.currentPage,
 			pagination.pageSize,
 			null,
@@ -169,6 +173,22 @@ const PatAppDetail = () => {
 		); // Refresh the list to show updated notes
 	  };
 
+	  const patientList = useSelector((state) => state.patientList);
+	  const {
+		  patients = {},
+	  } = patientList;
+  
+	
+  
+	  useEffect(() => {
+		  if (userInfo) {
+			  dispatch(listPatients({}));
+		  } else {
+			  navigate("/signin");
+		  }
+	  }, [userInfo, page]);
+
+	  
 	const handleVitalCancel = () => {
 		setVitalSignsForm(false);
 		setSelectedVitalSign(null);
@@ -195,6 +215,50 @@ const PatAppDetail = () => {
 		}
 	}, [appointment])
 
+
+		const renderAppointments = () => {
+                return <div style={{ overflow : 'scroll' , scrollbarWidth :'thin'}}>
+
+				{appointment && appointment.map((app, index) => 
+				 (
+                    <div key={index} className="list-group-item" style={{ cursor : 'pointer'}} onClick={() => setSelectedPatients(app.patient)}>
+                         <i className="fas fa-user-md m-1 "></i>{app.patient.firstName}-{app.patient.patientNumber}
+                    </div>
+                ))}
+				</div>
+
+		};
+	
+		const renderPatients = () => {
+                return <div style={{ overflow : 'scroll' , height : '100%',  scrollbarWidth :'thin'}}>
+
+				{patients && patients.patient && patients.patient.map((pat, index) => (
+                    <div key={index} className="list-group-item" style={{ cursor : 'pointer'}} onClick={() => setSelectedPatients(pat)}>
+                         <i className="fas fa-user-md m-1"></i>{pat.firstName}-{pat.patientNumber}
+                    </div>))}
+					</div>
+		};
+	
+		useEffect(() => {
+			if (selectedPatient) {	
+				setAllAppointments([])
+				dispatch(
+					listVacApp(
+						pagination.currentPage,
+						pagination.pageSize,
+						null,
+						startDate,
+						endDate,
+						selectedPatient._id, // Filter by selected patient ID
+					)
+				);
+
+				
+			} else {
+				fetchData();
+			}
+		}, [selectedPatient]);
+	
 	useEffect(() => {
 	
 			dispatch(listVacApp(pagination.currentPage,
@@ -202,10 +266,10 @@ const PatAppDetail = () => {
 			    null,
 				startDate,
 				endDate));
-             
-			
 			
 	}, []);
+
+
 
 	const menu = (appId) => (
 		<Menu>
@@ -305,8 +369,9 @@ const PatAppDetail = () => {
 	<Layout>
        	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} />
        
+			<div style={{ position : 'relative'}}>
 			
-			<div style = {{ display : 'flex' , justifyContent : 'center' , alignContent: 'flex-start'}}>
+			<div style = {{ display : 'flex' , justifyContent : 'center' , alignContent: 'flex-start', paddingLeft : '200px'}}>
 		
 					{/* Treatment and Prescription History */}
 		
@@ -317,12 +382,13 @@ const PatAppDetail = () => {
                 style={{ marginBottom: "20px" }}
             />
         </div>
+		{selectedPatient && <h2 style = {{margin : "20px"}}> {selectedPatient.firstName.toUpperCase() + " " + selectedPatient.lastName.toUpperCase() + "-" + selectedPatient.patientNumber}</h2>}
 					<InfiniteScroll      
 					dataLength={allAppointments.length}
       next={() =>{
         dispatch(listVacApp(pagination.currentPage,
 			pagination.pageSize, null ,startDate,
-			endDate))
+			endDate, selectedPatient ?  selectedPatient._id :  null))
 		
 		setPagination({...pagination , currentPage : pagination.currentPage + 1})			
 	  }} 
@@ -348,6 +414,8 @@ const PatAppDetail = () => {
 								</>
 							)}
 						</div>
+
+					
 	 
 						<div className="card-body">
 				
@@ -451,6 +519,10 @@ const PatAppDetail = () => {
 									<h6>
 										<strong>Appointment Time:</strong>{" "}
 										{appointment?.time}
+									</h6>
+									<h6>
+										<strong>Patient:</strong>{" "}
+										{appointment?.patient.firstName}
 									</h6>
 									<h6>
 										<strong>Doctor:</strong> Dr.{" "}
@@ -626,15 +698,31 @@ const PatAppDetail = () => {
 				</div>
 			
 
-				<MedicalHistoryForm
+				{ selectedPatient && <MedicalHistoryForm
 					medicalHistory={medicalHistory}
-					id={appointment?.patient?._id}
+					id={selectedPatient._id}
 					detailsVacApp={detailsVacApp}
 					appointment={appointment}
 					setMedicalHistory={setMedicalHistory}
-				/>
+				/>}
 				</div>
-		
+			</div>
+
+			<div style = {{ position : 'fixed', top : 0 , bottom : 0 , left : 60, width : '200px' , background : '#ddd'}}>
+                 <div className="d-flex p-2 " style={{ justifyContent : 'center' , alignItems : 'center', gap : '5px', marginTop : '100px'}}>
+            
+                <button className="btn btn-secondary w-100" onClick={() => setContent("Today")}>
+                    Today
+                </button>
+                <button className="btn btn-secondary w-100" onClick={() => setContent("All")}>
+                     All
+                </button>
+             </div>
+            <div className="flex-grow-1 p-3" >
+                {content === 'Today' ? renderAppointments() : renderPatients()}
+            </div>
+       
+			</div>
 		</Layout>
 	);
 };

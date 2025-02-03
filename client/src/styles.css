@@ -10032,7 +10032,7 @@ body {
     display: flex;
 }
 #layoutSidenav #layoutSidenav_nav {
-    flex-basis: 225px;
+    /* flex-basis: 225px; */
     flex-shrink: 0;
     transition: transform 0.15s ease-in-out;
     z-index: 1038;
@@ -10066,13 +10066,27 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
+#layoutSidenav #layoutSidenav_nav{
+    scrollbar-width: thin;
+}
 @media (min-width: 992px) {
-    #layoutSidenav #layoutSidenav_nav {
+    #layoutSidenav #layoutSidenav_nav{
+        overflow: hidden;
         transform: translateX(0);
+        max-width: 60px;
     }
+
+    #layoutSidenav #layoutSidenav_nav:hover{
+        transform: translateX(0);
+        max-width: 225px;
+        overflow: hidden;
+        z-index: 100;
+    }
+
+  
     #layoutSidenav #layoutSidenav_content {
         margin-left: 0;
-        transition: margin 0.15s ease-in-out;
+        transition: margin 0.15s ease-in;
     }
 
     .sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
@@ -10100,7 +10114,7 @@ body {
     overflow-y: auto;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-    padding-left: 225px;
+    padding-left: 100px;
     top: 56px;
 }
 
@@ -10177,41 +10191,25 @@ body {
     
 }
 .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-sidenav-collapse-arrow {
-    display: inline-block;
-    margin-left: auto;
-    transition: transform 0.15s ease;
-    
-
+    display: inline-block;    
+    margin-left: auto;     
+    transition: transform 0.15s ease;        
 }
+
 .sb-sidenav .sb-sidenav-menu .nav .nav-link.collapsed .sb-sidenav-collapse-arrow {
     transform: rotate(-90deg);
-    
-
 }
+
 .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
     margin-left: 1.5rem;
     flex-direction: column;
-    
-
 }
+
 .sb-sidenav .sb-sidenav-footer {
     padding: 0.75rem;
     flex-shrink: 0;
-    
-
 }
 
-
-
-
-
-
-
-
-
-/**
- * Panels
- */
 /*** General styles ***/
 .card {
     margin-bottom: 40px;
@@ -10242,9 +10240,6 @@ body {
     border-color: rgba(0, 0, 0, 0.07);
 }
 
-/**
- * Profile
- */
 /*** Profile: Header  ***/
 
 @media (min-width: 768px) {
@@ -10338,16 +10333,19 @@ body {
 .profile-comments__content {
     color: #999999;
 }
+
 /*** Profile: Contact ***/
 .profile__contact-btn {
     padding: 12px 20px;
     margin-bottom: 20px;
 }
+
 .profile__contact-hr {
     position: relative;
     border-color: rgba(0, 0, 0, 0.1);
     margin: 40px 0;
 }
+
 .profile__contact-hr:before {
     content: "OR";
     display: block;
@@ -10360,30 +10358,37 @@ body {
     background-color: #f5f5f5;
     color: #c6c6cc;
 }
+
 .profile__contact-info-item {
     margin-bottom: 30px;
 }
+
 .profile__contact-info-item:before,
 .profile__contact-info-item:after {
     content: " ";
     display: table;
 }
+
 .profile__contact-info-item:after {
     clear: both;
 }
+
 .profile__contact-info-item:before,
 .profile__contact-info-item:after {
     content: " ";
     display: table;
 }
+
 .profile__contact-info-item:after {
     clear: both;
 }
+
 .profile__contact-info-icon {
     float: left;
     font-size: 18px;
     color: #999999;
 }
+
 .profile__contact-info-body {
     overflow: hidden;
     padding-left: 20px;

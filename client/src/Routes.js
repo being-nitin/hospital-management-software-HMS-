@@ -195,7 +195,7 @@ const Routes = () => {
 					/>
 
 					<Route 
-					    path="/patient-app-details/:id"
+					    path="/patient-app-details"
 						element={<PatAppDetail />}
 					/>
 

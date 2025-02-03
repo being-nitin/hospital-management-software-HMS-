@@ -2,22 +2,17 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction'; // for drag and drop
 import dayGridPlugin from '@fullcalendar/daygrid'; // for the grid view
-import timeGridPlugin from '@fullcalendar/timegrid'
-import {Fragment} from 'react'
+import timeGridPlugin from '@fullcalendar/timegrid';
 import Layout from '../core/Layout';
-import { listVacApp, deleteVacApp } from '../actions/vaccineAppointmentActions'
-import { useDispatch, useSelector } from 'react-redux'
-import {Link} from "react-router-dom";
+import { listVacApp, deleteVacApp } from '../actions/vaccineAppointmentActions';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from "moment";
 import { useNavigate } from 'react-router-dom';
 import listPlugin from '@fullcalendar/list';
 import AddAppVaccineModal from './modal/addAppointment';
 
-
 const TimelineCalendar = () => {
   const calendarRef = useRef(null);
-
-
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const vaccineAppList = useSelector((state) => state.vaccineAppList)
@@ -47,11 +42,11 @@ const TimelineCalendar = () => {
         }))
       : [];
   }
-    const calendar = new Calendar(calendarRef.current, {
+  
+  const calendar = new Calendar(calendarRef.current, {
         plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
         initialView: 'dayGridMonth',
         dayMaxEventRows: true, 
-        editable: true,
         views: {
             dayGrid: {
               dayMaxEventRows: 3
@@ -73,11 +68,11 @@ const TimelineCalendar = () => {
           }),
         eventClick: function(info) {
           navigate(info.url)
-       },
-          
+       },  
       });
       calendar.render();
   }
+
   useEffect(() => {
     setCalendar()
   }, [appointments ,dispatch]);

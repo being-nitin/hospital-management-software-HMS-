@@ -83,7 +83,7 @@ const Layout = ({ title, children }) => {
 					Calendar
 				</Link>
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list/users")}
 					to="/list/users">
@@ -91,7 +91,7 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-people" />
 					</div>
 					List Users
-				</Link>
+				</Link> */}
 
 				<div className="sb-sidenav-menu-heading">Modules</div>
 				<a
@@ -256,7 +256,7 @@ const Layout = ({ title, children }) => {
 					</div>
 					Doctors
 				</Link>
-
+{/* 
 				<div className="sb-sidenav-menu-heading">Pharmacy</div>
 
 				<Link
@@ -267,7 +267,7 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-shop" />
 					</div>
 					Vendors
-				</Link>
+				</Link> */}
 
 				<Link
 					className="nav-link"
@@ -290,7 +290,7 @@ const Layout = ({ title, children }) => {
 					Expenses
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">Vaccine</div>
+				{/* <div className="sb-sidenav-menu-heading">Vaccine</div>
 				<Link
 					className="nav-link"
 					style={isActive(location, "/list-vaccine-cat")}
@@ -299,7 +299,7 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-eyedropper" />
 					</div>
 					Vaccine
-				</Link>
+				</Link> */}
 
 				<Link
 					className="nav-link"
@@ -311,11 +311,11 @@ const Layout = ({ title, children }) => {
 					Appointments
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">
+				{/* <div className="sb-sidenav-menu-heading">
 					Doctors Department
-				</div>
+				</div> */}
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list-designate")}
 					to="/list-designate">
@@ -323,9 +323,9 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-journal-medical" />
 					</div>
 					Designation
-				</Link>
+				</Link> */}
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list-specialize")}
 					to="/list-specialize">
@@ -333,7 +333,7 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-journal-medical" />
 					</div>
 					Specialize
-				</Link>
+				</Link> */}
 			</Fragment>
 		);
 	};
@@ -341,7 +341,7 @@ const Layout = ({ title, children }) => {
 	const doctorLinks = () => {
 		return (
 			<Fragment>
-				<div className="sb-sidenav-menu-heading">Core</div>
+				{/* <div className="sb-sidenav-menu-heading">Core</div> */}
 				<Link
 					className="nav-link"
 					style={isActive(location, "/")}
@@ -349,7 +349,7 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="fas fa-tachometer-alt" />
 					</div>
-					Dashboard
+					<span className="pl-4">Dashboard</span>
 				</Link>
 
 				<Link
@@ -359,10 +359,10 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-people" />
 					</div>
-					Calendar
+					<span className="pl-4">Calendar</span>
 				</Link>
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list/users")}
 					to="/list/users">
@@ -370,8 +370,8 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-people" />
 					</div>
 					List Users
-				</Link>
-
+				</Link> */}
+{/* 
 				<div className="sb-sidenav-menu-heading">Modules</div>
 				<a
 					className="nav-link collapsed"
@@ -514,7 +514,7 @@ const Layout = ({ title, children }) => {
 					</nav>
 				</div>
 
-				<div className="sb-sidenav-menu-heading">User Files</div>
+				<div className="sb-sidenav-menu-heading">User Files</div> */}
 
 				<Link
 					className="nav-link"
@@ -523,12 +523,12 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-file-medical" />
 					</div>
-					Patients
+					<span className="pl-4">Patients</span>
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">Pharmacy</div>
+				
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list-vendors")}
 					to="/list-vendors">
@@ -536,19 +536,18 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-shop" />
 					</div>
 					Vendors
-				</Link>
+				</Link> */}
 
 				<Link
 					className="nav-link"
 					style={isActive(location, "/list/medicine")}
 					to="/list/medicine">
 					<div className="sb-nav-link-icon">
-					<i class="fa-solid fa-tablets"></i>
+					<i class="fa fa-tablets"></i>
 					</div>
-					Medicine
+					<span className="pl-4">Medicine</span>
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">Expenses</div>
 				<Link
 					className="nav-link"
 					style={isActive(location, "/list-expenses")}
@@ -556,11 +555,11 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-cash" />
 					</div>
-					Expenses
+					<span className="pl-4">Expenses</span>
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">Vaccine</div>
-				<Link
+				{/* <div className="sb-sidenav-menu-heading">Vaccine</div> */}
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list-vaccine-cat")}
 					to="/list-vaccine-cat">
@@ -568,7 +567,7 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-eyedropper" />
 					</div>
 					Vaccine
-				</Link>
+				</Link> */}
 
 				<Link
 					className="nav-link"
@@ -577,14 +576,14 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-card-list" />
 					</div>
-					Appointments
+					<span className="pl-4">Appointments</span>
 				</Link>
 
-				<div className="sb-sidenav-menu-heading">
+				{/* <div className="sb-sidenav-menu-heading">
 					Doctors Department
-				</div>
+				</div> */}
 
-				<Link
+				{/* <Link
 					className="nav-link"
 					style={isActive(location, "/list-designate")}
 					to="/list-designate">
@@ -602,9 +601,8 @@ const Layout = ({ title, children }) => {
 						<i className="bi bi-journal-medical" />
 					</div>
 					Specialize
-				</Link>
+				</Link> */}
 
-				<div className="sb-sidenav-menu-heading">Setting</div>
 				<a
 					className="nav-link collapsed"
 					href="#"
@@ -615,17 +613,17 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-gear" />
 					</div>
-					Settings
-					<div className="sb-sidenav-collapse-arrow">
+					
+					<div style={{ padding : '5px'}}>
 						<i className="fas fa-angle-down" />
 					</div>
 				</a>
 				<div
-					// className="collapse"
+					className="collapse"
 					id="collapseLayouts"
 					aria-labelledby="headingOne"
 					data-parent="#sidenavAccordion">
-					<nav className="sb-sidenav-menu-nested nav">
+					<nav className="sb-sidenav-menu-nested nav pl-2">
 						<Link
 							className="nav-link"
 							style={isActive(location, "/profile")}
@@ -648,6 +646,9 @@ const Layout = ({ title, children }) => {
 							className="nav-link"
 							style={isActive(location, "/treatments")}
 							to="/treatments">
+								<div className="sb-nav-link-icon">
+								<i className="fa fa-hospital-user" />
+							</div>
 							Treatments
 						</Link>
 						<Link
@@ -664,7 +665,7 @@ const Layout = ({ title, children }) => {
 							style={isActive(location, "/roles")}
 							to="/roles">
 							<div className="sb-nav-link-icon">
-								<i className="bi bi-journals" />
+								<i className="bi bi-user" />
 							</div>
 							Assign roles
 						</Link>
@@ -754,17 +755,13 @@ const Layout = ({ title, children }) => {
 			</Fragment>
 		);
 	};
-	const loggedIn = () => (
-		<div
-			
-			className="small">
-			Logged in as:
-		</div>
-	);
+	
 
 	return (
+	
 		<nav style={{}} className="sb-nav-fixed">
 		<Menu />
+
 		<div id="layoutSidenav">
 			<div id="layoutSidenav_nav">
 				<nav
@@ -774,6 +771,7 @@ const Layout = ({ title, children }) => {
 						background: "linear-gradient(180deg, rgb(253, 253, 253), white)", // Gradient for sidebar background
 						color: "#000", // Black text for contrast
 						fontFamily: "Roboto, sans-serif", // Font style
+						border : '1px solid #ddd'
 					}}
 				>
 					<div className="sb-sidenav-menu">
@@ -796,8 +794,7 @@ const Layout = ({ title, children }) => {
 						}}
 						className="sb-sidenav-footer"
 					>
-						{loggedIn()}
-						{userInfo && <span>{userInfo.name}</span>}
+						User : {userInfo && <span>{userInfo.name}</span>}
 					</div>
 				</nav>
 			</div>
@@ -823,7 +820,11 @@ const Layout = ({ title, children }) => {
 				</main>
 			</div>
 		</div>
+
+	
+	
 	</nav>
+	
 	);
 };
 
