@@ -71,7 +71,8 @@ exports.getPatientDetail = asyncHandler(async (req, res) => {
             guardian: patient.guardian,
             relation: patient.relation,
             gender: patient.gender,
-            symptoms : patient.symptoms
+            symptoms : patient.symptoms,
+            medicalhistory : patient.medicalhistory
         })
     } else {
         res.status(404)

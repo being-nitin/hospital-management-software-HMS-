@@ -23,6 +23,7 @@ import { listPatients } from "../actions/patientActions";
 import dayjs from "dayjs";
 import InvoiceModal from "./modal/invoiceLayout";
 import Layout from "../core/Layout";
+import ClinicalNotesModal from "./modal/clinicalNotesModal";
 
 const { RangePicker } = DatePicker; 
 
@@ -33,7 +34,9 @@ const PatAppDetail = () => {
 	const [PsychologicalForm, setPsychologicalForm] = useState(false);
 	const [selectedVitalSign, setSelectedVitalSign] = useState(null);
 	const [page, setPage] = useState(1);
+	const [showClinicalModal , setShowClinicalModal] = useState(false)
 	const [isLoading, setIsLoading] = useState(false);
+	
 	const [currentAppointment , setCurrentAppointment] = useState([])
 	const [allAppointments , setAllAppointments] = useState([])
 	const [medicalHistory, setMedicalHistory] = useState([]);
@@ -44,7 +47,8 @@ const PatAppDetail = () => {
 		status: null,
 		date: null,
 	});
-	const [selectedPatient , setSelectedPatients] = useState(null)
+	const [selectedAppointment, setSelectedAppointment] = useState(null)
+  	const [selectedPatient , setSelectedPatients] = useState(null)
 	const [content, setContent] = useState("Today");
 	const [startDate, setStartDate] = useState("")
 	const [endDate , setEndDate] = useState("")
@@ -68,6 +72,7 @@ const PatAppDetail = () => {
 			appointment=[],
 			currentPage,
 			totalPages,
+			todayAppointment,
 			totalAppointments
 		} = {},
 	} = vaccineAppList;
@@ -141,6 +146,7 @@ const PatAppDetail = () => {
 			startDate,
 			endDate));
 		setVitalSignsForm(false); // Hide the form after submission
+		alert("vital sign submitted")
 	};
 
 	// Handle editing a prescription
@@ -203,7 +209,6 @@ const PatAppDetail = () => {
 	};
 
 	useEffect(() =>{
-	   
        setAllAppointments([...allAppointments , ...currentAppointment])
 	   
 	},[currentAppointment])
@@ -219,7 +224,7 @@ const PatAppDetail = () => {
 		const renderAppointments = () => {
                 return <div style={{ overflow : 'scroll' , scrollbarWidth :'thin'}}>
 
-				{appointment && appointment.map((app, index) => 
+				{todayAppointment && todayAppointment.map((app, index) => 
 				 (
                     <div key={index} className="list-group-item" style={{ cursor : 'pointer'}} onClick={() => setSelectedPatients(app.patient)}>
                          <i className="fas fa-user-md m-1 "></i>{app.patient.firstName}-{app.patient.patientNumber}
@@ -312,7 +317,9 @@ const PatAppDetail = () => {
 				Psychological Form
 			</Menu.Item>
 			<Menu.Item key="5" onClick={() =>{  
-			setShowBilling(true)}}>
+				setSelectedAppointment(appId)
+			setShowBilling(true)
+			}}>
 				Billing
 			</Menu.Item>
 			<Menu.SubMenu key="6" title="More">
@@ -367,7 +374,7 @@ const PatAppDetail = () => {
     
 	return (
 	<Layout>
-       	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} />
+       	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} appId = {selectedAppointment}/>
        
 			<div style={{ position : 'relative'}}>
 			
@@ -699,11 +706,10 @@ const PatAppDetail = () => {
 			
 
 				{ selectedPatient && <MedicalHistoryForm
-					medicalHistory={medicalHistory}
+					
 					id={selectedPatient._id}
-					detailsVacApp={detailsVacApp}
-					appointment={appointment}
-					setMedicalHistory={setMedicalHistory}
+				    
+					
 				/>}
 				</div>
 			</div>

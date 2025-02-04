@@ -11,10 +11,11 @@ import {
 import { listUsers } from "../../actions/userActions";
 import { listPatients, patientsDetails } from "../../actions/patientActions"; 
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const [doctor, setDoctor] = useState("");
-    const [date, setDate] = useState(new Date());
+    const [date, setDate] = useState(null);
     const [time, setTime] = useState("10:00");
     const [status, setStatus] = useState("");
     const [remarks, setRemarks] = useState("fever");
@@ -244,11 +245,13 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                     </div>
                                     <div className="">
                                         <label className="form-label m-3" style={{ fontWeight :700}}>Date</label>
-                                        <DatePicker 
-                                            selected={date}
-                                            onChange={(date) => setDate(date)}
-                                            className="form-control"
-                                        />
+                                        <DatePicker
+              selected={date}
+              onChange={(date) => setDate(date)}
+              className="form-control"
+              placeholderText="Select to date"
+              required
+            />
                                     </div>
                                     </div>
                                     {/* <div className="mb-3">

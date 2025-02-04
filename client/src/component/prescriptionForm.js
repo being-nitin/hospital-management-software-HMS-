@@ -60,7 +60,6 @@ const PrescriptionForm = ({
     }
     dispatch(detailsVacApp(appId));
     onSubmit(newPrescriptions);
-    setPrescriptions([]);
   };
 
   useEffect(() => {

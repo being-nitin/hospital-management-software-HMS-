@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { Trash } from 'react-bootstrap-icons';
-import {updatePatients } from '../actions/patientActions'
+import {listPatients, patientsDetails, updatePatients } from '../actions/patientActions'
 import { useDispatch, useSelector } from 'react-redux';
 
-const MedicalHistoryForm = ({ medicalHistory , id , setMedicalHistory , appointment ,detailsVacApp}) => {
+const MedicalHistoryForm = ({  id }) => {
   // const [medicalHistory, setMedicalHistory] = useState(initialConditions);
   const [newCondition, setNewCondition] = useState('');
-
+  const [medicalHistory , setMedicalHistory ] = useState([])
   const dispatch = useDispatch()
+  const patientDetails = useSelector((state) => state.patientDetails);
+  const { patient } = patientDetails;
 
+  console.log(patient)
   // Add a new condition
   const handleAddCondition = () => {
     if (newCondition.trim()) {
@@ -17,7 +20,7 @@ const MedicalHistoryForm = ({ medicalHistory , id , setMedicalHistory , appointm
     if(newCondition != "" ) {
         dispatch(updatePatients({_id : id , medicalhistory : [...medicalHistory , newCondition]}))
         setMedicalHistory([...medicalHistory , newCondition])
-        dispatch(detailsVacApp(appointment?._id))  
+        dispatch(patientsDetails(id))
       } // Reset input field
         setNewCondition("")
     }
@@ -28,12 +31,18 @@ const MedicalHistoryForm = ({ medicalHistory , id , setMedicalHistory , appointm
     const updatedHistory = medicalHistory.filter((_, i) => i !== index);
       dispatch(updatePatients({_id : id , medicalhistory : updatedHistory}))
       setMedicalHistory([...updatedHistory])
-      dispatch(detailsVacApp(appointment?._id))  
   };
 
   useEffect(()=>{
-    setMedicalHistory(appointment?.patient?.medicalhistory ? [...appointment?.patient?.medicalhistory] : [])
- },[appointment])
+     setMedicalHistory(patient.medicalhistory ? patient.medicalhistory 
+      : []
+     )
+  },[patient])
+
+  useEffect(()=>{
+    dispatch(patientsDetails(id))
+  },[id])
+  
 
 
 

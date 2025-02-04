@@ -176,13 +176,13 @@ exports.list = asyncHandler(async (req, res) => {
         field["patient"] = patient
     }
 
-    console.log("field" , field)
     if (startDate || endDate) {
         field["date"] = {
             $gte: startDate, // Start of the day
             $lte: endDate  // End of the day
         };
     }
+
     
 
     // If pagination parameters are provided, apply pagination
@@ -200,13 +200,18 @@ exports.list = asyncHandler(async (req, res) => {
         .skip((pageNumber - 1) * pageSize)
         .limit(pageSize)
         .exec();
-
-        console.log(data)
+     
+        field['date'] = moment(Date.now()).subtract(1, 'days').format('YYYY-MM-DD')
+        console.log(field)
+        const todayAppointment = await VaccineAppointment.find(field).sort({ date : -1 })
+        .populate("patient")
+        .exec();
       // Send paginated response
       return res.json({
         appointment: data,
         currentPage: pageNumber,
         totalPages: Math.ceil(totalAppointments / pageSize),
+        todayAppointment,
         totalAppointments,
       });
     }

@@ -12,7 +12,8 @@ import { detailsVacApp } from "../../actions/vaccineAppointmentActions";
 import { listSetting } from "../../actions/settingAction";
 import moment from "moment";
 
-const InvoiceModal = ({ show, onClose }) => {
+const InvoiceModal = ({ show, onClose, appId}) => {
+  console.log(appId)
   const [treatments, setTreatments] = useState([]);
   const [treatmentList, setTreatmentList] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -20,7 +21,6 @@ const InvoiceModal = ({ show, onClose }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -54,12 +54,13 @@ const InvoiceModal = ({ show, onClose }) => {
   // Load data on mount
   useEffect(() => {
     if (userInfo) {
-      dispatch(expensesDetails(id));
-      dispatch(detailsVacApp(id));
+      dispatch(expensesDetails(appId));
+      dispatch(detailsVacApp(appId));
       dispatch(listSetting());
     }
-  }, [dispatch, userInfo, id]);
+  }, [dispatch, userInfo, appId]);
 
+  console.log("billingappointment" , appointment)
   // Populate treatment list from settings
   useEffect(() => {
     if (settings?.data?.treatment) {
@@ -109,7 +110,7 @@ const InvoiceModal = ({ show, onClose }) => {
     const expenseData = {
       doctor: appointment?.doctor._id,
       patient: appointment?.patient._id,
-      appointment: id,
+      appointment: appId,
       treatment: [...treatments],
       totalCost: totals.totalCost,
       totalDiscount: totals.totalDiscount,
@@ -144,7 +145,7 @@ const InvoiceModal = ({ show, onClose }) => {
               <div className="modal-body">
                 <div className="border-bottom pb-3">
                   <h5>Appointment with {appointment?.doctor.name}</h5>
-                  <p>{moment(appointment?.created_at).format("Do MMMM, hh:mm A")}</p>
+                  <p>{moment(appointment?.date).format("Do MMMM, hh:mm A")}</p>
                 </div>
                 <div className="invoice-section">
                   <h6>Invoice</h6>
@@ -263,7 +264,9 @@ const InvoiceModal = ({ show, onClose }) => {
               </div>
               
               <div className="modal-footer">
-              <button  className="btn btn-primary" onClick={()=>{ navigate(`/print-billing/${id}`)}}>
+              <button  className="btn btn-primary" onClick={()=>{ navigate(`/print-billing/${appId
+
+              }`)}}>
                                         Print
               </button>
                 <button className="btn btn-secondary" onClick={onClose}>

@@ -571,8 +571,8 @@ const Layout = ({ title, children }) => {
 
 				<Link
 					className="nav-link"
-					style={isActive(location, "/list-app-vaccine")}
-					to="/list-app-vaccine">
+					style={isActive(location, "/patient-app-details")}
+					to="/patient-app-details">
 					<div className="sb-nav-link-icon">
 						<i className="bi bi-card-list" />
 					</div>
@@ -763,7 +763,7 @@ const Layout = ({ title, children }) => {
 		<Menu />
 
 		<div id="layoutSidenav">
-			<div id="layoutSidenav_nav">
+			<div id="layoutSidenav_nav">	
 				<nav
 					className="sb-sidenav"
 					id="sidenavAccordion"
