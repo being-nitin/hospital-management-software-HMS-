@@ -8,6 +8,7 @@ import {
 } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 import { listSetting } from "../actions/settingAction";
+import Layout from "../core/Layout";
 
 const ClinicalNotes = () => {
 	const [notes, setNotes] = useState([]); // Store clinical notes
@@ -58,8 +59,7 @@ const ClinicalNotes = () => {
 		}
 	}, [appointment]);
 
-	const handleAdd = (e) => {
-		e.preventDefault();
+	const handleAdd = () => {
 		const newNote = { complaint, duration };
 		const updatedChiefComplaints = [
 			...(appointment?.psychodiagnostic?.chiefComplaints || []),
@@ -73,6 +73,7 @@ const ClinicalNotes = () => {
 			},
 		};
 
+		setNotes([{...notes , newNote}]);
 		dispatch(
 			updateVacApp({
 				_id: appointment._id,
@@ -125,7 +126,7 @@ const ClinicalNotes = () => {
 				chiefComplaints: updatedNotes,
 			},
 		};
-
+       
 		dispatch(
 			updateVacApp({
 				_id: appointment._id,
@@ -133,6 +134,8 @@ const ClinicalNotes = () => {
 			})
 		);
 		dispatch(detailsVacApp(id));
+
+		setNotes(updatedNotes)
 	};
 
 	const handleDragEnd = (result) => {
@@ -167,6 +170,7 @@ const ClinicalNotes = () => {
 	};
 
 	return (
+	<Layout>
 		<div className="container mt-5">
 			<h2 className="mb-5">Clinical Notes (Chief Complaints)</h2>
 
@@ -312,6 +316,7 @@ const ClinicalNotes = () => {
 				</Modal.Footer>
 			</Modal>
 		</div>
+		</Layout>
 	);
 };
 

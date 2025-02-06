@@ -349,7 +349,7 @@ const Layout = ({ title, children }) => {
 					<div className="sb-nav-link-icon">
 						<i className="fas fa-tachometer-alt" />
 					</div>
-					<span className="pl-4">Dashboard</span>
+					<span className="pl-4 ">Dashboard</span>
 				</Link>
 
 				<Link
@@ -807,7 +807,7 @@ const Layout = ({ title, children }) => {
 								fontWeight: "bold",
 								color: "#000",
 								paddingTop: "10px",
-								
+								paddingBottom : '20px'
 							}}
 						>
 							{title}

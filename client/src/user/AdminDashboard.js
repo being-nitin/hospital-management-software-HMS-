@@ -106,17 +106,17 @@ const AdminDashboard = () => {
 				
 			<div>
     {/* Top Summary Cards & Recent Appointments */}
-    <Row className="g-0 align-items-stretch">
-        <Col md={6} lg={3}>
+    <Row className="g-0 align-items-stretch mt-2">
+        <Col md={6} lg={3} style={{ alignContent : 'center'}}>
 		<div style={{ display : 'flex' , flexDirection : 'column'}}>
-            <Card className="bg-success text-white shadow-sm h-100">
-                <Card.Body>
+            <Card className="bg-success text-white shadow-sm h-100 " style={{ cursor : 'pointer'}}>
+                <Card.Body onClick={() => navigate('/list-patients')}>
                     <Card.Title>Total Patients</Card.Title>
                     <h4>{totals.patients}</h4>
                 </Card.Body>
             </Card>
        
-            <Card className="bg-warning text-white shadow-sm h-100">
+            <Card className="bg-warning text-white shadow-sm h-100" >
                 <Card.Body>
                     <Card.Title>Total Staff</Card.Title>
                     <h4>{totals.staff}</h4>
@@ -124,17 +124,17 @@ const AdminDashboard = () => {
             </Card>
 			</div>
         </Col>
-		<Col md={6} lg={3}>
+		<Col md={6} lg={3} style={{ alignContent : 'center'}}>
 		<div style={{ display : 'flex' , flexDirection : 'column'}}>
-            <Card className=" text-white shadow-sm h-100" style={{ backgroundColor : 'blue'}}>
-                <Card.Body>
+            <Card className=" text-white shadow-sm h-100" style={{ backgroundColor : 'blue' , cursor : 'pointer'}}>
+                <Card.Body onClick={() =>  navigate('/patient-app-details')} >
                     <Card.Title>Total Appointment</Card.Title>
                     <h4>{totals.appointments}</h4>
                 </Card.Body>
             </Card>
        
-            <Card className="text-white shadow-sm h-100" style={{ backgroundColor : 'red'}}>
-                <Card.Body>
+            <Card className="text-white shadow-sm h-100" style={{ backgroundColor : 'red' , cursor : 'pointer'}}>
+                <Card.Body onClick={() =>  navigate('/list-expenses')}>
                     <Card.Title>Total Expenses</Card.Title>
                     <h4>{totals.expenses}</h4>
                 </Card.Body>
@@ -198,7 +198,7 @@ const AdminDashboard = () => {
     </Row>
 
     {/* Pie Chart & Expenses */}
-    <Row className="g-0 align-items-stretch mt-2" style={{ marginBlock : '2rem'}}>
+    <Row className="g-0 align-items-stretch " style={{ marginBlock : '2rem'}}>
         <Col md={6}>
             <Card className="shadow-sm h-100">
                 <Card.Body>

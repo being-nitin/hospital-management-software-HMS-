@@ -189,10 +189,10 @@ const Routes = () => {
 						path="/list-app-vaccine"
 						element={<ListAppVaccine />}
 					/>
-					<Route
+					{/* <Route
 						path="/list-app-vaccine/:id"
 						element={<AppointmentDetail />}
-					/>
+					/> */}
 
 					<Route 
 					    path="/patient-app-details"

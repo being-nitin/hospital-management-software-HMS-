@@ -12,7 +12,6 @@ const PrescriptionForm = ({
   existingPrescriptions,
   medicines,
   onCancel,
-  detailsVacApp,
 }) => {
   const [prescriptions, setPrescriptions] = useState([]);
   const dispatch = useDispatch();
@@ -53,13 +52,9 @@ const PrescriptionForm = ({
       ...p,
       dosage: [p.morning, p.afternoon, p.evening].join('-'),
     }));
-    if (existingPrescriptions) {
-      dispatch(updatePrescription(newPrescriptions[0]));
-    } else {
-      dispatch(createPrescription(appId, newPrescriptions));
-    }
-    dispatch(detailsVacApp(appId));
-    onSubmit(newPrescriptions);
+   
+    
+    onSubmit(newPrescriptions, existingPrescriptions );
   };
 
   useEffect(() => {
