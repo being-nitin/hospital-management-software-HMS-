@@ -260,10 +260,9 @@ const AppointmentDetail = ({lastElement, app}) => {
 				<div  style={{ width : '100%'}} ref={lastElement}>
 						<div className="card-header bg-success text-white d-flex justify-content-between">
 							<h6>
-										<strong>app Date:</strong>{" "}
-										{dayjs(
-											app?.date?.toLocaleString()
-										).format("YYYY-MM-DD")}
+										<strong>
+										{dayjs(app?.date).format("DD dddd, YYYY")}
+                                           </strong>
 									</h6>
 							{app?.status !== "closed" && (
 								<>
@@ -385,6 +384,10 @@ const AppointmentDetail = ({lastElement, app}) => {
 									<h6>
 										<strong>Doctor:</strong> Dr.{" "}
 										{app?.doctor?.name}
+									</h6>
+									<h6>
+									    <strong>Patient:</strong> {" "}
+									    {app?.patient?.firstName}-{app.patient.patientNumber}
 									</h6>
 
 									{/* Vital Signs Section */}
