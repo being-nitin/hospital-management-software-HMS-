@@ -164,6 +164,7 @@ const Psychodiagnostic = () => {
   
   const dispatch = useDispatch();
   const { id } = useParams();
+
   const navigate = useNavigate();
   // Handle input change for text and number fields
   const handleChange = (e) => {
@@ -457,7 +458,7 @@ const Psychodiagnostic = () => {
   return (
     < Layout>
     <>
-    <div style={{ position : 'fixed' , top : 0 , backgroundColor : 'white' , width : '100%' , display : 'flex' , justifyContent : 'space-between' , alignItems :'center' }}>
+    <div style={{ position : 'fixed' , top : '50px' , backgroundColor : 'white' , width : '100%' , display : 'flex' , justifyContent : 'space-between' , alignItems :'center' }}>
     <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment?._id}`)} >View </button>
    </div>
                   
@@ -494,7 +495,7 @@ const Psychodiagnostic = () => {
           Marital Status
           <input
             type="text"
-            name="motherTongue"
+            name="maritalStatus"
             value={formData.maritalStatus}
             onChange={handleChange}
             style={styles.input}
@@ -504,7 +505,7 @@ const Psychodiagnostic = () => {
           Education
           <input
             type="text"
-            name="motherTongue"
+            name="education"
             value={formData.education}
             onChange={handleChange}
             style={styles.input}

@@ -84,6 +84,7 @@ import AssignRoles from "./component/AssignRoles";
 import PrintAppointments from "./component/view/printApointment";
 import ExpenseDetail from "./component/view/billing";
 import PatAppDetail from "./component/patientappdetails";
+import TestApp from "./component/testApp";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
@@ -121,6 +122,7 @@ const Routes = () => {
 						path="/update-prescription/:id"
 						element={<UpdatePrescriptions />}
 					/>
+					<Route path="/test" element={<TestApp/>} />
 					<Route
 						path="/psychodiagnosticreport/:id"
 						element={<ViewPDReport />}

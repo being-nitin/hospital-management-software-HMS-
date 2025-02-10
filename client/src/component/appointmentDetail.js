@@ -9,7 +9,7 @@ import {
 	listVacApp,
 	deleteVacApp,
 	detailsVacApp,
-	updateVacApp,
+	updateVacApp
 } from "../actions/vaccineAppointmentActions";
 import { deletePrescription } from "../actions/prescriptionActions";
 import { useNavigate, useParams } from "react-router-dom";
@@ -23,9 +23,10 @@ import PrintLayout from "../core/printLayout";
 import { prescription } from "../utils/printformat";
 import InvoiceModal from "./modal/invoiceLayout";
 import { expensesDetails} from "../actions/expensesActions";
-import { createPrescription, updatePrescription } from '../actions/prescriptionActions';
+import { useInvalidateAppointments, useUpdateAppointment } from "./api/app";
+import { useCreatePrescription, useUpdatePrescription } from "./api/prescription";
 
-const AppointmentDetail = ({app}) => {
+const AppointmentDetail = ({lastElement, app}) => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
 	const [selectedPrescription, setSelectedPrescription] = useState(null); // For editing
 	const [, setVitalSignsForm] = useState(false);
@@ -34,11 +35,12 @@ const AppointmentDetail = ({app}) => {
 	const [, setMedicalHistory] = useState([]);
 	const [prescription , setPrescriptions] = useState([])
 	const [showBilling , setShowBilling] = useState(false) 
+	const  createPrescription = useCreatePrescription();
+	const updatePrescription  = useUpdatePrescription();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [notes, setNotes] = useState("") 
 	const appdetails = useSelector((state) => state.vaccineAppDetails)
-	console.log(appdetails)
 
 	const { appointment : {appointment} = [] } = appdetails
 	const expenseDetail = useSelector((state) => state.expenseDetail);
@@ -51,6 +53,10 @@ const AppointmentDetail = ({app}) => {
 	const medicineList = useSelector((state) => state.medicineList);
 	const { medicines } = medicineList;
 
+
+	const updateAppData = useUpdateAppointment()
+	const invalidateAppointments = useInvalidateAppointments()
+
 	useEffect(() => {
 		if (userInfo) {
 			dispatch(expensesDetails(app._id));
@@ -59,7 +65,7 @@ const AppointmentDetail = ({app}) => {
 		} else {
 			navigate("/signin");
 		}
-	}, [dispatch, userInfo]);
+	}, [userInfo, app]);
 
 	const prescriptionData = () =>{
 		setPrescriptions(appointment.prescription)
@@ -70,11 +76,13 @@ const AppointmentDetail = ({app}) => {
 	    
 		setSelectedPrescription(null); 
 		 if (existingPrescriptions) {
-			  dispatch(updatePrescription(newPrescriptions[0]));
+			  updatePrescription.mutate({pres : newPrescriptions[0]})
 			} else {
-			  dispatch(createPrescription(app._id, newPrescriptions));
+				console.log(newPrescriptions)
+			  createPrescription.mutate({appId: app._id, prescriptions : newPrescriptions})
 			}
-	    
+
+
 		// detailsVacApp(app._id)	
 		// prescriptionData()
 	}
@@ -82,7 +90,7 @@ const AppointmentDetail = ({app}) => {
 	
 
 	const handleVitalSignsSubmit = (vitalSigns) => {
-		dispatch(updateVacApp({ _id: app._id, vitalSigns }));
+		updateAppData.mutate({ _id: app._id, vitalSigns });
 		setVitalSignsForm(false); // Hide the form after submission
 	};
 
@@ -110,7 +118,7 @@ const AppointmentDetail = ({app}) => {
 	};
 
 	const handleAddNote = () => {
-		dispatch(updateVacApp({_id : app._id , notes}))	
+		updateAppData.mutate({_id : app._id , notes})
 	}
 
 	const handleVitalCancel = () => {
@@ -119,7 +127,7 @@ const AppointmentDetail = ({app}) => {
 	};
 
 	const closeAppointment = () => {
-		dispatch(updateVacApp({ _id: app._id, status: "closed" }));
+		updateAppData.mutate({ _id: app._id, status: "closed" });
 		dispatch({ type: "UPDATE_APPOINTMENT_VACCINE_RESET" });
 		
 	};
@@ -246,10 +254,10 @@ const AppointmentDetail = ({app}) => {
 
 	return (
 	<>
-	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} appId={app._id}/>
+	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} appId={app._id} expense={app?.billing}/>
 		
 				{/* app and Patient Info Section */}
-				<div  style={{ width : '100%'}}>
+				<div  style={{ width : '100%'}} ref={lastElement}>
 						<div className="card-header bg-success text-white d-flex justify-content-between">
 							<h6>
 										<strong>app Date:</strong>{" "}
@@ -504,7 +512,7 @@ const AppointmentDetail = ({app}) => {
           </tr>
         </thead>
         <tbody>
-          {expense && expense.treatment && expense.treatment.length !== 0 && expense.treatment.map((treatment, index) => (
+          {app.billing && app.billing.treatment && app.billing.treatment.length !== 0 && app.billing.treatment.map((treatment, index) => (
             <tr key={treatment.id}>
               <td>{index + 1}</td>
               <td>{treatment.name}</td>

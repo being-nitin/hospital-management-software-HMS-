@@ -4,6 +4,7 @@ import "./printStyle.css";
 import Header from "../assets/header.PNG";
 import Footer from "../assets/footer.PNG";
 import Logo from "../assets/logo.PNG"
+import Signature from "../assets/signature.jpeg"
 import { listSetting, updateSetting } from "../actions/settingAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -51,6 +52,13 @@ const PrintLayout = ({ children , html , data , category }) => {
               z-index: 1;
               width : 100%;
             }
+            .signature {
+               position : fixed;
+               bottom : 250px;
+               right : 70px;  
+               width :80px; 
+               text-align : right;
+            }  
             .header, .footer {
               position :fixed;
               width: 100%;
@@ -101,7 +109,7 @@ const PrintLayout = ({ children , html , data , category }) => {
             }
             
             @media print {
-              @page { margin: 0;  }
+              @page { margin: 0; size: A4 }
              body {
              width : 1230px;
             background-image: url(${Logo}); /* Inline base64 image for print */
@@ -142,6 +150,9 @@ const PrintLayout = ({ children , html , data , category }) => {
             <img src=${Logo} class="backgroundLogo"></img>
             <div class="content">
             ${printContent.innerHTML}<div>
+            <div class="signature">
+            <img src=${Signature} style="width: 80px;" ></img>
+            </div>
             <div style = "margin-top : 90px; position: fixed;">
             <img src="${settings.data[`${category}`].footer}" alt="Footer" class="footer" />
             </div>
@@ -163,7 +174,7 @@ const PrintLayout = ({ children , html , data , category }) => {
   return (
     <div ref={printRef} >
   
-      <div className="print-button d-flex justify-content-end mt-3">
+      <div className="print-button d-flex justify-content-end mt-3 ">
         <Button variant="primary" onClick={printAction}>
           Print
         </Button>

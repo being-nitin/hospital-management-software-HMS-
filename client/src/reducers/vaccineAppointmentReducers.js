@@ -27,14 +27,6 @@ import {
     LIST_TAKEN_ENUMS_SUCCESS
 } from '../constants/vaccineAppointmentConstants'
 
-
-
-
-
-
-
-
-
 export const vaccineAppCreateReducer = (state = {}, action) => {
     switch (action.type) {
         case CREATE_APPOINTMENT_VACCINE_REQUEST:

@@ -83,7 +83,7 @@ const PrintAppointments = () => {
  ${selectedOptions.includes('Vital Signs') ? `
   <div>
   <h3 style="color: #424242; font-size: 22px; font-weight: bold; margin-bottom: 10px;">Vital Signs</h3>
-  <table style="width: 100%; border-collapse: collapse; background-color: #f9f9f9; color: #616161; margin-bottom: 20px;">
+  <table style="width: 100%; border-collapse: collapse; background-color: #f9f9f9; color: #616161; margin-bottom: 20px;max-width: 800px;">
     <thead>
       <tr>
         <th style="border: 1px solid #ddd; ">Weight (kg)</th>
@@ -109,20 +109,28 @@ const PrintAppointments = () => {
   </div>`
  : ''}
 
-    ${selectedOptions.includes('Clinical Notes') ? `
-  <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Clinical Notes:</h4>
-  <ul style="color: #616161; font-size: 14px; line-height: 1.6; list-style-type: disc; padding-left: 20px;">
-    ${clinicalNotes && clinicalNotes.map(note => `
-      <li>
-        <strong>Complaint:</strong> ${note.complaint} <br />
-        <strong>Duration:</strong> ${note.duration}
-      </li>
-    `).join('')}
-  </ul>` : ''}
+ ${selectedOptions.includes('Clinical Notes') ? `  
+  <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Clinical Notes:</h4>  
+  <table style="width: 100%; border-collapse: collapse; margin-top: 10px;max-width : 900px;">  
+    <thead>  
+      <tr style="background-color: #f5f5f5;">  
+        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Complaint</th>  
+        <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Duration</th>  
+      </tr>  
+    </thead>  
+    <tbody>  
+      ${clinicalNotes && clinicalNotes.map(note => `  
+        <tr>  
+          <td style="border: 1px solid #ddd; padding: 8px;">${note.complaint}</td>  
+          <td style="border: 1px solid #ddd; padding: 8px;">${note.duration}</td>  
+        </tr>  
+      `).join('')}  
+    </tbody>  
+  </table>` : ''}
  ${selectedOptions.includes('Prescription') ? `
   <div>
   <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Prescriptions:</h4>
-  <table style="width: 100%; border-collapse: collapse; color: #616161; margin-bottom: 20px;">
+  <table style="width: 100%; border-collapse: collapse; color: #616161; margin-bottom: 20px; max-width : 900px;">
     <thead>
       <tr>
         <th style="border: 1px solid #ddd; ">S.No</th>
@@ -220,7 +228,7 @@ const PrintAppointments = () => {
 `
 }
 
-console.log(appointment)
+
   return (
     <main style = {{ display : 'flex' , justifyContent : 'space-around' , alignContent : 'center'}}>
     <div>

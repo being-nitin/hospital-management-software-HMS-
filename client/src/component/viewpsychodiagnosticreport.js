@@ -7,6 +7,7 @@ import PrintLayout from '../core/printLayout';
 // import { psychodiagnostic } from '../utils/printformat';
 import PatientDetails from './patientHistory';
 import moment from 'moment';
+import Layout from '../core/Layout';
 
 const options = [
   { id: 1, label: 'personal history' },
@@ -42,7 +43,7 @@ const ViewPDReport = () => {
     window.print();
   };
 
-  if (!patientData) return <p>Loading...</p>;
+  
 
   let psychodiagnostic = () => {
 
@@ -230,7 +231,9 @@ ${selectedOptions.includes('behavioural info') ?`
       };
 
   return (
+    <Layout>
     <div className="container mt-4">
+      { !patientData ? <><p>Please fill the psychodiagnostic form</p><button onClick={() => navigate(-1)}>Back</button></> : <>
      <PrintLayout html ={psychodiagnostic} category={'forms'}></PrintLayout>
      <div style={{ display : "flex" , justifyContent : "space-between" , alignContent : "flex-start"}} >
      <div className="card">
@@ -300,7 +303,7 @@ ${selectedOptions.includes('behavioural info') ?`
           <h4>Background Information</h4>
           <h5>Personal History</h5>
           <div>
-            {patientData.backgroundInfo.personalHistory &&
+            {patientData.backgroundInfo && patientData.backgroundInfo.personalHistory &&
               Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => (
                 <span key={index} className="d-block mb-2">{value}</span>
               ))}
@@ -312,7 +315,7 @@ ${selectedOptions.includes('behavioural info') ?`
         <>
           <h5>Premorbid Personality</h5>
           <div>
-            {patientData.backgroundInfo.premorbidPersonality &&
+            {patientData.backgroundInfo && patientData.backgroundInfo.premorbidPersonality &&
               Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => (
                 <div key={index} className="mb-3">
                   <p className="fw-bold mb-1">{category.replace(/([A-Z])/g, " $1").toUpperCase()}</p>
@@ -330,28 +333,28 @@ ${selectedOptions.includes('behavioural info') ?`
           <h5>Behavioral Information</h5>
           <h6>General Appearance and Behavior</h6>
           <p>
-            {patientData.behaviouralInfo.generalAppearanceAndBehaviour &&
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.generalAppearanceAndBehaviour &&
               Object.values(patientData.behaviouralInfo.generalAppearanceAndBehaviour).join(", ") || "NAD"}
           </p>
 
           <h6>Motor Behaviour</h6>
           <p>
-            {patientData.behaviouralInfo.motorBehaviour?.psychomotorActivity || "NAD"},{" "}
-            {patientData.behaviouralInfo.motorBehaviour?.disturbances.join(", ") || "NAD"}
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour?.psychomotorActivity || "NAD"},{" "}
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour?.disturbances.join(", ") || "NAD"}
           </p>
 
     
 
           <h6>Speech</h6>
           <p>
-            {patientData.behaviouralInfo.speech &&
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.speech &&
               Object.values(patientData.behaviouralInfo.speech).join(", ") || "NAD"}
           </p>
 
 
           <h6>Thought</h6>
           <p>
-            {patientData.behaviouralInfo.thought &&
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.thought &&
               Object.entries(patientData.behaviouralInfo.thought).map(([category, options]) => (
                 <span key={category}>{category}: {options.join(", ") || "NAD"} </span>
               ))}
@@ -364,25 +367,25 @@ ${selectedOptions.includes('behavioural info') ?`
         <h4>cognitive thinking</h4>
 
         <h5>Level of Consciousness</h5>
-        <p>{patientData.behaviouralInfo.levelOfConsciousness?.mediate || "NAD"}</p>
+        <p>{patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness?.mediate || "NAD"}</p>
         <h5>Orientation</h5>
           <p>
-            {patientData.behaviouralInfo.orientation &&
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.orientation &&
               Object.values(patientData.behaviouralInfo.orientation).join(", ") || "NAD"}
           </p>
-          <h6> Attention and concentration : {patientData.behaviouralInfo.levelOfConsciousness?.attention && patientData.behaviouralInfo.levelOfConsciousness?.attention} </h6>
+          <h6> Attention and concentration : {patientData && patientData.behaviouralInfo & patientData.behaviouralInfo?.levelOfConsciousness && patientData.behaviouralInfo.levelOfConsciousness?.attention && patientData.behaviouralInfo.levelOfConsciousness?.attention} </h6>
           
           <h5>Memory</h5>
           <p>
-            {patientData.behaviouralInfo.memory &&
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.memory &&
               Object.values(patientData.behaviouralInfo.memory).join(", ") || "NAD"}
           </p>
 
           <h5>Intelligences</h5>
-          {patientData.behaviouralInfo.intelligences &&
+          { patientData.behaviouralInfo && patientData.behaviouralInfo.intelligences &&
               Object.values(patientData.behaviouralInfo.intelligences).join(", ") || "NAD"}
           <h5>Judgement</h5>
-          {patientData.behaviouralInfo.judgement &&
+          {patientData.behaviouralInfo && patientData.behaviouralInfo.judgement &&
               Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
           </>
           
@@ -440,8 +443,10 @@ ${selectedOptions.includes('behavioural info') ?`
       </div>
     </div>
         </div>
+        </>
+}
         </div>
-
+</Layout>
   );
 };
 

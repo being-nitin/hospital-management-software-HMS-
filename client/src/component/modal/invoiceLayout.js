@@ -8,11 +8,11 @@ import {
   updateExpense 
 } from "../../actions/expensesActions";
 import { EXPENSES_CREATE_RESET } from "../../constants/expensesConstants";
-import { detailsVacApp } from "../../actions/vaccineAppointmentActions";
 import { listSetting } from "../../actions/settingAction";
 import moment from "moment";
+import { useInvalidateAppointments } from "../api/app";
 
-const InvoiceModal = ({ show, onClose, appId}) => {
+const InvoiceModal = ({ show, onClose, appId , expense}) => {
   console.log(appId)
   const [treatments, setTreatments] = useState([]);
   const [treatmentList, setTreatmentList] = useState([]);
@@ -25,9 +25,6 @@ const InvoiceModal = ({ show, onClose, appId}) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const expenseDetail = useSelector((state) => state.expenseDetail);
-  const { expense } = expenseDetail;
-
   const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
   const {
     appointment: { appointment } = {},
@@ -38,6 +35,8 @@ const InvoiceModal = ({ show, onClose, appId}) => {
 
   const expenseCreate = useSelector((state) => state.expenseCreate);
   const { success } = expenseCreate;
+ 
+  const invalidateAppointments = useInvalidateAppointments()
 
   // Calculate totals dynamically
   const calculateTotals = () => {
@@ -55,7 +54,6 @@ const InvoiceModal = ({ show, onClose, appId}) => {
   useEffect(() => {
     if (userInfo) {
       dispatch(expensesDetails(appId));
-      dispatch(detailsVacApp(appId));
       dispatch(listSetting());
     }
   }, [dispatch, userInfo, appId]);
@@ -129,6 +127,7 @@ const InvoiceModal = ({ show, onClose, appId}) => {
     } else {
       dispatch(createExpenses(expenseData));
     }
+    invalidateAppointments()
     onClose();
   };
 

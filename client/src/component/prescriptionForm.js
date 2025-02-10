@@ -16,7 +16,7 @@ const PrescriptionForm = ({
   const [prescriptions, setPrescriptions] = useState([]);
   const dispatch = useDispatch();
 
-  const dosageValues = ['0', '½', '1' , '1½'];
+  const dosageValues = ['0', '½', '1' , '1½', '2' ,  '2½' , '3', '3½'];
   const instructions = ['Before Food', 'After Food', 'With Food'];
   
   useEffect(() => {
