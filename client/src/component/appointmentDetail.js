@@ -43,8 +43,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 	const appdetails = useSelector((state) => state.vaccineAppDetails)
 
 	const { appointment : {appointment} = [] } = appdetails
-	const expenseDetail = useSelector((state) => state.expenseDetail);
-	const { expense } = expenseDetail;
+	
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -59,7 +58,6 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 	useEffect(() => {
 		if (userInfo) {
-			dispatch(expensesDetails(app._id));
 			dispatch(listMedicines());
 			setPrescriptions(app?.prescription ? app.prescription : [])
 		} else {
@@ -78,7 +76,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 		 if (existingPrescriptions) {
 			  updatePrescription.mutate({pres : newPrescriptions[0]})
 			} else {
-				console.log(newPrescriptions)
+				
 			  createPrescription.mutate({appId: app._id, prescriptions : newPrescriptions})
 			}
 
@@ -261,7 +259,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 						<div className="card-header bg-success text-white d-flex justify-content-between">
 							<h6>
 										<strong>
-										{dayjs(app?.date).format("DD dddd, YYYY")}
+										{dayjs(app?.date).format("DD MMMM , YYYY (dddd)")}
                                            </strong>
 									</h6>
 							{app?.status !== "closed" && (

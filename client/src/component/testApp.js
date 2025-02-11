@@ -13,11 +13,10 @@ const TextApp = () => {
     (element) => {
       if (isLoading || isFetchingNextPage) return; // Prevent triggering if still loading or fetching
       if (handleObserver.current) handleObserver.current.disconnect(); // Clean up the previous observer
-      console.log(element)
       handleObserver.current = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && hasNextPage) {
-            console.log("Fetching next page...");
+            
             fetchNextPage(); // Fetch next page when the last item is visible
           }
         });

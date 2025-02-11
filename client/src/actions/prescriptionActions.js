@@ -291,7 +291,7 @@ export const prescriptionDetails = (id) => async (dispatch, getState) => {
             type: PRESCRIPTION_DETAILS_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
         console.log(error)
         dispatch({

@@ -149,10 +149,10 @@ export const getUserDetails = (userId) => async (dispatch, getState) => {
             },
         }
 
-        console.log(userInfo.token)
+        
 
         const { data } = await axios.get(`${API}/user/${userId}`, config)
-        console.log(data)
+        
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
@@ -388,7 +388,7 @@ export const getUsersDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(`${API}/users/other/${id}/${userInfo._id}`, config)
-        console.log(data)
+        
 
         dispatch({
             type: USERS_DETAILS_SUCCESS,

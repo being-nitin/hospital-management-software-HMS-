@@ -41,7 +41,7 @@ export const createDoctor = (doctor) => async (dispatch, getState) => {
             type: DOCTOR_CREATE_REQUEST,
         })
 
-        console.log(doctor)
+        
         const {
             userLogin: { userInfo },
         } = getState()

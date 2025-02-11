@@ -43,7 +43,6 @@ const { userInfo } = useSelector((state) => state.userLogin);
 
 // creation
 const createPrescription = async ({ appId, prescriptions }, userInfo) => {
-    console.log(prescriptions);
     
     const config = {
         headers: {

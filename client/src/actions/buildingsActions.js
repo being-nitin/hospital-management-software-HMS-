@@ -152,7 +152,7 @@ export const updateBuilding = (build) => async (dispatch, getState) => {
             },
         }
 
-        console.log(build)
+        
         const { data } = await axios.put(
             `${API}/building-update/${build._id}/${userInfo._id}`,
             build,

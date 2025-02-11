@@ -292,7 +292,7 @@ export const updatePatients = (pat) => async (dispatch, getState) => {
             },
         }
 
-        console.log(pat)
+        
         const { data } = await axios.put(
             `${API}/patient-update/${pat._id}`,
             pat,

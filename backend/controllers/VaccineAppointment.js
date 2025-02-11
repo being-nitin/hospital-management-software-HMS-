@@ -69,34 +69,13 @@ exports.createVaccineApp = asyncHandler(async (req, res) => {
 
     // Calculate new appointment's end time
     const newEndTime = calculateEndTime(time, durationInMinutes);
-
     try {
-        // Fetch all appointments for the doctor on the same date
-        const existingAppointments = await VaccineAppointment.find({ doctor, date });
-
-        // Check for time conflicts
-        // const conflict = existingAppointments.some((appointment) => {
-        //     const existingStartTime = appointment.time;
-        //     const existingDurationInMinutes = convertDurationToMinutes(appointment.duration);
-        //     const existingEndTime = calculateEndTime(existingStartTime, existingDurationInMinutes);
-
-        //     return (
-        //         (time >= existingStartTime && time < existingEndTime) || // New start time overlaps existing
-        //         (newEndTime > existingStartTime && newEndTime <= existingEndTime) || // New end time overlaps existing
-        //         (time <= existingStartTime && newEndTime >= existingEndTime) // New appointment fully overlaps existing
-        //     );
-        // });
-
-        // if (conflict) {
-        //     console.log(conflict)
-        //     return res.status(400).json({ error: 'Doctor already has an appointment during this time.' });
-        // }
 
         // Save the new appointment
         const appointment = new VaccineAppointment({
             patient,
             doctor,
-            date,
+            date : date ,
             time,            
             duration,
         });
@@ -116,7 +95,6 @@ exports.read = (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
         const appointment = await VaccineAppointment.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
@@ -155,8 +133,8 @@ exports.remove = asyncHandler(async (req, res) => {
 
 
 exports.list = asyncHandler(async (req, res) => {
-    const { status, startDate , endDate , page, limit , patient } = req.query; // Pagination and filters
-    console.log(patient)
+    const { status, date, page, limit , patient } = req.query; // Pagination and filters
+    
     let field = {};
 
     // Check if userId is provided and find the user
@@ -176,11 +154,9 @@ exports.list = asyncHandler(async (req, res) => {
         field["patient"] = patient
     }
 
-    if (startDate || endDate) {
-        field["date"] = {
-            $gte: startDate, // Start of the day
-            $lte: endDate  // End of the day
-        };
+
+    if (date){
+        field["date"] = { $gte : date}
     }
 
     
@@ -201,7 +177,8 @@ exports.list = asyncHandler(async (req, res) => {
         .limit(pageSize)
         .exec();
      
-        field['date'] = moment(Date.now()).subtract(1, 'days').format('YYYY-MM-DD')
+        
+        field['date'] = { $gte : new Date().toDateString()}
         console.log(field)
         const todayAppointment = await VaccineAppointment.find(field).sort({ date : -1 })
         .populate("patient")

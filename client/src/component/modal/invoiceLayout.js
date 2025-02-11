@@ -13,7 +13,6 @@ import moment from "moment";
 import { useInvalidateAppointments } from "../api/app";
 
 const InvoiceModal = ({ show, onClose, appId , expense}) => {
-  console.log(appId)
   const [treatments, setTreatments] = useState([]);
   const [treatmentList, setTreatmentList] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -53,12 +52,10 @@ const InvoiceModal = ({ show, onClose, appId , expense}) => {
   // Load data on mount
   useEffect(() => {
     if (userInfo) {
-      dispatch(expensesDetails(appId));
       dispatch(listSetting());
     }
   }, [dispatch, userInfo, appId]);
 
-  console.log("billingappointment" , appointment)
   // Populate treatment list from settings
   useEffect(() => {
     if (settings?.data?.treatment) {

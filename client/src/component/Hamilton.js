@@ -108,7 +108,7 @@ const Hamilton = () => {
 
 	const handleForm2Submit = (e) => {
 		e.preventDefault();
-		console.log(form2Data);
+		
 		const submittedData = fieldNames.reduce((result, fieldName, index) => {
 			result[fieldName.name] = form2Data.fields[index];
 			return result;
@@ -147,8 +147,7 @@ const Hamilton = () => {
 
 	useEffect(() => {
 		if (existingData) {
-			console.log(form2Data);
-			console.log(Object.values(existingData));
+			
 			setForm2Data({ fields: Object.values(existingData) });
 		}
 	}, [existingData]);

@@ -110,7 +110,7 @@ export const listVacApp = (page = null, limit = null, status = null, startDate =
                 type: LIST_APPOINTMENT_VACCINE_SUCCESS,
                 payload: data,
             });
-        console.log(data)
+    
     } catch (error) {
         console.log(error)
         const message =
@@ -179,7 +179,7 @@ export const updateVacApp = ({_id ,...appVacc}) => async (dispatch, getState) =>
             },
         }
 
-        console.log("vital :", appVacc)
+        
             const { data } = await axios.put(
                 `${API}/vaccine-app-update/${_id}/`,
                 appVacc,

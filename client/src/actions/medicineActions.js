@@ -49,8 +49,8 @@ export const createMedicine = (med) => async (dispatch, getState) => {
             },
         }
 
-        console.log(med)
-        console.log(userInfo)
+        
+        
         const { data } = await axios.post(`${API}/medicine-create/${userInfo._id}`, med, config)
 
         dispatch({
@@ -95,7 +95,7 @@ export const listMedicines = () => async (dispatch, getState) => {
             type: LIST_MEDICINE_SUCCESS,
             payload: data,
         })
-        console.log(data)
+
     } catch (error) {
         console.log(error)
         const message =

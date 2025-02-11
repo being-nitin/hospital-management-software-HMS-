@@ -209,7 +209,7 @@ export const detailsSpecialize = (id) => async (dispatch, getState) => {
             type: SPECIALIZE_DETAILS_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
         console.log(error)
         dispatch({

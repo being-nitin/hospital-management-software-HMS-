@@ -52,8 +52,6 @@ const AddPrescription = () => {
     const prescEnumsList = useSelector((state) => state.prescEnumsList)
     const { enums } = prescEnumsList
 
-    console.log(enums)
-
     const prescCreate = useSelector((state) => state.prescCreate)
     const { error, loading, success } = prescCreate
 

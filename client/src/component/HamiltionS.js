@@ -235,7 +235,7 @@ const HamiltonDepressionForm = () => {
 			[field]: value,
 		}));
 	};
-	console.log(formData);
+	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		dispatch(

@@ -165,7 +165,7 @@ const PrintAppointments = () => {
 </div>
 
  ${selectedOptions.includes('billing') ?`
-  <div style = "padding : 24px; page-break-before: always; margin-top : 400px;">
+  <div style = "padding : 24px; page-break-before: always; margin-top : 400px; max-width: 900px;">
        <div style="border-bottom: 1px solid #ccc; padding-bottom: 16px;">
   <h5>Appointment with ${appointment?.doctor.name}</h5>
   <p>${moment(appointment?.created_at).format("Do MMMM, hh:mm A")}</p>
@@ -342,7 +342,7 @@ const PrintAppointments = () => {
   <div style={{ padding: '24px', pageBreakBefore: 'always' }}>
     <div style={{ borderBottom: '1px solid #ccc', paddingBottom: '16px' }}>
       <h5>Appointment with {appointment?.doctor.name}</h5>
-      <p>{moment(appointment?.created_at).format('Do MMMM, hh:mm A')}</p>
+      <p>{moment(appointment?.date).format('Do MMMM, hh:mm A')}</p>
     </div>
 
     <div style={{ marginTop: '24px' }}>
@@ -359,7 +359,7 @@ const PrintAppointments = () => {
           </tr>
         </thead>
         <tbody>
-          {appointment && appointment?.billing?.treatment?.map((item) => (
+          {appointment && appointment?.billing && appointment?.billing?.treatment.map((item) => (
             <tr key={item.id}>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.name}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{item.unit}</td>

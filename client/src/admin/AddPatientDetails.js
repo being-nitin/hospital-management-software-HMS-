@@ -197,7 +197,7 @@ const AddPatientDetails = ({ history: history1 }) => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("image", file);
-    console.log(formData);
+  
     setUploading(true);
 
     try {
@@ -214,7 +214,7 @@ const AddPatientDetails = ({ history: history1 }) => {
       );
 
       setImage(data);
-      console.log(data);
+      
       setUploading(false);
     } catch (error) {
       console.error(error);

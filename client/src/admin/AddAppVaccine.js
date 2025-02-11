@@ -188,7 +188,6 @@ const AddAppVaccine = () => {
 		backgroundColor: "#0056b3",
 	};
 
-	console.log({ patient, doctor, date, time, status, day, remarks });
 
 	const AddAppointmentForm = () => (
 		<div className="form-group col-md-12" style={formContainerStyles}>

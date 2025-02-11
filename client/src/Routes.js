@@ -88,7 +88,7 @@ import TestApp from "./component/testApp";
 
 const Routes = () => {
 	const userLogin = useSelector((state) => state.userLogin);
-	console.log(userLogin);
+
 	return (
 		<BrowserRouter>
 			<Switch>

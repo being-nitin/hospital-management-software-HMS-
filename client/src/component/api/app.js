@@ -5,7 +5,7 @@ import { API } from "../../config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const fetchVacAppointments = async (queryKey ) => {
-    const { userInfo, page, limit, status, startDate, endDate, patient} = queryKey;
+    const { userInfo, page, limit, status, date, patient} = queryKey;
     
 
     if (!userInfo._id) return { appointment: [], totalPages: 0, todayAppointment: [] }; // Handle case where user is not logged in
@@ -14,8 +14,7 @@ const fetchVacAppointments = async (queryKey ) => {
     if (page) queryParams.append("page", page);
     if (limit) queryParams.append("limit", limit);
     if (status) queryParams.append("status", status);
-    if (startDate) queryParams.append("startDate", startDate);
-    if (endDate) queryParams.append("endDate", endDate);
+    if (date) queryParams.append("date", date);
     if (patient) queryParams.append("patient", patient);
 
     const { data } = await axios.get(
@@ -42,11 +41,11 @@ export const useAppointments = ({ page = 1, limit = 10, status = null, startDate
     });
 };
 
-export const useInfiniteAppointments = ({ page = 1, limit = 10, status = null, startDate = null, endDate = null, patient = null }) => {
+export const useInfiniteAppointments = ({ page = 1, limit = 10, status = null, date = null, patient = null }) => {
     const { userInfo } = useSelector((state) => state.userLogin);
 
     return useInfiniteQuery(
-        ["appointments", userInfo, page, limit, status, startDate, endDate, patient], // Unique cache key
+        ["appointments", userInfo, page, limit, status, date, patient], // Unique cache key
         async ({ pageParam = page }) => {
             // Pass the pageParam correctly to fetchVacAppointments
             const response = await fetchVacAppointments({
@@ -54,8 +53,7 @@ export const useInfiniteAppointments = ({ page = 1, limit = 10, status = null, s
                 page: pageParam,  // Pass the current page number
                 limit,
                 status,
-                startDate,
-                endDate,
+                date,
                 patient
             });
             return response; // Return the fetched response data

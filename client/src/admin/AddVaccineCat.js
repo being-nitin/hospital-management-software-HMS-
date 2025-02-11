@@ -30,7 +30,7 @@ const  AddVaccineCat = ({ history: history1}) => {
     const medicineList = useSelector((state) => state.medicineList)
     const { medicines } = medicineList
 
-    console.log(medicines)
+    
 
 
     const userLogin = useSelector((state) => state.userLogin)
@@ -39,7 +39,7 @@ const  AddVaccineCat = ({ history: history1}) => {
 
     const vaccineCatType = useSelector((state) => state.vaccineCatType)
     const { types } = vaccineCatType
-    console.log(types)
+
 
 
     const vaccineCatCreate = useSelector((state) => state.vaccineCatCreate)

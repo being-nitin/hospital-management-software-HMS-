@@ -245,10 +245,10 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                     </div>
                                     <div className="">
                                         <label className="form-label m-3" style={{ fontWeight :700}}>Date</label>
-                                        <DatePicker
-              selected={date}
-              onChange={(date) => setDate(date)}
-              className="form-control"
+                                        <input type="date"
+            
+              onChange={(e) => setDate(e.target.value)}
+              
               placeholderText="Select to date"
               required
             />

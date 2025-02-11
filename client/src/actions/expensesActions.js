@@ -168,7 +168,7 @@ export const updateExpense = (expe) => async (dispatch, getState) => {
             },
         }
 
-        console.log(expe)
+        
         const { data } = await axios.put(
             `${API}/expenses-update/${expe._id}/${userInfo._id}`,
             expe,

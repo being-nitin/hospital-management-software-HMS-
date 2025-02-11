@@ -34,7 +34,6 @@ const Profile = ({ match, history }) => {
         } else {
             if (!user.name || !user || success) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                //console.log(user)
                 dispatch(getUserDetails(userId))
             } else {
                 setName(user.name)

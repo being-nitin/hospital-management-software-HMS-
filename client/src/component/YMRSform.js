@@ -12,7 +12,6 @@ const YMRSform = () => {
 		fields: Array(11).fill(null),
 	});
 
-	console.log(form2Data);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { id } = useParams();
@@ -54,7 +53,6 @@ const YMRSform = () => {
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 
-		console.log(fieldNames);
 		const submittedData = fieldNames.reduce((result, currField, index) => {
 			result[currField] = form2Data.fields[index];
 			return result;
