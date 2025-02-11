@@ -160,7 +160,7 @@ const PrintAppointments = () => {
    ${selectedOptions.includes('Additional Notes') ? `
   <h4 style="color: #424242; font-size: 20px; font-weight: bold; margin-bottom: 10px;">Additional Notes:</h4>
   <p style="color: #616161; font-size: 14px; line-height: 1.6;">
-    ${appointment && appointment.notes}
+    ${appointment && (appointment.notes !== undefined ? appointment.notes :  '')}
   </p>` : ''}
 </div>
 

@@ -122,7 +122,7 @@ const PatAppDetail = () => {
          {(content === "Today" && data.pages[0].todayAppointment || [] ).map((item, index) => (
         <div key={index} className="list-group-item" style={{ cursor: "pointer" }} 
             onClick={() =>{
-              
+                 refetch()
                 setDate(new Date().toDateString()) 
                 setSelectedPatient(item.patient || item)
             }}>
@@ -133,6 +133,7 @@ const PatAppDetail = () => {
     {(content === "All" && patients.patient || [] ).map((item, index) => (
       <div key={index} className="list-group-item" style={{ cursor: "pointer" }} 
           onClick={() =>{
+            
             setDate(null)
             setSelectedPatient(item.patient || item)
           }}>

@@ -178,12 +178,12 @@ exports.list = asyncHandler(async (req, res) => {
         .exec();
      
         
-        field['date'] = { $gte : new Date().toDateString()}
-        console.log(field)
-        const todayAppointment = await VaccineAppointment.find(field).sort({ date : -1 })
+
+        const todayAppointment = await VaccineAppointment.find({ date : {$gte : new Date().toDateString()} , doctor :  req.params.userId}).sort({ date : -1 }).populate('patient doctor')
         .populate("patient")
         .exec();
-      // Send paginated response
+      
+        console.log(todayAppointment)
       return res.json({
         appointment: data,
         currentPage: pageNumber,
