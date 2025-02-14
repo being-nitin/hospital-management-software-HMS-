@@ -117,7 +117,7 @@ const PrescriptionForm = ({
                   <datalist id={`dosage-list-${time}-${index}`}>
                     {dosageValues.map((value, i) => (
                       <option key={i} value={value} />
-                    ))}
+                    ))} 
                   </datalist>
                 </td>
               ))}
