@@ -78,10 +78,7 @@ const PatAppDetail = () => {
         setDateRange({ start, end });
      
     };
-
-
-
-   
+ 
     return (
         <Layout>
             <div style={{ display: "flex", justifyContent: "center", paddingLeft: "200px" }}>
@@ -122,7 +119,7 @@ const PatAppDetail = () => {
          {(content === "Today" && data.pages[0].todayAppointment || [] ).map((item, index) => (
         <div key={index} className="list-group-item" style={{ cursor: "pointer" }} 
             onClick={() =>{
-                 refetch()
+                refetch()
                 setDate(new Date().toDateString()) 
                 setSelectedPatient(item.patient || item)
             }}>

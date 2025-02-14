@@ -78,3 +78,33 @@ export const useCreatePrescription = () => {
     return mutation;
 };
 
+
+const deletePrescription = async ({idx , presId ,userInfo}) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+        },
+    };
+    const { data } = await axios.delete(`${API}/pres-remove/${presId}`, config , idx);
+    return data;
+  };
+
+  
+export const useDeletePrescription = () => {
+    const queryClient = useQueryClient();
+const { userInfo } = useSelector((state) => state.userLogin);
+    const mutation = useMutation( {
+        mutationFn: ({idx , presId}) => deletePrescription({idx ,presId, userInfo})  ,
+        onSuccess: (data) => {
+            // Invalidate the query to refetch it after mutation
+            queryClient.invalidateQueries(['appointments']); 
+            console.log("Prescription deleted:", data);
+        },
+        onError: (error) => {
+            console.error("Error updating prescription:", error);
+        },
+    });
+
+    return mutation;
+};
+

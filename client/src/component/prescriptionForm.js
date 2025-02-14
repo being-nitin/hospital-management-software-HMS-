@@ -1,132 +1,126 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button } from 'react-bootstrap';
 import { Plus, DashCircle } from 'react-bootstrap-icons';
-import { createPrescription, updatePrescription } from '../actions/prescriptionActions';
-import { useDispatch } from 'react-redux';
 
 const PrescriptionForm = ({
   onSubmit,
   appId,
   doctor,
   patient,
-  existingPrescriptions,
+  existingPrescriptions = [],
   medicines,
   onCancel,
 }) => {
   const [prescriptions, setPrescriptions] = useState([]);
-  const dispatch = useDispatch();
 
-  const dosageValues = ['0', '½', '1' , '1½', '2' ,  '2½' , '3', '3½'];
+  const dosageValues = ['0', '½', '1', '1½', '2', '2½', '3', '3½'];
   const instructions = ['Before Food', 'After Food', 'With Food'];
-  
+
   useEffect(() => {
-    if (existingPrescriptions) {
-        const { dosage } = existingPrescriptions;
+    if (existingPrescriptions && existingPrescriptions.length > 0) {
+      // Convert dosage string into morning, afternoon, evening fields
+      const formattedPrescriptions = existingPrescriptions.map((pres) => {
+        const { dosage } = pres;
         const [morning = '', afternoon = '', evening = ''] = dosage ? dosage.split('-') : [];
-       const updatedPrescriptions =  { ...existingPrescriptions, morning, afternoon, evening }
-      setPrescriptions([ {...updatedPrescriptions} ]);
+        return { ...pres, morning, afternoon, evening };
+      });
+      setPrescriptions(formattedPrescriptions);
+    } else {
+      addPrescription();
     }
   }, [existingPrescriptions]);
 
+  console.log(prescriptions)
   const addPrescription = () => {
-    setPrescriptions([
-      ...prescriptions,
-      { drug: '', morning: '1', afternoon: '1', evening: '1', durationNumber: '', durationUnit: '', instruction: '', doctor, patient },
+    setPrescriptions((prev) => [
+      ...prev,
+      {
+        drug: '',
+        morning: '1',
+        afternoon: '1',
+        evening: '1',
+        durationNumber: '',
+        durationUnit: '',
+        instruction: '',
+        doctor,
+        patient,
+      },
     ]);
   };
 
   const handleInputChange = (index, field, value) => {
-    const updatedPrescriptions = [...prescriptions];
-    updatedPrescriptions[index][field] = value;
-    setPrescriptions(updatedPrescriptions);
+    setPrescriptions((prev) =>
+      prev.map((prescription, i) =>
+        i === index ? { ...prescription, [field]: value } : prescription
+      )
+    );
   };
 
   const removePrescription = (index) => {
-    const updatedPrescriptions = prescriptions.filter((_, i) => i !== index);
-    setPrescriptions(updatedPrescriptions);
+    setPrescriptions((prev) => prev.filter((_, i) => i !== index));
   };
 
   const savePrescriptions = (e) => {
     e.preventDefault();
-    const newPrescriptions = prescriptions.map((p) => ({
+    const updatedPrescriptions = prescriptions.map((p) => ({
       ...p,
       dosage: [p.morning, p.afternoon, p.evening].join('-'),
     }));
-   
-    
-    onSubmit(newPrescriptions, existingPrescriptions );
+
+    onSubmit(updatedPrescriptions, existingPrescriptions);
   };
 
-  useEffect(() => {
-    if(!existingPrescriptions){
-     addPrescription()
-    }
-  },[])
   return (
+    <>
+    <style>
+    {`
+      .styled-input {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .styled-datalist option {
+        font-size: 14px;
+        padding: 5px;
+        background : white;
+        color : black;
+      }
+    `}
+  </style>
     <Form onSubmit={savePrescriptions}>
       <Table bordered hover responsive>
-        
-        <tbody>
+      <tbody>
           {prescriptions.map((prescription, index) => (
             <tr key={index}>
               <td>
-                <Form.Select
+                <Form.Control
+                  list={`medicine-list-${index}`}
                   value={prescription.drug}
                   onChange={(e) => handleInputChange(index, 'drug', e.target.value)}
-                  className='py-2'
+                  className="py-2 styled-input"
                   required
-                >
-                  <option value="">Select a drug</option>
-                  {medicines && medicines.map((medicine) => (
-                    <option key={medicine.id} value={medicine.name}>
-                      {medicine.name}
-                    </option>
+                />
+                <datalist id={`medicine-list-${index}`} className="styled-datalist">
+                  {medicines?.map((medicine) => (
+                    <option key={medicine.id} value={medicine.name} />
                   ))}
-                </Form.Select>
+                </datalist>
               </td>
-              <td>
-                <Form.Select
-                  value={prescription.morning}
-                  onChange={(e) => handleInputChange(index, 'morning', e.target.value)}
-                  className='py-2'
-                >
-                  <option value="">Select</option>
-                  {dosageValues.map((value, idx) => (
-                    <option key={idx} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </Form.Select>
-              </td>
-              <td>
-                <Form.Select
-                  value={prescription.afternoon}
-                  onChange={(e) => handleInputChange(index, 'afternoon', e.target.value)}
-                  className='py-2'
-                >
-                  <option value="">Select</option>
-                  {dosageValues.map((value, idx) => (
-                    <option key={idx} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </Form.Select>
-              </td>
-              <td>
-                <Form.Select
-                  value={prescription.evening}
-                  onChange={(e) => handleInputChange(index, 'evening', e.target.value)}
-                  className='ms-2 py-2'
-
-                >
-                  <option value="">Select</option>
-                  {dosageValues.map((value, idx) => (
-                    <option key={idx} value={value}>
-                      {value}
-                    </option>
-                  ))}
-                </Form.Select>
-              </td>
+              {['morning', 'afternoon', 'evening'].map((time, idx) => (
+                <td key={idx}>
+                  <Form.Control
+                    list={`dosage-list-${time}-${index}`}
+                    value={prescription[time]}
+                    onChange={(e) => handleInputChange(index, time, e.target.value)}
+                    className="py-2"
+                  />
+                  <datalist id={`dosage-list-${time}-${index}`}>
+                    {dosageValues.map((value, i) => (
+                      <option key={i} value={value} />
+                    ))}
+                  </datalist>
+                </td>
+              ))}
               <td>
                 <div className="d-flex">
                   <Form.Control
@@ -149,29 +143,28 @@ const PrescriptionForm = ({
                 </div>
               </td>
               <td>
-                <Form.Select
+                <Form.Control
+                  list={`instruction-list-${index}`}
                   value={prescription.instruction}
                   onChange={(e) => handleInputChange(index, 'instruction', e.target.value)}
-                  className='py-2'
-                >
-                  <option value="">instruction</option>
-                  {instructions.map((inst, idx) => (
-                    <option key={idx} value={inst}>
-                      {inst}
-                    </option>
+                  className="py-2"
+                />
+                <datalist id={`instruction-list-${index}`}>
+                  {instructions.map((inst, i) => (
+                    <option key={i} value={inst} />
                   ))}
-                </Form.Select>
+                </datalist>
               </td>
               {!existingPrescriptions && (
-              <td className='text-center'>
-             
-                <DashCircle
-                className="text-center m-2" 
-                  size={20}
-                  onClick={() => removePrescription(index)}
-                  style={{ cursor: 'pointer', color: 'red' }}
-                />
-              </td>)}
+                <td className="text-center">
+                  <DashCircle
+                    className="text-center m-2"
+                    size={20}
+                    onClick={() => removePrescription(index)}
+                    style={{ cursor: 'pointer', color: 'red' }}
+                  />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -179,14 +172,13 @@ const PrescriptionForm = ({
 
       <div className="d-flex justify-content-between">
         {!existingPrescriptions && (
-        <Button variant="secondary" onClick={addPrescription}>
-          <Plus size={16} /> Add Medicine
-        </Button>)
-}
+          <Button variant="secondary" onClick={addPrescription}>
+            <Plus size={16} /> Add Medicine
+          </Button>
+        )}
         <div>
-          
           <Button variant="primary" type="submit" className="m-2">
-            {existingPrescriptions ? 'Update' : 'Save'}
+            {existingPrescriptions ? 'Update All' : 'Save'}
           </Button>
           <Button variant="danger" onClick={onCancel}>
             Cancel
@@ -194,6 +186,7 @@ const PrescriptionForm = ({
         </div>
       </div>
     </Form>
+    </>
   );
 };
 

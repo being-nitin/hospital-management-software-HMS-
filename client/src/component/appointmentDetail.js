@@ -24,7 +24,8 @@ import { prescription } from "../utils/printformat";
 import InvoiceModal from "./modal/invoiceLayout";
 import { expensesDetails} from "../actions/expensesActions";
 import { useInvalidateAppointments, useUpdateAppointment } from "./api/app";
-import { useCreatePrescription, useUpdatePrescription } from "./api/prescription";
+import { useCreatePrescription, useDeletePrescription, useUpdatePrescription } from "./api/prescription";
+import { PresetStatusColorTypes } from "antd/es/_util/colors";
 
 const AppointmentDetail = ({lastElement, app}) => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -41,9 +42,10 @@ const AppointmentDetail = ({lastElement, app}) => {
 	const navigate = useNavigate();
 	const [notes, setNotes] = useState("") 
 	const appdetails = useSelector((state) => state.vaccineAppDetails)
+	const [isEditing, setIsEditing] = useState(false);
 
 	const { appointment : {appointment} = [] } = appdetails
-	
+	const deletePrescription = useDeletePrescription()
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -54,7 +56,6 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 
 	const updateAppData = useUpdateAppointment()
-	const invalidateAppointments = useInvalidateAppointments()
 
 	useEffect(() => {
 		if (userInfo) {
@@ -74,15 +75,13 @@ const AppointmentDetail = ({lastElement, app}) => {
 	    
 		setSelectedPrescription(null); 
 		 if (existingPrescriptions) {
-			  updatePrescription.mutate({pres : newPrescriptions[0]})
+			  newPrescriptions.map((medicine) => {
+			  return updatePrescription.mutate({pres : medicine})
+			  })
 			} else {
 				
 			  createPrescription.mutate({appId: app._id, prescriptions : newPrescriptions})
 			}
-
-
-		// detailsVacApp(app._id)	
-		// prescriptionData()
 	}
 
 	
@@ -93,9 +92,8 @@ const AppointmentDetail = ({lastElement, app}) => {
 	};
 
 	// Handle editing a prescription
-	const handleEditPrescription = (idx) => {
-		const prescriptionToEdit = prescription[idx];
-		setSelectedPrescription(prescriptionToEdit);
+	const handleEditPrescription = () => {
+		setSelectedPrescription([...prescription]);
 		setPrescriptionForm(true); // Show form for editing
 	};
 
@@ -111,15 +109,18 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 	// Handle deleting a prescription
 	const handleDeletePrescription = (prescriptionId) => {
-		dispatch(deletePrescription(app._id, prescriptionId)); // Dispatch delete action
+		console.log("delete")
+		deletePrescription.mutate({idx : app._id, presId : prescriptionId}); // Dispatch delete action
 		
 	};
 
 	const handleAddNote = () => {
 		updateAppData.mutate({_id : app._id , notes})
+		alert("note is created")
 	}
 
 	const handleVitalCancel = () => {
+
 		setVitalSignsForm(false);
 		setSelectedVitalSign(null);
 	};
@@ -128,6 +129,10 @@ const AppointmentDetail = ({lastElement, app}) => {
 		updateAppData.mutate({ _id: app._id, status: "closed" });
 		dispatch({ type: "UPDATE_APPOINTMENT_VACCINE_RESET" });
 		
+	};
+
+	const handleSave = () => {
+	  setIsEditing(false);
 	};
 
 	useEffect(() => {
@@ -139,6 +144,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 		);
 		setNotes(app?.notes)
 	}, []);
+
 
 	const fieldNames = [
 		"Anxious Mood",
@@ -401,7 +407,6 @@ const AppointmentDetail = ({lastElement, app}) => {
 									handleCancel={handleVitalCancel}
 									appId={app?._id}
 									status={app?.status}
-									
 								/>
 							
 										</div>
@@ -409,7 +414,20 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 									{/* Prescriptions Section */}
 									<h6 className="mt-3">
-										<strong>Medicines: <button  style={{ padding : '5px' , border : 'none'}} onClick={() => setPrescriptionForm(true)}><i className="fa fa-plus"/></button></strong>
+										<strong>Medicines: <button  style={{ padding : '5px' , border : 'none'}} onClick={() => setPrescriptionForm(true)}><i className="fa fa-plus"/></button></strong>&nbsp;
+										{ prescription && prescription.length !== 0 &&<PencilSquare
+																		size={
+																			24
+																		}
+																		className="me-2"
+																		style={{
+																			cursor: "pointer",
+																			color: "blue",
+																		}}
+																		onClick={() =>
+																			handleEditPrescription()
+																		} 
+																	/>}
 									</h6>
 									<table className="table table-bordered">
 										<thead>
@@ -451,21 +469,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 															{app?.status !==
 																"closed" && (
 																<td>
-																	<PencilSquare
-																		size={
-																			24
-																		}
-																		className="me-2"
-																		style={{
-																			cursor: "pointer",
-																			color: "blue",
-																		}}
-																		onClick={() =>
-																			handleEditPrescription(
-																				idx
-																			)
-																		} 
-																	/>
+																	
 																	<Trash
 																		size={
 																			24
@@ -523,19 +527,37 @@ const AppointmentDetail = ({lastElement, app}) => {
         </tbody>
       </table>
 	  <h5>Additional Notes</h5>
-	  <textarea
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        placeholder="Write your notes here..."
-        style={{ width: '100%', height: '100px' }}
-      />
-      <br />
-      <button onClick={handleAddNote} style={{ padding: "5px", cursor: 'pointer' , marginTop : "10px"}}>
-        Add Note
-      </button>
-    </div>
+	  <div>
+      {isEditing ? (
+        <>
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Write your notes here..."
+            style={{ width: "100%", height: "100px" }}
+          />
+          <br />
+		  <div style={{ display : 'flex' , justifyContent : 'left' , alignItems : 'center' , gap : '10px' }}>
+          <button onClick={handleSave} style={{ padding: "5px", cursor: "pointer", marginTop: "10px" , borderRadius : '5px'}}>
+            Save
+          </button>
+		  <button onClick={() =>{ setIsEditing(false) 
+			setNotes(app?.notes)}} style={{ padding: "5px", cursor: "pointer", marginTop: "10px" ,  borderRadius : '5px'}}>
+            Cancel
+		  </button>
+		  </div>
+        </>
+      ) : (
 
-	
+        <div style={{ display :  'flex' , justifyContent : 'left' , alignItems : 'center' , alignContent : 'baseline' , gap : '10px' }}>
+          <p style={{ marginTop : '10px'}}>{notes}</p><button onClick={() => {
+		
+			setIsEditing(true)
+		  }} style={{ padding: "5px", cursor: "pointer",  border : 'none' , backgroundColor : 'transparent' }}><i className="fa fa-edit"></i></button>
+        </div>
+      )}
+    </div>
+    </div>
                                <div className="print-button d-flex justify-content-end mt-3">
 								<Button variant="primary" onClick={() =>  navigate(`/print-prescription/${app?._id}`)}>
                                   view
@@ -544,13 +566,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 								{/* Print Button */}
 							</div>	
 						</div>
-						
-
 					</div>
-        
-					
-				
-	
 		</>
 	);
 };
