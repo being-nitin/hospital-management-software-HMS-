@@ -25,7 +25,7 @@ import InvoiceModal from "./modal/invoiceLayout";
 import { expensesDetails} from "../actions/expensesActions";
 import { useInvalidateAppointments, useUpdateAppointment } from "./api/app";
 import { useCreatePrescription, useDeletePrescription, useUpdatePrescription } from "./api/prescription";
-import { PresetStatusColorTypes } from "antd/es/_util/colors";
+import ClinicalNotesModal from "./modal/clinicalNotesModal";
 
 const AppointmentDetail = ({lastElement, app}) => {
 	const [prescriptionForm, setPrescriptionForm] = useState(false);
@@ -43,6 +43,9 @@ const AppointmentDetail = ({lastElement, app}) => {
 	const [notes, setNotes] = useState("") 
 	const appdetails = useSelector((state) => state.vaccineAppDetails)
 	const [isEditing, setIsEditing] = useState(false);
+	const [showClinicalModal, setShowClinicalModal] = useState(false);
+
+
 
 	const { appointment : {appointment} = [] } = appdetails
 	const deletePrescription = useDeletePrescription()
@@ -178,7 +181,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 				<Link
 					onClick={(e) => {
 						e.preventDefault();
-						navigate(`/clinicalNotes/${app._id}`);
+						setShowClinicalModal(true)
 					}}>
 					Clinal Notes
 				</Link>
@@ -259,7 +262,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 	return (
 	<>
 	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} appId={app._id} expense={app?.billing}/>
-		
+	{showClinicalModal && <ClinicalNotesModal show={showClinicalModal} handleClose={() => setShowClinicalModal(false)} appId ={app._id} />}
 				{/* app and Patient Info Section */}
 				<div  style={{ width : '100%'}} ref={lastElement}>
 						<div className="card-header bg-success text-white d-flex justify-content-between">

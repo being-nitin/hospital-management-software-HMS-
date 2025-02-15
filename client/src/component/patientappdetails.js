@@ -29,7 +29,6 @@ const PatAppDetail = () => {
   const { patients = {} } = useSelector((state) => state.patientList);
 
 
-
   useEffect(() => {
     if (userInfo) {
       dispatch(listPatients({}));
