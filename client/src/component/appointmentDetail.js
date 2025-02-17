@@ -258,7 +258,19 @@ const AppointmentDetail = ({lastElement, app}) => {
 			</Menu.Item>
 		</Menu>
 	);
-
+	const getQuantity = (dosageStr, durationStr) =>{
+		const dosage = dosageStr.split('-').reduce((sum, part) => sum + (part.includes('½') ? parseFloat(part.replace('½', '.5')) : parseFloat(part)), 0);
+		  
+		const match = durationStr.match(/(\d+)\s*(weeks|months|days)/);
+		
+		if (!match) return 0; // If no match, return 0
+	  
+		const [_, num, unit] = match; // Destructure match array safely
+		const duration = unit === "weeks" ? num * 7 : unit === "months" ? num * 30 : parseInt(num);
+		
+		return dosage * duration;
+	  }
+	  
 	return (
 	<>
 	<InvoiceModal show={showBilling} onClose={() => setShowBilling(false)} appId={app._id} expense={app?.billing}/>
@@ -439,6 +451,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 												<th>Dosage</th>
 												<th>Duration</th>
 												<th>Instructions</th>
+												<th>Quantity</th>
 												{app?.status !==
 													"closed" && (
 													<th>Actions</th>
@@ -469,6 +482,11 @@ const AppointmentDetail = ({lastElement, app}) => {
 																	pres?.instruction
 																}
 															</td>
+															<td>{getQuantity(	
+																	pres?.dosage,
+															
+																pres?.durationNumber +
+																	pres?.durationUnit)}</td>
 															{app?.status !==
 																"closed" && (
 																<td>
