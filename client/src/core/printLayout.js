@@ -54,9 +54,9 @@ const PrintLayout = ({ children , html , data , category }) => {
             }
             .signature {
                position : fixed;
-               bottom : 250px;
-               right : 70px;  
-               width :80px; 
+               bottom : 650px;
+               right : 110px;  
+               width :100px; 
                text-align : right;
             }  
             .header, .footer {

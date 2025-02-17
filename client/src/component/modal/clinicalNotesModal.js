@@ -96,9 +96,9 @@ const ClinicalNotesModal = ({ show, handleClose, appId }) => {
                                 value={note.complaint}
                                 onChange={(e) => handleNoteChange(index, "complaint", e.target.value)}
                             >
-                                <option disabled>Select Complaint</option>
+                                <option>Select Complaint</option>
                                 {clinicalList.map(({ title }, i) => (
-                                    <option value={title} key={i}>{title}</option>
+                                    <option value={title} key={i} >{title}</option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
