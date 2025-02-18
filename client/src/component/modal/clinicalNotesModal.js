@@ -90,19 +90,21 @@ const ClinicalNotesModal = ({ show, handleClose, appId }) => {
             <Modal.Body>
                 {editedNotes.map((note, index) => (
                     <Form key={index} className="mb-3">
-                        <Form.Group controlId={`formComplaint-${index}`}>
-                            <Form.Label>Complaint</Form.Label>
-                            <Form.Select
-                                size="lg"
-                                value={note.complaint}
-                                onChange={(e) => handleNoteChange(index, "complaint", e.target.value)}
-                            >
-                                <option>Select Complaint</option>
-                                {clinicalList.map(({ title }, i) => (
-                                    <option value={title} key={i} >{title}</option>
-                                ))}
-                            </Form.Select>
-                        </Form.Group>
+                       <Form.Group controlId={`formComplaint-${index}`}>
+    <Form.Label>Complaint</Form.Label>
+    <Form.Control
+        as="input"
+        list={`complaintList-${index}`}
+        size="md"
+        value={note.complaint}
+        onChange={(e) => handleNoteChange(index, "complaint", e.target.value)}
+    />
+    <datalist id={`complaintList-${index}`}>
+        {clinicalList.map(({ title }, i) => (
+            <option value={title} key={i} />
+        ))}
+    </datalist>
+</Form.Group>
                         <Form.Group controlId={`formDuration-${index}`}>
                             <Form.Label>Duration</Form.Label>
                             <div className="d-flex">

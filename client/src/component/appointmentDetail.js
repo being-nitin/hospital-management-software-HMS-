@@ -531,7 +531,7 @@ const AppointmentDetail = ({lastElement, app}) => {
           />
           <br />
 		  <div style={{ display : 'flex' , justifyContent : 'left' , alignItems : 'center' , gap : '10px' }}>
-          <button onClick={handleSave} style={{ padding: "5px", cursor: "pointer", marginTop: "10px" , borderRadius : '5px'}}>
+          <button onClick={() => handleAddNote()} style={{ padding: "5px", cursor: "pointer", marginTop: "10px" , borderRadius : '5px'}}>
             Save
           </button>
 		  <button onClick={() =>{ setIsEditing(false) 
@@ -544,7 +544,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 
         <div style={{ display :  'flex' , justifyContent : 'left' , alignItems : 'center' , alignContent : 'baseline' , gap : '10px' }}>
           <p style={{ marginTop : '10px'}}>{notes}</p><button onClick={() => {
-		
+		    
 			setIsEditing(true)
 		  }} style={{ padding: "5px", cursor: "pointer",  border : 'none' , backgroundColor : 'transparent' }}><i className="fa fa-edit"></i></button>
         </div>

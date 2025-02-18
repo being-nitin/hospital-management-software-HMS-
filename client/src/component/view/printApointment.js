@@ -401,7 +401,7 @@ const getQuantity = (dosageStr, durationStr) =>{
    </div>
       <h4 style={{ color: '#424242', fontSize: '20px', fontWeight: 'bold', marginBottom: '10px' }}>Additional Notes:</h4>
       <p style={{ color: '#616161', fontSize: '14px', lineHeight: '1.6' }}>
-        {appointment && appointment.notes}
+        {appointment && (appointment.notes != "undefined" ? appointment.notes : '')}
       </p>
     </div>}
     {selectedOptions.includes('billing') && (
