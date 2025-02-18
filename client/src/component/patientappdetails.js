@@ -138,8 +138,6 @@ const PatAppDetail = () => {
               group.appointment.map((app, i) => {
                 const isLastItem = index === data.pages.length - 1 && i === group.appointment.length - 1; // Check if this is the last item in the list
                 return (
-
-
                   <AppointmentDetail
                     lastElement={isLastItem ? lastElement : null}
                     key={app._id}

@@ -19,7 +19,7 @@ const PrintLayout = ({ children , html , data , category }) => {
 
   const userSetting = useSelector((state) => state.listSetting);
   const { settings } = userSetting;
-
+  
   useEffect(() => {
       if (userInfo) {
           dispatch(listSetting());
@@ -109,8 +109,9 @@ const PrintLayout = ({ children , html , data , category }) => {
             }
             
             @media print {
-              @page { margin: 0; size: A4 }
-             body {
+             
+             ${category == 'expense' ? '@page { margin: 0; size: landscape }' : ' @page { margin: 0; size: A4 }'}
+             body { 
              width : 1230px;
             background-image: url(${Logo}); /* Inline base64 image for print */
             background-repeat: no-repeat;
@@ -143,18 +144,18 @@ const PrintLayout = ({ children , html , data , category }) => {
         </head>
         <body>
           <div class="print-container">
-            <img src="${settings.data[`${category}`].header}" alt="Header" class="header" />
-            <div style= "margin-top: 400px;" >
+            ${settings.data[`${category}`].header ? `<img src=${settings.data[`${category}`].header}  class="header" />` : ''}
+            ${category !== 'expense' ? '<div style=  "margin-top: 400px;">' : '<div style="margin-top: 50px;">'}
            ${html(data)}
            </div>
-            <img src=${Logo} class="backgroundLogo"></img>
+             ${category !== 'expense' ? `<img src=${Logo} class="backgroundLogo"></img>` : ''}
             <div class="content">
             ${printContent.innerHTML}<div>
             <div class="signature">
             <img src=${Signature} style="width: 80px;" ></img>
             </div>
             <div style = "margin-top : 90px; position: fixed;">
-            <img src="${settings.data[`${category}`].footer}" alt="Footer" class="footer" />
+            <img src="${settings.data[`${category}`].footer}"  class="footer" />
             </div>
           </div>
         </body>
