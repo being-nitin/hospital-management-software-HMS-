@@ -130,7 +130,7 @@ const AddClinicalNotes = () => {
 	const { settings } = userSetting;
 
 	useEffect(() => {
-		dispatch(updateSetting({ clinicalNotes: notes }));
+		dispatch(updateSetting(null , { clinicalNotes: notes }));
 	}, [notes]);
 
 	useEffect(() => {
