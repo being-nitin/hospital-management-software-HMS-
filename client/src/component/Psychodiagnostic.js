@@ -460,7 +460,10 @@ const Psychodiagnostic = () => {
     < Layout>
     <>
     <div style={{ position : 'fixed' , top : '50px' , backgroundColor : 'white' , width : '100%' , display : 'flex' , justifyContent : 'space-between' , alignItems :'center' }}>
+    <div style= {{ display : 'flex ' , justifyContent : 'center' , alignContent : 'center' , flexDirection : "row-reverse"}}>
     <button style={styles.viewButton} onClick={()=> navigate(`/psychodiagnosticreport/${appointment?._id}`)} >View </button>
+    <button style={styles.viewButton} onClick={()=> navigate("/patient-app-details")} >Back</button>
+    </div>
    </div>
                   
    
