@@ -11,13 +11,18 @@ import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
+const SCROLL_STORAGE_KEY = "appointmentScrollPosition";
+
 const PatAppDetail = () => {
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState(() => {
+    const savedPatient = localStorage.getItem("selectedPatient");
+    return savedPatient ? JSON.parse(savedPatient) : null;
+  });
   const [dateRange, setDateRange] = useState({ start: null, end: null });
-  const [hasMore, setHasMore] = useState(true);
+ 
   const [content, setContent] = useState("Today");
-  const [showBilling, setShowBilling] = useState(false);
   const [date, setDate] = useState(null)
+  const scrollRef = useRef(null); // Added for scroll retention
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error, refetch } = useInfiniteAppointments({
     limit: 2,
     patient: selectedPatient?._id,
@@ -28,6 +33,14 @@ const PatAppDetail = () => {
   const { userInfo } = useSelector((state) => state.userLogin);
   const { patients = {} } = useSelector((state) => state.patientList);
 
+  useEffect(() => {
+    if (selectedPatient) {
+      localStorage.setItem("selectedPatient", JSON.stringify(selectedPatient));
+    }
+    if (date) {
+      localStorage.setItem("selectedDate", date);
+    }
+  }, [selectedPatient, date]);
 
   useEffect(() => {
     if (userInfo) {
@@ -37,11 +50,50 @@ const PatAppDetail = () => {
     }
   }, [userInfo]);
 
+
+    // Save scroll position to localStorage
+    const saveScrollPosition = () => {
+      if (scrollRef.current) {
+        localStorage.setItem(SCROLL_STORAGE_KEY, scrollRef.current.scrollTop);
+      }
+    };
+  
+    // Restore scroll position from localStorage
+    const restoreScrollPosition = () => {
+      const savedScrollTop = localStorage.getItem(SCROLL_STORAGE_KEY);
+      if (scrollRef.current && savedScrollTop) {
+        scrollRef.current.scrollTop = parseInt(savedScrollTop, 10);
+      }
+    };
+  
+    useEffect(() => {
+      if (userInfo) {
+        dispatch(listPatients({}));
+      } else {
+        navigate("/signin");
+      }
+    }, [userInfo, dispatch, navigate]);
+  
+    useEffect(() => {
+      restoreScrollPosition(); // Restore scroll when component mounts
+    }, []);
+  
+    useEffect(() => {
+      const handleBeforeUnload = () => saveScrollPosition(); // Save before unload
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+        saveScrollPosition(); // Save before unmount
+      };
+    }, []);
+  
+    
   useEffect(() => {
     if (selectedPatient || date) {
       refetch(); // Fetch appointments for the selected patient
     }
-  }, [selectedPatient, date, refetch]);
+  }, [selectedPatient, date]);
 
   const handleObserver = useRef();
 
@@ -80,7 +132,7 @@ const PatAppDetail = () => {
         <div className="mb-4">
 
           {selectedPatient && <h2>{selectedPatient.firstName.toUpperCase()} {selectedPatient.lastName.toUpperCase()}-{selectedPatient.patientNumber}</h2>}
-          <div>
+          <div ref={scrollRef} style={{ overflowY: "auto", maxHeight: "600px" }} onScroll={saveScrollPosition}>
 
             {data?.pages?.map((group, index) =>
               group.appointment.map((app, i) => {

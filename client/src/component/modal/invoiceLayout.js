@@ -136,7 +136,7 @@ const InvoiceModal = ({ show, onClose, appId , expense}) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Invoice</h5>
-                <button type="button" className="btn-close" onClick={onClose}></button>
+                <button type="button" onClick={onClose}><i class= "fa fa-window-close" ></i></button>
               </div>
               <div className="modal-body">
                 <div className="border-bottom pb-3">
@@ -170,7 +170,7 @@ const InvoiceModal = ({ show, onClose, appId , expense}) => {
                                 handleTreatmentChange(treatment.id, "cost", parseFloat(cost));
                               }}
                             >
-                              <option disabled value="">
+                              <option value="">
                                 Select Treatment
                               </option>
                               {treatmentList.map(({ name, price }) => (

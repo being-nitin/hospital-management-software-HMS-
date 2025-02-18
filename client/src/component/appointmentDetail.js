@@ -4,26 +4,13 @@ import { Link } from "react-router-dom";
 import PrescriptionForm from "../component/prescriptionForm"; // Importing the PrescriptionForm component
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
-import { updatePatients } from "../actions/patientActions";
-import {
-	listVacApp,
-	deleteVacApp,
-	detailsVacApp,
-	updateVacApp
-} from "../actions/vaccineAppointmentActions";
-import { deletePrescription } from "../actions/prescriptionActions";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, } from "react-router-dom";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import VitalSignsForm from "./vitalSigns";
-import MedicalHistoryForm from "./medicalHistoryForm";
-import { listMedicines, deleteMedicine } from "../actions/medicineActions";
+import { listMedicines} from "../actions/medicineActions";
 import dayjs from "dayjs";
-import header from "../assets/header.PNG";
-import PrintLayout from "../core/printLayout";
-import { prescription } from "../utils/printformat";
 import InvoiceModal from "./modal/invoiceLayout";
-import { expensesDetails} from "../actions/expensesActions";
-import { useInvalidateAppointments, useUpdateAppointment } from "./api/app";
+import {  useUpdateAppointment } from "./api/app";
 import { useCreatePrescription, useDeletePrescription, useUpdatePrescription } from "./api/prescription";
 import ClinicalNotesModal from "./modal/clinicalNotesModal";
 
@@ -92,6 +79,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 	const handleVitalSignsSubmit = (vitalSigns) => {
 		updateAppData.mutate({ _id: app._id, vitalSigns });
 		setVitalSignsForm(false); // Hide the form after submission
+		alert("vital sign is changed")
 	};
 
 	// Handle editing a prescription
@@ -168,15 +156,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 	const menu = (
 		<Menu>
-			<Menu.Item
-				key="1"
-				onClick={() => {
-					setVitalSignsForm(true);
-					setPrescriptionForm(false);
-					setPsychologicalForm(false);
-				}}>
-				<Link href="#">Vital Signs</Link>
-			</Menu.Item>
+		
 			<Menu.Item key="2">
 				<Link
 					onClick={(e) => {
@@ -186,15 +166,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 					Clinal Notes
 				</Link>
 			</Menu.Item>
-			<Menu.Item
-				key="3"
-				onClick={() => {
-					setPrescriptionForm(true);
-					setVitalSignsForm(false);
-					setPsychologicalForm(false);
-				}}>
-				Prescription
-			</Menu.Item>
+		
 			<Menu.Item
 				key="4"
 				onClick={() => {

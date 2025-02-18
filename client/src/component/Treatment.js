@@ -96,7 +96,7 @@ const TreatmentList = () => {
 	const { settings } = userSetting;
 
 	useEffect(() => {
-		dispatch(updateSetting({ treatment: treatments }));
+		dispatch(updateSetting(null ,{ treatment: treatments }));
 	}, [treatments]);
 
 	useEffect(() => {

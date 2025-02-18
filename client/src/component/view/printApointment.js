@@ -242,8 +242,7 @@ function getAge(dateString) {
 }
 
 const getQuantity = (dosageStr, durationStr) =>{
-  const dosage = dosageStr.split('-').reduce((sum, part) => sum + (part.includes('½') ? parseFloat(part.replace('½', '.5')) : parseFloat(part)), 0);
-    
+  const dosage = dosageStr.split('-').reduce((sum, part) => sum + (part.includes('½') ? parseFloat(part.replace('½', '.5')) : parseFloat(part)), 0); 
   const match = durationStr.match(/(\d+)\s*(weeks|months|days)/);
   
   if (!match) return 0; // If no match, return 0

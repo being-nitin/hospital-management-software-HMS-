@@ -11,7 +11,7 @@ import {
 import { listUsers } from "../../actions/userActions";
 import { listPatients, patientsDetails } from "../../actions/patientActions"; 
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import { createExpenses } from "../../actions/expensesActions";
 
 const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     const [doctor, setDoctor] = useState("");
@@ -43,7 +43,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
 
 
     const vaccineAppCreate = useSelector((state) => state.vaccineAppCreate);
-    const { loading, success , error} = vaccineAppCreate;
+    const { loading, success , error , appointment } = vaccineAppCreate;
 
     const patientList = useSelector((state) => state.patientList )
     const { patients } = patientList
@@ -86,10 +86,10 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
       setDate(selectedDate)
     },[])
 
-   
+    console.log(appointment)
+
     const submitHandler = (e) => {
         e.preventDefault();
-        
             const patient = patientId ? patientId : selectedPatient;
             const duration = `${durationUnit}`; // Combine value and unit
             dispatch(
@@ -103,9 +103,44 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                     duration, // Include duration
                 })
             );
+
+            
+            // const expenseData = {
+            //   doctor: doctor,
+            //   patient: patient,
+            //   appointment: appId,
+            //   treatment: [
+            //     { id: 1, name: "Consultation Fee", unit: 1, cost: 500, discount: 0, tax: 0 }
+            //   ],
+            //   totalCost: 500,
+            //   totalDiscount: 0,
+            //   totalTax: 0,
+            //   grandTotal: (500 - 0 + 0).toFixed(2), // ₹500 as the final amount
+            //   paymentMethod: "Cash",
+            //   paid: "Un-paid",
+            // };
     }; 
 
+    useEffect(() =>{
+        if(appointment !== 'Undefined') {
+          const expenseData = {
+            doctor: doctor,
+            patient: patient,
+            appointment: appointment?.data._id,
+            treatment: [
+              { id: 1, name: "Consultation Fee", unit: 1, cost: 500, discount: 0, tax: 0 }
+            ],
+            totalCost: 500,
+            totalDiscount: 0,
+            totalTax: 0,
+            grandTotal: (500 - 0 + 0).toFixed(2), // ₹500 as the final amount
+            paymentMethod: "Cash",
+            paid: "Paid",
+          };
 
+          dispatch(createExpenses(expenseData));
+        }  
+    }, [appointment])
 
     useEffect(() => {
         if (success) {

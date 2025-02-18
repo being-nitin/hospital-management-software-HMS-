@@ -82,10 +82,11 @@ const ClinicalNotesModal = ({ show, handleClose, appId }) => {
       detailsVacApp(appId)
     },[])
     return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Clinical Notes</Modal.Title>
-            </Modal.Header>
+        <Modal show={show} >
+             <div className="modal-header">
+                <h5 className="modal-title">Clinical Notes</h5>
+                <button type="button" onClick={handleClose}><i class= "fa fa-window-close" ></i></button>
+              </div>
             <Modal.Body>
                 {editedNotes.map((note, index) => (
                     <Form key={index} className="mb-3">
