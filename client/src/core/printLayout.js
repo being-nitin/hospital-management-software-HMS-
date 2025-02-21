@@ -152,7 +152,7 @@ const PrintLayout = ({ children , html , data , category }) => {
             <div class="content">
             ${printContent.innerHTML}<div>
             <div class="signature">
-            <img src=${Signature} style="width: 80px;" ></img>
+            ${category !== 'expense' ? `<img src=${Signature} style="width: 80px;" ></img>` : ''}
             </div>
             <div style = "margin-top : 90px; position: fixed;">
             <img src="${settings.data[`${category}`].footer}"  class="footer" />

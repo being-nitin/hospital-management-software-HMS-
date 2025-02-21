@@ -1,54 +1,123 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
-import { useAppointments, useInfiniteAppointments } from "./api/app.js";
-import AppointmentDetail from "./appointmentDetail.js";
+import React, { useState, useEffect, useRef } from "react";
+import { Calendar, momentLocalizer, Views } from "react-big-calendar"; // FIXED
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { listVacApp } from "../actions/vaccineAppointmentActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Layout from "../core/Layout";
+
+const localizer = momentLocalizer(moment);
 
 const TextApp = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, error } = useInfiniteAppointments({
-    limit: 2,
-  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [appointmentData, setAppointmentData] = useState();
 
-  const handleObserver = useRef();
+  const vaccineAppList = useSelector((state) => state.vaccineAppList);
+  const { loading, error, appointments } = vaccineAppList;
+  
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-  const lastElement = useCallback(
-    (element) => {
-      if (isLoading || isFetchingNextPage) return; // Prevent triggering if still loading or fetching
-      if (handleObserver.current) handleObserver.current.disconnect(); // Clean up the previous observer
-      handleObserver.current = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && hasNextPage) {
-            
-            fetchNextPage(); // Fetch next page when the last item is visible
-          }
-        });
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(listVacApp());
+    } else {
+      navigate("/signin");
+    }
+  }, [dispatch, userInfo, navigate]);
+
+  const getDurationInMinutes = (duration) => {
+    const parts = duration.match(/\d+/g); // Extract numbers
+    if (!parts) return 0;
+
+    if (duration.includes("hr") && duration.includes("min")) {
+      return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    } else if (duration.includes("hr")) {
+      return parseInt(parts[0]) * 60;
+    } else {
+      return parseInt(parts[0]);
+    }
+  };
+
+  // Format API Data to Calendar Events
+  useEffect(() => {
+    if (appointments && appointments.length > 0) {
+      const formattedAppointments = appointments.map((appointment) => {
+        const startDate = moment(appointment.date).toDate();
+        const startTime = moment(appointment.time, "HH:mm").toDate();
+        
+        // Combine Date and Time
+        const start = new Date(
+          startDate.getFullYear(),
+          startDate.getMonth(),
+          startDate.getDate(),
+          startTime.getHours(),
+          startTime.getMinutes()
+        );
+
+        const durationMinutes = getDurationInMinutes(appointment.duration);
+        const end = new Date(start.getTime() + durationMinutes * 60000);
+
+        return {
+          title:  `${appointment.patient.firstName} - ${appointment.patient.patientNumber}` ,
+          start,
+          end,
+          desc: appointment,
+        };
       });
+      setAppointmentData(formattedAppointments);
+    }
+  }, [appointments]);
 
-      if (element) handleObserver.current.observe(element); // Start observing the last element
-    },
-    [isLoading, isFetchingNextPage, hasNextPage, fetchNextPage] // Add fetchNextPage and others in the dependencies to ensure they are stable
-  );
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const formats = {
+    timeGutterFormat: (date, culture, localizer) =>
+      localizer.format(date, "H:mm", culture),
+  };
 
-  console.log(fetchNextPage);
+  const onSelectEvent = (event) => {
+    
+    if (event.desc.patient) {
+      localStorage.setItem("selectedPatient", JSON.stringify(event.desc.patient));
+    }
+
+
+
+    navigate('/patient-app-details')
+  };
 
   return (
-    <div>
-      <h2>Appointments</h2>
-      {data?.pages?.map((group, index) =>
-        group.appointment.map((app, i) => {
-          const isLastItem = index === data.pages.length - 1 && i === group.appointment.length - 1; // Check if this is the last item in the list
-          return (
-            <AppointmentDetail
-              lastElement={isLastItem ? lastElement : null} 
-              key={app._id}
-              app={app}
-            />
-          );
-        })
-      )}
-      {isFetchingNextPage && <p>Loading more...</p>}
+    <Layout title={"Calendar"}>
+    <div style={{ height: 700 }}>
+      
+      <Calendar
+        events={appointmentData} // UPDATED TO USE API DATA
+        localizer={localizer}
+        defaultView={"day"}
+        views={["agenda" ,"month" ,"day", "work_week"]}
+        // timeslots={8}
+        step={2.5}  
+        showMultiDayTimes
+        defaultDate={new Date()}
+        formats={formats}
+        onSelectEvent={onSelectEvent}
+        // min={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8)}
+        // max={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 18)}
+        culture={moment.locale("en-US")}
+        dayLayoutAlgorithm="no-overlap"
+        messages={{
+          today: "Today",
+          previous: "<",
+          next: ">",
+          month: "Month",
+          week: "Week",
+          day: "Day",
+        }}
+      />
     </div>
+    </Layout>
   );
 };
 

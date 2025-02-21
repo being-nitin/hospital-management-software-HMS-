@@ -160,6 +160,14 @@ const AdminDashboard = () => {
                                     backgroundColor: index % 2 === 0 ? "#f8f9fa" : "white",
                                     borderRadius: "8px",
                                     fontSize: "0.9rem",
+                                    cursor : 'pointer'
+                                }}
+                                onClick={() =>{
+                                    if (appointment.patient) {
+                                        localStorage.setItem("selectedPatient", JSON.stringify(appointment.patient));
+                                      }
+
+                                      navigate('/patient-app-details')
                                 }}
                             >
                                 {/* Left Side: Date Box */}
