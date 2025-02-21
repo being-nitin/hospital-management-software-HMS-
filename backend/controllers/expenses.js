@@ -150,6 +150,7 @@ exports.list = asyncHandler(async (req, res) => {
         // Query with pagination and filters
         const data = await expenses.find(field)
           .populate("patient doctor prescription")
+          .sort({createdAt : -1})
           .skip((pageNumber - 1) * pageSize)
           .limit(pageSize)
           .exec();
