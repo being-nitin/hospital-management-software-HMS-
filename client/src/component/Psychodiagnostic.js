@@ -22,7 +22,7 @@ const suggestionsList = [
   "Social Skill Training",
   "Family Therapy",
   "IPSRP",
-  "Pharmacotherapy Relaxation",
+  "therapeutic relexation",
   "Mindfulness",
   "Pharmacotherapy"
 ];
@@ -360,7 +360,7 @@ const Psychodiagnostic = () => {
     } else {
       navigate("/signin");
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo, navigate]);
 
   useEffect(() => {
     setExistingData(
@@ -1133,7 +1133,7 @@ const Psychodiagnostic = () => {
                   handleBehaviouralDropdown("orientation", field, e.target.value)
                 }
                 style={{ marginLeft: "1rem" }}
-                required
+                
               >
                 <option value="">Select...</option>
                 {fieldOptions.map((option) => (
@@ -1303,40 +1303,40 @@ const Psychodiagnostic = () => {
 												if (
 													e.target.value === "HAM-A"
 												) {
-													navigate(
+													window.open(
 														`/HamiltonForm/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "HAM-D"
 												) {
-													navigate(
+													 window.open(
 														`/hamd/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (e.target.value === "CDRS") {
-													navigate(
+													window.open(
 														`/cdrs/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (e.target.value === "YMRS") {
-													navigate(
+												  window.open(
 														`/YMRS/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "YBOCS"
 												) {
-													navigate(
+													window.open(
 														`/ybocs/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "PANSS"
 												) {
-													navigate(
+													window.open(
 														`/panss/${appointment._id}`
-													);
+                            ,'_blank', 'rel=noopener noreferrer');
 												}
 											}}>
 											<option value="" disabled selected>

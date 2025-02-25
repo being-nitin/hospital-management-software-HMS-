@@ -13,7 +13,7 @@ const options = [
   { id: 1, label: 'personal history' },
   { id: 2, label: 'premorbid personality' },
   { id: 3, label: 'behavioural info' },
-  { id: 4, label: 'cognitive thinking' },
+  { id: 4, label: 'cognitive function' },
 ];
 
 const ViewPDReport = () => {
@@ -39,10 +39,12 @@ const ViewPDReport = () => {
     setPatientData(appointment?.psychodiagnostic);
   }, [appointment]);
 
-  const handlePrint = () => {
-    window.print();
-  };
-
+  let tools = [{tool: "HAM-A" , score : appointment?.hamA ? appointment.hamA.score : null},
+    {tool : "HAM-D", score : appointment?.hamD ? appointment.hamD.score : null},
+    {tool : "YMRS", score : appointment?.ymrs ? appointment.ymrs.score : null},
+    {tool : "CDRS", score : appointment?.cdrs ? appointment.cdrs.score : null},
+    {tool : "PANSS", score : appointment?.panss ? appointment.panss.score : null},
+     {tool : "YBOCS",score : appointment?.ybocs ? appointment?.ybocs.score : null}]
   
 
   let psychodiagnostic = () => {
@@ -50,6 +52,7 @@ const ViewPDReport = () => {
   return `
   <div style= "padding : 16px;">
   <div className="border-radius: 8px; margin: 20px;">
+  <h2 style="text-align: center;"}}>Psychodiagonistic Report</h2>
    <div>
         <div >
         ${appointment && appointment.patient && `
@@ -101,22 +104,23 @@ const ViewPDReport = () => {
       .join("")}
   </tbody>
 </table>
-<h5 style="margin-bottom: 10px;">Medical Details</h5>
+<h5 style="margin-bottom: 10px;">Nature of illness</h5>
 
   <div>
      ${patientData.precipitation || "NAD"} Precipitation, ${patientData.onset || "NAD"} Onset, ${patientData.course || "NAD"} Course , ${patientData.progression || "NAD"} Progression
   </div>
 
 <h4 style="margin-bottom: 10px;">Background Information</h4>
+<textarea row="20" col="50" style="width:90%; height : 80px;"></textarea>
 <!-- Personal History -->
 ${selectedOptions.includes('personal history') ? `
 <h4>Personal History</h4>
 <div>
-  ${patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
+  ${(patientData && patientData.backgroundInfo) && Object.entries(patientData.backgroundInfo.personalHistory).map(([key, value], index) => `
    
      <span style = "margin-bottom : 5px;"> ${value} </span>
   
-  `).join(',')}
+  `).join(',') }
 </div>`: ''}
 ${selectedOptions.includes('premorbid personality') ?`
 <h4 style = "page-break-before: always; margin-top : 400px;">Premorbid Personality</h4>
@@ -175,7 +179,7 @@ ${selectedOptions.includes('behavioural info') ?`
       
     </div>
   `).join('')}` :""}
-   ${selectedOptions.includes("cognitive thinking") ? `
+   ${selectedOptions.includes("cognitive function") ? `
     <h4 >Level of Consciousness</h4>
 <div>
   <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
@@ -204,6 +208,12 @@ ${selectedOptions.includes('behavioural info') ?`
               Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
 
               ` : ''}
+          <h5>Tool used</h5>
+           ${tools.length !== 0 && tools.map((tool, index) => (
+              `<div key=${index} value=${tool}>
+                ${tool.tool}  Score : ${ tool.score}
+              </div>`
+            ))}
     <p style="font-weight : 700;">Interpretations</p>
      <div style ="margin-bottom : 5px;"> Based on the history observation scale, patient was found to have : ${patientData.interpretations}</div>
 <div>
@@ -289,8 +299,8 @@ ${selectedOptions.includes('behavioural info') ?`
         </tbody>
       </table>
 
-      {/* Medical Details */}
-      <h5>Medical Details</h5>
+      {/* Nature of illness */}
+      <h5>Nature of illness</h5>
       <p>
         {patientData.precipitation || "NAD"} Precipitation,{" "}
         {patientData.onset || "NAD"} Onset, {patientData.course || "NAD"} Course,
@@ -362,9 +372,9 @@ ${selectedOptions.includes('behavioural info') ?`
         </>
       )}
 
-      {selectedOptions.includes("cognitive thinking") && (
+      {selectedOptions.includes("cognitive function") && (
         <>
-        <h4>cognitive thinking</h4>
+        <h4>cognitive function</h4>
 
         <h5>Level of Consciousness</h5>
         <p>{patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness?.mediate || "NAD"}</p>

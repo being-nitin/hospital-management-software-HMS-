@@ -110,7 +110,7 @@ const PrintLayout = ({ children , html , data , category }) => {
             
             @media print {
              
-             ${category == 'expense' ? '@page { margin: 0; size: landscape }' : ' @page { margin: 0; size: A4 }'}
+             ${category == 'expense' ? '@page { margin: 0; size: A5 }' : ' @page { margin: 0; size: A4 }'}
              body { 
              width : 1230px;
             background-image: url(${Logo}); /* Inline base64 image for print */
@@ -152,7 +152,7 @@ const PrintLayout = ({ children , html , data , category }) => {
             <div class="content">
             ${printContent.innerHTML}<div>
             <div class="signature">
-            ${category !== 'expense' ? `<img src=${Signature} style="width: 80px;" ></img>` : ''}
+            ${category === 'prescription' ? `<img src=${Signature} style="width: 80px;" ></img>` : ''}
             </div>
             <div style = "margin-top : 90px; position: fixed;">
             <img src="${settings.data[`${category}`].footer}"  class="footer" />

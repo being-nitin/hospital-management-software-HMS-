@@ -97,7 +97,7 @@ const AdminDashboard = () => {
 		}
 	}, [dispatch, userInfo, navigate]);
 
-	console.log("dashboardData", dashboardData);
+
 	return (
 		<Layout title="Dashboard">
 			<>

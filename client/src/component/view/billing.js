@@ -38,7 +38,7 @@ const ExpenseDetail = () => {
   }
 
   const expenseview = () =>{
-       return `<div style = "padding : 24px; padding-top : 30px;">
+       return `<div style = "padding : 24px; padding-top : 30px; max-width : 900px;">
         <div style="display: flex; justify-content: space-between;">
       <div style="border-radius: 8px; width: 45%;">
         <p style="color: grey; font-size: 14px;">
@@ -68,7 +68,7 @@ const ExpenseDetail = () => {
         </p>
         <hr/>
 
-<div style="margin-top: 15px; max-width : 900px;">
+<div style="margin-top: 15px; max-width : 700px;">
   <h5>Invoice</h5>
   <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
     <thead>
@@ -94,7 +94,7 @@ const ExpenseDetail = () => {
   </table>
 </div>
 
-<div style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;max-width:900px;">
+<div style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;max-width:700px;">
   <h5 style="font-weight: 700;">Summary</h5>
   <div style="display: flex; justify-content: space-between;">
     <div>
