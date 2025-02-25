@@ -50,7 +50,7 @@ const ViewPDReport = () => {
   let psychodiagnostic = () => {
 
   return `
-  <div style= "padding : 16px;">
+  <div style= "padding : 16px; max-width : 900px;">
   <div className="border-radius: 8px; margin: 20px;">
   <h2 style="text-align: center;"}}>Psychodiagonistic Report</h2>
    <div>
@@ -159,7 +159,7 @@ ${selectedOptions.includes('behavioural info') ?`
   `).join('')}
 </div>
 
-<h4 style = "page-break-before: always;margin-top : 400px;">Memory</h4>
+<h4 style = "">Memory</h4>
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
     <span style="margin-right: 10px;">
@@ -180,7 +180,7 @@ ${selectedOptions.includes('behavioural info') ?`
     </div>
   `).join('')}` :""}
    ${selectedOptions.includes("cognitive function") ? `
-    <h4 >Level of Consciousness</h4>
+    <h4 style="page-break-before: always;margin-top : 400px;">Level of Consciousness</h4>
 <div>
   <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
 </div>
@@ -210,13 +210,18 @@ ${selectedOptions.includes('behavioural info') ?`
               ` : ''}
           <h5>Tool used</h5>
            ${tools.length !== 0 && tools.map((tool, index) => (
-              `<div key=${index} value=${tool}>
+              `<span key=${index} value=${tool}>
                 ${tool.tool}  Score : ${ tool.score}
-              </div>`
+              </span>`
             ))}
     <p style="font-weight : 700;">Interpretations</p>
-     <div style ="margin-bottom : 5px;"> Based on the history observation scale, patient was found to have : ${patientData.interpretations}</div>
+     <div style ="max-width:900px;"> 
+     Based on the history observation scale, patient was found to have : 
+   ${patientData.interpretations}
+     </div>
+    
 <div>
+
    <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}</br><br/>`)}</p>
 </div>
 </div>
