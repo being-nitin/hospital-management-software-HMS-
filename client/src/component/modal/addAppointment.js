@@ -63,7 +63,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
     },[patients])
   
     const handleItemClick = (item) => {
-      setQuery(item.firstName); 
+      setQuery(item.firstName + "-" +  item.patientNumber); 
       setShowList(false); 
       setSelectedPatient(item._id)
     };
@@ -86,7 +86,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
       setDate(selectedDate)
     },[])
 
-    console.log(appointment)
+  
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -105,27 +105,19 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
             );
 
             
-            // const expenseData = {
-            //   doctor: doctor,
-            //   patient: patient,
-            //   appointment: appId,
-            //   treatment: [
-            //     { id: 1, name: "Consultation Fee", unit: 1, cost: 500, discount: 0, tax: 0 }
-            //   ],
-            //   totalCost: 500,
-            //   totalDiscount: 0,
-            //   totalTax: 0,
-            //   grandTotal: (500 - 0 + 0).toFixed(2), // ₹500 as the final amount
-            //   paymentMethod: "Cash",
-            //   paid: "Un-paid",
-            // };
+           
     }; 
 
-    useEffect(() =>{
-        if(appointment !== 'Undefined') {
+ 
+
+    useEffect(() => {
+        if (success) {
+          dispatch({ type: "CREATE_APPOINTMENT_VACCINE_RESET" }); 
+          alert("appointment created successfully ")
+          onClose();
           const expenseData = {
             doctor: doctor,
-            patient: patient,
+            patient: patientId ? patientId : selectedPatient,
             appointment: appointment?.data._id,
             treatment: [
               { id: 1, name: "Consultation Fee", unit: 1, cost: 500, discount: 0, tax: 0 }
@@ -139,14 +131,6 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
           };
 
           dispatch(createExpenses(expenseData));
-        }  
-    }, [appointment])
-
-    useEffect(() => {
-        if (success) {
-          dispatch({ type: "CREATE_APPOINTMENT_VACCINE_RESET" }); 
-          alert("appointment created successfully ")
-          onClose();
         }
     
         if (error) {
@@ -179,14 +163,18 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                         </div>
                                     </div>
                                 )}
+                                  <button className="btn-primary" style = {{ borderRadius : '25px', marginBottom : '10px'}} onClick={()=> navigate('/add-patient-details')}>
+                                        + Add Patient
+                                    </button>
                                
                                 <form onSubmit={submitHandler}>
+                              
+                                    <div style={{ display : 'flex ' , justifyContent : 'space-between' , alignItems : "center" }}>
                                     { patientId  &&
-                                    <div className="mb-3">
+                                    <div className="mt-3">
                                         <label className="form-label" style={{ fontWeight :700}}>Patient</label>
                                         <span>{`  ${patient?.firstName}-${patient?.patientNumber}`}</span>
                                     </div>}
-                                    <div style={{ display : 'flex ' , justifyContent : 'space-between' , alignItems : "center"}}>
                                     {!patientId && (
                                     <div className="">
                                     <label className="form-label" style={{ fontWeight :700}}>Patient</label>
@@ -232,7 +220,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                   (e.target.style.backgroundColor = '#fff')
                 }
               >
-                {item.firstName}
+                {item.firstName + "-" + item.patientNumber}
               </li>
             ))
           ) : (
@@ -245,16 +233,16 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
 
     </div>
 )}
-  <button className="btn-primary" style = {{ borderRadius : '25px', marginTop :"15px" }} onClick={()=> navigate('/add-patient-details')}>
-                                        +
-                                    </button>
+
                                     <div className="">
                                         <label className="form-label" style={{ fontWeight :700}}>Doctor</label>
+                                        { userInfo.role == 1 ? <p>Dr.{userInfo.name}</p> : (
                                         <select
                                             onChange={(e) => setDoctor(e.target.value)}
                                             className="form-control"
                                         >
                                             <option>Select Doctor</option>
+                                            
                                             {users &&
                                                 users
                                                     .filter((user) => user.role === 1)
@@ -263,7 +251,7 @@ const AddAppVaccineModal = ({ show, onClose, patientId , selectedDate}) => {
                                                             {c.name}
                                                         </option>
                                                     ))}
-                                        </select>
+                                        </select>)}
                                     </div>
 
                                   

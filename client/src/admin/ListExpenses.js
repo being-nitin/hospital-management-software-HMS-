@@ -19,7 +19,7 @@ const ListExpenses = () => {
 	const [filters, setFilters] = useState({
 		startDate: null,
 		endDate: null,
-		doctor: "",
+		doctor: null,
 	});
 	const [pagination, setPagination] = useState({
 		currentPage: 1,
@@ -136,43 +136,39 @@ const ListExpenses = () => {
 		);
 	};
 
-	// Prepare chart data for last 7 days
-	const chartData = {
-		labels: [],
-		datasets: [
-			{
-				label: "Daily Earnings (Last 7 Days)",
-				data: [],
-				backgroundColor: "rgba(54, 162, 235, 0.6)",
-				borderColor: "rgba(54, 162, 235, 1)",
-				borderWidth: 1,
-			},
-		],
-	};
+	const processExpenseData = (timeframe) => {
+        const today = moment().startOf("day");
+        let labels = [];
+        let earningsByPeriod = {};
 
-	if (expense && expense.length > 0) {
-		const today = moment().startOf("day");
-		const last7Days = Array.from({ length: 7 }, (_, i) =>
-			today.clone().subtract(i, "days").format("YYYY-MM-DD")
-		);
+        if (timeframe === "daily") {
+            labels = Array.from({ length: 7 }, (_, i) => today.clone().subtract(i, "days").format("YYYY-MM-DD"));
+        } else if (timeframe === "weekly") {
+            labels = Array.from({ length: 4 }, (_, i) => today.clone().subtract(i, "weeks").format("YYYY-\"WW\""));
+        } else if (timeframe === "monthly") {
+            labels = Array.from({ length: 6 }, (_, i) => today.clone().subtract(i, "months").format("YYYY-MM"));
+        }
 
-		const earningsByDay = last7Days.reduce((acc, date) => {
-			acc[date] = 0; // Initialize daily totals
-			return acc;
-		}, {});
+        labels.forEach((label) => (earningsByPeriod[label] = 0));
 
-		expense.forEach((exp) => {
-			const expenseDate = moment(exp.createdAt).format("YYYY-MM-DD");
-			if (earningsByDay[expenseDate] !== undefined) {
-				earningsByDay[expenseDate] += exp.grandTotal; // Sum grandTotal
-			}
-		});
+        expense?.forEach((exp) => {
+            let periodKey = moment(exp.createdAt).format(timeframe === "daily" ? "YYYY-MM-DD" : timeframe === "weekly" ? "YYYY-\"WW\"" : "YYYY-MM");
+            if (earningsByPeriod[periodKey] !== undefined) {
+                earningsByPeriod[periodKey] += exp.grandTotal;
+            }
+        });
 
-		chartData.labels = last7Days
-			.reverse()
-			.map((date) => moment(date).format("MMM DD"));
-		chartData.datasets[0].data = Object.values(earningsByDay).reverse();
-	}
+        return {
+            labels: labels.reverse().map((label) => (timeframe === "daily" ? moment(label).format("MMM DD") : label)),
+            datasets: [{
+                label: timeframe === "daily" ? "Daily Earnings" : timeframe === "weekly" ? "Weekly Earnings" : "Monthly Earnings",
+                data: Object.values(earningsByPeriod).reverse(),
+                backgroundColor: "rgba(54, 162, 235, 0.6)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+            }],
+        };
+    };
 
 	const handlePaidStatusChange = (expenseId, value) => {
 	  
@@ -195,27 +191,13 @@ const ListExpenses = () => {
 	  };
 
 	return (
-		<Layout title="Report" className="container-fluid">
-			<div className="d-flex justify-content-between align-items-center mb-4">
-				<h2 className="mb-0">Expenses</h2>
-				<div
-					className="d-flex"
-					style={{
-						gap: "5px",
-					}}>
-					<RangePicker
-						placeholder={["Start Date", "End Date"]}
-						onChange={handleDateChange}
-						allowClear
-					/>
-					<Select
-						placeholder="Select Doctor"
-						style={{ width: 200 }}
-						onChange={handleDoctorChange}
-						allowClear>
-								<Option key={0} value={null}>
-										All
-									</Option>
+		<Layout title="REVENUE" className="container-fluid">
+			      <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex" style={{ gap: "5px" }}>
+                    <RangePicker placeholder={["Start Date", "End Date"]} onChange={handleDateChange} allowClear />
+                    {userInfo.role !== 1 ? <Select placeholder="Select Doctor" style={{ width: 200 }} onChange={handleDoctorChange} allowClear>
+                        <Option key={0} value={null}>All</Option>
+                        {/* Render doctor options dynamically */}
 						{users &&
 							users.length !== 0 &&
 							users
@@ -224,20 +206,24 @@ const ListExpenses = () => {
 									<Option key={doc._id} value={doc._id}>
 										{doc.name}
 									</Option>
-								))}
-							
-					</Select>
-					<Button type="primary" onClick={applyFilters}>
-						Search
-					</Button>
-				</div>
-			</div>
+								))} 
+                    </Select> : ''}
+                    <Button type="primary" onClick={applyFilters}>Search</Button>
+                </div>
+            </div>
 
-			{/* Last 7 Days Chart Section */}
-			<div className="mt-4">
-				<h3>Earnings for Last 7 Days</h3>
-				<Bar data={chartData} options={{ responsive: true }} />
-			</div>
+            <div className="mt-4">
+                <h3>Daily Earnings (Last 7 Days)</h3>
+                <Bar data={processExpenseData("daily")} options={{ responsive: true }} />
+            </div>
+            <div className="mt-4">
+                <h3>Weekly Earnings (Last 4 Weeks)</h3>
+                <Bar data={processExpenseData("weekly")} options={{ responsive: true }} />
+            </div>
+            <div className="mt-4">
+                <h3>Monthly Earnings (Last 6 Months)</h3>
+                <Bar data={processExpenseData("monthly")} options={{ responsive: true }} />
+            </div>
 
 			{loading ? (
 				<div className="text-center">

@@ -135,7 +135,7 @@ const AdminDashboard = () => {
        
             <Card className="text-white shadow-sm h-100" style={{ backgroundColor : 'red' , cursor : 'pointer'}}>
                 <Card.Body onClick={() =>  navigate('/list-expenses')}>
-                    <Card.Title>Total Expenses</Card.Title>
+                    <Card.Title>Total Revenue</Card.Title>
                     <h4>{totals.expenses}</h4>
                 </Card.Body>
             </Card>

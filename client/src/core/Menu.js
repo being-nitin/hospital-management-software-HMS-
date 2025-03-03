@@ -108,6 +108,7 @@ const Menu = () => {
 			>
 				Ravi Neuro - Psychiatry Centre
 			</Link>
+			{window.location.pathname !== '/list-patients' ? 
 			<div className="container-fluid">
                 <button
                     className="navbar-toggler"
@@ -196,7 +197,7 @@ const Menu = () => {
         >
          Add Appointment
         </Dropdown.Button>
-					</div>
+					</div> : <div className="container-fluid"></div>}
 			
 			<ul className="navbar-nav ml-auto ml-md-0">
 				<li className="nav-item dropdown">

@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import "../styles.css";
-import styles from '../style/dashboard.module.css'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Menu from "./Menu";
+import { sideBarConfig} from "../config/dashboard";
 
 // Check if the current path is active
 const isActive = (location, path) => {
@@ -341,7 +341,7 @@ const Layout = ({ title, children }) => {
 	const doctorLinks = () => {
 		return (
 			<Fragment>
-				{/* <div className="sb-sidenav-menu-heading">Core</div> */}
+		
 				<Link
 					className="nav-link"
 					style={isActive(location, "/")}
@@ -362,160 +362,6 @@ const Layout = ({ title, children }) => {
 					<span className="pl-4">Calendar</span>
 				</Link>
 
-				{/* <Link
-					className="nav-link"
-					style={isActive(location, "/list/users")}
-					to="/list/users">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-people" />
-					</div>
-					List Users
-				</Link> */}
-{/* 
-				<div className="sb-sidenav-menu-heading">Modules</div>
-				<a
-					className="nav-link collapsed"
-					href="#"
-					data-toggle="collapse"
-					data-target="#collapseLayouts"
-					aria-expanded="false"
-					aria-controls="collapseLayouts">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-eyedropper" />
-					</div>
-					Laboratory
-					<div className="sb-sidenav-collapse-arrow">
-						<i className="fas fa-angle-down" />
-					</div>
-				</a>
-				<div
-					className="collapse"
-					id="collapseLayouts"
-					aria-labelledby="headingOne"
-					data-parent="#sidenavAccordion">
-					<nav className="sb-sidenav-menu-nested nav">
-						<Link
-							className="nav-link"
-							style={isActive(location, "/list-cat-test")}
-							to="/list-cat-test">
-							Category Test
-						</Link>
-						<Link
-							className="nav-link"
-							style={isActive(location, "/test-result")}
-							to="/test-result">
-							Tests Result
-						</Link>
-					</nav>
-				</div>
-
-				<a
-					className="nav-link collapsed"
-					href="#"
-					data-toggle="collapse"
-					data-target="#collapsePages"
-					aria-expanded="false"
-					aria-controls="collapsePages">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-journal-medical" />
-					</div>
-					Modules Mgmt
-					<div className="sb-sidenav-collapse-arrow">
-						<i className="fas fa-angle-down" />
-					</div>
-				</a>
-				<div
-					className="collapse"
-					id="collapsePages"
-					aria-labelledby="headingTwo"
-					data-parent="#sidenavAccordion">
-					<nav
-						className="sb-sidenav-menu-nested nav accordion"
-						id="sidenavAccordionPages">
-						<a
-							className="nav-link collapsed"
-							href="#"
-							data-toggle="collapse"
-							data-target="#pagesCollapseAuth"
-							aria-expanded="false"
-							aria-controls="pagesCollapseAuth">
-							Medication
-							<div className="sb-sidenav-collapse-arrow">
-								<i className="fas fa-angle-down" />
-							</div>
-						</a>
-						<div
-							className="collapse"
-							id="pagesCollapseAuth"
-							aria-labelledby="headingOne"
-							data-parent="#sidenavAccordionPages">
-							<nav className="sb-sidenav-menu-nested nav">
-								<Link
-									className="nav-link"
-									style={isActive(
-										location,
-										"/list-treat-cat"
-									)}
-									to="/list-treat-cat">
-									Treatment
-								</Link>
-								<Link
-									className="nav-link"
-									style={isActive(
-										location,
-										"/list-prescriptions"
-									)}
-									to="/list-prescriptions">
-									Prescription List
-								</Link>
-							</nav>
-						</div>
-						<a
-							className="nav-link collapsed"
-							href="#"
-							data-toggle="collapse"
-							data-target="#pagesCollapseError"
-							aria-expanded="false"
-							aria-controls="pagesCollapseError">
-							Buildings-Floor
-							<div className="sb-sidenav-collapse-arrow">
-								<i className="fas fa-angle-down" />
-							</div>
-						</a>
-						<div
-							className="collapse"
-							id="pagesCollapseError"
-							aria-labelledby="headingOne"
-							data-parent="#sidenavAccordionPages">
-							<nav className="sb-sidenav-menu-nested nav">
-								<Link
-									className="nav-link"
-									style={isActive(
-										location,
-										"/list-buildings"
-									)}
-									to="/list-buildings">
-									Building
-								</Link>
-								<Link
-									className="nav-link"
-									style={isActive(location, "/list-floors")}
-									to="/list-floors">
-									Floors
-								</Link>
-								<Link
-									className="nav-link"
-									style={isActive(location, "/list-departs")}
-									to="/list-departs">
-									Department
-								</Link>
-							</nav>
-						</div>
-					</nav>
-				</div>
-
-				<div className="sb-sidenav-menu-heading">User Files</div> */}
-
 				<Link
 					className="nav-link"
 					style={isActive(location, "/list-patients")}
@@ -528,15 +374,7 @@ const Layout = ({ title, children }) => {
 
 				
 
-				{/* <Link
-					className="nav-link"
-					style={isActive(location, "/list-vendors")}
-					to="/list-vendors">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-shop" />
-					</div>
-					Vendors
-				</Link> */}
+				
 
 				<Link
 					className="nav-link"
@@ -558,17 +396,7 @@ const Layout = ({ title, children }) => {
 					<span className="pl-4">Expenses</span>
 				</Link>
 
-				{/* <div className="sb-sidenav-menu-heading">Vaccine</div> */}
-				{/* <Link
-					className="nav-link"
-					style={isActive(location, "/list-vaccine-cat")}
-					to="/list-vaccine-cat">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-eyedropper" />
-					</div>
-					Vaccine
-				</Link> */}
-
+				
 				<Link
 					className="nav-link"
 					style={isActive(location, "/patient-app-details")}
@@ -579,29 +407,6 @@ const Layout = ({ title, children }) => {
 					<span className="pl-4">Appointments</span>
 				</Link>
 
-				{/* <div className="sb-sidenav-menu-heading">
-					Doctors Department
-				</div> */}
-
-				{/* <Link
-					className="nav-link"
-					style={isActive(location, "/list-designate")}
-					to="/list-designate">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-journal-medical" />
-					</div>
-					Designation
-				</Link>
-
-				<Link
-					className="nav-link"
-					style={isActive(location, "/list-specialize")}
-					to="/list-specialize">
-					<div className="sb-nav-link-icon">
-						<i className="bi bi-journal-medical" />
-					</div>
-					Specialize
-				</Link> */}
 
 				<a
 					className="nav-link collapsed"
@@ -623,7 +428,7 @@ const Layout = ({ title, children }) => {
 					id="collapseLayouts"
 					aria-labelledby="headingOne"
 					data-parent="#sidenavAccordion">
-					<nav className="sb-sidenav-menu-nested nav pl-2">
+					<nav className="sb-sidenav-menu-nested nav pl-4">
 						<Link
 							className="nav-link"
 							style={isActive(location, "/profile")}
@@ -755,6 +560,66 @@ const Layout = ({ title, children }) => {
 			</Fragment>
 		);
 	};
+
+	const getSideBar = (role) => {
+		const sideBarData = sideBarConfig.filter((data) => data.role === role)[0]
+       return (
+		   <Fragment>
+            {sideBarData.components.map((component) => (
+				
+				<Link
+					className="nav-link"
+					style={isActive(location, component.path)}
+					to={component.path}>
+					<div className="sb-nav-link-icon">
+						<i className={component.icon} />
+					</div>
+					<span className="pl-4 ">{component.label}</span>
+				</Link>
+				
+			))}
+			<a
+					className="nav-link collapsed"
+					href="#"
+					data-toggle="collapse"
+					data-target="#collapseLayouts"
+					aria-expanded="false"
+					aria-controls="collapseLayouts">
+					<div className="sb-nav-link-icon">
+						<i className="bi bi-gear" />
+					</div>
+					
+					<div style={{ padding : '5px'}}>
+						<i className="fas fa-angle-down" />
+					</div>
+				</a>
+				<div
+					className="collapse"
+					id="collapseLayouts"
+					aria-labelledby="headingOne"
+					data-parent="#sidenavAccordion">
+					<nav className="sb-sidenav-menu-nested nav pl-4">
+                     {sideBarData.settings.map((setting)=>{
+						return (
+							<Link
+							className="nav-link"
+							style={isActive(location, setting.path)}
+							to={setting.path}>
+							<div className="sb-nav-link-icon">
+								<i className={setting.icon} />
+							</div>
+							{setting.label}
+						</Link>
+						)
+					 })
+
+					 }
+					</nav>
+				</div>
+					
+			</Fragment>
+	   )
+	}
 	
 
 	return (
@@ -771,17 +636,14 @@ const Layout = ({ title, children }) => {
 						background: "linear-gradient(180deg, rgb(253, 253, 253), white)", // Gradient for sidebar background
 						color: "#000", // Black text for contrast
 						fontFamily: "Roboto, sans-serif", // Font style
-						border : '1px solid #ddd'
+						border : '1px solid #ddd',
+						
 					}}
 				>
 					<div className="sb-sidenav-menu">
 						<div className="nav">
 							{/* Render links dynamically */}
-							{userInfo.role === 0
-								? adminLinks()
-								: userInfo.role === 1
-								? doctorLinks()
-								: staffLink()}
+							{getSideBar(userInfo.role)}
 						</div>
 					</div>
 					<div
