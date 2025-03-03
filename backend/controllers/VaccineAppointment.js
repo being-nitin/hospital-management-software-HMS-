@@ -63,7 +63,12 @@ function calculateEndTime(startTime, durationInMinutes) {
 
 exports.createVaccineApp = asyncHandler(async (req, res) => {
     const { patient, doctor, date, time, duration } = req.body;
+    let doctorId;
+     if(req.user.role === 1) {
+        doctorId = req.user._id
+     }
 
+     console.log(doctor)
     // Convert duration to minutes
     const durationInMinutes = convertDurationToMinutes(duration);
 
@@ -74,7 +79,7 @@ exports.createVaccineApp = asyncHandler(async (req, res) => {
         // Save the new appointment
         const appointment = new VaccineAppointment({
             patient,
-            doctor,
+            doctor : doctorId ?  doctorId : doctor,
             date : date ,
             time,            
             duration,
@@ -183,7 +188,6 @@ exports.list = asyncHandler(async (req, res) => {
         .populate("patient")
         .exec();
       
-        console.log(todayAppointment)
       return res.json({
         appointment: data,
         currentPage: pageNumber,

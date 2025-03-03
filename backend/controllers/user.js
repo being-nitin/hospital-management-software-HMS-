@@ -45,6 +45,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 		name,
 		email,
 		password,
+		role : 0
 	});
 
 	if (user) {
@@ -52,7 +53,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			email: user.email,
-			role: user.role,
+			role: 0,
 			token: generateToken(user._id),
 		});
 	} else {
@@ -189,13 +190,19 @@ exports.getUsers = asyncHandler(async (req, res) => {
 
 exports.getUserDetails = asyncHandler(async (req, res) => {
 	try {
+		let query =  {}
+		if(req.user.role ===  1){
+           query.doctor = req.user._id
+		}
 		const users = await User.find().select("name email");
 		const doctors = await User.find({role : 1});
 		const staff = await User.find({ role : 2 })
 		const patients = await Patient.find().select("firstName ");
-		const expenses = await Expenses.find();
-		const appointmentlength = await VaccineAppointment.find().countDocuments();
-		const appointments = await VaccineAppointment.find({ doctor : req.user.role === 1 ? req.user._id :  null}).sort({ date : -1}).populate('patient').limit(3)
+		const expenses = await Expenses.find(query);
+		
+		const appointmentlength = await VaccineAppointment.find(query).countDocuments();
+		
+		const appointments = await VaccineAppointment.find(query).sort({ date : -1}).populate('patient').limit(5)
 
 		res.status(200).json({
 			users: users,

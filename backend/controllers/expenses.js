@@ -21,8 +21,10 @@ exports.expenseById = asyncHandler (async (req, res, next, id) => {
 
 exports.creatExpense = asyncHandler(async (req, res) => {
     try {
+        let doctorId = (req.user.role === 1 ) ?  req.user._id : req.body.doctor 
+
         // Create and save the expense
-        const expense = new expenses(req.body);
+        const expense = new expenses({...req.body , doctor : doctorId } );
         const savedExpense = await expense.save();
 
         console.log(savedExpense)
@@ -118,6 +120,7 @@ exports.list = asyncHandler(async (req, res) => {
 
     let field = {};
     if (req.params.userId) {
+
         const findUser = await User.findById({ _id: req.params.userId });
   
         if (findUser && findUser.role === 1) {
@@ -125,10 +128,12 @@ exports.list = asyncHandler(async (req, res) => {
         }
       }
   
-      // Add filters for status and date if provided
+      // Add fil ters for status and date if provided
       if (doctor) {
         field["doctor"] = doctor;
       }
+
+      
   
       if (startDate) {
         
@@ -145,12 +150,11 @@ exports.list = asyncHandler(async (req, res) => {
   
         // Get total count for pagination
         const totalExpenses = await expenses.countDocuments(field);
-         
-        console.log(field)
+        
         // Query with pagination and filters
         const data = await expenses.find(field)
           .populate("patient doctor prescription")
-          .sort({date : -1})
+          .sort({createdAt : -1})
           .skip((pageNumber - 1) * pageSize)
           .limit(pageSize)
           .exec();

@@ -136,7 +136,7 @@ exports.remove = asyncHandler(async (req, res) => {
 
 exports.list = asyncHandler(async (req, res) => {
     const { firstName, lastName, phoneNo, patientNumber, address, page, limit = 10 } = req.query;
-
+     console.log(firstName)
     const query = {};
     
     if (firstName) {
@@ -157,8 +157,9 @@ exports.list = asyncHandler(async (req, res) => {
     
     if (!page) {
       // If `page` is not provided, return all patients matching the query
-      console.log("query" ,query)
+
       const patients = await patientDetails.find(query).populate("doctor");
+    
       return res.json({ patient : patients });
     }
     
