@@ -37,7 +37,7 @@ const Medicine = mongoose.Schema(
         type: {
             type: String,
             default: "Tablet",
-            enum: ["Inj", "Capsule", "Tablet"] // enum means string objects
+            enum: ["Inj", "Capsule", "Tablet", "syrup" ] // enum means string objects
         },
         manDate: {
             type: String,

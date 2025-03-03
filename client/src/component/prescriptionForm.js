@@ -102,7 +102,7 @@ const PrescriptionForm = ({
                 />
                 <datalist id={`medicine-list-${index}`} className="styled-datalist">
                   {medicines?.map((medicine) => (
-                    <option key={medicine.id} value={medicine.name} />
+                    <option key={medicine.id} value={medicine.name + "(" + medicine.type + ")"} />
                   ))}
                 </datalist>
               </td>

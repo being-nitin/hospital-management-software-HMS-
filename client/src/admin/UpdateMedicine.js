@@ -7,11 +7,12 @@ import { listVendors } from '../actions/vendorsActions'
 import { listTypesEnums, detailsMedicine, updateMedicine } from '../actions/medicineActions'
 import {UPDATE_MEDICINE_RESET} from "../constants/medicineConstants";
 import moment from "moment";
+import { useNavigate, useParams } from 'react-router-dom';
 
 
-const  UpdateMedicine = ({ history: history1, match}) => {
+const  UpdateMedicine = () => {
 
-    const id = match.params.id
+    const {id} = useParams()
 
     const [name, setName] = useState('')
     const [genericName, setGenericName] = useState('')
@@ -34,7 +35,7 @@ const  UpdateMedicine = ({ history: history1, match}) => {
     const medicineDetail = useSelector((state) => state.medicineDetail)
     const { loading, error, medicine } = medicineDetail
 
-    console.log(medicine)
+    const navigate = useNavigate()
 
     const medicineUpdate = useSelector((state) => state.medicineUpdate)
     const {
@@ -60,7 +61,7 @@ const  UpdateMedicine = ({ history: history1, match}) => {
 
         if (successUpdate) {
             dispatch({ type: UPDATE_MEDICINE_RESET })
-            history1.push('/list/medicine')
+            navigate('/list/medicine')
 
         } else {
 
@@ -88,7 +89,7 @@ const  UpdateMedicine = ({ history: history1, match}) => {
             }
 
         }
-    }, [ dispatch, history1, id, medicine, successUpdate])
+    }, [ dispatch, id, medicine, successUpdate])
 
 
 
@@ -167,7 +168,7 @@ const  UpdateMedicine = ({ history: history1, match}) => {
 
                     <div className="form-group col-md-4">
                         <label htmlFor="exampleFormControlSelect1">Type</label>
-                        <select onChange={(e) => setType(e.target.value)} className="form-control" id="exampleFormControlSelect1">
+                        <select onChange={(e) => setType(e.target.value)} value={type} className="form-control" id="exampleFormControlSelect1">
                             <option>Select Type</option>
                             {types && types.map((c, i) => (
                                 <option key={i} value={c}>
