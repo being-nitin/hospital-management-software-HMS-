@@ -35,7 +35,6 @@ const TestUpdate = ({ history, match }) => {
 
     //console.log(cat)
     //console.log(testId)
-    console.log(test)
 
     const testUpdate = useSelector((state) => state.testUpdate)
     const {

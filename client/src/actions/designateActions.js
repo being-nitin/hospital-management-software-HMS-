@@ -88,7 +88,7 @@ export const listDesignate = () => async (dispatch, getState) => {
             type: LIST_DESIGNATE_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
         console.log(error)
         const message =
@@ -157,7 +157,7 @@ export const updateDesignate = (desig) => async (dispatch, getState) => {
             },
         }
 
-        console.log(desig)
+        
         const { data } = await axios.put(
             `${API}/designate-update/${desig._id}/${userInfo._id}`,
             desig,

@@ -105,7 +105,6 @@ const PatAppDetail = () => {
       handleObserver.current = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && hasNextPage) {
-            console.log("Fetching next page...");
             fetchNextPage(); // Fetch next page when the last item is visible
           }
         });

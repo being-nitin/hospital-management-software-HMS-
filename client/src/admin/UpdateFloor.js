@@ -24,7 +24,6 @@ const UpdateFloor = ({ history, match }) => {
     const floorDetails = useSelector((state) => state.floorDetails)
     const { loading, error, floor } = floorDetails
     
-    console.log(floor)
 
     const floorUpdate = useSelector((state) => state.floorUpdate)
     const {

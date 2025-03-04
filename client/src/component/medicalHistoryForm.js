@@ -12,7 +12,6 @@ const MedicalHistoryForm = ({  id }) => {
   const patientDetails = useSelector((state) => state.patientDetails);
   const { patient } = patientDetails;
 
-  console.log(patient)
   // Add a new condition
   const handleAddCondition = () => {
     if (newCondition.trim()) {

@@ -11,7 +11,6 @@ const ListVaccineCat = ({ history }) => {
 	const vaccineCatList = useSelector((state) => state.vaccineCatList);
 	const { loading, error, vaccines } = vaccineCatList;
 
-	console.log(vaccines);
 	const navigate = useNavigate();
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -28,7 +27,7 @@ const ListVaccineCat = ({ history }) => {
 	}, [dispatch, history, successDelete, userInfo]);
 
 	const deleteHandler = (id) => {
-		console.log(id);
+	
 		if (window.confirm("Are you sure")) {
 			dispatch(deleteVacCat(id));
 		}

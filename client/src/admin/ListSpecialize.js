@@ -11,8 +11,6 @@ const ListSpecialize = ({ history }) => {
   const specializeList = useSelector((state) => state.specializeList);
   const { loading, error, specializations } = specializeList;
 
-  console.log(specializations);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -28,7 +26,6 @@ const ListSpecialize = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    console.log(id);
     if (window.confirm("Are you sure")) {
       dispatch(deleteSpecialize(id));
     }

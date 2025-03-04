@@ -50,8 +50,6 @@ const  UpdateDoctorProfile = ({ history: history1, match}) => {
     const [image, setImage] = useState('')
     const [uploading, setUploading] = useState(false)
 
-    console.log(image)
-
     const dispatch = useDispatch()
 
     const userList = useSelector((state) => state.userList)
@@ -78,7 +76,6 @@ const  UpdateDoctorProfile = ({ history: history1, match}) => {
 
     const doctorDetail = useSelector((state) => state.doctorDetail)
     const { loading, error, doctor } = doctorDetail
-    console.log(doctor)
 
     const doctorUpdate = useSelector((state) => state.doctorUpdate)
     const {
@@ -169,7 +166,6 @@ const  UpdateDoctorProfile = ({ history: history1, match}) => {
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('image', file)
-        console.log(formData)
         setUploading(true)
 
         try {
@@ -182,7 +178,7 @@ const  UpdateDoctorProfile = ({ history: history1, match}) => {
             const { data } = await axios.post(` http://localhost:8000/upload`, formData, config)
 
             setImage(data)
-            console.log(data)
+    
             setUploading(false)
         } catch (error) {
             console.error(error)

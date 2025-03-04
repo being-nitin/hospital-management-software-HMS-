@@ -89,9 +89,9 @@ export const listSpecialize = () => async (dispatch, getState) => {
             type: LIST_SPECIALIZE_SUCCESS,
             payload: data,
         })
-        console.log(data)
+    
     } catch (error) {
-        console.log(error)
+    
         const message =
             error.response && error.response.data.message
                 ? error.response.data.message
@@ -159,7 +159,7 @@ export const updateSpecialize = (speciali) => async (dispatch, getState) => {
             },
         }
 
-        console.log(speciali)
+        
         const { data } = await axios.put(
             `${API}/specialize-update/${speciali._id}/${userInfo._id}`,
             speciali,

@@ -150,9 +150,9 @@ export const listCatTests = () => async (dispatch, getState) => {
             type: LIST_CAT_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
-        console.log(error)
+    
         const message =
             error.response && error.response.data.message
                 ? error.response.data.message
@@ -375,7 +375,7 @@ export const updateTest = (test) => async (dispatch, getState) => {
             },
         }
 
-        console.log(test)
+    
         const { data } = await axios.put(
             `${API}/test-update/${test._id}`,
             test,

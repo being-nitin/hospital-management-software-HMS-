@@ -11,8 +11,6 @@ const ListDeparts = ({ history }) => {
   const departsList = useSelector((state) => state.departsList);
   const { loading, error, departments } = departsList;
 
-  console.log(departments);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -28,7 +26,7 @@ const ListDeparts = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    console.log(id);
+    
     if (window.confirm("Are you sure")) {
       dispatch(deleteDeparts(id));
     }

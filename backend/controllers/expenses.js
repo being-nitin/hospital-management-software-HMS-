@@ -27,7 +27,7 @@ exports.creatExpense = asyncHandler(async (req, res) => {
         const expense = new expenses({...req.body , doctor : doctorId } );
         const savedExpense = await expense.save();
 
-        console.log(savedExpense)
+        
         // Check if the appointment ID is provided in the request
         if (!req.body.appointment) {
             return res.status(400).json({
@@ -64,7 +64,7 @@ exports.creatExpense = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
+        
         const expense = await expenses.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
@@ -86,7 +86,7 @@ exports.update = asyncHandler(async (req, res) => {
 
 
 exports.getExpenseDetail = asyncHandler(async (req, res) => {
-    console.log(req.params.id)
+    
     const expense = await expenses.findOne({appointment : req.params.id}).populate("appointment")
 
     if (expense) {

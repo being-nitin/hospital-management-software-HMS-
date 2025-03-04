@@ -18,12 +18,9 @@ const ListDoctors = ({ history }) => {
     const doctorList = useSelector((state) => state.doctorList)
     const { loading, error, doctors } = doctorList
 
-    console.log(doctors)
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
-
-    console.log(userInfo._id)
 
     const doctorDelete = useSelector((state) => state.doctorDelete)
     const { success: successDelete } = doctorDelete
@@ -38,7 +35,7 @@ const ListDoctors = ({ history }) => {
 
 
     const deleteHandler = (id) => {
-        console.log(id)
+    
         if (window.confirm('Are you sure')) {
             dispatch(deleteDoctors(id))
         }

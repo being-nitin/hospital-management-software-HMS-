@@ -98,7 +98,7 @@ export const listExpenses = (page = null, limit = null, doctor = null, startDate
             type: LIST_EXPENSES_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
         console.log(error)
         const message =

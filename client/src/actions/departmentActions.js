@@ -87,7 +87,6 @@ export const listDeparts  = () => async (dispatch, getState) => {
             type: LIST_DEPARTMENT_SUCCESS,
             payload: data,
         })
-        console.log(data)
     } catch (error) {
         console.log(error)
         const message =
@@ -156,7 +155,6 @@ export const updateDeparts = (departm) => async (dispatch, getState) => {
             },
         }
 
-        console.log(departm)
         const { data } = await axios.put(
             `${API}/depart-update/${departm._id}/${userInfo._id}`,
             departm,

@@ -29,7 +29,6 @@ exports.getMedicine = asyncHandler(async (req, res) => {
 
 
 exports.createMedicine = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const med = new Medicine(req.body);
     await med.save((err, data) => {
         if (err) {

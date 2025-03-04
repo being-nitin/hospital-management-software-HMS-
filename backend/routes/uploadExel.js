@@ -31,7 +31,6 @@ const upload = multer({
 
 // -> Express Upload RestAPIs
 router.post('/', upload.single("uploadfile"), async (req, res) =>{
-    console.log(req.file.filename)
     await xlsxtojson({
         input: `uploads/exel/${req.file.filename}`,  // input xls
         output: null, // output json
@@ -40,7 +39,6 @@ router.post('/', upload.single("uploadfile"), async (req, res) =>{
         if(err) {
             res.json(err);
         } else {
-            console.log(result)
             //res.json(result);
             return vendors.collection.insertMany(result, function (err, resul) {
                 if (err) {

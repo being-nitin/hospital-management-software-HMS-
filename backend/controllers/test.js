@@ -64,7 +64,6 @@ exports.getTestDetailUser = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
         const test = await testResult.findByIdAndUpdate({_id: req.test._id}, {user: req.body.user, testName: req.body.testName,
             result: req.body.result,
             description: req.body.description, paid: req.body.paid}, {

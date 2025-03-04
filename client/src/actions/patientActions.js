@@ -49,7 +49,6 @@ export const createPatient = (patient) => async (dispatch, getState) => {
             type: PATIENT_CREATE_REQUEST,
         })
 
-        console.log(patient)
         const {
             userLogin: { userInfo },
         } = getState()

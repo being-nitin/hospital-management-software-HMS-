@@ -212,7 +212,6 @@ const HamiltonDepressionForm = () => {
 	const { appointment: { appointment, pastAppointments } = {} } =
 		vaccineAppList || {};
 
-	console.log(vaccineAppList);
 	useEffect(() => {
 		dispatch(detailsVacApp(id));
 	}, [dispatch, id]);

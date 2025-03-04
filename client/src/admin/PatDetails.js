@@ -32,9 +32,6 @@ const PatDetails = () => {
     const patientDetailsUser = useSelector((state) => state.patientDetailsUser)
     const { patient } = patientDetailsUser
 
-    
-    console.log(patient)
-
 
     return (
         <Layout title={"Patients details"}>

@@ -77,7 +77,7 @@ exports.getConsDetailUser = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
+    
         const cons = await conSult.findByIdAndUpdate({_id: req.test._id}, req.body, {
             new: true,
             runValidators: true

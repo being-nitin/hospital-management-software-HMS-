@@ -68,7 +68,7 @@ exports.createVaccineApp = asyncHandler(async (req, res) => {
         doctorId = req.user._id
      }
 
-     console.log(doctor)
+    
     // Convert duration to minutes
     const durationInMinutes = convertDurationToMinutes(duration);
 
@@ -173,8 +173,6 @@ exports.list = asyncHandler(async (req, res) => {
 
       // Get total count for pagination
       const totalAppointments = await VaccineAppointment.countDocuments(field);
-       
-      console.log(field)
       // Query with pagination and filters
       const data = await VaccineAppointment.find(field).sort({ date : -1 })
         .populate("patient doctor prescription  billing")

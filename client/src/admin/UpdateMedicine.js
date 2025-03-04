@@ -48,7 +48,7 @@ const  UpdateMedicine = () => {
 
     const medicineType = useSelector((state) => state.medicineType)
     const { types } = medicineType
-    console.log(types)
+
 
 
     const vendorsList = useSelector((state) => state.vendorsList)

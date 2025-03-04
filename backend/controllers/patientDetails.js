@@ -18,7 +18,6 @@ exports.patientsById = asyncHandler (async (req, res, next, id) => {
 
 
 exports.creatPatientDetails = asyncHandler(async (req, res) => {
-    //console.log(req.body)
     const patient = new patientDetails(req.body);
     await patient.save((err, data) => {
         if (err) {
@@ -33,7 +32,6 @@ exports.creatPatientDetails = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.params)
         const patient = await patientDetails.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true
@@ -136,7 +134,6 @@ exports.remove = asyncHandler(async (req, res) => {
 
 exports.list = asyncHandler(async (req, res) => {
     const { firstName, lastName, phoneNo, patientNumber, address, page, limit = 10 } = req.query;
-     console.log(firstName)
     const query = {};
     
     if (firstName) {
@@ -173,7 +170,6 @@ exports.list = asyncHandler(async (req, res) => {
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
     
-    console.log(patients)
     res.json({
       patient : patients,
       page: pageNumber,

@@ -15,8 +15,6 @@ const ListPrescriptions = ({ history }) => {
     const prescList = useSelector((state) => state.prescList)
     const { loading, error, prescriptions } = prescList
 
-    console.log(prescriptions)
-
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
@@ -46,7 +44,7 @@ const ListPrescriptions = ({ history }) => {
     }
 
     const deleteHandler = (id) => {
-        console.log(id)
+        
         if (window.confirm('Are you sure')) {
             dispatch(deletePrescription(id))
         }

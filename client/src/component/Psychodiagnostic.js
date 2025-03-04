@@ -456,7 +456,7 @@ const Psychodiagnostic = () => {
   
       return today.diff(birthMoment, 'years'); // Calculate the difference in years
     };
-console.log(formData)
+
   return (
     < Layout>
     <>

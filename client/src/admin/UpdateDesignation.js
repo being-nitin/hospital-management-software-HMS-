@@ -21,8 +21,6 @@ const UpdateDesignation = ({ history, match }) => {
     const designateDetails = useSelector((state) => state.designateDetails)
     const { loading, error, designate } = designateDetails
 
-    console.log(designate)
-
     const designateUpdate = useSelector((state) => state.designateUpdate)
     const {
         loading: loadingUpdate,

@@ -87,9 +87,9 @@ export const listFloors = () => async (dispatch, getState) => {
             type: LIST_FLOOR_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
-        console.log(error)
+    
         const message =
             error.response && error.response.data.message
                 ? error.response.data.message
@@ -157,7 +157,7 @@ export const updateFloor = (flor) => async (dispatch, getState) => {
             },
         }
 
-        console.log(flor)
+    
         const { data } = await axios.put(
             `${API}/floor-update/${flor._id}/${userInfo._id}`,
             flor,
@@ -208,9 +208,9 @@ export const floorsDetails = (id) => async (dispatch, getState) => {
             type: FLOOR_DETAILS_SUCCESS,
             payload: data,
         })
-        console.log(data)
+    
     } catch (error) {
-        console.log(error)
+    
         dispatch({
             type: FLOOR_DETAILS_FAIL,
             payload:

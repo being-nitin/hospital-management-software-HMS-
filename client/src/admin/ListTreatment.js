@@ -14,8 +14,6 @@ const ListTreatment = ({ history }) => {
   const treatLists = useSelector((state) => state.treatLists);
   const { loading, error, treatments } = treatLists;
 
-  console.log(treatments);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 

@@ -28,7 +28,6 @@ exports.update = asyncHandler(async (req, res) => {
       };
      
       if (Object.keys(files).length !== 0) {
-        console.log(files)
       for (const [key, file] of Object.entries(files)) {
         const fileUri = getDataUri(file[0]);
         const result = await cloudinary.v2.uploader.upload(fileUri.content, {

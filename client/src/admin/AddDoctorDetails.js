@@ -48,8 +48,6 @@ const  AddDoctorsDetails = ({ history: history1}) => {
     const [image, setImage] = useState('')
     const [uploading, setUploading] = useState(false)
 
-    console.log(image)
-
     const dispatch = useDispatch()
 
     const userList = useSelector((state) => state.userList)
@@ -130,7 +128,6 @@ const  AddDoctorsDetails = ({ history: history1}) => {
         const file = e.target.files[0]
         const formData = new FormData()
         formData.append('image', file)
-        console.log(formData)
         setUploading(true)
 
         try {
@@ -143,7 +140,7 @@ const  AddDoctorsDetails = ({ history: history1}) => {
             const { data } = await axios.post(` http://localhost:8000/upload`, formData, config)
 
             setImage(data)
-            console.log(data)
+        
             setUploading(false)
         } catch (error) {
             console.error(error)

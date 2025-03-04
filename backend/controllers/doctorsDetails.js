@@ -17,7 +17,6 @@ exports.doctorsById = asyncHandler (async (req, res, next, id) => {
 
 
 exports.createDoctorsDetails = asyncHandler(async (req, res) => {
-    //console.log(req.body)
     const doctor = new doctorsDetails(req.body);
     await doctor.save((err, data) => {
         if (err) {
@@ -32,7 +31,7 @@ exports.createDoctorsDetails = asyncHandler(async (req, res) => {
 
 exports.update = asyncHandler(async (req, res) => {
     try {
-        console.log(req.body)
+    
         const doctor = await doctorsDetails.findByIdAndUpdate({_id: req.params.id}, req.body, {
             new: true,
             runValidators: true

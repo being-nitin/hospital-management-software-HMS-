@@ -21,7 +21,7 @@ const  UpdateVaccineCat = ({ history: history1, match}) => {
     const vaccineCatDetail = useSelector((state) => state.vaccineCatDetail)
     const { loading, error, vaccine } = vaccineCatDetail
 
-    console.log(vaccine)
+
 
     const vaccineCatUpdate = useSelector((state) => state.vaccineCatUpdate)
     const {
@@ -33,12 +33,10 @@ const  UpdateVaccineCat = ({ history: history1, match}) => {
 
     const vaccineCatType = useSelector((state) => state.vaccineCatType)
     const { types } = vaccineCatType
-    console.log(types)
-
+    
     const medicineList = useSelector((state) => state.medicineList)
     const { medicines } = medicineList
 
-    console.log(medicines)
 
 
 

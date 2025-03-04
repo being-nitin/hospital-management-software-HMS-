@@ -100,7 +100,7 @@ const AppointmentDetail = ({lastElement, app}) => {
 
 	// Handle deleting a prescription
 	const handleDeletePrescription = (prescriptionId) => {
-		console.log("delete")
+		
 		deletePrescription.mutate({idx : app._id, presId : prescriptionId}); // Dispatch delete action
 		
 	};

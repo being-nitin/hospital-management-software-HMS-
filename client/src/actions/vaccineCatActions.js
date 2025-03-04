@@ -91,9 +91,9 @@ export const listVacCat = () => async (dispatch, getState) => {
             type: LIST_VACCINE_SUCCESS,
             payload: data,
         })
-        console.log(data)
+    
     } catch (error) {
-        console.log(error)
+        
         const message =
             error.response && error.response.data.message
                 ? error.response.data.message
@@ -161,7 +161,7 @@ export const updateVacCat = (vac) => async (dispatch, getState) => {
             },
         }
 
-        console.log(vac)
+        
         const { data } = await axios.put(
             `${API}/vaccine-update/${vac._id}/${userInfo._id}`,
             vac,

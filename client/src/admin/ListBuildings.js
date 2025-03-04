@@ -30,7 +30,7 @@ const ListBuildings = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    console.log(id);
+    
     if (window.confirm("Are you sure")) {
       dispatch(deleteBuilding(id));
     }

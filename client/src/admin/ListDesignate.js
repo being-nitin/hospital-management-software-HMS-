@@ -11,8 +11,6 @@ const ListDesignate = ({ history }) => {
   const designateList = useSelector((state) => state.designateList);
   const { loading, error, designations } = designateList;
 
-  console.log(designations);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -28,7 +26,7 @@ const ListDesignate = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    console.log(id);
+    
     if (window.confirm("Are you sure")) {
       dispatch(deleteDesignate(id));
     }

@@ -11,8 +11,6 @@ const ListFloors = ({ history }) => {
   const floorList = useSelector((state) => state.floorList);
   const { loading, error, floors } = floorList;
 
-  console.log(floors);
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -28,7 +26,6 @@ const ListFloors = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo]);
 
   const deleteHandler = (id) => {
-    console.log(id);
     if (window.confirm("Are you sure")) {
       dispatch(deleteFloors(id));
     }

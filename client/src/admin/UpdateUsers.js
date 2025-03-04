@@ -52,7 +52,7 @@ const UpdateUsers = ({ match, history }) => {
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            console.log(email)
+
             dispatch(updateUsersProfile({ _id: id, name, email, role, password }))
         }
         

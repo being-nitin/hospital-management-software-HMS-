@@ -38,9 +38,9 @@ export const listVendors = () => async (dispatch, getState) => {
             type: LIST_VENDORS_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
-        console.log(error)
+        
         const message =
             error.response && error.response.data.message
                 ? error.response.data.message

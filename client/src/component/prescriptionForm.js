@@ -30,7 +30,6 @@ const PrescriptionForm = ({
     }
   }, [existingPrescriptions]);
 
-  console.log(prescriptions)
   const addPrescription = () => {
     setPrescriptions((prev) => [
       ...prev,

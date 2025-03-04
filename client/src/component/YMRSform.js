@@ -57,7 +57,7 @@ const YMRSform = () => {
 			result[currField] = form2Data.fields[index];
 			return result;
 		}, {});
-		console.log(submittedData);
+		
 
 		dispatch(
 			updateVacApp({

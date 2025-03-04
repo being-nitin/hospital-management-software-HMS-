@@ -38,7 +38,7 @@ exports.getSpecialize = asyncHandler(async (req, res) => {
 
 
 exports.createSpecialize = asyncHandler(async (req, res) => {
-    console.log(req.body)
+
     const specialize = new specialization(req.body);
     await specialize.save((err, data) => {
         if (err) {

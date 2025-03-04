@@ -38,7 +38,6 @@ exports.getDesignate = asyncHandler(async (req, res) => {
 
 
 exports.createDesignate = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const designate = new designation(req.body);
     await designate.save((err, data) => {
         if (err) {

@@ -22,8 +22,7 @@ const UpdateBuilding = ({ history, match }) => {
     const buildingDetails = useSelector((state) => state.buildingDetails)
     const { loading, error, building } = buildingDetails
     
-    console.log(building)
-
+    
     const buildingUpdate = useSelector((state) => state.buildingUpdate)
     const {
         loading: loadingUpdate,

@@ -31,8 +31,6 @@ const AddMedicine = () => {
 
   const medicineType = useSelector((state) => state.medicineType);
   const { types } = medicineType;
-  console.log(types);
-
   const medicineCreate = useSelector((state) => state.medicineCreate);
   const { error, loading, success } = medicineCreate;
 

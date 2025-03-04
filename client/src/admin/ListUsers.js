@@ -59,7 +59,7 @@ const ListUsers = ({ history }) => {
 	}, [users]);
 
 	const deleteHandler = (id) => {
-		console.log(id);
+	
 		if (window.confirm("Are you sure")) {
 			dispatch(deleteUser(id));
 		}
@@ -98,7 +98,7 @@ const ListUsers = ({ history }) => {
 	const indexOfFirstUser = indexOfLastUser - itemPerPage;
 
 	const handlePageChange = (pageNumber) => {
-		console.log(`active page is ${pageNumber}`);
+	
 		setActivePage(pageNumber);
 	};
 

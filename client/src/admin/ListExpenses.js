@@ -79,14 +79,14 @@ const ListExpenses = () => {
 	};
 
 	const handleDateChange = (dates) => {
-		console.log(dates)
+	
 		if (dates) {
 			setFilters((prev) => ({
 				...prev,
 				startDate: dates[0].format('YYYY-MM-DD'),
 				endDate: dates[1].format('YYYY-MMM-DD'),
 			}));
-			console.log(filters.startDate)
+			
 		} else {
 			setFilters((prev) => ({ ...prev, startDate: null, endDate: null }));
 		}

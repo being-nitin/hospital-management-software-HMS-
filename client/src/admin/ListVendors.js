@@ -11,8 +11,6 @@ const ListVendors = ({ history }) => {
 	const vendorsList = useSelector((state) => state.vendorsList);
 	const { loading, error, vendors } = vendorsList;
 
-	console.log(vendors);
-
 	const [searchTerm, setSearchTerm] = React.useState("");
 
 	const handleChange = (event) => {
@@ -34,7 +32,7 @@ const ListVendors = ({ history }) => {
 	}, [dispatch, history, successDelete, userInfo]);
 
 	const deleteHandler = (id) => {
-		console.log(id);
+	
 		if (window.confirm("Are you sure")) {
 			dispatch(deleteVendors(id));
 		}

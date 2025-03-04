@@ -31,8 +31,6 @@ const UpdatePrescriptions = ({ history: history1, match }) => {
     const prescEnumsList = useSelector((state) => state.prescEnumsList)
     const { enums } = prescEnumsList
 
-    console.log(enums)
-
     const treatLists = useSelector((state) => state.treatLists)
     const { treatments } = treatLists
 

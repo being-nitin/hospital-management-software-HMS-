@@ -30,7 +30,6 @@ const ListPatients = () => {
 		patients: { patient, totalPages } = {},
 	} = patientList;
 
-	console.log(patient)
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 

@@ -31,7 +31,7 @@ const { userInfo } = useSelector((state) => state.userLogin);
         onSuccess: (data) => {
             // Invalidate the query to refetch it after mutation
             queryClient.invalidateQueries('appointments'); 
-            console.log("Prescription updated:", data);
+           
         },
         onError: (error) => {
             console.error("Error updating prescription:", error);
@@ -68,7 +68,7 @@ export const useCreatePrescription = () => {
         onSuccess: (data) => {
             // Invalidate relevant queries to refetch updated data
             queryClient.invalidateQueries(["appointments"]); // Ensure "appointments" matches your query key
-            console.log("Prescription created:", data);
+            
         },
         onError: (error) => {
             console.error("Error creating prescription:", error);
@@ -98,7 +98,7 @@ const { userInfo } = useSelector((state) => state.userLogin);
         onSuccess: (data) => {
             // Invalidate the query to refetch it after mutation
             queryClient.invalidateQueries(['appointments']); 
-            console.log("Prescription deleted:", data);
+        
         },
         onError: (error) => {
             console.error("Error updating prescription:", error);

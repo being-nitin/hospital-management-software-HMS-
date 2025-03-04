@@ -93,7 +93,7 @@ export const createPrescription = (appId , prescriptions) => async (dispatch, ge
 
         const data  = await axios.post(`${API}/pres-create/${userInfo._id}?appId=${appId}`, [...prescriptions], config)
         
-        console.log(data)
+        
         // dispatch({
         //     type: PRESCRIPTION_CREATE_SUCCESS,
         //     payload: data,
@@ -241,7 +241,7 @@ export const updatePrescription = (pres) => async (dispatch, getState) => {
             },
         }
 
-        console.log(pres)
+        
         const { data } = await axios.put(
             `${API}/pres-update/${pres._id}/${userInfo._id}`,
             pres,

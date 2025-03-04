@@ -39,14 +39,11 @@ const AddAppVaccine = () => {
 	const vaccineCatList = useSelector((state) => state.vaccineCatList);
 	const { vaccines } = vaccineCatList;
 
-	console.log(vaccines);
-
 	const userList = useSelector((state) => state.userList);
 	const { users } = userList;
 
 	const medicineType = useSelector((state) => state.medicineType);
 	const { types } = medicineType;
-	console.log(types);
 
 	const vaccineAppCreate = useSelector((state) => state.vaccineAppCreate);
 	const { error, loading, success } = vaccineAppCreate;

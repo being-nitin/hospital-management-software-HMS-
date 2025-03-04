@@ -12,8 +12,6 @@ const ListMedicine = () => {
 	const medicineList = useSelector((state) => state.medicineList);
 	const { loading, error, medicines } = medicineList;
 
-	console.log(medicines);
-
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
@@ -30,7 +28,7 @@ const ListMedicine = () => {
 	}, [dispatch, successDelete, userInfo]);
 
 	const deleteHandler = (id) => {
-		console.log(id);
+
 		if (window.confirm("Are you sure")) {
 			dispatch(deleteMedicine(id));
 		}

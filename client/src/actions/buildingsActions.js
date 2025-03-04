@@ -83,7 +83,6 @@ export const listBuildings = () => async (dispatch, getState) => {
             type: LIST_BUILDING_SUCCESS,
             payload: data,
         })
-        console.log(data)
     } catch (error) {
         console.log(error)
         const message =
@@ -203,7 +202,7 @@ export const buildingsDetails = (id) => async (dispatch, getState) => {
             type: BUILDING_DETAILS_SUCCESS,
             payload: data,
         })
-        console.log(data)
+        
     } catch (error) {
         console.log(error)
         dispatch({

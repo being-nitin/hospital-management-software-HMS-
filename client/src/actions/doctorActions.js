@@ -284,7 +284,6 @@ export const updateDoctors = (doc) => async (dispatch, getState) => {
             },
         }
 
-        console.log(doc)
         const { data } = await axios.put(
             `${API}/doctor-update/${doc._id}/${userInfo._id}`,
             doc,
@@ -335,9 +334,7 @@ export const doctorDetails = (id) => async (dispatch, getState) => {
             type: DOCTOR_DETAILS_SUCCESS,
             payload: data,
         })
-        console.log(data)
     } catch (error) {
-        console.log(error)
         dispatch({
             type: DOCTOR_DETAILS_FAIL,
             payload:

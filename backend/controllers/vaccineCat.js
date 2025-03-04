@@ -31,7 +31,7 @@ exports.getVaccineCat = asyncHandler(async (req, res) => {
 
 
 exports.createVaccineCat = asyncHandler(async (req, res) => {
-    console.log(req.body)
+
     const vaccine = new Vaccine(req.body);
     await vaccine.save((err, data) => {
         if (err) {

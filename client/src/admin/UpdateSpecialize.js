@@ -21,7 +21,6 @@ const UpdateSpecialize = ({ history, match }) => {
     const specializeDetails = useSelector((state) => state.specializeDetails)
     const { loading, error, specialize } = specializeDetails
 
-    console.log(specialize)
 
     const specializeUpdate = useSelector((state) => state.specializeUpdate)
     const {
