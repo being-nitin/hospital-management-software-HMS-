@@ -9,19 +9,19 @@ import { listTypesEnums, createMedicine } from "../actions/medicineActions";
 import { CREATE_MEDICINE_RESET } from "../constants/medicineConstants";
 
 const AddMedicine = () => {
-  const [name, setName] = useState("Panadol");
-  const [genericName, setGenericName] = useState("Paracetamol");
-  const [batchNo, setBatchNo] = useState(567732435);
-  const [barCode, setBarCode] = useState(5675467);
+  const [name, setName] = useState("");
+  const [genericName, setGenericName] = useState("");
+  const [batchNo, setBatchNo] = useState('');
+  const [barCode, setBarCode] = useState('');
   const [description, setDescription] = useState("");
-  const [quantity, setQuantity] = useState(5);
-  const [unitWeight, setUnitWeight] = useState(1);
+  const [quantity, setQuantity] = useState(0);
+  const [unitWeight, setUnitWeight] = useState(0);
   const [type, setType] = useState("");
-  const [manDate, setManDate] = useState(new Date());
-  const [expDate, setExpDate] = useState(new Date());
-  const [cost, setCost] = useState(2200);
-  const [retailCost, setRetailCost] = useState(1700);
-  const [effects, setEffects] = useState("Dizzy");
+  const [manDate, setManDate] = useState(null);
+  const [expDate, setExpDate] = useState(null);
+  const [cost, setCost] = useState(0);
+  const [retailCost, setRetailCost] = useState(0);
+  const [effects, setEffects] = useState("");
   const [vendor, setVendor] = useState("");
 
   const dispatch = useDispatch();
@@ -90,15 +90,15 @@ const AddMedicine = () => {
         retailCost,
         effects,
       })
-    ); // vendor is missing
+    ); 
   };
   const formContainerStyles = {
-    maxWidth: "1100px", // Increased max width for more spacious form layout
-    margin: "0 auto", // Center the form horizontally
-    padding: "40px", // Add some padding around the form
-    borderRadius: "10px", // Rounded corners for the container
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for a classy effect
-    backgroundColor: "#f9f9f9", // Light background color to make it stand out
+    maxWidth: "1100px",
+    margin: "0 auto", 
+    padding: "40px", 
+    borderRadius: "10px", 
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+    backgroundColor: "#f9f9f9", 
   };
 
   const inputStyles = {

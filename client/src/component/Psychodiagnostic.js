@@ -47,6 +47,7 @@ const Psychodiagnostic = () => {
     course: "",
     progression: "",
     backgroundInfo:  {
+      information : '',
       personalHistory: {
         birth: "",
         developmentalHistory: "",
@@ -455,7 +456,7 @@ const Psychodiagnostic = () => {
   
       return today.diff(birthMoment, 'years'); // Calculate the difference in years
     };
-
+console.log(formData)
   return (
     < Layout>
     <>
@@ -697,7 +698,18 @@ const Psychodiagnostic = () => {
             <option value="improving">Improving</option>
           </select>
         </label>
-
+        <label style={styles.labels}>
+          BackgroundInfo
+          <textArea
+            row = {20}
+            col = {20}
+            type="text"
+            name="infomation"
+            value={formData.backgroundInfo.information}
+            onChange={handleChange}
+            style={styles.input}
+          />
+        </label>
         <h4>Personal History</h4>
       {Object.keys(formData.backgroundInfo.personalHistory).map((key) => (
         <label key={key} style={styles.labels}>
