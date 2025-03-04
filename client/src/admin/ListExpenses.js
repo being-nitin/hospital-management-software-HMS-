@@ -15,7 +15,7 @@ const { Option } = Select;
 const ListExpenses = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
+	const [view, setView] = useState("daily");
 	const [filters, setFilters] = useState({
 		startDate: null,
 		endDate: null,
@@ -170,6 +170,32 @@ const ListExpenses = () => {
         };
     };
 
+	const processExpensedoctorData = () => {
+		if (!expense) return { labels: [], datasets: [] };
+	
+		let earningsByDoctor = {};
+	
+		expense.forEach((exp) => {
+			let doctorName = exp.doctor?.name || "Unknown";
+			if (!earningsByDoctor[doctorName]) {
+				earningsByDoctor[doctorName] = 0;
+			}
+			earningsByDoctor[doctorName] += exp.grandTotal;
+		});
+	
+		return {
+			labels: Object.keys(earningsByDoctor),
+			datasets: [
+				{
+					label: "Doctor's Earnings",
+					data: Object.values(earningsByDoctor),
+					backgroundColor: "rgba(75, 192, 192, 0.6)",
+					borderColor: "rgba(75, 192, 192, 1)",
+					borderWidth: 1,
+				},
+			],
+		};
+	};
 	const handlePaidStatusChange = (expenseId, value) => {
 	  
 		// Dispatch the update action
@@ -210,20 +236,51 @@ const ListExpenses = () => {
                     </Select> : ''}
                     <Button type="primary" onClick={applyFilters}>Search</Button>
                 </div>
+
+				<div className="btn-group mb-4" role="group">
+                <button 
+                    className={`btn ${view === "daily" ? "btn-primary" : "btn-outline-primary"}`} 
+                    onClick={() => setView("daily")}
+                >
+                    Daily
+                </button>
+                <button 
+                    className={`btn ${view === "weekly" ? "btn-primary" : "btn-outline-primary"}`} 
+                    onClick={() => setView("weekly")}
+                >
+                    Weekly
+                </button>
+                <button 
+                    className={`btn ${view === "monthly" ? "btn-primary" : "btn-outline-primary"}`} 
+                    onClick={() => setView("monthly")}
+                >
+                    Monthly
+                </button>
+				<button 
+                    className={`btn ${view === "doctor" ? "btn-primary" : "btn-outline-primary"}`} 
+                    onClick={() => setView("doctor")}
+                >
+                    Doctor
+                </button>
+            </div>
             </div>
 
-            <div className="mt-4">
-                <h3>Daily Earnings (Last 7 Days)</h3>
-                <Bar data={processExpenseData("daily")} options={{ responsive: true }} />
-            </div>
-            <div className="mt-4">
-                <h3>Weekly Earnings (Last 4 Weeks)</h3>
-                <Bar data={processExpenseData("weekly")} options={{ responsive: true }} />
-            </div>
-            <div className="mt-4">
-                <h3>Monthly Earnings (Last 6 Months)</h3>
-                <Bar data={processExpenseData("monthly")} options={{ responsive: true }} />
-            </div>
+			<div className="mt-4">
+			
+
+            <h3>
+                {view === "doctor" ? '' : view === "daily"
+                    ? "Daily Earnings (Last 7 Days)"
+                    : view === "weekly"
+                    ? "Weekly Earnings (Last 4 Weeks)"
+                    : "Monthly Earnings (Last 6 Months)"}
+            </h3>
+			<div >
+			{view === 'doctor' ? <Bar data={processExpensedoctorData()} options={{ responsive: true }} /> : 
+            <Bar data={processExpenseData(view)} options={{ responsive: true }} />}
+			
+			</div>
+        </div>
 
 			{loading ? (
 				<div className="text-center">
