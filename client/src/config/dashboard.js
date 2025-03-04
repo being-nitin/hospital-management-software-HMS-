@@ -23,7 +23,7 @@ export const sideBarConfig = [
               "path": "/list/medicine"
             },
             {
-              "label": "Expenses",
+              "label": "Revenue",
               "icon": "bi bi-cash",
               "path": "/list-expenses"
             },
@@ -85,7 +85,7 @@ export const sideBarConfig = [
               "path": "/list/medicine"
             },
             {
-              "label": "Expenses",
+              "label": "Revenue",
               "icon": "bi bi-cash",
               "path": "/list-expenses"
             },
@@ -147,7 +147,7 @@ export const sideBarConfig = [
               "path": "/list/medicine"
             },
             {
-              "label": "Expenses",
+              "label": "Revenue",
               "icon": "bi bi-cash",
               "path": "/list-expenses"
             },

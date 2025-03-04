@@ -83,7 +83,7 @@ const AdminDashboard = () => {
 		labels: last7DaysData.map((data) => data.date),
 		datasets: [
 			{
-				label: "Expenses (₹)",
+				label: "Revenue (₹)",
 				data: last7DaysData.map((data) => data.total),
 				backgroundColor: "#dc3545",
 			},
@@ -219,7 +219,7 @@ const AdminDashboard = () => {
         <Col md={6}>
             <Card className="shadow-sm h-100">
                 <Card.Body>
-                    <Card.Title>Expenses Over Time</Card.Title>
+                    <Card.Title>Revenue Over Time</Card.Title>
                     <Bar data={expenseData} />
                 </Card.Body>
             </Card>

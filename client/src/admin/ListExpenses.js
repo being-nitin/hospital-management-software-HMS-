@@ -269,7 +269,8 @@ const ListExpenses = () => {
 			
 
             <h3>
-                {view === "doctor" ? '' : view === "daily"
+                {view === "doctor"
+				 ? '' : view === "daily"
                     ? "Daily Earnings (Last 7 Days)"
                     : view === "weekly"
                     ? "Weekly Earnings (Last 4 Weeks)"

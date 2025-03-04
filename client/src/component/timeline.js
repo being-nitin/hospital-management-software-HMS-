@@ -144,8 +144,7 @@ const TimelineCalendar = () => {
         defaultDate={new Date()}
         formats={formats}
         onSelectEvent={onSelectEvent}
-        // min={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8)}
-        // max={new Date(today.getFullYear(), today.getMonth(), today.getDate(), 18)}
+        min={new Date().setHours(8 , 0, 0, 0)} 
         eventPropGetter={eventPropGetter}
         culture={moment.locale("en-US")}
         dayLayoutAlgorithm="no-overlap"
