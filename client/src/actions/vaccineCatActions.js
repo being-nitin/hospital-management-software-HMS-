@@ -212,9 +212,8 @@ export const detailsVacCat = (id) => async (dispatch, getState) => {
             type: DETAILS_VACCINE_SUCCESS,
             payload: data,
         })
-        //console.log(data)
+        
     } catch (error) {
-        console.log(error)
         dispatch({
             type: DETAILS_VACCINE_FAIL,
             payload:

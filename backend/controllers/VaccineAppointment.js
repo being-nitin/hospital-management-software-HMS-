@@ -141,13 +141,14 @@ exports.list = asyncHandler(async (req, res) => {
     const { status, date, page, limit , patient } = req.query; // Pagination and filters
     
     let field = {};
-
+    let recent_query = {}
     // Check if userId is provided and find the user
     if (req.params.userId) {
       const findUser = await User.findById({ _id: req.params.userId });
 
       if (findUser && findUser.role === 1) {
         field["doctor"] = req.params.userId;
+        recent_query["doctor"] = req.params.userId
       }
     }
 
@@ -180,9 +181,20 @@ exports.list = asyncHandler(async (req, res) => {
         .limit(pageSize)
         .exec();
      
+        const startOfToday = new Date();
+startOfToday.setUTCHours(0, 0, 0, 0);
+
+const startOfTomorrow = new Date();
+startOfTomorrow.setUTCHours(24, 0, 0, 0);
+
+recent_query["date"] = { 
+  $gte: startOfToday, 
+  $lt: startOfTomorrow
+};
+
         
 
-        const todayAppointment = await VaccineAppointment.find({ date : {$gte : new Date().toDateString()} , doctor :  req.params.userId}).sort({ date : -1 }).populate('patient doctor')
+        const todayAppointment = await VaccineAppointment.find(recent_query).sort({ date : -1 }).populate('patient doctor')
         .populate("patient")
         .exec();
       
