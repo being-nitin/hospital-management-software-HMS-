@@ -111,7 +111,7 @@ const ViewPDReport = () => {
   </div>
 
 <h4 style="margin-bottom: 10px;">Background Information</h4>
-<textarea row="20" col="50" style="width:90%; height : 80px;"></textarea>
+${(patientData && patientData.backgroundInfo.information )} 
 <!-- Personal History -->
 ${selectedOptions.includes('personal history') ? `
 <h4>Personal History</h4>

@@ -80,7 +80,8 @@ const YBOCS = () => {
 		);
 		dispatch(detailsVacApp(id));
 		window.alert("You have successfully submitted the form.");
-		navigate(`/PsychologicalForm/${id}`)
+		// navigate(`/PsychologicalForm/${id}`)
+		window.close()
 	};
 
 	const fieldNames = YBOCS_DATA["Obsessive thoughts"]

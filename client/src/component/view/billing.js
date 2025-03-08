@@ -76,7 +76,7 @@ const ExpenseDetail = () => {
         <th style="border: 1px solid #ddd; padding: 8px;">#</th>
         <th style="border: 1px solid #ddd; padding: 8px;">Treatments & Products</th>
         <th style="border: 1px solid #ddd; padding: 8px;">Unit Cost (₹)</th>
-        <th style="border: 1px solid #ddd; padding: 8px;">Qty</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Discount</th>
         <th style="border: 1px solid #ddd; padding: 8px;">Total Cost (₹)</th>
       </tr>
     </thead>
@@ -86,7 +86,7 @@ const ExpenseDetail = () => {
           <td style="border: 1px solid #ddd; padding: 8px;">${index + 1}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${item.name}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${item.cost}</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">${item.unit}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${item.discount}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${item.unit * item.cost}</td>
         </tr>
       `).join('')}
@@ -165,7 +165,7 @@ const ExpenseDetail = () => {
         <th>#</th>
         <th>Treatments & Products</th>
         <th>Unit Cost (₹)</th>
-        <th>Qty</th>
+        <th>Discount</th>
         <th>Total Cost (₹)</th>
       </tr>
     </thead>
@@ -175,7 +175,7 @@ const ExpenseDetail = () => {
           <td>{index + 1}</td>
           <td>{item.name}</td>
           <td>{item.cost}</td>
-          <td>{item.unit}</td>
+          <td>{item.discount}</td>
           <td>{item.unit * item.cost}</td>
         </tr>
       ))}

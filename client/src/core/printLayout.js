@@ -145,7 +145,7 @@ const PrintLayout = ({ children , html , data , category }) => {
         <body>
           <div class="print-container">
             ${settings.data[`${category}`].header ? `<img src=${settings.data[`${category}`].header}  class="header" />` : ''}
-            ${category !== 'expense' ? '<div style=  "margin-top: 400px;">' : '<div style="margin-top: 50px;">'}
+            ${category !== 'expense' ? '<div style=  "margin-top: 400px;">' : '<div style="margin-top: 200px;">'}
            ${html(data)}
            </div>
              ${category !== 'expense' ? `<img src=${Logo} class="backgroundLogo"></img>` : ''}

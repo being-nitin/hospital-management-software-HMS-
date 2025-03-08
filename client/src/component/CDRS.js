@@ -322,7 +322,7 @@ const CDRSForm = () => {
 										onChange={() =>
 											handleChange(q.text, index)
 										}
-										required
+										
 									/>
 									{`  ${index} ${option}`}
 								</label>

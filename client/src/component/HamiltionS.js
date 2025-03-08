@@ -237,6 +237,16 @@ const HamiltonDepressionForm = () => {
 	
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		console.log({
+			_id: appointment._id,
+			hamD: {
+				info: formData,
+				score: Object.values(formData).reduce(
+					(acc, value) => acc + value,
+					0
+				),
+			},
+		})
 		dispatch(
 			updateVacApp({
 				_id: appointment._id,
@@ -250,16 +260,15 @@ const HamiltonDepressionForm = () => {
 			})
 		);
 		dispatch(detailsVacApp(id));
+		alert("form is submitted")
 		// navigate(`/PsychologicalForm/${id}`)
 		window.close()
 	};
-	const handleFormSubmit = () => {
-		window.alert("You have successfully submitted the form.");
-	};
+
 
 	return (
 		<div className="hamd-form-container">
-			<form className="hamd-form" onSubmit={handleSubmit}>
+			<form className="hamd-form" >
 				<h2 className="form-title">
 					Hamilton Depression Rating Scale (HAM-D)
 				</h2>
@@ -301,7 +310,7 @@ const HamiltonDepressionForm = () => {
 				<button
 					type="submit"
 					className="submit-btn"
-					onClick={handleFormSubmit}>
+					onClick={handleSubmit}>
 					Submit
 				</button>
 			</form>

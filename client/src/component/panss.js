@@ -247,7 +247,8 @@ const PANSSForm = () => {
 		);
 		dispatch(detailsVacApp(id));
 		alert("You have successfully submitted the form.");
-		navigate(`/PsychologicalForm/${id}`)
+		// navigate(`/PsychologicalForm/${id}`)
+		window.close()
 	};
 
 	return (
@@ -296,7 +297,7 @@ const PANSSForm = () => {
 													)
 												}
 												className="form-check-input"
-												required
+												
 											/>
 											<span>
 												{score.score} -{" "}
