@@ -4,12 +4,13 @@ import { Dropdown, Menu, Button } from "antd";
 import { Link } from "react-router-dom";
 import {
   detailsVacApp,
-  updateVacApp,
+  updateVacApp
 } from "../actions/vaccineAppointmentActions";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Layout from "../core/Layout";
+import { useUpdateAppointment } from "./api/app";
 
 const suggestionsList = [
   "Psychoeducation",
@@ -46,8 +47,9 @@ const Psychodiagnostic = () => {
     onset: "",
     course: "",
     progression: "",
+    backInformation : '',
     backgroundInfo:  {
-      information : '',
+      
       personalHistory: {
         birth: "",
         developmentalHistory: "",
@@ -162,7 +164,7 @@ const Psychodiagnostic = () => {
   const [existingData, setExistingData] = useState(null);
   const [toolsOptions, setToolOptions] = useState([])
   
-  
+  const updateAppData = useUpdateAppointment()
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -338,11 +340,10 @@ const Psychodiagnostic = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      updateVacApp({ _id: appointment?._id, psychodiagnostic: formData })
-    );
+    
+    updateAppData.mutate({ _id: appointment?._id, psychodiagnostic: formData })
+    
     dispatch(detailsVacApp(id));
-    navigate('/patient-app-details')
     alert("form is submittted")
   };
 
@@ -432,6 +433,7 @@ const Psychodiagnostic = () => {
     }));
   };
 
+  console.log(formData)
   const handlePremorbidChange = (section, index, value) => {
     setFormData((prevData) => {
       const updatedSelf = [...prevData.backgroundInfo.premorbidPersonality[section]];
@@ -700,12 +702,10 @@ const Psychodiagnostic = () => {
         </label>
         <label style={styles.labels}>
           BackgroundInfo
-          <textArea
-            row = {20}
-            col = {20}
+          <textarea
             type="text"
-            name="infomation"
-            value={formData.backgroundInfo.information}
+            name="backInformation"
+            value={formData.backInformation}
             onChange={handleChange}
             style={styles.input}
           />

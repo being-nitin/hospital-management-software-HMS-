@@ -70,6 +70,7 @@ export const useInfiniteAppointments = ({ page = 1, limit = 10, status = null, d
     );
 };
 
+
 const updateAppointment = async ({_id ,...appVacc} , user) => {
     const config = {
         headers: {

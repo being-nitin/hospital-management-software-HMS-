@@ -5,6 +5,7 @@ import {
 	updateVacApp,
 	detailsVacApp,
 } from "../actions/vaccineAppointmentActions";
+import { useUpdateAppointment } from "./api/app";
 
 const CDRSForm = () => {
 	// Initial state for form formdata
@@ -252,7 +253,7 @@ const CDRSForm = () => {
 	const vaccineAppList = useSelector((state) => state.vaccineAppDetails);
 	const { appointment: { appointment, pastAppointments } = {} } =
 		vaccineAppList || {};
-
+    const updateAccData = useUpdateAppointment()
 	useEffect(() => {
 		dispatch(detailsVacApp(id));
 	}, [dispatch, id]);
@@ -271,8 +272,8 @@ const CDRSForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		dispatch(
-			updateVacApp({
+	
+	    updateAccData.mutate({
 				_id: appointment._id,
 				cdrs: {
 					info: formData,
@@ -282,7 +283,7 @@ const CDRSForm = () => {
 					),
 				},
 			})
-		);
+		
 		dispatch(detailsVacApp(id));
 		alert("You have successfully submitted the form.");
 		window.close()

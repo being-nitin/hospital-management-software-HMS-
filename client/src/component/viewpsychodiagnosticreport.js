@@ -13,7 +13,7 @@ const options = [
   { id: 1, label: 'personal history' },
   { id: 2, label: 'premorbid personality' },
   { id: 3, label: 'behavioural info' },
-  { id: 4, label: 'cognitive function' },
+  { id: 4, label: 'cognitive function' }
 ];
 
 const ViewPDReport = () => {
@@ -107,11 +107,11 @@ const ViewPDReport = () => {
 <h5 style="margin-bottom: 10px;">Nature of illness</h5>
 
   <div>
-     ${patientData.precipitation || "NAD"} Precipitation, ${patientData.onset || "NAD"} Onset, ${patientData.course || "NAD"} Course , ${patientData.progression || "NAD"} Progression
+     ${patientData.precipitation || "NAD"} Precipitation  ${patientData.onset || "NAD"} Onset  ${patientData.course || "NAD"} Course   ${patientData.progression || "NAD"} Progression
   </div>
 
 <h4 style="margin-bottom: 10px;">Background Information</h4>
-${(patientData && patientData.backgroundInfo.information )} 
+${(patientData && patientData.backInformation )} 
 <!-- Personal History -->
 ${selectedOptions.includes('personal history') ? `
 <h4>Personal History</h4>
@@ -120,7 +120,7 @@ ${selectedOptions.includes('personal history') ? `
    
      <span style = "margin-bottom : 5px;"> ${value} </span>
   
-  `).join(',') }
+  `).join(' ') }
 </div>`: ''}
 ${selectedOptions.includes('premorbid personality') ?`
 <h4 style = "page-break-before: always; margin-top : 400px;">Premorbid Personality</h4>
@@ -130,7 +130,7 @@ ${selectedOptions.includes('premorbid personality') ?`
       <p style="margin-bottom: 5px; font-weight: bold;">${category.replace(/([A-Z])/g, ' $1').toUpperCase()}</p>
       ${questions.map((q, idx) => `
         <span style="margin-bottom: 5px;"> ${q.answer }</span>
-      `).join(',')}
+      `).join(' ')}
     </div>
   `).join('')}
 </div>`: ''}
@@ -147,14 +147,14 @@ ${selectedOptions.includes('behavioural info') ?`
 
 <h4>Motor Behaviour</h4>
 <div>
-  <p > ${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo?.motorBehaviour && patientData.behaviouralInfo?.motorBehaviour?.psychomotorActivity || 'NAD'} ,${patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.disturbances.join(", ") || 'NAD'}</p>
+  <p > ${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo?.motorBehaviour && patientData.behaviouralInfo?.motorBehaviour?.psychomotorActivity || 'NAD'} ${patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour.disturbances.join(" ") || 'NAD'}</p>
 </div>
 
 <h4>Speech</h4>
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.speech).map(([key, value], index) => `
     <span >
-      ${value},
+      ${value}
     </span>
   `).join('')}
 </div>
@@ -163,7 +163,7 @@ ${selectedOptions.includes('behavioural info') ?`
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.memory).map(([key, value], index) => `
     <span style="margin-right: 10px;">
-     ${value},
+     ${value}
     </span>
   `).join('')}
 </div>
@@ -174,7 +174,7 @@ ${selectedOptions.includes('behavioural info') ?`
     <div style="margin-bottom: 10px; font-size: 14px;">
       ${category.replace(/([A-Z])/g, ' $1').toUpperCase()}
         ${options.length ? options.map(option => `
-          <span>${option},</span>
+          <span>${option}</span>
         `).join('') : 'NAD'}
       
     </div>
@@ -188,7 +188,7 @@ ${selectedOptions.includes('behavioural info') ?`
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.orientation).map(([key, value], index) => `
     <div style="display: inline-block; width: 48%; margin-bottom: 15px;">
-      ${value || 'NAD'},
+      ${value || 'NAD'}
     </div>
   `).join('')}
 </div>
@@ -197,15 +197,15 @@ ${selectedOptions.includes('behavioural info') ?`
           <h5>Memory</h5>
           <p>
             ${patientData.behaviouralInfo.memory &&
-              Object.values(patientData.behaviouralInfo.memory).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.memory).join(" ") || "NAD"}
           </p>
 
           <h5>Intelligences</h5>
           ${patientData.behaviouralInfo.intelligences &&
-              Object.values(patientData.behaviouralInfo.intelligences).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.intelligences).join(" ") || "NAD"}
           <h5>Judgement</h5>
           ${patientData.behaviouralInfo.judgement &&
-              Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.judgement).join("  ") || "NAD"}
 
               ` : ''}
           <h5>Tool used</h5>
@@ -222,7 +222,8 @@ ${selectedOptions.includes('behavioural info') ?`
     
 <div>
 
-   <b>Sugession:</b> <p>${patientData && patientData.suggestions && patientData.suggestions.map((suggestion, index)=> `${index +1} ${suggestion}</br><br/>`)}</p>
+ <b>Sugession:</b> 
+ <p>${patientData && patientData.suggestions.join("<br/><br/>")}
 </div>
 </div>
 </div>
@@ -307,11 +308,12 @@ ${selectedOptions.includes('behavioural info') ?`
       {/* Nature of illness */}
       <h5>Nature of illness</h5>
       <p>
-        {patientData.precipitation || "NAD"} Precipitation,{" "}
-        {patientData.onset || "NAD"} Onset, {patientData.course || "NAD"} Course,
+        {patientData.precipitation || "NAD"} Precipitation{" "}
+        {patientData.onset || "NAD"} Onset {patientData.course || "NAD"} Course
         {patientData.progression || "NAD"} Progression
       </p>
-
+      <h4 style={{marginBottom: "10px"}}>Background Information</h4>
+      {patientData && patientData.backInformation } 
       {/* Background Information */}
       {selectedOptions.includes("personal history") && (
         <>
@@ -349,13 +351,13 @@ ${selectedOptions.includes('behavioural info') ?`
           <h6>General Appearance and Behavior</h6>
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.generalAppearanceAndBehaviour &&
-              Object.values(patientData.behaviouralInfo.generalAppearanceAndBehaviour).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.generalAppearanceAndBehaviour).join("  ") || "NAD"}
           </p>
 
           <h6>Motor Behaviour</h6>
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour?.psychomotorActivity || "NAD"},{" "}
-            {patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour?.disturbances.join(", ") || "NAD"}
+            {patientData.behaviouralInfo && patientData.behaviouralInfo.motorBehaviour?.disturbances.join(" ") || "NAD"}
           </p>
 
     
@@ -363,7 +365,7 @@ ${selectedOptions.includes('behavioural info') ?`
           <h6>Speech</h6>
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.speech &&
-              Object.values(patientData.behaviouralInfo.speech).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.speech).join(" ") || "NAD"}
           </p>
 
 
@@ -371,7 +373,7 @@ ${selectedOptions.includes('behavioural info') ?`
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.thought &&
               Object.entries(patientData.behaviouralInfo.thought).map(([category, options]) => (
-                <span key={category}>{category}: {options.join(", ") || "NAD"} </span>
+                <span key={category}>{category}: {options.join(" ") || "NAD"} </span>
               ))}
           </p>
         </>
@@ -386,22 +388,22 @@ ${selectedOptions.includes('behavioural info') ?`
         <h5>Orientation</h5>
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.orientation &&
-              Object.values(patientData.behaviouralInfo.orientation).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.orientation).join("  ") || "NAD"}
           </p>
           <h6> Attention and concentration : {patientData && patientData.behaviouralInfo & patientData.behaviouralInfo?.levelOfConsciousness && patientData.behaviouralInfo.levelOfConsciousness?.attention && patientData.behaviouralInfo.levelOfConsciousness?.attention} </h6>
           
           <h5>Memory</h5>
           <p>
             {patientData.behaviouralInfo && patientData.behaviouralInfo.memory &&
-              Object.values(patientData.behaviouralInfo.memory).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.memory).join(" ") || "NAD"}
           </p>
 
           <h5>Intelligences</h5>
           { patientData.behaviouralInfo && patientData.behaviouralInfo.intelligences &&
-              Object.values(patientData.behaviouralInfo.intelligences).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.intelligences).join(" ") || "NAD"}
           <h5>Judgement</h5>
           {patientData.behaviouralInfo && patientData.behaviouralInfo.judgement &&
-              Object.values(patientData.behaviouralInfo.judgement).join(", ") || "NAD"}
+              Object.values(patientData.behaviouralInfo.judgement).join(" ") || "NAD"}
           </>
           
       )}
