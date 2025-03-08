@@ -50,7 +50,7 @@ const ViewPDReport = () => {
   let psychodiagnostic = () => {
 
   return `
-  <div style= "padding : 16px; max-width : 900px;">
+  <div style= "padding : 16px; max-width : 900px;font-size:18px;">
   <div className="border-radius: 8px; margin: 20px;">
   <h2 style="text-align: center;"}}>Psychodiagonistic Report</h2>
    <div>
@@ -123,7 +123,7 @@ ${selectedOptions.includes('personal history') ? `
   `).join(' ') }
 </div>`: ''}
 ${selectedOptions.includes('premorbid personality') ?`
-<h4 style = "page-break-before: always; margin-top : 400px;">Premorbid Personality</h4>
+<h4 style = "page-break-before: always; margin-top : 450px;">Premorbid Personality</h4>
 <div>
   ${patientData && patientData.backgroundInfo && Object.entries(patientData.backgroundInfo.premorbidPersonality).map(([category, questions], index) => `
     <div>
@@ -168,7 +168,7 @@ ${selectedOptions.includes('behavioural info') ?`
   `).join('')}
 </div>
 
-<h4  >Thought</h4>
+<h4  style="page-break-before: always; margin-top : 450px;">Thought</h4>
 <div>
   ${patientData && patientData.behaviouralInfo && Object.entries(patientData.behaviouralInfo.thought).map(([category, options], index) => `
     <div style="margin-bottom: 10px; font-size: 14px;">
@@ -180,7 +180,7 @@ ${selectedOptions.includes('behavioural info') ?`
     </div>
   `).join('')}` :""}
    ${selectedOptions.includes("cognitive function") ? `
-    <h4 style="page-break-before: always;margin-top : 400px;">Level of Consciousness</h4>
+    <h4>Level of Consciousness</h4>
 <div>
   <p >${patientData && patientData.behaviouralInfo && patientData.behaviouralInfo.levelOfConsciousness.mediate}</p>
 </div>
@@ -210,20 +210,20 @@ ${selectedOptions.includes('behavioural info') ?`
               ` : ''}
           <h5>Tool used</h5>
            ${tools.length !== 0 && tools.map((tool, index) => (
-              `<span key=${index} value=${tool}>
-                ${tool.tool}  Score : ${ tool.score}
-              </span>`
-            ))}
+              ` <span key={index} value={tool}>
+    ${tool.score !== null && tool.score !== undefined ? `${tool.tool} : ${tool.score}` : ""}
+  </span>`
+            )).join(" ")}
     <p style="font-weight : 700;">Interpretations</p>
      <div style ="max-width:900px;"> 
      Based on the history observation scale, patient was found to have : 
    ${patientData.interpretations}
      </div>
     
-<div>
+<div style="margin-top:20px;">
 
- <b>Sugession:</b> 
- <p>${patientData && patientData.suggestions.join("<br/><br/>")}
+ <b >Sugessions:</b> 
+ <p>${patientData && patientData.suggestions.map((suggestion, index) => `${index + 1}. ${suggestion}`).join(", ")}
 </div>
 </div>
 </div>

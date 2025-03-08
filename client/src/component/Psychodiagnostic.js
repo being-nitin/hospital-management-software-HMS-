@@ -1316,38 +1316,38 @@ const Psychodiagnostic = () => {
 													e.target.value === "HAM-A"
 												) {
 													window.open(
-														`/HamiltonForm/${appointment._id}`
+														`/HamiltonForm/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "HAM-D"
 												) {
 													 window.open(
-														`/hamd/${appointment._id}`
+														`/hamd/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (e.target.value === "CDRS") {
 													window.open(
-														`/cdrs/${appointment._id}`
+														`/cdrs/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (e.target.value === "YMRS") {
 												  window.open(
-														`/YMRS/${appointment._id}`
+														`/YMRS/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "YBOCS"
 												) {
 													window.open(
-														`/ybocs/${appointment._id}`
+														`/ybocs/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 												if (
 													e.target.value === "PANSS"
 												) {
 													window.open(
-														`/panss/${appointment._id}`
+														`/panss/${appointment?._id}`
                             ,'_blank', 'rel=noopener noreferrer');
 												}
 											}}>
