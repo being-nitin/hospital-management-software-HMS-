@@ -317,7 +317,7 @@ ${selectedOptions.includes('behavioural info') ?`
       {/* Background Information */}
       {selectedOptions.includes("personal history") && (
         <>
-          <h4>Background Information</h4>
+        
           <h5>Personal History</h5>
           <div>
             {patientData.backgroundInfo && patientData.backgroundInfo.personalHistory &&

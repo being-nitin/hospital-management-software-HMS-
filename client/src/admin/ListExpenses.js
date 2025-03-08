@@ -219,23 +219,7 @@ const ListExpenses = () => {
 	return (
 		<Layout title="REVENUE" className="container-fluid">
 			      <div className="d-flex justify-content-between align-items-center mb-4">
-                <div className="d-flex" style={{ gap: "5px" }}>
-                    <RangePicker placeholder={["Start Date", "End Date"]} onChange={handleDateChange} allowClear />
-                    {userInfo.role !== 1 ? <Select placeholder="Select Doctor" style={{ width: 200 }} onChange={handleDoctorChange} allowClear>
-                        <Option key={0} value={null}>All</Option>
-                        {/* Render doctor options dynamically */}
-						{users &&
-							users.length !== 0 &&
-							users
-								.filter((user) => user.role === 1)
-								?.map((doc) => (
-									<Option key={doc._id} value={doc._id}>
-										{doc.name}
-									</Option>
-								))} 
-                    </Select> : ''}
-                    <Button type="primary" onClick={applyFilters}>Search</Button>
-                </div>
+              
 
 				<div className="btn-group mb-4" role="group">
                 <button 
@@ -256,13 +240,31 @@ const ListExpenses = () => {
                 >
                     Monthly
                 </button>
-				<button 
+				{userInfo.role !== 1 && <button 
                     className={`btn ${view === "doctor" ? "btn-primary" : "btn-outline-primary"}`} 
                     onClick={() => setView("doctor")}
                 >
                     Doctor
-                </button>
+                </button>}
             </div>
+
+			<div className="d-flex" style={{ gap: "5px" }}>
+                    <RangePicker placeholder={["Start Date", "End Date"]} onChange={handleDateChange} allowClear />
+                    {userInfo.role !== 1 ? <Select placeholder="Select Doctor" style={{ width: 200 }} onChange={handleDoctorChange} allowClear>
+                        <Option key={0} value={null}>All</Option>
+                        {/* Render doctor options dynamically */}
+						{users &&
+							users.length !== 0 &&
+							users
+								.filter((user) => user.role === 1)
+								?.map((doc) => (
+									<Option key={doc._id} value={doc._id}>
+										{doc.name}
+									</Option>
+								))} 
+                    </Select> : ''}
+                    <Button type="primary" onClick={applyFilters}>Search</Button>
+                </div>
             </div>
 
 			<div className="mt-4">

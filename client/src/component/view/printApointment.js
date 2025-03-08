@@ -9,17 +9,17 @@ import moment from 'moment';
 import { useDispatch , useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 const options = [
-  { id: 1, label: 'Clinical Notes' },
-  { id: 2, label: 'Prescription' },
-  { id: 3, label: 'Vital Signs' },
-  { id: 4, label: 'Additional Notes' },
-  {id : 5 , label : 'billing'}
+  { id: 1, label: 'Clinical Notes' , isActive : false },
+  { id: 2, label: 'Prescription' , isActive : true },
+  { id: 3, label: 'Vital Signs' , isActive : true},
+  { id: 4, label: 'Additional Notes', isActive : true },
+  {id : 5 , label : 'billing', isActive : false}
 ];
 
 const PrintAppointments = () => {
 
   const [clinicalNotes , setClinicalNotes] = useState([])
-  const [selectedOptions, setSelectedOptions] = useState(options.map((option) => option.label));
+  const [selectedOptions, setSelectedOptions] = useState(options.map((option) => (option.isActive && option.label )));
 
 
   const { id } = useParams();
